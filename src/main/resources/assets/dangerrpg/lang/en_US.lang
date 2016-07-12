@@ -1,0 +1,180 @@
+itemGroup.tabDangerRPG=Danger RPG
+
+item.sword_training.name=Training Sword
+item.sword_obsidian.name=Obsidian Sword
+item.sword_bedrock.name=Bedrock Sword
+item.sword_black_matter.name=Black Matter Sword
+item.sword_white_matter.name=White Matter Sword
+
+item.naginata_iron.name=Iron Naginata
+item.naginata_gold.name=Gold Naginata
+item.naginata_diamond.name=Diamond Naginata
+item.naginata_obsidian.name=Obsidian Naginata
+item.naginata_bedrock.name=Bedrock Naginata
+item.naginata_black_matter.name=Black Matter Naginata
+item.naginata_white_matter.name=White Matter Naginata
+
+item.katana_iron.name=Iron Katana
+item.katana_gold.name=Gold Katana
+item.katana_diamond.name=Diamond Katana
+item.katana_obsidian.name=Obsidian Katana
+item.katana_bedrock.name=Bedrock Katana
+item.katana_black_matter.name=Black Matter Katana
+item.katana_white_matter.name=White Matter Katana
+
+item.scythe_iron.name=Iron Scythe
+item.scythe_gold.name=Gold Scythe
+item.scythe_diamond.name=Diamond Scythe
+item.scythe_obsidian.name=Obsidian Scythe
+item.scythe_bedrock.name=Bedrock Scythe
+item.scythe_black_matter.name=Black Matter Scythe
+item.scythe_white_matter.name=White Matter Scythe
+
+item.hammer_iron.name=Iron Hammer
+item.hammer_gold.name=Gold Hammer
+item.hammer_diamond.name=Diamond Hammer
+item.hammer_obsidian.name=Obsidian Hammer
+item.hammer_bedrock.name=Bedrock Hammer
+item.hammer_black_matter.name=Black Matter Hammer
+item.hammer_white_matter.name=White Matter Hammer
+
+item.tomahawk_iron.name=Iron Tomahawk
+item.tomahawk_gold.name=Gold Tomahawk
+item.tomahawk_diamond.name=Diamond Tomahawk
+item.tomahawk_obsidian.name=Obsidian Tomahawk
+item.tomahawk_bedrock.name=Bedrock Tomahawk
+item.tomahawk_black_matter.name=Black Matter Tomahawk
+item.tomahawk_white_matter.name=White Matter Tomahawk
+
+item.knife_iron.name=Iron Knife
+item.knife_gold.name=Gold Knife
+item.knife_diamond.name=Diamond Knife
+item.knife_obsidian.name=Obsidian Knife
+item.knife_bedrock.name=Bedrock Knife
+item.knife_black_matter.name=Black Matter Knife
+item.knife_white_matter.name=White Matter Knife
+
+item.axe_obsidian.name=Obsidian Axe
+item.axe_bedrock.name=Bedrock Axe
+item.axe_black_matter.name=Black Matter Axe
+item.axe_white_matter.name=White Matter Axe
+
+item.hoe_obsidian.name=Obsidian Hoe
+item.hoe_bedrock.name=Bedrock Hoe
+item.hoe_black_matter.name=Black Matter Hoe
+item.hoe_white_matter.name=White Matter Hoe
+
+item.pickaxe_obsidian.name=Obsidian Pickaxe
+item.pickaxe_bedrock.name=Bedrock Pickaxe
+item.pickaxe_black_matter.name=Black Matter Pickaxe
+item.pickaxe_white_matter.name=White Matter Pickaxe
+
+item.shovel_obsidian.name=Obsidian Shovel
+item.shovel_bedrock.name=Bedrock Shovel
+item.shovel_black_matter.name=Black Matter Shovel
+item.shovel_white_matter.name=White Matter Shovel
+
+item.multitool_iron.name=Iron Multitool
+item.multitool_gold.name=Gold Multitool
+item.multitool_diamond.name=Diamond Multitool
+item.multitool_obsidian.name=Obsidian Multitool
+item.multitool_bedrock.name=Bedrock Multitool
+item.multitool_black_matter.name=Black Matter Multitool
+item.multitool_white_matter.name=White Matter Multitool
+
+item.helmet_obsidian.name=Obsidian Helmet
+item.chestplate_obsidian.name=Obsidian Chestplate
+item.leggings_obsidian.name=Obsidian Leggings
+item.boots_obsidian.name=Obsidian Boots
+
+item.helmet_bedrock.name=Bedrock Helmet
+item.chestplate_bedrock.name=Bedrock Chestplate
+item.leggings_bedrock.name=Bedrock Leggings
+item.boots_bedrock.name=Bedrock Boots
+
+item.helmet_black_matter.name=Black Matter Helmet
+item.chestplate_black_matter.name=Black Matter Chestplate
+item.leggings_black_matter.name=Black Matter Leggings
+item.boots_black_matter.name=Black Matter Boots
+
+item.helmet_white_matter.name=White Matter Helmet
+item.chestplate_white_matter.name=White Matter Chestplate
+item.leggings_white_matter.name=White Matter Leggings
+item.boots_white_matter.name=White Matter Boots
+
+item.gem_wither_skull.name=Wither Skull Gem
+
+
+tile.modify_table.name=Modify Table
+tile.lvlup_table.name=LevelUp Table
+
+
+rpgstr.key.special_use=Special use of item
+rpgstr.key.extra_use=Extra use of item
+rpgstr.key.info_book=Item's Info book
+
+it_atr.lvl=Level
+it_atr.curr_exp=Exp
+it_atr.max_exp=Max Exp
+it_atr.melee_damage=Melee Damage
+it_atr.shot_damage=Shot Damage
+it_atr.bow_damage=Archery Damage
+it_atr.melee_speed=Attack Speed
+it_atr.shot_speed=Archery Speed
+it_atr.magic=Magic
+it_atr.knockback=Knockback
+it_atr.reach=Reach
+
+it_atr.ench=Enchantability
+it_atr.durab=Durability
+it_atr.max_durab=Max Durability
+it_atr.effic=Efficiency
+it_atr.phisic_armor=Phisical Resistance
+it_atr.magic_armor=Magical Resistance
+ 
+it_atr.str_mul=Str to Damage
+it_atr.agi_mul=Agi to Speed
+it_atr.int_mul=Int to Magic damage
+
+pl_atr.health=Health
+pl_atr.health.info=Increases maximum level of health
+pl_atr.mana=Mana
+pl_atr.mana.info=Increases maximum level of mana
+pl_atr.str=Strength
+pl_atr.str.info=Increases physical damage and power of knockback
+pl_atr.agi=Agility
+pl_atr.agi.info=Increases attack speed
+pl_atr.int=Intelligence
+pl_atr.int.info=Increases magic damage
+pl_atr.mana_regen=Mana regeneration
+pl_atr.mana_regen.info=Increases mana regeneration
+pl_atr.effic=Mining speed
+pl_atr.effic.info=Increases mining speed
+
+gem_type.wpn_gem_sa=Special Attack Gem
+gem_type.wpn_gem_ma1=Modify Attack Gem
+gem_type.wpn_gem_ma2=Modify Attack Gem
+gem_type.wpn_gem_def=Defence Gem
+gem_type.helmet_gem=Helmet Gem
+gem_type.chestplate_gem=Chestplate Gem
+gem_type.leggings_gem=Leggings Gem
+gem_type.boots_gem=Boots Gem
+
+rpgstr.lvlup_table.1button=Level Up
+rpgstr.lvlup_table.2button=Put all exp
+rpgstr.info_book.lvlup_but=Up
+
+rpgstr.info_about=Info about
+rpgstr.player_stats=Player Stats
+rpgstr.item_info=Item Info
+rpgstr.item_description=Item Description
+rpgstr.parametres=Parametres
+rpgstr.description=Description
+rpgstr.gems=Gems
+rpgstr.name=Name
+rpgstr.type=Type
+rpgstr.value=Value
+
+rpgstr.no_item=There is no item
+rpgstr.no_info=There is no information
+rpgstr.no_info_yet=There is no information yet
