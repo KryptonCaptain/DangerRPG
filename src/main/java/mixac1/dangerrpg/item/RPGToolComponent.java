@@ -31,7 +31,9 @@ public enum RPGToolComponent
 	
 	BOW          (2.0F, 20.0F,  0.0F,   0.16F,  1.0F,   0.25F,  1.0F,   0.0F),
     
-    SHADOW_BOW   (2.5F, 16.0F,  0.0F,   0.16F,  1.0F,   0.25F,  1.0F,   0.0F);
+    SHADOW_BOW   (2.5F, 16.0F,  0.0F,   0.16F,  1.0F,   0.25F,  1.0F,   0.0F),
+	
+	SNIPER_BOW   (4F,   40.0F,  0.0F,   0.16F,  1.0F,   0.25F,  1.0F,   0.0F);
 	
 	public float damage;
 	public float speed;

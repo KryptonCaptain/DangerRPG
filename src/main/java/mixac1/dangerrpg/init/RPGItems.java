@@ -1,6 +1,7 @@
 package mixac1.dangerrpg.init;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import mixac1.dangerrpg.item.ItemSniperBow;
 import mixac1.dangerrpg.item.RPGArmorMaterial;
 import mixac1.dangerrpg.item.RPGItemBow;
 import mixac1.dangerrpg.item.RPGToolComponent;
@@ -110,7 +111,8 @@ public class RPGItems
 	public static Item[] armorBlackMatter = RPGItemArmor.createFullSet(RPGArmorMaterial.BLACK_MATTER, "black_matter");
 	public static Item[] armorWhiteMatter = RPGItemArmor.createFullSet(RPGArmorMaterial.WHITE_MATTER, "white_matter");
 	
-	public static Item shadowBow = new RPGItemBow(RPGToolComponent.SHADOW_BOW, 4F, "shadowBow");
+	public static Item shadowBow = new RPGItemBow   (RPGToolComponent.SHADOW_BOW, 3F, "shadowBow");
+	public static Item sniperBow = new ItemSniperBow(RPGToolComponent.SNIPER_BOW, 4F, "sniperBow");
 	
 	public static Item gemWitherSkull = new GemWeaponWitherSkull("gem_wither_skull");
 	
@@ -201,6 +203,7 @@ public class RPGItems
 		registerItem(multitoolWhiteMatter);
 		
 		registerItem(shadowBow);
+		registerItem(sniperBow);
 		
 		registerArmor(armorObsidian);
 		registerArmor(armorBedrock);

@@ -11,9 +11,11 @@ import mixac1.dangerrpg.client.render.item.RenderKatana;
 import mixac1.dangerrpg.client.render.item.RenderKnife;
 import mixac1.dangerrpg.client.render.item.RenderLongItem;
 import mixac1.dangerrpg.client.render.item.RenderShadowBow;
+import mixac1.dangerrpg.client.render.item.RenderSniperBow;
 import mixac1.dangerrpg.entity.projectile.EntityArrowRPG;
 import mixac1.dangerrpg.entity.projectile.EntityMaterial;
 import mixac1.dangerrpg.entity.projectile.EntityProjectile;
+import mixac1.dangerrpg.entity.projectile.EntitySniperArrow;
 import mixac1.dangerrpg.entity.projectile.EntityThrowKnife;
 import mixac1.dangerrpg.entity.projectile.EntityThrowTomahawk;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -70,6 +72,7 @@ public class RPGRenderers
 		MinecraftForgeClient.registerItemRenderer(RPGItems.hammerWhiteMatter, RenderHammer.INSTANCE);
 		
 		MinecraftForgeClient.registerItemRenderer(RPGItems.shadowBow, RenderShadowBow.INSTANCE);
+		MinecraftForgeClient.registerItemRenderer(RPGItems.sniperBow, RenderSniperBow.INSTANCE);
 	}
 	
 	private static void registerEntityRenderingHandler()
@@ -78,6 +81,8 @@ public class RPGRenderers
 		RenderingRegistry.registerEntityRenderingHandler(EntityMaterial.class, RenderMaterial.INSTANCE);
 		
 		RenderingRegistry.registerEntityRenderingHandler(EntityArrowRPG.class, RenderArrowRPG.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySniperArrow.class, RenderArrowRPG.INSTANCE);
+		
 		RenderingRegistry.registerEntityRenderingHandler(EntityThrowKnife.class, RenderThrowKnife.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityThrowTomahawk.class, RenderThrowTomahawk.INSTANCE);
 	}

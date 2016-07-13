@@ -45,9 +45,9 @@ public class RenderBow extends RPGItemRenderIcon
 	{
 		GL11.glPopMatrix();
 		Tessellator tess = Tessellator.instance;	
-		EntityLivingBase entityliving = (EntityLivingBase) data[1];
-		IIcon icon = entityliving.getItemIcon(stack, 0);
-		float tickness = specific(type, stack, entityliving);	
+		EntityLivingBase entity = (EntityLivingBase) data[1];
+		IIcon icon = entity.getItemIcon(stack, 0);
+		float tickness = specific(type, stack, entity);	
         
 		ItemRenderer.renderItemIn2D(tess, icon.getMaxU(), icon.getMinV(), icon.getMinU(), icon.getMaxV(), icon.getIconWidth(), icon.getIconHeight(), tickness);
 		RPGRenderHelper.renderEnchantEffect(tess, stack, 256, 256, tickness);

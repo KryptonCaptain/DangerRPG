@@ -106,7 +106,9 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
 				flag |= addAttribute(ItemAttributes.EFFICIENCY, itemAttributes);
 				flag |= addAttribute(ItemAttributes.ENCHANTABILITY, itemAttributes);
 				for(ItemAttribute iter : itemAttributes) {
-					addString(String.format("%s : %s", iter.getDispayName(), iter.getDispayValue(stack, player)));
+					if (iter.isVisibleInInfoBook(stack)) {
+						addString(String.format("%s : %s", iter.getDispayName(), iter.getDispayValue(stack, player)));
+					}
 		        }
 				addString("");
 			}

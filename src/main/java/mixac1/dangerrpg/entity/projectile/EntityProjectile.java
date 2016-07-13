@@ -124,7 +124,10 @@ public class EntityProjectile extends Entity implements IThrowableEntity, IProje
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int par) {}
+    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int par)
+	{
+		//super.setPositionAndRotation2(x, y, z, yaw, pitch, par);
+	}
 
     @Override
 	@SideOnly(Side.CLIENT)
@@ -153,6 +156,10 @@ public class EntityProjectile extends Entity implements IThrowableEntity, IProje
 	@Override
 	public void onEntityUpdate()
 	{
+		lastTickPosX = posX;
+        lastTickPosY = posY;
+        lastTickPosZ = posZ;
+        
 		super.onEntityUpdate();
 		
 		if (needAimRotation()) {
@@ -214,11 +221,35 @@ public class EntityProjectile extends Entity implements IThrowableEntity, IProje
 		
 		posX += motionX;
 		posY += motionY;
-		posZ += motionZ;		
+		posZ += motionZ;	
+		
+        double r = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
+        rotationYaw = (float) (Math.atan2(motionX, motionZ) * 180.0 / Math.PI);
+
+        for (rotationPitch = (float) (Math.atan2(motionY, r) * 180.0D / Math.PI);
+        	 rotationPitch - prevRotationPitch < -180.0F;
+        	 prevRotationPitch -= 360.0F) {}
+
+        for (; rotationPitch - prevRotationPitch >= 180.0F;
+        	   prevRotationPitch += 360.0F) {}
+        
+        for (; rotationYaw - prevRotationYaw < -180.0F;
+        	   prevRotationYaw -= 360.0F) {}
+        
+        for (; rotationYaw - prevRotationYaw >= 180.0F;
+        	   prevRotationYaw += 360.0F) {}
+
+        rotationPitch = prevRotationPitch + (rotationPitch - prevRotationPitch) * 0.2F;
+        rotationYaw = prevRotationYaw + (rotationYaw - prevRotationYaw) * 0.2F;
+		
 		motionX *= getAirResistance();
 		motionY *= getAirResistance();
 		motionZ *= getAirResistance();
 		motionY -= getGravity();
+		
+		if (isWet()) {
+            extinguish();
+        }
 		
 		if (isInWater()) {
 			onCollideWithWater();	

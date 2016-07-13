@@ -6,6 +6,7 @@ import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.entity.projectile.EntityArrowRPG;
 import mixac1.dangerrpg.entity.projectile.EntityMaterial;
 import mixac1.dangerrpg.entity.projectile.EntityProjectile;
+import mixac1.dangerrpg.entity.projectile.EntitySniperArrow;
 import mixac1.dangerrpg.entity.projectile.EntityThrowKnife;
 import mixac1.dangerrpg.entity.projectile.EntityThrowLvlItem;
 import mixac1.dangerrpg.entity.projectile.EntityThrowTomahawk;
@@ -35,5 +36,6 @@ public class RPGEntities
 		EntityRegistry.registerModEntity(EntityThrowKnife.class, "EntityThrowKnife", count++, DangerRPG.instance, 80, 3, true);
 		EntityRegistry.registerModEntity(EntityThrowTomahawk.class, "EntityThrowTomahawk", count++, DangerRPG.instance, 80, 3, true);
 		EntityRegistry.registerModEntity(EntityArrowRPG.class, "EntityArrowRPG", count++, DangerRPG.instance, 80, 3, true);
+		EntityRegistry.registerModEntity(EntitySniperArrow.class, "EntitySniperArrow", count++, DangerRPG.instance, 80, 3, true);
 	}
 }

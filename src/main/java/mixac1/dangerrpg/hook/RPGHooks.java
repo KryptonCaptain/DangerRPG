@@ -5,11 +5,12 @@ import java.util.UUID;
 
 import com.google.common.collect.Multimap;
 
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gloomyfolken.hooklib.asm.Hook;
-import gloomyfolken.hooklib.asm.ReturnCondition;
 import gloomyfolken.hooklib.asm.Hook.ReturnValue;
+import gloomyfolken.hooklib.asm.ReturnCondition;
 import mixac1.dangerrpg.api.item.ILvlableItem;
 import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemBow;
 import mixac1.dangerrpg.capability.GemableItem;
@@ -32,6 +33,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -191,5 +193,13 @@ public class RPGHooks
         
         ((ILvlableItemBow) (bow instanceof ILvlableItemBow ? bow : ILvlableItem.DEFAULT_BOW)).onStoppedUsing(stack, world, player, useDuration);
     }
+	
+	@Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS, targetMethod = "<init>")
+	public static void qweqwe(S12PacketEntityVelocity packet, int id, double motionX, double motionY, double motionZ)
+	{
+		ReflectionHelper.setPrivateValue(S12PacketEntityVelocity.class, packet, (int) (motionX * 8000.0D), "field_149415_b");
+		ReflectionHelper.setPrivateValue(S12PacketEntityVelocity.class, packet, (int) (motionY * 8000.0D), "field_149416_c");
+		ReflectionHelper.setPrivateValue(S12PacketEntityVelocity.class, packet, (int) (motionZ * 8000.0D), "field_149414_d");
+	}
 }
 
