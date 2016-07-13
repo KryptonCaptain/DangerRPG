@@ -177,7 +177,7 @@ public class RPGGuiIngame extends Gui
 	        ILvlableItemShoot ilvl = (ILvlableItemShoot) (stack.getItem() instanceof ILvlableItemShoot ? stack.getItem() : ILvlableItem.DEFAULT_BOW);
 	        int useDuration = mc.thePlayer.getItemInUseDuration();
 	        float maxCharge = ilvl.getMaxCharge(stack, mc.thePlayer);        
-	        int proc = getProcent(useDuration, maxCharge, healthBarWidth);
+	        int proc = getProcent(useDuration, maxCharge, chargeWidth);
 	        if (proc > 0) {
 	            drawTexturedModalRect(offsetX, offsetY, chargeOffsetU, chargeOffsetV + chargeHeight, proc, chargeHeight);
 	        }
@@ -186,7 +186,7 @@ public class RPGGuiIngame extends Gui
 	
 	private int getProcent(float curr, float max, int width)
 	{ 
-	    int value = (int) (curr / max * width);
-	    return (int) (value == 0 && curr != 0 ? 1 : value > max ? max : value);
+	    int value = (int) (curr /  max * width);    
+	    return value == 0 && curr != 0 ? 1 : value > width ? width : value;
 	}
 }

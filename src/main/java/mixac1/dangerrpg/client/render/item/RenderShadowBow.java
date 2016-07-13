@@ -1,5 +1,7 @@
 package mixac1.dangerrpg.client.render.item;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
@@ -10,6 +12,7 @@ public class RenderShadowBow extends RenderBow
     @Override
     public float specific(ItemRenderType type, ItemStack stack, EntityLivingBase entity)
     { 
-        return super.specific(type, stack, entity) / 1.5F;
+    	GL11.glScalef(1.3F, 1.3F, 1.3F);
+        return super.specific(type, stack, entity) / 1.7f;
     }
 }
