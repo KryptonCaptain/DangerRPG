@@ -7,8 +7,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityArrowRPG extends EntityMaterial
-{	  
-	public EntityArrowRPG(World world)
+{      
+    public EntityArrowRPG(World world)
     {
         super(world, new ItemStack(Items.arrow, 1));
     }
@@ -25,7 +25,7 @@ public class EntityArrowRPG extends EntityMaterial
 
     public EntityArrowRPG(World world, EntityLivingBase thrower, EntityLivingBase target, float speed, float deviation)
     {
-    	super(world, thrower, target, new ItemStack(Items.arrow, 1), speed, deviation);
+        super(world, thrower, target, new ItemStack(Items.arrow, 1), speed, deviation);
     }
     
     @Override

@@ -23,17 +23,19 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 @SideOnly(Side.CLIENT)
 public class ClientEventHandlers
 {
-    public static Minecraft mc = Minecraft.getMinecraft(); 
+    public static Minecraft mc = Minecraft.getMinecraft();
     private static RPGGuiIngame guiIngame = new RPGGuiIngame();
-    
+
     @SubscribeEvent
     public void renderRPGGuiIngame(RenderGameOverlayEvent event)
     {
-        if (!event.isCancelable() && event.type == ElementType.EXPERIENCE && RPGConfig.mainEnableModGui) {
+        if (!event.isCancelable() &&
+             event.type == ElementType.EXPERIENCE &&
+             RPGConfig.mainEnableModGui) {
             guiIngame.renderGameOverlay();
         }
     }
-    
+
     @SubscribeEvent
     public void renderDisableOldBars(RenderGameOverlayEvent.Pre event)
     {
@@ -46,31 +48,32 @@ public class ClientEventHandlers
             }
         }
     }
-    
-	@SubscribeEvent
-	public void onKeyInput(KeyInputEvent event)
-	{
-		if (Minecraft.getMinecraft().inGameHasFocus) {
-			EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
 
-			if (player == null) {
-				return;
-			}
+    @SubscribeEvent
+    public void onKeyInput(KeyInputEvent event)
+    {
+        if (Minecraft.getMinecraft().inGameHasFocus) {
+            EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
 
-			ItemStack stack = player.getCurrentEquippedItem();
-			if (RPGKeyBinds.specialItemKey.getIsKeyPressed() &&
-				stack != null &&
-				GemType.GEM_SPECIAL_ATTACK.hasIt(stack)) {
-				RPGNetwork.net.sendToServer(new MsgUseItemSpecial());
-			} 
-			else if (RPGKeyBinds.extraItemKey.getIsKeyPressed() &&
-					 stack != null &&
-					 stack.getItem() instanceof IUseItemExtra) {
-				RPGNetwork.net.sendToServer(new MsgUseItemExtra());
-			}
-			else if (RPGKeyBinds.infoBookKey.getIsKeyPressed()) {
-				player.openGui(DangerRPG.instance, RPGGuiHandlers.GUI_INFO_BOOK, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
-			}
-		}
-	}
+            if (player == null) {
+                return;
+            }
+
+            ItemStack stack = player.getCurrentEquippedItem();
+            if (RPGKeyBinds.specialItemKey.getIsKeyPressed() &&
+                stack != null &&
+                GemType.GEM_SPECIAL_ATTACK.hasIt(stack)) {
+                RPGNetwork.net.sendToServer(new MsgUseItemSpecial());
+            }
+            else if (RPGKeyBinds.extraItemKey.getIsKeyPressed() &&
+                     stack != null &&
+                     stack.getItem() instanceof IUseItemExtra) {
+                RPGNetwork.net.sendToServer(new MsgUseItemExtra());
+            }
+            else if (RPGKeyBinds.infoBookKey.getIsKeyPressed()) {
+                player.openGui(DangerRPG.instance, RPGGuiHandlers.GUI_INFO_BOOK, player.worldObj,
+                               (int) player.posX, (int) player.posY, (int) player.posZ);
+            }
+        }
+    }
 }

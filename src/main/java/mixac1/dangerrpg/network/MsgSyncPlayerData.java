@@ -35,21 +35,21 @@ public class MsgSyncPlayerData implements IMessage
     
     public static class HandlerClient implements IMessageHandler<MsgSyncPlayerData, IMessage>
     {
-		@Override
-		public IMessage onMessage(MsgSyncPlayerData message, MessageContext ctx)
-		{
-			PlayerData.get(DangerRPG.proxy.getPlayerFromMessageCtx(ctx)).loadNBTData(message.data);
-			return null;
-		}
+        @Override
+        public IMessage onMessage(MsgSyncPlayerData message, MessageContext ctx)
+        {
+            PlayerData.get(DangerRPG.proxy.getPlayerFromMessageCtx(ctx)).loadNBTData(message.data);
+            return null;
+        }
     }
     
     public static class HandlerServer implements IMessageHandler<MsgSyncPlayerData, IMessage>
     {
-		@Override
-		public IMessage onMessage(MsgSyncPlayerData message, MessageContext ctx)
-		{
-			PlayerData.get(DangerRPG.proxy.getPlayerFromMessageCtx(ctx)).syncAll();
-			return null;
-		}
+        @Override
+        public IMessage onMessage(MsgSyncPlayerData message, MessageContext ctx)
+        {
+            PlayerData.get(DangerRPG.proxy.getPlayerFromMessageCtx(ctx)).syncAll();
+            return null;
+        }
     }
 }

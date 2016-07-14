@@ -7,14 +7,14 @@ import net.minecraft.item.ItemStack;
 
 public class IADamage extends IAStatic
 {
-	public IADamage(String name)
-	{
-		super(name);
-	}
-	
-	@Override
-	public float get(ItemStack stack, EntityPlayer player)
-	{
-		return get(stack) + PlayerAttributes.STRENGTH.getValue(player) * ItemAttributes.STR_MUL.get(stack);
-	}
+    public IADamage(String name)
+    {
+        super(name);
+    }
+    
+    @Override
+    public float get(ItemStack stack, EntityPlayer player)
+    {
+        return get(stack) + PlayerAttributes.STRENGTH.getValue(player) * ItemAttributes.STR_MUL.get(stack);
+    }
 }

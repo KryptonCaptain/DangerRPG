@@ -5,14 +5,14 @@ import net.minecraft.item.ItemStack;
 
 public class IACurrExp extends IADynamic
 {
-	public IACurrExp(String name)
-	{
-		super(name);
-	}
-	
-	@Override
-	public void init(ItemStack stack) {}
-	
-	@Override
-	public void lvlUp(ItemStack stack) {}
+    public IACurrExp(String name)
+    {
+        super(name);
+    }
+    
+    @Override
+    public void init(ItemStack stack) {}
+    
+    @Override
+    public void lvlUp(ItemStack stack) {}
 }

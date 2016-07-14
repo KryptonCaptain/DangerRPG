@@ -11,27 +11,27 @@ import net.minecraft.world.World;
 
 public abstract class RPGThrowableWeapon extends RPGWeapon implements IUseItemExtra
 {
-	Class throwEntityClass;
-	
-	public RPGThrowableWeapon(ToolMaterial toolMaterial, RPGToolComponent toolComponent, String name)
-	{
-		super(toolMaterial, toolComponent, name);
-		setTextureName(DangerRPG.MODID + ":weapons/throwable/" + name);
-	}
-	
-	@Override
-	public ItemStack onItemUseExtra(ItemStack stack, World world, EntityPlayer player)
-	{
-		world.playSoundAtEntity(player, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 0.8F));
-		if (!world.isRemote) {
-			world.spawnEntityInWorld(getThrowEntity(world, player, stack));
-		}
-		
-		if (!player.capabilities.isCreativeMode) {
-			return null;
-		}
-		return stack;
-	}
-	
-	protected abstract EntityThrowLvlItem getThrowEntity(World world, EntityLivingBase entityliving, ItemStack itemstack);
+    Class throwEntityClass;
+    
+    public RPGThrowableWeapon(ToolMaterial toolMaterial, RPGToolComponent toolComponent, String name)
+    {
+        super(toolMaterial, toolComponent, name);
+        setTextureName(DangerRPG.MODID + ":weapons/throwable/" + name);
+    }
+    
+    @Override
+    public ItemStack onItemUseExtra(ItemStack stack, World world, EntityPlayer player)
+    {
+        world.playSoundAtEntity(player, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 0.8F));
+        if (!world.isRemote) {
+            world.spawnEntityInWorld(getThrowEntity(world, player, stack));
+        }
+        
+        if (!player.capabilities.isCreativeMode) {
+            return null;
+        }
+        return stack;
+    }
+    
+    protected abstract EntityThrowLvlItem getThrowEntity(World world, EntityLivingBase entityliving, ItemStack itemstack);
 }

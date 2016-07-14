@@ -7,22 +7,22 @@ import net.minecraft.block.Block;
 
 public class RPGBlocks
 {
-	public static ModifyTable modifyTable;
-	public static LvlupTable lvlupTable;
-	
-	public static void load()
-	{
-		registerBlock(modifyTable = new ModifyTable());
-		registerBlock(lvlupTable = new LvlupTable());
-	}
-	
-	private static void registerBlock(Block block)
-	{
-		GameRegistry.registerBlock(block, block.getUnlocalizedName());
-	}
-	
-	private static void addRecipes()
-	{
-		
-	}
+    public static ModifyTable modifyTable;
+    public static LvlupTable lvlupTable;
+    
+    public static void load()
+    {
+        registerBlock(modifyTable = new ModifyTable());
+        registerBlock(lvlupTable = new LvlupTable());
+    }
+    
+    private static void registerBlock(Block block)
+    {
+        GameRegistry.registerBlock(block, block.getUnlocalizedName());
+    }
+    
+    private static void addRecipes()
+    {
+        
+    }
 }

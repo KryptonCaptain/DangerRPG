@@ -12,7 +12,7 @@ public class RenderShadowBow extends RenderBow
     @Override
     public float specific(ItemRenderType type, ItemStack stack, EntityLivingBase entity)
     { 
-    	GL11.glScalef(1.1F, 1.1F, 1.1F);
+        GL11.glScalef(1.1F, 1.1F, 1.1F);
         return super.specific(type, stack, entity) / 1.7f;
     }
 }

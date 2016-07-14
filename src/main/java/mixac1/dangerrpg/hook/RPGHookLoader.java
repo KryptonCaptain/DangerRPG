@@ -5,15 +5,15 @@ import gloomyfolken.hooklib.minecraft.PrimaryClassTransformer;
 
 public class RPGHookLoader extends HookLoader
 {
-	@Override
-	public String[] getASMTransformerClass()
-	{
-	    return new String[] {PrimaryClassTransformer.class.getName()};
-	}
-	
     @Override
-	public void registerHooks()
+    public String[] getASMTransformerClass()
     {
-    	registerHookContainer("mixac1.dangerrpg.hook.RPGHooks");
+        return new String[] {PrimaryClassTransformer.class.getName()};
+    }
+    
+    @Override
+    public void registerHooks()
+    {
+        registerHookContainer("mixac1.dangerrpg.hook.RPGHooks");
     }
 }

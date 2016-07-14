@@ -47,82 +47,82 @@ public class RPGHooks
      * Hook to creating ItemStack
      * Add to stack lvlable and gemable parametres
      */
-	@Hook(injectOnExit = true, targetMethod = "<init>")
-	public static void ItemStack(ItemStack stack, Item item, int size, int metadata)
-	{	
-		if (LvlableItem.itemsAttrebutes.containsKey(item)) {
-			LvlableItem.createLvlableItem(stack);
-			GemableItem.createGemableItem(stack);
-		}
-	}
-	
-	@Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
-	public static boolean onLeftClickEntity(Item item, ItemStack stack, EntityPlayer player, Entity entity, @ReturnValue boolean returnValue)
-	{
-		return !returnValue && MinecraftForge.EVENT_BUS.post(new OnLeftClickEntityEvent(stack, player, entity));
-	}
-	
-	@Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
-	public static boolean hitEntity(ItemSword item, ItemStack stack, EntityLivingBase entity, EntityLivingBase attacker, @ReturnValue boolean returnValue)
-	{
-		return returnValue && MinecraftForge.EVENT_BUS.post(new HitEntityEvent(stack, entity, attacker));
-	}
-	
-	@SideOnly(Side.CLIENT)
-	@Hook
-    public static void addInformation(Item item, ItemStack stack, EntityPlayer player, List list, boolean par)
-	{
-		MinecraftForge.EVENT_BUS.post(new AddInformationEvent(stack, player, list, par));
-	}
-	
-	@Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
-	public static Multimap getAttributeModifiers(Item item, ItemStack stack, @ReturnValue Multimap returnValue)
+    @Hook(injectOnExit = true, targetMethod = "<init>")
+    public static void ItemStack(ItemStack stack, Item item, int size, int metadata)
+    {    
+        if (LvlableItem.itemsAttrebutes.containsKey(item)) {
+            LvlableItem.createLvlableItem(stack);
+            GemableItem.createGemableItem(stack);
+        }
+    }
+    
+    @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
+    public static boolean onLeftClickEntity(Item item, ItemStack stack, EntityPlayer player, Entity entity, @ReturnValue boolean returnValue)
     {
-		if (ItemAttributes.MELEE_DAMAGE.hasIt(stack)) {
-			returnValue.removeAll(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName());
-			returnValue.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF"), "Weapon modifier",
-					ItemAttributes.MELEE_DAMAGE.get(stack), 0));
-		}
-		MinecraftForge.EVENT_BUS.post(new GetAttributeModifiers(stack, returnValue));
+        return !returnValue && MinecraftForge.EVENT_BUS.post(new OnLeftClickEntityEvent(stack, player, entity));
+    }
+    
+    @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
+    public static boolean hitEntity(ItemSword item, ItemStack stack, EntityLivingBase entity, EntityLivingBase attacker, @ReturnValue boolean returnValue)
+    {
+        return returnValue && MinecraftForge.EVENT_BUS.post(new HitEntityEvent(stack, entity, attacker));
+    }
+    
+    @SideOnly(Side.CLIENT)
+    @Hook
+    public static void addInformation(Item item, ItemStack stack, EntityPlayer player, List list, boolean par)
+    {
+        MinecraftForge.EVENT_BUS.post(new AddInformationEvent(stack, player, list, par));
+    }
+    
+    @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
+    public static Multimap getAttributeModifiers(Item item, ItemStack stack, @ReturnValue Multimap returnValue)
+    {
+        if (ItemAttributes.MELEE_DAMAGE.hasIt(stack)) {
+            returnValue.removeAll(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName());
+            returnValue.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF"), "Weapon modifier",
+                    ItemAttributes.MELEE_DAMAGE.get(stack), 0));
+        }
+        MinecraftForge.EVENT_BUS.post(new GetAttributeModifiers(stack, returnValue));
         return returnValue;
     }
-	
-	@Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
-	public static int getItemEnchantability(Item item, ItemStack stack, @ReturnValue int returnValue)
-	{
-		if (ItemAttributes.ENCHANTABILITY.hasIt(stack)) {
-			return (int) ItemAttributes.ENCHANTABILITY.get(stack);
-		}
-		return returnValue;
-	}
-	
-	@Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
-	public static int getMaxDamage(ItemStack stack, @ReturnValue int returnValue)
-	{
-		if (returnValue > 0 && ItemAttributes.MAX_DURABILITY.hasIt(stack)) {
-			return (int) ItemAttributes.MAX_DURABILITY.get(stack);
-		}
-		return returnValue;
-	}
-	
-	/**
+    
+    @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
+    public static int getItemEnchantability(Item item, ItemStack stack, @ReturnValue int returnValue)
+    {
+        if (ItemAttributes.ENCHANTABILITY.hasIt(stack)) {
+            return (int) ItemAttributes.ENCHANTABILITY.get(stack);
+        }
+        return returnValue;
+    }
+    
+    @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
+    public static int getMaxDamage(ItemStack stack, @ReturnValue int returnValue)
+    {
+        if (returnValue > 0 && ItemAttributes.MAX_DURABILITY.hasIt(stack)) {
+            return (int) ItemAttributes.MAX_DURABILITY.get(stack);
+        }
+        return returnValue;
+    }
+    
+    /**
      * Hook for ItemArmor
      */
-	@Hook(returnCondition = ReturnCondition.ALWAYS)
-	public static float applyArmorCalculations(EntityLivingBase entity, DamageSource source, float damage)
+    @Hook(returnCondition = ReturnCondition.ALWAYS)
+    public static float applyArmorCalculations(EntityLivingBase entity, DamageSource source, float damage)
     {
         return RPGCommonHelper.applyArmorCalculations(entity, source, damage);
     }
-	
-	
-	/**
-	 * Hook for ItemBow
-	 */
-	@SideOnly(Side.CLIENT)
-	@Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
-	public static IIcon getItemIcon(EntityPlayer player, ItemStack stack, int par, @ReturnValue IIcon returnValue)
+    
+    
+    /**
+     * Hook for ItemBow
+     */
+    @SideOnly(Side.CLIENT)
+    @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
+    public static IIcon getItemIcon(EntityPlayer player, ItemStack stack, int par, @ReturnValue IIcon returnValue)
     {
-	    if (player.getItemInUse() != null && stack.getItemUseAction() == EnumAction.bow && ItemAttributes.SHOT_SPEED.hasIt(stack)) {
+        if (player.getItemInUse() != null && stack.getItemUseAction() == EnumAction.bow && ItemAttributes.SHOT_SPEED.hasIt(stack)) {
             int ticks = stack.getMaxItemUseDuration() - player.getItemInUseCount();
             float speed = ItemAttributes.SHOT_SPEED.get(stack, player);
             if (ticks >= speed) {
@@ -137,13 +137,13 @@ public class RPGHooks
         }
         return returnValue;
     }
-	
-	/**
+    
+    /**
      * Hook for ItemBow
      */
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
-	public static float getFOVMultiplier(EntityPlayerSP player)
+    public static float getFOVMultiplier(EntityPlayerSP player)
     {
         float f = 1.0F;
 
@@ -176,12 +176,12 @@ public class RPGHooks
 
         return ForgeHooksClient.getOffsetFOV(player, f);
     }
-	
-	/**
+    
+    /**
      * Hook for ItemBow
      */
-	@Hook(returnCondition = ReturnCondition.ALWAYS)
-	public static void onPlayerStoppedUsing(ItemBow bow, ItemStack stack, World world, EntityPlayer player, int par)
+    @Hook(returnCondition = ReturnCondition.ALWAYS)
+    public static void onPlayerStoppedUsing(ItemBow bow, ItemStack stack, World world, EntityPlayer player, int par)
     {
         int useDuration = bow.getMaxItemUseDuration(stack) - par;
         ArrowLooseEvent event = new ArrowLooseEvent(player, stack, useDuration);
@@ -193,13 +193,13 @@ public class RPGHooks
         
         ((ILvlableItemBow) (bow instanceof ILvlableItemBow ? bow : ILvlableItem.DEFAULT_BOW)).onStoppedUsing(stack, world, player, useDuration);
     }
-	
-	@Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS, targetMethod = "<init>")
-	public static void qweqwe(S12PacketEntityVelocity packet, int id, double motionX, double motionY, double motionZ)
-	{
-		ReflectionHelper.setPrivateValue(S12PacketEntityVelocity.class, packet, (int) (motionX * 8000.0D), "field_149415_b");
-		ReflectionHelper.setPrivateValue(S12PacketEntityVelocity.class, packet, (int) (motionY * 8000.0D), "field_149416_c");
-		ReflectionHelper.setPrivateValue(S12PacketEntityVelocity.class, packet, (int) (motionZ * 8000.0D), "field_149414_d");
-	}
+    
+    @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS, targetMethod = "<init>")
+    public static void qweqwe(S12PacketEntityVelocity packet, int id, double motionX, double motionY, double motionZ)
+    {
+        ReflectionHelper.setPrivateValue(S12PacketEntityVelocity.class, packet, (int) (motionX * 8000.0D), "field_149415_b");
+        ReflectionHelper.setPrivateValue(S12PacketEntityVelocity.class, packet, (int) (motionY * 8000.0D), "field_149416_c");
+        ReflectionHelper.setPrivateValue(S12PacketEntityVelocity.class, packet, (int) (motionZ * 8000.0D), "field_149414_d");
+    }
 }
 

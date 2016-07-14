@@ -10,21 +10,21 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class RPGEvents
 {
-	public static void load()
-	{
-		registerEvent(new CommonEventHandlers());
-		registerEvent(new LvlableItemEventHandlers());
-	}
-	
-	@SideOnly(Side.CLIENT)
-	public static void loadClient()
-	{
-		registerEvent(new ClientEventHandlers());
-	}
-	
-	public static void registerEvent(Object obj)
-	{
-		FMLCommonHandler.instance().bus().register(obj);
-		MinecraftForge.EVENT_BUS.register(obj);
-	}
+    public static void load()
+    {
+        registerEvent(new CommonEventHandlers());
+        registerEvent(new LvlableItemEventHandlers());
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public static void loadClient()
+    {
+        registerEvent(new ClientEventHandlers());
+    }
+    
+    public static void registerEvent(Object obj)
+    {
+        FMLCommonHandler.instance().bus().register(obj);
+        MinecraftForge.EVENT_BUS.register(obj);
+    }
 }

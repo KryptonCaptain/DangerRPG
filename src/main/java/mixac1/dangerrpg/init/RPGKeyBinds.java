@@ -9,14 +9,14 @@ import net.minecraft.client.settings.KeyBinding;
 
 public class RPGKeyBinds
 {
-	public static KeyBinding specialItemKey = new KeyBinding(Translator.trans("rpgstr.key.special_use"), Keyboard.KEY_F, DangerRPG.MODNAME);
-	public static KeyBinding extraItemKey = new KeyBinding(Translator.trans("rpgstr.key.extra_use"), Keyboard.KEY_C, DangerRPG.MODNAME);
-	public static KeyBinding infoBookKey = new KeyBinding(Translator.trans("rpgstr.key.info_book"), Keyboard.KEY_I, DangerRPG.MODNAME);
-	
-	public static void load()
-	{
-		ClientRegistry.registerKeyBinding(specialItemKey);
-		ClientRegistry.registerKeyBinding(extraItemKey);
-		ClientRegistry.registerKeyBinding(infoBookKey);
-	}
+    public static KeyBinding specialItemKey = new KeyBinding(Translator.trans("rpgstr.key.special_use"), Keyboard.KEY_F, DangerRPG.MODNAME);
+    public static KeyBinding extraItemKey = new KeyBinding(Translator.trans("rpgstr.key.extra_use"), Keyboard.KEY_C, DangerRPG.MODNAME);
+    public static KeyBinding infoBookKey = new KeyBinding(Translator.trans("rpgstr.key.info_book"), Keyboard.KEY_I, DangerRPG.MODNAME);
+    
+    public static void load()
+    {
+        ClientRegistry.registerKeyBinding(specialItemKey);
+        ClientRegistry.registerKeyBinding(extraItemKey);
+        ClientRegistry.registerKeyBinding(infoBookKey);
+    }
 }

@@ -13,9 +13,9 @@ import net.minecraft.util.ResourceLocation;
 public class RenderArrowRPG extends Render
 {
     public static final RenderArrowRPG INSTANCE = new RenderArrowRPG();
-    
+
     private static final ResourceLocation TEXTURE = new ResourceLocation("textures/entity/arrow.png");
-    
+
     @Override
     protected ResourceLocation getEntityTexture(Entity entity)
     {
@@ -27,14 +27,14 @@ public class RenderArrowRPG extends Render
     {
         if (entity instanceof EntityArrowRPG) {
             EntityArrowRPG entityArrow = (EntityArrowRPG) entity;
-            
+
             bindEntityTexture(entityArrow);
             GL11.glPushMatrix();
             GL11.glTranslatef((float)x, (float)y, (float)z);
             GL11.glRotatef(entityArrow.prevRotationYaw + (entityArrow.rotationYaw - entityArrow.prevRotationYaw) * pitch - 90.0F, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(entityArrow.prevRotationPitch + (entityArrow.rotationPitch - entityArrow.prevRotationPitch) * pitch, 0.0F, 0.0F, 1.0F);
             Tessellator tess = Tessellator.instance;
-            
+
             byte b0 = 0;
             float f2 = 0.0F;
             float f3 = 0.5F;
@@ -48,8 +48,7 @@ public class RenderArrowRPG extends Render
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             float f11 = entityArrow.untouch - pitch;
 
-            if (f11 > 0.0F)
-            {
+            if (f11 > 0.0F) {
                 float f12 = -MathHelper.sin(f11 * 3.0F) * f11;
                 GL11.glRotatef(f12, 0.0F, 0.0F, 1.0F);
             }

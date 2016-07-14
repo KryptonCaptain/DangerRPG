@@ -34,12 +34,12 @@ public class MsgReqUpPA implements IMessage {
     
     public static class Handler implements IMessageHandler<MsgReqUpPA, IMessage>
     {
-    	@Override
-    	public IMessage onMessage(MsgReqUpPA message, MessageContext ctx)
-    	{
-    		EntityPlayer player = DangerRPG.proxy.getPlayerFromMessageCtx(ctx);
-    		PlayerData.get(player).playerAttributes.get(message.index).tryUp(player);
+        @Override
+        public IMessage onMessage(MsgReqUpPA message, MessageContext ctx)
+        {
+            EntityPlayer player = DangerRPG.proxy.getPlayerFromMessageCtx(ctx);
+            PlayerData.get(player).playerAttributes.get(message.index).tryUp(player);
             return null;
-    	}
+        }
     }
 }

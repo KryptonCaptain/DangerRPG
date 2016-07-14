@@ -6,5 +6,5 @@ import net.minecraft.world.World;
 
 public interface IUseItemExtra
 {
-	public ItemStack onItemUseExtra(ItemStack stack, World world, EntityPlayer player);
+    public ItemStack onItemUseExtra(ItemStack stack, World world, EntityPlayer player);
 }

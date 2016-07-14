@@ -6,20 +6,20 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class PASpeedCounter extends PlayerAttribute
 {
-	public PASpeedCounter(String name)
-	{
-		super(name);
-	}
-	
-	@Override
-	public void setValue(float value, EntityPlayer player)
-	{
-		if (isValid(value)) {
-		    PlayerData.get(player).attributeMap.get(hash).value = value;
-			apply(player);
-			if (value == 0) {
-				sync(player);
-			}
-		}
-	}
+    public PASpeedCounter(String name)
+    {
+        super(name);
+    }
+    
+    @Override
+    public void setValue(float value, EntityPlayer player)
+    {
+        if (isValid(value)) {
+            PlayerData.get(player).attributeMap.get(hash).value = value;
+            apply(player);
+            if (value == 0) {
+                sync(player);
+            }
+        }
+    }
 }

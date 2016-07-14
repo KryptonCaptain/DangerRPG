@@ -6,12 +6,12 @@ import net.minecraft.world.World;
 
 public class EntityThrowKnife extends EntityThrowLvlItem
 {
-	public EntityThrowKnife(World world)
+    public EntityThrowKnife(World world)
     {
         super(world);
     }
-	
-	public EntityThrowKnife(World world, ItemStack stack)
+    
+    public EntityThrowKnife(World world, ItemStack stack)
     {
         super(world, stack);
     }
@@ -28,18 +28,18 @@ public class EntityThrowKnife extends EntityThrowLvlItem
 
     public EntityThrowKnife(World world, EntityLivingBase thrower, EntityLivingBase target, ItemStack stack, float speed, float deviation)
     {
-    	super(world, thrower, target, stack, speed, deviation);
+        super(world, thrower, target, stack, speed, deviation);
     }
     
     @Override
-	public float getRotationOnPitch()
+    public float getRotationOnPitch()
     {
-    	return -60.0F;
+        return -60.0F;
     }
     
     @Override
-	public boolean needAimRotation()
-	{
-		return !canRotation();
-	}
+    public boolean needAimRotation()
+    {
+        return !canRotation();
+    }
 }

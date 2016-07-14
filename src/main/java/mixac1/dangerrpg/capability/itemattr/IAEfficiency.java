@@ -7,14 +7,14 @@ import net.minecraft.item.ItemStack;
 
 public class IAEfficiency extends IADynamic
 {
-	public IAEfficiency(String name)
-	{
-		super(name);
-	}
-	
-	@Override
-	public float get(ItemStack stack, EntityPlayer player)
-	{
-		return get(stack) + PlayerAttributes.EFFICIENCY.getValue(player);
-	}
+    public IAEfficiency(String name)
+    {
+        super(name);
+    }
+    
+    @Override
+    public float get(ItemStack stack, EntityPlayer player)
+    {
+        return get(stack) + PlayerAttributes.EFFICIENCY.getValue(player);
+    }
 }

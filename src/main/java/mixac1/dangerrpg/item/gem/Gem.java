@@ -13,27 +13,27 @@ import net.minecraft.item.ItemStack;
 
 public abstract class Gem extends Item implements IHasBooksInfo
 {
-	public Gem(String name)
-	{
-		super();
-		this.setTextureName(DangerRPG.MODID + ":gems/" + name);
-		this.setUnlocalizedName(name);
-		this.setMaxStackSize(1);
-		this.setCreativeTab(RPGOther.tabDangerRPG);
-	}
-	
-	@SideOnly(Side.CLIENT)
-	public String getInformationToInfoBook(ItemStack item, EntityPlayer player, ItemStack gem)
-	{
-		return Translator.trans("rpgstr.type").concat(": ").concat(getGemType().getDispayName()).concat("\n\n");
-	}
-	
-	public abstract GemType getGemType();
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public String getInformationToInfoBook(ItemStack item, EntityPlayer player)
-	{
-		return getInformationToInfoBook(item, player, null);
-	}
+    public Gem(String name)
+    {
+        super();
+        this.setTextureName(DangerRPG.MODID + ":gems/" + name);
+        this.setUnlocalizedName(name);
+        this.setMaxStackSize(1);
+        this.setCreativeTab(RPGOther.tabDangerRPG);
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public String getInformationToInfoBook(ItemStack item, EntityPlayer player, ItemStack gem)
+    {
+        return Translator.trans("rpgstr.type").concat(": ").concat(getGemType().getDispayName()).concat("\n\n");
+    }
+    
+    public abstract GemType getGemType();
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public String getInformationToInfoBook(ItemStack item, EntityPlayer player)
+    {
+        return getInformationToInfoBook(item, player, null);
+    }
 }

@@ -18,95 +18,95 @@ import net.minecraft.world.World;
 
 public class ContainerLvlupTable extends Container
 {
-	private World worldPointer;
-	private int posX;
-	private int posY;
-	private int posZ;
-	private boolean firstUse = true;
-	public int expToUp;
-	
-	public IInventory tableInventory = new InventoryBasic("Lvlup", true, 1)
+    private World worldPointer;
+    private int posX;
+    private int posY;
+    private int posZ;
+    private boolean firstUse = true;
+    public int expToUp;
+    
+    public IInventory tableInventory = new InventoryBasic("Lvlup", true, 1)
     {
         @Override
-		public int getInventoryStackLimit()
+        public int getInventoryStackLimit()
         {
             return 1;
         }
         
         @Override
-		public void markDirty()
+        public void markDirty()
         {
             super.markDirty();
             ContainerLvlupTable.this.onCraftMatrixChanged(this);
         }
         
         @Override
-		public boolean isItemValidForSlot(int index, ItemStack stack)
+        public boolean isItemValidForSlot(int index, ItemStack stack)
         {
-        	return LvlableItem.isLvlable(stack);
+            return LvlableItem.isLvlable(stack);
         }
     };
-	
-	public ContainerLvlupTable(IInventory playerv, World world, int x, int y, int z)
-	{
-		worldPointer = world;
-		posX = x;
-		posY = y;
-		posZ = z;
-		
-		addSlotToContainer(new Slot(tableInventory, 0, 34, 63)
-		{
+    
+    public ContainerLvlupTable(IInventory playerv, World world, int x, int y, int z)
+    {
+        worldPointer = world;
+        posX = x;
+        posY = y;
+        posZ = z;
+        
+        addSlotToContainer(new Slot(tableInventory, 0, 34, 63)
+        {
             @Override
-			public boolean isItemValid(ItemStack stack)
+            public boolean isItemValid(ItemStack stack)
             {
                 return inventory.isItemValidForSlot(slotNumber, stack);
             }
         });
-		
-		// Player inventory: 1 - 27
-		for (int i = 0; i < 3; ++i) {
-			for (int j = 0; j < 9; ++j) {
-				addSlotToContainer(new Slot(playerv, j + i * 9 + 9, 8 + j * 18, 92 + i * 18));
-			}
-		}
-	
-		// Player Inventory, Slot 28 - 36
-		for (int i = 0; i < 9; ++i) {
-			addSlotToContainer(new Slot(playerv, i, 8 + i * 18, 150));
-		}
-		
-		// Player armor's slots: 37 - 40
-		for (int i = 0; i < 4; ++i) {
-			final int k = i;
-			addSlotToContainer(new Slot(playerv, playerv.getSizeInventory() - 1 - i, 8, 9 + i * 18)
-			{
-				@Override
-				public int getSlotStackLimit()
+        
+        // Player inventory: 1 - 27
+        for (int i = 0; i < 3; ++i) {
+            for (int j = 0; j < 9; ++j) {
+                addSlotToContainer(new Slot(playerv, j + i * 9 + 9, 8 + j * 18, 92 + i * 18));
+            }
+        }
+    
+        // Player Inventory, Slot 28 - 36
+        for (int i = 0; i < 9; ++i) {
+            addSlotToContainer(new Slot(playerv, i, 8 + i * 18, 150));
+        }
+        
+        // Player armor's slots: 37 - 40
+        for (int i = 0; i < 4; ++i) {
+            final int k = i;
+            addSlotToContainer(new Slot(playerv, playerv.getSizeInventory() - 1 - i, 8, 9 + i * 18)
+            {
+                @Override
+                public int getSlotStackLimit()
                 {
                     return 1;
                 }
    
                 @Override
-				public boolean isItemValid(ItemStack stack)
+                public boolean isItemValid(ItemStack stack)
                 {
                     if (stack == null) {
-                    	return false;
+                        return false;
                     }
                     return stack.getItem().isValidArmor(stack, k, null);
                 }
-			});
-		}
-	}
-	
-	@Override
-	public void addCraftingToCrafters(ICrafting craft)
+            });
+        }
+    }
+    
+    @Override
+    public void addCraftingToCrafters(ICrafting craft)
     {
         super.addCraftingToCrafters(craft);
         craft.sendProgressBarUpdate(this, 0, expToUp);
     }
 
     @Override
-	public void detectAndSendChanges()
+    public void detectAndSendChanges()
     {
         super.detectAndSendChanges();
 
@@ -117,31 +117,31 @@ public class ContainerLvlupTable extends Container
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public void updateProgressBar(int par1, int par2)
     {
         if (par1 == 0) {
-        	expToUp = par2;
+            expToUp = par2;
         }
         else {
             super.updateProgressBar(par1, par2);
         }
     }
-	
-	@Override
-	public boolean canInteractWith(EntityPlayer player)
-	{
-		if (firstUse) {
-			RPGCommonHelper.rebuildPlayerExp(player);
-    		firstUse = false;
-		}
-		return player.getDistance(posX + 0.5D, posY + 0.5D, posZ + 0.5D) <= 64.0D;
-	}
-	
-	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int fromSlot)
-	{
-		ItemStack stack = null;
+    
+    @Override
+    public boolean canInteractWith(EntityPlayer player)
+    {
+        if (firstUse) {
+            RPGCommonHelper.rebuildPlayerExp(player);
+            firstUse = false;
+        }
+        return player.getDistance(posX + 0.5D, posY + 0.5D, posZ + 0.5D) <= 64.0D;
+    }
+    
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer player, int fromSlot)
+    {
+        ItemStack stack = null;
         Slot slot = (Slot)inventorySlots.get(fromSlot);
 
         if (slot != null && slot.getHasStack()) {
@@ -149,7 +149,7 @@ public class ContainerLvlupTable extends Container
             stack = stack1.copy();
      
             if (LvlableItem.isLvlable(stack) && !((Slot)inventorySlots.get(0)).getHasStack()) {
-            	if (!mergeItemStack(stack1, 0, 1, false)) {
+                if (!mergeItemStack(stack1, 0, 1, false)) {
                     return null;
                 }
             } 
@@ -160,22 +160,22 @@ public class ContainerLvlupTable extends Container
                 }
             }   
             else if (fromSlot >= 1 && fromSlot < 28) {
-            	if (!mergeItemStack(stack1, 28, 37, false)) {
+                if (!mergeItemStack(stack1, 28, 37, false)) {
                     return null;
                 }
             }
             else if (fromSlot >= 28 && fromSlot < 37) {
-            	if (!mergeItemStack(stack1, 1, 29, false)) {
+                if (!mergeItemStack(stack1, 1, 29, false)) {
                     return null;
                 }
             }
             else if (fromSlot >= 37 && fromSlot < 41) {
-            	if (!mergeItemStack(stack1, 1, 37, false)) {
+                if (!mergeItemStack(stack1, 1, 37, false)) {
                     return null;
                 }
             }
             else if (fromSlot == 0) {
-            	if (!mergeItemStack(stack1, 1, 37, false)) {
+                if (!mergeItemStack(stack1, 1, 37, false)) {
                     return null;
                 }
             }
@@ -196,10 +196,10 @@ public class ContainerLvlupTable extends Container
             slot.onPickupFromSlot(player, stack1);
         }
         return stack;
-	}
-	
-	@Override
-	public void onContainerClosed(EntityPlayer player)
+    }
+    
+    @Override
+    public void onContainerClosed(EntityPlayer player)
     {
         super.onContainerClosed(player);
 
@@ -207,75 +207,75 @@ public class ContainerLvlupTable extends Container
             ItemStack stack = tableInventory.getStackInSlotOnClosing(0);
 
             if (stack != null) {
-            	player.dropPlayerItemWithRandomChoice(stack, false);
+                player.dropPlayerItemWithRandomChoice(stack, false);
             }
         }
     }
-	
-	@Override
-	public void onCraftMatrixChanged(IInventory inventory)
+    
+    @Override
+    public void onCraftMatrixChanged(IInventory inventory)
     {
         if (inventory == tableInventory) {
             ItemStack stack = inventory.getStackInSlot(0);
             if (stack != null && LvlableItem.isLvlable(stack)) {
                 if (!worldPointer.isRemote) {
-                	int currExp = (int) ItemAttributes.CURR_EXP.get(stack);
-                	int maxExp  = (int) ItemAttributes.MAX_EXP.get(stack);
-            		expToUp = (maxExp - currExp);
-            		detectAndSendChanges();
+                    int currExp = (int) ItemAttributes.CURR_EXP.get(stack);
+                    int maxExp  = (int) ItemAttributes.MAX_EXP.get(stack);
+                    expToUp = (maxExp - currExp);
+                    detectAndSendChanges();
                 }
             }
             else {
-            	expToUp = -1;
+                expToUp = -1;
             }
         }
     }
-	
-	@Override
-	public boolean enchantItem(EntityPlayer player, int flag)
+    
+    @Override
+    public boolean enchantItem(EntityPlayer player, int flag)
     {
         ItemStack stack = tableInventory.getStackInSlot(0);
         if (stack != null) {
-	        if (flag == 0) {
-	        	if (player.capabilities.isCreativeMode) {
-	        		if (!worldPointer.isRemote) {
-	        			LvlableItem.addExp(stack, expToUp);
-	        			onCraftMatrixChanged(tableInventory);
-	        		}
-	        		return true;
-	        	}
-	        	else if (RPGConfig.itemCanUpInTable && expToUp <= player.experienceTotal) {
-	        		if (!worldPointer.isRemote) {
-	        			LvlableItem.addExp(stack, expToUp);
-	        			player.addExperience(-expToUp);
-	        			RPGCommonHelper.rebuildPlayerLvl(player);
-	        			onCraftMatrixChanged(tableInventory);
-	        		}
-	        		return true;
-	        	}
-	        	
-	        }
-	        else {
-	        	if (RPGConfig.itemCanUpInTable && player.experienceTotal > 0) {
-	        		if (!worldPointer.isRemote) {
-	        			while (player.experienceTotal > 0 && ItemAttributes.LEVEL.get(stack) < RPGConfig.itemMaxLevel) {
-	        				float temp = ItemAttributes.MAX_EXP.get(stack) - ItemAttributes.CURR_EXP.get(stack);
-	        				int needToUp = (int) ((temp > (int) temp) ? temp + 1 : temp);
-	        				if (player.experienceTotal > needToUp) {
-	        					LvlableItem.addExp(stack, needToUp);
-	        					player.experienceTotal -= needToUp;
-	        				}
-	        				else {
-	        					LvlableItem.addExp(stack, player.experienceTotal);
-	        					player.experienceTotal = 0;
-	        				}
-	        			}
-	        			RPGCommonHelper.rebuildPlayerLvl(player);
-	        			onCraftMatrixChanged(tableInventory);
-	        		}
-	        		return true;
-	        	}
-	        }
+            if (flag == 0) {
+                if (player.capabilities.isCreativeMode) {
+                    if (!worldPointer.isRemote) {
+                        LvlableItem.addExp(stack, expToUp);
+                        onCraftMatrixChanged(tableInventory);
+                    }
+                    return true;
+                }
+                else if (RPGConfig.itemCanUpInTable && expToUp <= player.experienceTotal) {
+                    if (!worldPointer.isRemote) {
+                        LvlableItem.addExp(stack, expToUp);
+                        player.addExperience(-expToUp);
+                        RPGCommonHelper.rebuildPlayerLvl(player);
+                        onCraftMatrixChanged(tableInventory);
+                    }
+                    return true;
+                }
+                
+            }
+            else {
+                if (RPGConfig.itemCanUpInTable && player.experienceTotal > 0) {
+                    if (!worldPointer.isRemote) {
+                        while (player.experienceTotal > 0 && ItemAttributes.LEVEL.get(stack) < RPGConfig.itemMaxLevel) {
+                            float temp = ItemAttributes.MAX_EXP.get(stack) - ItemAttributes.CURR_EXP.get(stack);
+                            int needToUp = (int) ((temp > (int) temp) ? temp + 1 : temp);
+                            if (player.experienceTotal > needToUp) {
+                                LvlableItem.addExp(stack, needToUp);
+                                player.experienceTotal -= needToUp;
+                            }
+                            else {
+                                LvlableItem.addExp(stack, player.experienceTotal);
+                                player.experienceTotal = 0;
+                            }
+                        }
+                        RPGCommonHelper.rebuildPlayerLvl(player);
+                        onCraftMatrixChanged(tableInventory);
+                    }
+                    return true;
+                }
+            }
         }
         return false;
     }

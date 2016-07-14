@@ -18,36 +18,36 @@ import net.minecraft.item.ItemStack;
 
 public class RPGHoe extends ItemHoe implements ILvlableItemTool, IHasBooksInfo
 {
-	public RPGHoe(ToolMaterial toolMaterial, String name)
-	{
-		super(toolMaterial);
-		setUnlocalizedName(name);
-		setTextureName(DangerRPG.MODID + ":tools/" + name);
-		setCreativeTab(RPGOther.tabDangerRPG);
-		setMaxStackSize(1);
-	}
-	
-	@Override
-	public String getInformationToInfoBook(ItemStack item, EntityPlayer player)
-	{
-		return Translator.trans("rpgstr.no_info_yet");
-	}
-	
-	@Override
-	public RPGToolComponent getToolComponent(Item item)
-	{
-		return RPGToolComponent.HOE;
-	}
+    public RPGHoe(ToolMaterial toolMaterial, String name)
+    {
+        super(toolMaterial);
+        setUnlocalizedName(name);
+        setTextureName(DangerRPG.MODID + ":tools/" + name);
+        setCreativeTab(RPGOther.tabDangerRPG);
+        setMaxStackSize(1);
+    }
+    
+    @Override
+    public String getInformationToInfoBook(ItemStack item, EntityPlayer player)
+    {
+        return Translator.trans("rpgstr.no_info_yet");
+    }
+    
+    @Override
+    public RPGToolComponent getToolComponent(Item item)
+    {
+        return RPGToolComponent.HOE;
+    }
 
-	@Override
-	public ToolMaterial getToolMaterial(Item item)
-	{
-		return theToolMaterial;
-	}
+    @Override
+    public ToolMaterial getToolMaterial(Item item)
+    {
+        return theToolMaterial;
+    }
 
-	@Override
-	public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map)
-	{
-		LvlableItem.registerParamsItemTool(item, map);
-	}
+    @Override
+    public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map)
+    {
+        LvlableItem.registerParamsItemTool(item, map);
+    }
 }

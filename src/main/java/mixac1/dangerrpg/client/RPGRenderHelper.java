@@ -15,7 +15,7 @@ import net.minecraft.util.ResourceLocation;
 @SideOnly(Side.CLIENT)
 public class RPGRenderHelper
 {
-    public static Minecraft              mc                = FMLClientHandler.instance().getClient();
+    public static Minecraft mc = FMLClientHandler.instance().getClient();
 
     public static final ResourceLocation ENCHANTMENT_GLINT = new ResourceLocation("minecraft",
             "textures/misc/enchanted_item_glint.png");

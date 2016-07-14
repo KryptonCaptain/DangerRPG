@@ -5,15 +5,15 @@ import net.minecraft.item.ItemStack;
 
 public class IAReach extends IAStatic
 {
-	private final int defaultValue = 4; 
-	
-	public IAReach(String name) {
-		super(name);
-	}
-	
-	@Override
-	public float get(ItemStack stack)
-	{
-		return super.get(stack) + defaultValue;
-	}
+    private final int defaultValue = 4; 
+    
+    public IAReach(String name) {
+        super(name);
+    }
+    
+    @Override
+    public float get(ItemStack stack)
+    {
+        return super.get(stack) + defaultValue;
+    }
 }

@@ -11,25 +11,25 @@ import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Property;
 
 public class RPGCapability
-{	
-	public static void load()
-	{
-		List<String> itemNames = new ArrayList<String>();
-		Iterator iterator = GameData.getItemRegistry().iterator();
-		while(iterator.hasNext()) {
-		    Item item = (Item)iterator.next();
-		    if (LvlableItem.registerLvlableItem(item)) {
-		    	itemNames.add(item.getUnlocalizedName());
-		    }
-		}
-		
-		if (RPGConfig.itemAllItemsLvlable) {
-			ConfigCategory cat = RPGConfig.config.getCategory("Supported Lvl items");
-			cat.clear();
-			Property prop = RPGConfig.config.get(cat.getName(), "itemSupportedLvlItems", itemNames.toArray(new String[itemNames.size()]));
-			if (RPGConfig.config.hasChanged()) {
-				RPGConfig.config.save();
-			}
-		}
-	}
+{    
+    public static void load()
+    {
+        List<String> itemNames = new ArrayList<String>();
+        Iterator iterator = GameData.getItemRegistry().iterator();
+        while(iterator.hasNext()) {
+            Item item = (Item)iterator.next();
+            if (LvlableItem.registerLvlableItem(item)) {
+                itemNames.add(item.getUnlocalizedName());
+            }
+        }
+        
+        if (RPGConfig.itemAllItemsLvlable) {
+            ConfigCategory cat = RPGConfig.config.getCategory("Supported Lvl items");
+            cat.clear();
+            Property prop = RPGConfig.config.get(cat.getName(), "itemSupportedLvlItems", itemNames.toArray(new String[itemNames.size()]));
+            if (RPGConfig.config.hasChanged()) {
+                RPGConfig.config.save();
+            }
+        }
+    }
 }

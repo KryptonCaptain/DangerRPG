@@ -13,33 +13,33 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class ClientProxy extends CommonProxy
 {
-	@Override
-	public void preInit(FMLPreInitializationEvent e)
-	{
-		super.preInit(e);
-		
-		RPGKeyBinds.load();
-	}
-	
-	@Override
-	public void init(FMLInitializationEvent e)
-	{
-		super.init(e);
-		
-		RPGRenderers.load();
-		
-		RPGEvents.loadClient();
-	}
-	
-	@Override
-	public void postInit(FMLPostInitializationEvent e)
-	{
-		super.postInit(e);
-	}
-	
-	@Override
-	public EntityPlayer getPlayerFromMessageCtx(MessageContext ctx)
-	{
-		return (ctx.side == Side.CLIENT) ? FMLClientHandler.instance().getClient().thePlayer : ctx.getServerHandler().playerEntity;
-	}
+    @Override
+    public void preInit(FMLPreInitializationEvent e)
+    {
+        super.preInit(e);
+        
+        RPGKeyBinds.load();
+    }
+    
+    @Override
+    public void init(FMLInitializationEvent e)
+    {
+        super.init(e);
+        
+        RPGRenderers.load();
+        
+        RPGEvents.loadClient();
+    }
+    
+    @Override
+    public void postInit(FMLPostInitializationEvent e)
+    {
+        super.postInit(e);
+    }
+    
+    @Override
+    public EntityPlayer getPlayerFromMessageCtx(MessageContext ctx)
+    {
+        return (ctx.side == Side.CLIENT) ? FMLClientHandler.instance().getClient().thePlayer : ctx.getServerHandler().playerEntity;
+    }
 }

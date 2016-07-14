@@ -16,33 +16,33 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class CommonProxy
 {
-	public void preInit(FMLPreInitializationEvent e)
-	{
-		RPGConfig.load(e);
-		
-		RPGNetwork.load();
-		
-		RPGItems.load();
-		
-		RPGBlocks.load();
-	}
-	
-	public void init(FMLInitializationEvent e)
-	{
-		RPGEntities.load();
-		
-		RPGGuiHandlers.load();
-		
-		RPGEvents.load();
-	}
-	
-	public void postInit(FMLPostInitializationEvent e)
-	{
-		RPGCapability.load();
-	}
-	
-	public EntityPlayer getPlayerFromMessageCtx(MessageContext ctx)
-	{
-		return ctx.getServerHandler().playerEntity;
-	}
+    public void preInit(FMLPreInitializationEvent e)
+    {
+        RPGConfig.load(e);
+        
+        RPGNetwork.load();
+        
+        RPGItems.load();
+        
+        RPGBlocks.load();
+    }
+    
+    public void init(FMLInitializationEvent e)
+    {
+        RPGEntities.load();
+        
+        RPGGuiHandlers.load();
+        
+        RPGEvents.load();
+    }
+    
+    public void postInit(FMLPostInitializationEvent e)
+    {
+        RPGCapability.load();
+    }
+    
+    public EntityPlayer getPlayerFromMessageCtx(MessageContext ctx)
+    {
+        return ctx.getServerHandler().playerEntity;
+    }
 }

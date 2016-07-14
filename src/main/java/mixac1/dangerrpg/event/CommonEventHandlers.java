@@ -10,30 +10,30 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 
 public class CommonEventHandlers
 {
-	@SubscribeEvent
-	public void onEntityConstructing(EntityConstructing e)
-	{
-	    if (e.entity instanceof EntityPlayer) {
-	        PlayerData.register((EntityPlayer) e.entity);
-	    }
-	}
+    @SubscribeEvent
+    public void onEntityConstructing(EntityConstructing e)
+    {
+        if (e.entity instanceof EntityPlayer) {
+            PlayerData.register((EntityPlayer) e.entity);
+        }
+    }
 
-	@SubscribeEvent
-	public void onEntityJoinWorld(EntityJoinWorldEvent e)
-	{
-	    if (e.entity instanceof EntityPlayer) {
-	        PlayerData.get((EntityPlayer) e.entity).requestSyncAll();;
-	    }
-	}
-	
-	@SubscribeEvent
-	public void onPlayerCloned(PlayerEvent.Clone e)
-	{
-	    if (e.wasDeath) {
-	        PlayerData.get(e.original).rebuildOnDeath();
-	    }
-	    NBTTagCompound nbt = new NBTTagCompound();
-	    PlayerData.get(e.original).saveNBTData(nbt);
-	    PlayerData.get(e.entityPlayer).loadNBTData(nbt);
-	}
+    @SubscribeEvent
+    public void onEntityJoinWorld(EntityJoinWorldEvent e)
+    {
+        if (e.entity instanceof EntityPlayer) {
+            PlayerData.get((EntityPlayer) e.entity).requestSyncAll();;
+        }
+    }
+    
+    @SubscribeEvent
+    public void onPlayerCloned(PlayerEvent.Clone e)
+    {
+        if (e.wasDeath) {
+            PlayerData.get(e.original).rebuildOnDeath();
+        }
+        NBTTagCompound nbt = new NBTTagCompound();
+        PlayerData.get(e.original).saveNBTData(nbt);
+        PlayerData.get(e.entityPlayer).loadNBTData(nbt);
+    }
 }

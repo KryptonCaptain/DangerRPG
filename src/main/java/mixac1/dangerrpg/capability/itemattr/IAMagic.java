@@ -7,14 +7,14 @@ import net.minecraft.item.ItemStack;
 
 public class IAMagic extends IAStatic
 {
-	public IAMagic(String name)
-	{
-		super(name);
-	}
-	
-	@Override
-	public float get(ItemStack stack, EntityPlayer player)
-	{
-		return get(stack) + PlayerAttributes.INTELLIGENCE.getValue(player) * ItemAttributes.INT_MUL.get(stack);
-	}
+    public IAMagic(String name)
+    {
+        super(name);
+    }
+    
+    @Override
+    public float get(ItemStack stack, EntityPlayer player)
+    {
+        return get(stack) + PlayerAttributes.INTELLIGENCE.getValue(player) * ItemAttributes.INT_MUL.get(stack);
+    }
 }

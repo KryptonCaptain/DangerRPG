@@ -6,10 +6,10 @@ import net.minecraft.item.Item;
 
 public class RPGOther
 {
-	public static CreativeTabs tabDangerRPG = (new CreativeTabs("tabDangerRPG") {
-		@Override
-		public Item getTabIconItem() {
-			return Items.arrow;
-		}
-	});;
+    public static CreativeTabs tabDangerRPG = (new CreativeTabs("tabDangerRPG") {
+        @Override
+        public Item getTabIconItem() {
+            return Items.arrow;
+        }
+    });;
 }

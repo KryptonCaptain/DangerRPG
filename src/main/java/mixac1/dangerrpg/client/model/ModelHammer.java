@@ -10,25 +10,21 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
-/**
- * NewProject - Undefined
- * Created using Tabula 4.1.1
- */
 @SideOnly(Side.CLIENT)
 public class ModelHammer extends ModelBase
 {
-	public static final ModelHammer INSTANCE = new ModelHammer();
-	
-	public static final HashMap<String, ResourceLocation> TEXTURES = new HashMap<String, ResourceLocation>();
-	static {
-		TEXTURES.put(RPGItems.hammerIron.getUnlocalizedName(),        new ResourceLocation("DangerRPG:textures/models/items/hammer_iron.png"));
-		TEXTURES.put(RPGItems.hammerGold.getUnlocalizedName(),        new ResourceLocation("DangerRPG:textures/models/items/hammer_gold.png"));
-		TEXTURES.put(RPGItems.hammerDiamond.getUnlocalizedName(),     new ResourceLocation("DangerRPG:textures/models/items/hammer_diamond.png"));
-		TEXTURES.put(RPGItems.hammerObsidian.getUnlocalizedName(),    new ResourceLocation("DangerRPG:textures/models/items/hammer_obsidian.png"));
-		TEXTURES.put(RPGItems.hammerBedrock.getUnlocalizedName(),     new ResourceLocation("DangerRPG:textures/models/items/hammer_bedrock.png"));
-		TEXTURES.put(RPGItems.hammerBlackMatter.getUnlocalizedName(), new ResourceLocation("DangerRPG:textures/models/items/hammer_black_matter.png"));
-		TEXTURES.put(RPGItems.hammerWhiteMatter.getUnlocalizedName(), new ResourceLocation("DangerRPG:textures/models/items/hammer_white_matter.png"));
-	}
+    public static final ModelHammer INSTANCE = new ModelHammer();
+
+    public static final HashMap<String, ResourceLocation> TEXTURES = new HashMap<String, ResourceLocation>();
+    static {
+        TEXTURES.put(RPGItems.hammerIron.getUnlocalizedName(),        new ResourceLocation("DangerRPG:textures/models/items/hammer_iron.png"));
+        TEXTURES.put(RPGItems.hammerGold.getUnlocalizedName(),        new ResourceLocation("DangerRPG:textures/models/items/hammer_gold.png"));
+        TEXTURES.put(RPGItems.hammerDiamond.getUnlocalizedName(),     new ResourceLocation("DangerRPG:textures/models/items/hammer_diamond.png"));
+        TEXTURES.put(RPGItems.hammerObsidian.getUnlocalizedName(),    new ResourceLocation("DangerRPG:textures/models/items/hammer_obsidian.png"));
+        TEXTURES.put(RPGItems.hammerBedrock.getUnlocalizedName(),     new ResourceLocation("DangerRPG:textures/models/items/hammer_bedrock.png"));
+        TEXTURES.put(RPGItems.hammerBlackMatter.getUnlocalizedName(), new ResourceLocation("DangerRPG:textures/models/items/hammer_black_matter.png"));
+        TEXTURES.put(RPGItems.hammerWhiteMatter.getUnlocalizedName(), new ResourceLocation("DangerRPG:textures/models/items/hammer_white_matter.png"));
+    }
 
     public ModelRenderer shape1;
     public ModelRenderer shape21;
@@ -134,7 +130,7 @@ public class ModelHammer extends ModelBase
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) { 
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         this.shape23.render(f5);
         this.shape31.render(f5);
         this.shape7.render(f5);
@@ -160,9 +156,6 @@ public class ModelHammer extends ModelBase
         this.shape26.render(f5);
     }
 
-    /**
-     * This is a helper function from Tabula to set the rotation of model parts
-     */
     public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;

@@ -15,35 +15,35 @@ import net.minecraftforge.client.IItemRenderer;
 @SideOnly(Side.CLIENT)
 public abstract class RPGItemRenderModel implements IItemRenderer
 {
-	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type)
-	{
-		return type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON;
-	}
+    @Override
+    public boolean handleRenderType(ItemStack item, ItemRenderType type)
+    {
+        return type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON;
+    }
 
-	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper)
-	{
-		return false;
-	}
+    @Override
+    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper)
+    {
+        return false;
+    }
 
-	@Override
-	public void renderItem(ItemRenderType type, ItemStack stack, Object... data)
-	{
-		GL11.glPushMatrix();
-		EntityLivingBase entityliving = (EntityLivingBase) data[1];
-		RPGRenderHelper.mc.renderEngine.bindTexture(getTexture(stack));
-		float tickness = specific(type, stack, entityliving);
-		getModel().render((Entity) data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, tickness);		
-		GL11.glPopMatrix();
-	}
-	
-	public float specific(ItemRenderType type, ItemStack stack, EntityLivingBase entity)
-	{
-		return 0.0625F;
-	}
-	
-	public abstract ModelBase getModel();
-	
-	public abstract ResourceLocation getTexture(ItemStack stack);
+    @Override
+    public void renderItem(ItemRenderType type, ItemStack stack, Object... data)
+    {
+        GL11.glPushMatrix();
+        EntityLivingBase entityliving = (EntityLivingBase) data[1];
+        RPGRenderHelper.mc.renderEngine.bindTexture(getTexture(stack));
+        float tickness = specific(type, stack, entityliving);
+        getModel().render((Entity) data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, tickness);        
+        GL11.glPopMatrix();
+    }
+    
+    public float specific(ItemRenderType type, ItemStack stack, EntityLivingBase entity)
+    {
+        return 0.0625F;
+    }
+    
+    public abstract ModelBase getModel();
+    
+    public abstract ResourceLocation getTexture(ItemStack stack);
 }

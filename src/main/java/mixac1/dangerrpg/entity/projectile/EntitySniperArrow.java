@@ -5,7 +5,7 @@ import net.minecraft.world.World;
 
 public class EntitySniperArrow extends EntityArrowRPG
 {
-	public EntitySniperArrow(World world)
+    public EntitySniperArrow(World world)
     {
         super(world);
     }
@@ -22,24 +22,24 @@ public class EntitySniperArrow extends EntityArrowRPG
 
     public EntitySniperArrow(World world, EntityLivingBase thrower, EntityLivingBase target, float speed, float deviation)
     {
-    	super(world, thrower, target, speed, deviation);
+        super(world, thrower, target, speed, deviation);
     }
     
     @Override
-	public float getAirResistance()
+    public float getAirResistance()
     {
-    	return beenInGround ? 0.95F : 1F;
+        return beenInGround ? 0.95F : 1F;
     }
     
     @Override
-	public float getWaterResistance()
+    public float getWaterResistance()
     {
-    	return beenInGround ? 0.8F : 1F;
+        return beenInGround ? 0.8F : 1F;
     }
     
-	@Override
-	public float getGravity()
-	{
-		return beenInGround ? 0.05F : 0F;
+    @Override
+    public float getGravity()
+    {
+        return beenInGround ? 0.05F : 0F;
     }
 }

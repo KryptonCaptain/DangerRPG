@@ -9,14 +9,14 @@ import net.minecraft.world.World;
 
 public class RPGWeaponTomahawk extends RPGThrowableWeapon
 {
-	public RPGWeaponTomahawk(ToolMaterial toolMaterial, RPGToolComponent toolComponent, String name)
-	{
-		super(toolMaterial, toolComponent, name);
-	}
+    public RPGWeaponTomahawk(ToolMaterial toolMaterial, RPGToolComponent toolComponent, String name)
+    {
+        super(toolMaterial, toolComponent, name);
+    }
 
-	@Override
-	protected EntityThrowLvlItem getThrowEntity(World world, EntityLivingBase entityliving, ItemStack itemstack)
-	{
-		return new EntityThrowTomahawk(world, entityliving, itemstack, 1.1F, 3F);
-	}
+    @Override
+    protected EntityThrowLvlItem getThrowEntity(World world, EntityLivingBase entityliving, ItemStack itemstack)
+    {
+        return new EntityThrowTomahawk(world, entityliving, itemstack, 1.1F, 3F);
+    }
 }

@@ -16,30 +16,30 @@ import net.minecraft.util.ResourceLocation;
 @SideOnly(Side.CLIENT)
 public class RenderMaterial extends RenderProjectile
 {
-	public static final RenderMaterial INSTANCE = new RenderMaterial();
-	
-	@Override
-	protected ResourceLocation getEntityTexture(Entity entity)
-	{
-		return RPGRenderHelper.mc.getTextureManager().getResourceLocation(1);
-	}
+    public static final RenderMaterial INSTANCE = new RenderMaterial();
+    
+    @Override
+    protected ResourceLocation getEntityTexture(Entity entity)
+    {
+        return RPGRenderHelper.mc.getTextureManager().getResourceLocation(1);
+    }
 
-	@Override
-	protected void doRender(Entity entity)
-	{
-		if (entity instanceof EntityMaterial) {
-			Tessellator tess = Tessellator.instance;
-			ItemStack stack = ((EntityMaterial) entity).getPickupItem();
-			IIcon icon = stack.getItem().getIconFromDamage(0);
-			float tickness = itemSpecific(stack);
-			ItemRenderer.renderItemIn2D(tess, icon.getMaxU(), icon.getMinV(), icon.getMinU(), icon.getMaxV(), icon.getIconWidth(), icon.getIconHeight(), tickness);
-			RPGRenderHelper.renderEnchantEffect(tess, stack, 256, 256, tickness);
-		}
-	}
-	
-	protected float itemSpecific(ItemStack stack)
-	{
-		GL11.glTranslatef(-1F, 0F, 0F);
-		return 0.0625F;
-	}
+    @Override
+    protected void doRender(Entity entity)
+    {
+        if (entity instanceof EntityMaterial) {
+            Tessellator tess = Tessellator.instance;
+            ItemStack stack = ((EntityMaterial) entity).getPickupItem();
+            IIcon icon = stack.getItem().getIconFromDamage(0);
+            float tickness = itemSpecific(stack);
+            ItemRenderer.renderItemIn2D(tess, icon.getMaxU(), icon.getMinV(), icon.getMinU(), icon.getMaxV(), icon.getIconWidth(), icon.getIconHeight(), tickness);
+            RPGRenderHelper.renderEnchantEffect(tess, stack, 256, 256, tickness);
+        }
+    }
+    
+    protected float itemSpecific(ItemStack stack)
+    {
+        GL11.glTranslatef(-1F, 0F, 0F);
+        return 0.0625F;
+    }
 }

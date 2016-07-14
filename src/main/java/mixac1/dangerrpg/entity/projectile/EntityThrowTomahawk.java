@@ -7,12 +7,12 @@ import net.minecraft.world.World;
 
 public class EntityThrowTomahawk extends EntityThrowLvlItem
 {
-	public EntityThrowTomahawk(World world)
+    public EntityThrowTomahawk(World world)
     {
         super(world);
     }
-	
-	public EntityThrowTomahawk(World world, ItemStack stack)
+    
+    public EntityThrowTomahawk(World world, ItemStack stack)
     {
         super(world, stack);
     }
@@ -29,33 +29,33 @@ public class EntityThrowTomahawk extends EntityThrowLvlItem
 
     public EntityThrowTomahawk(World world, EntityLivingBase thrower, EntityLivingBase target, ItemStack stack, float speed, float deviation)
     {
-    	super(world, thrower, target, stack, speed, deviation);
+        super(world, thrower, target, stack, speed, deviation);
     }
-	
-	@Override
-	public void onGroundHit(MovingObjectPosition mop)
-	{
-		super.onGroundHit(mop);
-		if (mop.sideHit == 0) {
-			prevRotationPitch = rotationPitch = 180;
-		}
-		else if (mop.sideHit != 1) {
-			prevRotationPitch = rotationPitch = 90;
-		}
-		else {
-			prevRotationPitch = rotationPitch = 0;
-		}
-	}
-	
-	@Override
-	public float getRotationOnPitch()
+    
+    @Override
+    public void onGroundHit(MovingObjectPosition mop)
     {
-    	return -60.0F;
+        super.onGroundHit(mop);
+        if (mop.sideHit == 0) {
+            prevRotationPitch = rotationPitch = 180;
+        }
+        else if (mop.sideHit != 1) {
+            prevRotationPitch = rotationPitch = 90;
+        }
+        else {
+            prevRotationPitch = rotationPitch = 0;
+        }
     }
-	
-	@Override
-	public boolean needAimRotation()
-	{
-		return false;
-	}
+    
+    @Override
+    public float getRotationOnPitch()
+    {
+        return -60.0F;
+    }
+    
+    @Override
+    public boolean needAimRotation()
+    {
+        return false;
+    }
 }

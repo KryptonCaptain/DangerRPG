@@ -7,6 +7,6 @@ import net.minecraft.item.ItemStack;
 
 public interface IHasBooksInfo
 {
-	@SideOnly(Side.CLIENT)
-	public String getInformationToInfoBook(ItemStack item, EntityPlayer player);
+    @SideOnly(Side.CLIENT)
+    public String getInformationToInfoBook(ItemStack item, EntityPlayer player);
 }

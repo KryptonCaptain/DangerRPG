@@ -6,20 +6,20 @@ import net.minecraft.item.ItemStack;
 
 public class IALevel extends IADynamic
 {
-	public IALevel(String name)
-	{
-		super(name);
-	}
-	
-	@Override
-	public boolean isValid(float value)
-	{
-		return super.isValid(value) && value <= RPGConfig.itemMaxLevel;
-	}
-	
-	@Override
-	public void init(ItemStack stack) {}
-	
-	@Override
-	public void lvlUp(ItemStack stack) {}
+    public IALevel(String name)
+    {
+        super(name);
+    }
+    
+    @Override
+    public boolean isValid(float value)
+    {
+        return super.isValid(value) && value <= RPGConfig.itemMaxLevel;
+    }
+    
+    @Override
+    public void init(ItemStack stack) {}
+    
+    @Override
+    public void lvlUp(ItemStack stack) {}
 }

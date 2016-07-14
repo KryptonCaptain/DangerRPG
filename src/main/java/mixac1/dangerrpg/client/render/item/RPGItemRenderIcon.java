@@ -15,36 +15,36 @@ import net.minecraftforge.client.IItemRenderer;
 @SideOnly(Side.CLIENT)
 public class RPGItemRenderIcon implements IItemRenderer
 {
-	public static final RPGItemRenderIcon INSTANCE = new RPGItemRenderIcon();
-	
-	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type)
-	{
-		return type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON;
-	}
-	
-	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper)
-	{
-		return false;
-	}
-	
-	public float specific(ItemRenderType type, ItemStack stack, EntityLivingBase entity)
-	{
-		return 0.0625F;
-	}
-	
-	@Override
-	public void renderItem(ItemRenderType type, ItemStack stack, Object... data)
-	{
-		GL11.glPushMatrix();
-		Tessellator tess = Tessellator.instance;	
-		EntityLivingBase entityliving = (EntityLivingBase) data[1];
-		IIcon icon = entityliving.getItemIcon(stack, 0);
-		float tickness = specific(type, stack, entityliving);	
+    public static final RPGItemRenderIcon INSTANCE = new RPGItemRenderIcon();
+    
+    @Override
+    public boolean handleRenderType(ItemStack item, ItemRenderType type)
+    {
+        return type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON;
+    }
+    
+    @Override
+    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper)
+    {
+        return false;
+    }
+    
+    public float specific(ItemRenderType type, ItemStack stack, EntityLivingBase entity)
+    {
+        return 0.0625F;
+    }
+    
+    @Override
+    public void renderItem(ItemRenderType type, ItemStack stack, Object... data)
+    {
+        GL11.glPushMatrix();
+        Tessellator tess = Tessellator.instance;    
+        EntityLivingBase entityliving = (EntityLivingBase) data[1];
+        IIcon icon = entityliving.getItemIcon(stack, 0);
+        float tickness = specific(type, stack, entityliving);    
         
-		ItemRenderer.renderItemIn2D(tess, icon.getMaxU(), icon.getMinV(), icon.getMinU(), icon.getMaxV(), icon.getIconWidth(), icon.getIconHeight(), tickness);
-		RPGRenderHelper.renderEnchantEffect(tess, stack, 256, 256, tickness);
-		GL11.glPopMatrix();
-	}
+        ItemRenderer.renderItemIn2D(tess, icon.getMaxU(), icon.getMinV(), icon.getMinU(), icon.getMaxV(), icon.getIconWidth(), icon.getIconHeight(), tickness);
+        RPGRenderHelper.renderEnchantEffect(tess, stack, 256, 256, tickness);
+        GL11.glPopMatrix();
+    }
 }

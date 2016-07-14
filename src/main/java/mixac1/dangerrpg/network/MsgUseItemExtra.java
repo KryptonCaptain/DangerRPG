@@ -13,33 +13,33 @@ import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
 public class MsgUseItemExtra implements IMessage
 {
-	public MsgUseItemExtra() {}
-	
-	@Override
-	public void fromBytes(ByteBuf buf) {}
+    public MsgUseItemExtra() {}
+    
+    @Override
+    public void fromBytes(ByteBuf buf) {}
 
-	@Override
-	public void toBytes(ByteBuf buf) {}
-	
-	public static class Handler implements IMessageHandler<MsgUseItemExtra, IMessage>
-	{
-		@Override
-		public IMessage onMessage(MsgUseItemExtra message, MessageContext ctx)
-		{
-			EntityPlayer player = DangerRPG.proxy.getPlayerFromMessageCtx(ctx);
-			ItemStack stack = player.getCurrentEquippedItem();
-			if (stack != null && stack.getItem() instanceof IUseItemExtra) {
-				ItemStack resStack = ((IUseItemExtra) stack.getItem()).onItemUseExtra(stack, player.worldObj, player);
-				if (resStack != stack || resStack.stackSize != stack.stackSize) {
-		        	player.inventory.mainInventory[player.inventory.currentItem] = resStack;
-		            if (resStack == null || resStack.stackSize <= 0) {
-		            	player.inventory.mainInventory[player.inventory.currentItem] = null;
-		                MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, resStack));
-		            }
-		        }
-			}
-			return null;
-		}
-	}
+    @Override
+    public void toBytes(ByteBuf buf) {}
+    
+    public static class Handler implements IMessageHandler<MsgUseItemExtra, IMessage>
+    {
+        @Override
+        public IMessage onMessage(MsgUseItemExtra message, MessageContext ctx)
+        {
+            EntityPlayer player = DangerRPG.proxy.getPlayerFromMessageCtx(ctx);
+            ItemStack stack = player.getCurrentEquippedItem();
+            if (stack != null && stack.getItem() instanceof IUseItemExtra) {
+                ItemStack resStack = ((IUseItemExtra) stack.getItem()).onItemUseExtra(stack, player.worldObj, player);
+                if (resStack != stack || resStack.stackSize != stack.stackSize) {
+                    player.inventory.mainInventory[player.inventory.currentItem] = resStack;
+                    if (resStack == null || resStack.stackSize <= 0) {
+                        player.inventory.mainInventory[player.inventory.currentItem] = null;
+                        MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, resStack));
+                    }
+                }
+            }
+            return null;
+        }
+    }
 }
 

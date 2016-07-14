@@ -19,64 +19,64 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 
 public class RPGWeapon extends ItemSword implements ILvlableItemTool, IGemableItem, IHasBooksInfo
-{	
-	private static final GemType[] gemTypes = new GemType[] {
-			GemType.GEM_MODIFY_ATTACK_1,
-			GemType.GEM_MODIFY_ATTACK_2,
-			GemType.GEM_SPECIAL_ATTACK,
-			GemType.GEM_DEFENCE
-	};
-	
-	public ToolMaterial toolMaterial;
-	public RPGToolComponent toolComponent;
-	
-	public RPGWeapon(ToolMaterial toolMaterial, RPGToolComponent toolComponent, String name)
-	{
-		super(toolMaterial);
-		this.toolMaterial = toolMaterial;
-		this.toolComponent = toolComponent;
-		setUnlocalizedName(name);
-		setTextureName(DangerRPG.MODID + ":weapons/melee/" + name);
-		setCreativeTab(RPGOther.tabDangerRPG);
-		setMaxStackSize(1);
-	}
+{    
+    private static final GemType[] gemTypes = new GemType[] {
+            GemType.GEM_MODIFY_ATTACK_1,
+            GemType.GEM_MODIFY_ATTACK_2,
+            GemType.GEM_SPECIAL_ATTACK,
+            GemType.GEM_DEFENCE
+    };
+    
+    public ToolMaterial toolMaterial;
+    public RPGToolComponent toolComponent;
+    
+    public RPGWeapon(ToolMaterial toolMaterial, RPGToolComponent toolComponent, String name)
+    {
+        super(toolMaterial);
+        this.toolMaterial = toolMaterial;
+        this.toolComponent = toolComponent;
+        setUnlocalizedName(name);
+        setTextureName(DangerRPG.MODID + ":weapons/melee/" + name);
+        setCreativeTab(RPGOther.tabDangerRPG);
+        setMaxStackSize(1);
+    }
 
-	@Override
-	public GemType[] getGemTypes(ItemStack stack)
-	{
-		return gemTypes;
-	}
+    @Override
+    public GemType[] getGemTypes(ItemStack stack)
+    {
+        return gemTypes;
+    }
 
-	@Override
-	public String getInformationToInfoBook(ItemStack item, EntityPlayer player)
-	{
-		return Translator.trans("rpgstr.no_info_yet");
-	}
+    @Override
+    public String getInformationToInfoBook(ItemStack item, EntityPlayer player)
+    {
+        return Translator.trans("rpgstr.no_info_yet");
+    }
 
-	@Override
-	public RPGToolComponent getToolComponent(Item item)
-	{
-		return toolComponent;
-	}
+    @Override
+    public RPGToolComponent getToolComponent(Item item)
+    {
+        return toolComponent;
+    }
 
-	@Override
-	public ToolMaterial getToolMaterial(Item item)
-	{
-		return toolMaterial;
-	}
+    @Override
+    public ToolMaterial getToolMaterial(Item item)
+    {
+        return toolMaterial;
+    }
 
-	@Override
-	public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map)
-	{
-		LvlableItem.registerParamsItemSword(item, map);
-	}
-	
-//	@Override
-//	public void onUpdate(ItemStack stack, World world, Entity entity, int par1, boolean par2)
-//	{
-//		if (!world.isRemote && entity instanceof EntityLivingBase) {
+    @Override
+    public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map)
+    {
+        LvlableItem.registerParamsItemSword(item, map);
+    }
+    
+//    @Override
+//    public void onUpdate(ItemStack stack, World world, Entity entity, int par1, boolean par2)
+//    {
+//        if (!world.isRemote && entity instanceof EntityLivingBase) {
 //            if (((EntityLivingBase) entity).getEquipmentInSlot(0) != null &&
-//            	((EntityLivingBase) entity).getEquipmentInSlot(0).getItem() == this) {
+//                ((EntityLivingBase) entity).getEquipmentInSlot(0).getItem() == this) {
 //                double radius = 0.37D;
 //
 //                for (float l = 0F; l < 2 * Math.PI; l += Math.PI / 6) {
@@ -87,5 +87,5 @@ public class RPGWeapon extends ItemSword implements ILvlableItemTool, IGemableIt
 //                }
 //            }
 //        }
-//	}
+//    }
 }
