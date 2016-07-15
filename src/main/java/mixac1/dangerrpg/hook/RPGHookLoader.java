@@ -10,10 +10,11 @@ public class RPGHookLoader extends HookLoader
     {
         return new String[] {PrimaryClassTransformer.class.getName()};
     }
-    
+
     @Override
     public void registerHooks()
     {
         registerHookContainer("mixac1.dangerrpg.hook.RPGHooks");
+        registerHookContainer("mixac1.dangerrpg.hook.RPGRawHooks");
     }
 }

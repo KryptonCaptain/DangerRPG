@@ -3,12 +3,13 @@ package mixac1.dangerrpg.item.armor;
 import java.util.HashMap;
 
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.api.item.ItemAttribute;
 import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemArmor;
+import mixac1.dangerrpg.api.item.ItemAttribute;
 import mixac1.dangerrpg.capability.ItemAttrParams;
 import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.IHasBooksInfo;
+import mixac1.dangerrpg.item.RPGItemComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -19,7 +20,7 @@ public class RPGItemArmor extends ItemArmor implements ILvlableItemArmor, IHasBo
 {
     private ArmorMaterial armorMaterial;
     private String texture;
-    
+
     public RPGItemArmor(ArmorMaterial armorMaterial, int renderIndex, int armorType, String name)
     {
         super(armorMaterial, renderIndex, armorType);
@@ -33,7 +34,7 @@ public class RPGItemArmor extends ItemArmor implements ILvlableItemArmor, IHasBo
         setTextureName(DangerRPG.MODID + ":armors/" + name);
         setCreativeTab(RPGOther.tabDangerRPG);
     }
-    
+
     public static RPGItemArmor[] createFullSet(ArmorMaterial armorMaterial, String name)
     {
         return new RPGItemArmor[] {
@@ -57,11 +58,17 @@ public class RPGItemArmor extends ItemArmor implements ILvlableItemArmor, IHasBo
     }
 
     @Override
+    public RPGItemComponent getItemComponent(Item item)
+    {
+        return null;
+    }
+
+    @Override
     public ArmorMaterial getArmorMaterial(Item item)
     {
         return armorMaterial;
     }
-    
+
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
     {

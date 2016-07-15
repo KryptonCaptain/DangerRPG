@@ -9,7 +9,11 @@ import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.itemattr.ItemAttributes;
 import mixac1.dangerrpg.entity.projectile.EntityArrowRPG;
 import mixac1.dangerrpg.entity.projectile.EntityMaterial;
-import mixac1.dangerrpg.item.RPGToolComponent;
+import mixac1.dangerrpg.item.RPGItemComponent;
+import mixac1.dangerrpg.item.RPGItemComponent.RPGBowComponent;
+import mixac1.dangerrpg.item.RPGItemComponent.RPGGunComponent;
+import mixac1.dangerrpg.item.RPGItemComponent.RPGICWithoutTM;
+import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,9 +35,14 @@ public interface ILvlableItem
 {
     public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map);
 
-    public interface ILvlableItemTool extends ILvlableItem
+    public RPGItemComponent getItemComponent(Item item);
+
+    public interface ILvlableItemMod extends ILvlableItem {}
+
+    public interface ILvlableItemTool extends ILvlableItemMod
     {
-        public RPGToolComponent getToolComponent(Item item);
+        @Override
+        public RPGToolComponent getItemComponent(Item item);
 
         public ToolMaterial getToolMaterial(Item item);
     }
@@ -43,49 +52,65 @@ public interface ILvlableItem
         public ArmorMaterial getArmorMaterial(Item item);
     }
 
-    public interface ILvlableItemShoot extends ILvlableItemTool
+    public interface ILvlableItemGun extends ILvlableItemTool
     {
-        public float getMaxCharge(ItemStack stack, EntityPlayer player);
-
-        public float getPoweMul();
+        @Override
+        public RPGGunComponent getItemComponent(Item item);
     }
 
-    public interface ILvlableItemBow extends ILvlableItemShoot
+    public interface ILvlableItemBow extends ILvlableItemGun
     {
         /**
          * Don't use onPlayerStoppedUsing method.
          */
         public void onStoppedUsing(ItemStack stack, World world, EntityPlayer player, int useDuration);
+
+        @Override
+        public RPGBowComponent getItemComponent(Item item);
     }
 
     /**
      * Start DEFAULT Lvlable items
      */
     public static final ILvlableItem DEFAULT_ITEM = new ILvlableItem()
-
     {
+        @Override
+        public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map) {}
 
         @Override
-        public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map)
+        public RPGItemComponent getItemComponent(Item item)
         {
+            return null;
         }
     };
 
-    public static final ILvlableItem DEFAULT_ITEM_MOD = new ILvlableItem()
+    public static final ILvlableItem DEFAULT_ITEM_MOD = new ILvlableItemMod()
     {
         @Override
         public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map)
         {
             LvlableItem.registerParamsItemMod(item, map);
         }
+
+        @Override
+        public RPGICWithoutTM getItemComponent(Item item)
+        {
+            return null;
+        }
     };
 
     public static final ILvlableItemTool DEFAULT_SWORD = new ILvlableItemTool()
     {
         @Override
-        public RPGToolComponent getToolComponent(Item item)
+        public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map)
         {
-            return RPGToolComponent.SWORD;
+            LvlableItem.registerParamsItemSword(item, map);
+        }
+
+        @Override
+        public RPGToolComponent getItemComponent(Item item)
+        {
+            return RPGItemComponent.SWORD;
         }
 
         @Override
@@ -96,33 +121,33 @@ public interface ILvlableItem
             }
             catch (Exception e) {
                 DangerRPG.logger.warn(e);
-            };
+            }
             return null;
-        }
-
-        @Override
-        public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map)
-        {
-            LvlableItem.registerParamsItemSword(item, map);
         }
     };
 
     public static final ILvlableItemTool DEFAULT_TOOL = new ILvlableItemTool()
     {
         @Override
-        public RPGToolComponent getToolComponent(Item item)
+        public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map)
+        {
+            LvlableItem.registerParamsItemTool(item, map);
+        }
+
+        @Override
+        public RPGToolComponent getItemComponent(Item item)
         {
             if (item instanceof ItemAxe) {
-                return RPGToolComponent.AXE;
+                return RPGItemComponent.AXE;
             }
             else if (item instanceof ItemHoe) {
-                return RPGToolComponent.HOE;
+                return RPGItemComponent.HOE;
             }
             else if (item instanceof ItemSpade) {
-                return RPGToolComponent.SHOVEL;
+                return RPGItemComponent.SHOVEL;
             }
             else if (item instanceof ItemPickaxe) {
-                return RPGToolComponent.PICKAXE;
+                return RPGItemComponent.PICKAXE;
             }
             return null;
         }
@@ -143,12 +168,6 @@ public interface ILvlableItem
             }
             return null;
         }
-
-        @Override
-        public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map)
-        {
-            LvlableItem.registerParamsItemTool(item, map);
-        }
     };
 
     public static final ILvlableItemArmor DEFAULT_ARMOR = new ILvlableItemArmor()
@@ -157,6 +176,12 @@ public interface ILvlableItem
         public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map)
         {
             LvlableItem.registerParamsItemArmor(item, map);
+        }
+
+        @Override
+        public RPGItemComponent getItemComponent(Item item)
+        {
+            return null;
         }
 
         @Override
@@ -175,9 +200,15 @@ public interface ILvlableItem
         }
 
         @Override
-        public RPGToolComponent getToolComponent(Item item)
+        public RPGBowComponent getItemComponent(Item item)
         {
-            return RPGToolComponent.BOW;
+            return RPGItemComponent.BOW;
+        }
+
+        @Override
+        public ToolMaterial getToolMaterial(Item item)
+        {
+            return null;
         }
 
         @Override
@@ -187,7 +218,8 @@ public interface ILvlableItem
                      || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, stack) > 0;
 
             if (flag || player.inventory.hasItem(Items.arrow)) {
-                float power = useDuration / getMaxCharge(stack, player);
+                float power = useDuration / (ItemAttributes.SHOT_SPEED.hasIt(stack) ?
+                                             ItemAttributes.SHOT_SPEED.get(stack, player) : 20F);
                 power = (power * power + power * 2.0F) / 3.0F;
 
                 if (power < 0.1D) {
@@ -198,7 +230,7 @@ public interface ILvlableItem
                 }
 
                 float powerMul = ItemAttributes.SHOT_POWER.hasIt(stack) ?
-                                 ItemAttributes.SHOT_POWER.get(stack, player) : getPoweMul();
+                                 ItemAttributes.SHOT_POWER.get(stack, player) : 1F;
                 EntityArrowRPG entity = new EntityArrowRPG(world, player, power * powerMul, 1F);
 
                 entity.phisicDamage = ItemAttributes.SHOT_DAMAGE.hasIt(stack) ?
@@ -228,26 +260,6 @@ public interface ILvlableItem
                     world.spawnEntityInWorld(entity);
                 }
             }
-        }
-
-        @Deprecated
-        @Override
-        public ToolMaterial getToolMaterial(Item item)
-        {
-            return null;
-        }
-
-        @Override
-        public float getMaxCharge(ItemStack stack, EntityPlayer player)
-        {
-            return ItemAttributes.SHOT_SPEED.hasIt(stack) ?
-                   ItemAttributes.SHOT_SPEED.get(stack, player) : 20F;
-        }
-
-        @Override
-        public float getPoweMul()
-        {
-            return 3F;
         }
     };
 }

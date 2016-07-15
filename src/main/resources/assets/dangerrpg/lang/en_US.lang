@@ -102,6 +102,9 @@ item.chestplate_white_matter.name=White Matter Chestplate
 item.leggings_white_matter.name=White Matter Leggings
 item.boots_white_matter.name=White Matter Boots
 
+item.shadow_bow.name=Shadow Bow
+item.sniper_bow.name=Sniper Bow
+
 item.gem_wither_skull.name=Wither Skull Gem
 
 
