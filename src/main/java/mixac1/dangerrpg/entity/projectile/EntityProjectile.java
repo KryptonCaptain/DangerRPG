@@ -5,7 +5,6 @@ import java.util.List;
 import cpw.mods.fml.common.registry.IThrowableEntity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import mixac1.dangerrpg.DangerRPG;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -28,7 +27,7 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
     protected int xTile;
     protected int yTile;
     protected int zTile;
-    protected Block    inTile;
+    protected Block inTile;
     protected int inData;
     protected boolean inGround;
     protected boolean beenInGround;
@@ -157,7 +156,16 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
     @Override
     public void onEntityUpdate()
     {
-        DangerRPG.log(motionX + " " + motionY + " " + motionZ);
+        //DangerRPG.log(motionX + " " + motionY + " " + motionZ);
+
+        if (++ticksAlive >= ticksExisted) {
+            setDead();
+            return;
+        }
+
+        if (untouch > 0) {
+            untouch--;
+        }
 
         lastTickPosX = posX;
         lastTickPosY = posY;
@@ -183,10 +191,6 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
             }
         }
 
-        if (untouch > 0) {
-            untouch--;
-        }
-
         if (inGround) {
             Block j = worldObj.getBlock(xTile, yTile, zTile);
             int k = worldObj.getBlockMetadata(xTile, yTile, zTile);
@@ -197,11 +201,6 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
                 motionY *= rand.nextFloat() * 0.2F;
                 motionZ *= rand.nextFloat() * 0.2F;
             }
-            return;
-        }
-
-        if (++ticksAlive >= ticksExisted) {
-            setDead();
             return;
         }
 

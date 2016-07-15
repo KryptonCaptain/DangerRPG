@@ -8,8 +8,8 @@ import mixac1.dangerrpg.api.item.ItemAttribute;
 import mixac1.dangerrpg.api.player.PlayerAttribute;
 import mixac1.dangerrpg.api.player.PlayerAttributeE;
 import mixac1.dangerrpg.capability.ItemAttrParams;
-import mixac1.dangerrpg.capability.ItemAttrParams.Multiplier;
 import mixac1.dangerrpg.capability.PlayerData;
+import mixac1.dangerrpg.util.Multiplier;
 
 public class RPGApi
 {

@@ -11,7 +11,6 @@ import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemBow;
 import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemMod;
 import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemTool;
 import mixac1.dangerrpg.api.item.ItemAttribute;
-import mixac1.dangerrpg.capability.ItemAttrParams.Multiplier;
 import mixac1.dangerrpg.capability.itemattr.ItemAttributes;
 import mixac1.dangerrpg.event.RegIAEvent;
 import mixac1.dangerrpg.init.RPGConfig;
@@ -19,6 +18,7 @@ import mixac1.dangerrpg.item.RPGItemComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.IWithoutToolMaterial;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGBowComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
+import mixac1.dangerrpg.util.Multiplier;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
@@ -36,6 +36,25 @@ public class LvlableItem
     public static final String IS_LVLABLE = "rpg_lvlable";
 
     public static HashMap<Item, HashMap<ItemAttribute, ItemAttrParams>> itemsAttrebutes = new HashMap<Item, HashMap<ItemAttribute, ItemAttrParams>>();
+
+    public static final Multiplier EXP_MUL = new Multiplier()
+    {
+        @Override
+        public float up(float value)
+        {
+            return value * RPGConfig.itemExpMul;
+        }
+    };
+
+    public static final Multiplier DUR_MUL = new Multiplier()
+    {
+        @Override
+        public float up(float value)
+        {
+            return value + 50;
+        }
+    };
+
 
     public static boolean isLvlable(ItemStack stack)
     {
@@ -81,13 +100,7 @@ public class LvlableItem
 
     private static void registerParamsDefault(Item item, HashMap<ItemAttribute, ItemAttrParams> map)
     {
-        RPGApi.registerDynamicItemAttribute(map, ItemAttributes.MAX_EXP, RPGConfig.itemStartMaxExp, new Multiplier() {
-            @Override
-            public float up(float value)
-            {
-                return value * RPGConfig.itemExpMul;
-            }
-        });
+        RPGApi.registerDynamicItemAttribute(map, ItemAttributes.MAX_EXP, RPGConfig.itemStartMaxExp, EXP_MUL);
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.DefaultIAEvent(item, map));
     }
 
@@ -105,20 +118,8 @@ public class LvlableItem
             durab = item.getMaxDamage();
         }
 
-        RPGApi.registerDynamicItemAttribute(map, ItemAttributes.ENCHANTABILITY, ench, new Multiplier() {
-            @Override
-            public float up(float value)
-            {
-                return value + 1;
-            }
-        });
-        RPGApi.registerDynamicItemAttribute(map, ItemAttributes.MAX_DURABILITY, durab, new Multiplier() {
-            @Override
-            public float up(float value)
-            {
-                return value + 50;
-            }
-        });
+        RPGApi.registerDynamicItemAttribute(map, ItemAttributes.ENCHANTABILITY, ench, Multiplier.ADD_1);
+        RPGApi.registerDynamicItemAttribute(map, ItemAttributes.MAX_DURABILITY, durab, DUR_MUL);
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemModIAEvent(item, map));
     }
 
@@ -156,13 +157,7 @@ public class LvlableItem
         RPGApi.registerStaticItemAttribute(map, ItemAttributes.INT_MUL,      comp.intMul);
         RPGApi.registerStaticItemAttribute(map, ItemAttributes.KNOCKBACK,    comp.knBack);
         RPGApi.registerStaticItemAttribute(map, ItemAttributes.REACH,        comp.reach);
-        RPGApi.registerDynamicItemAttribute(map, ItemAttributes.EFFICIENCY,  mat.getEfficiencyOnProperMaterial(), new Multiplier() {
-            @Override
-            public float up(float value)
-            {
-                return value + 1;
-            }
-        });
+        RPGApi.registerDynamicItemAttribute(map, ItemAttributes.EFFICIENCY,  mat.getEfficiencyOnProperMaterial(), Multiplier.ADD_1);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemToolIAEvent(item, map));
     }
@@ -174,13 +169,7 @@ public class LvlableItem
         ArmorMaterial mat = iLvl.getArmorMaterial(item);
 
         RPGApi.registerStaticItemAttribute(map,  ItemAttributes.PHISIC_ARMOR, mat.getDamageReductionAmount(((ItemArmor) item).armorType));
-        RPGApi.registerDynamicItemAttribute(map, ItemAttributes.MAGIC_ARMOR,  RPGConfig.itemStartMagicArmor, new Multiplier() {
-            @Override
-            public float up(float value)
-            {
-                return value + 1;
-            }
-        });
+        RPGApi.registerDynamicItemAttribute(map, ItemAttributes.MAGIC_ARMOR,  RPGConfig.itemStartMagicArmor, Multiplier.ADD_1);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemArmorIAEvent(item, map));
     }
