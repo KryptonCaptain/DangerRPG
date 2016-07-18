@@ -2,7 +2,6 @@ package mixac1.dangerrpg.api.item;
 
 import java.util.HashMap;
 
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.capability.ItemAttrParams;
 import mixac1.dangerrpg.capability.LvlableItem;
@@ -116,13 +115,7 @@ public interface ILvlableItem
         @Override
         public ToolMaterial getToolMaterial(Item item)
         {
-            try {
-                return ReflectionHelper.getPrivateValue(ItemSword.class, (ItemSword) item, "field_150933_b");
-            }
-            catch (Exception e) {
-                DangerRPG.logger.warn(e);
-            }
-            return null;
+            return ((ItemSword) item).field_150933_b;
         }
     };
 
@@ -159,12 +152,7 @@ public interface ILvlableItem
                 return ((ItemTool) item).func_150913_i();
             }
             else if (item instanceof ItemHoe) {
-                try {
-                    return ReflectionHelper.getPrivateValue(ItemHoe.class, (ItemHoe) item, "theToolMaterial");
-                }
-                catch (Exception e) {
-                    DangerRPG.logger.warn(e);
-                }
+                return ((ItemHoe) item).theToolMaterial;
             }
             return null;
         }

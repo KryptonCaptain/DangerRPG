@@ -398,7 +398,6 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
         motionZ *= -0.05D;
     }
 
-    @Override
     public Entity getThrower()
     {
         if (thrower == null && throwerName != null && throwerName.length() > 0) {
@@ -407,7 +406,6 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
         return thrower;
     }
 
-    @Override
     public void setThrower(Entity entity) {
         if (entity instanceof EntityLivingBase) {
             thrower = (EntityLivingBase) entity;

@@ -15,6 +15,6 @@ public class RPGHookLoader extends HookLoader
     public void registerHooks()
     {
         registerHookContainer("mixac1.dangerrpg.hook.RPGHooks");
-        registerHookContainer("mixac1.dangerrpg.hook.RPGRawHooks");
+        registerHookContainer("mixac1.dangerrpg.hook.FixIncorrectMotionHooks");
     }
 }

@@ -29,6 +29,7 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
@@ -42,7 +43,7 @@ import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 public class RPGHooks
 {
     /**
-     * Hook to creating ItemStack
+     * Hook to creating {@link ItemStack}
      * Add to stack lvlable and gemable parametres
      */
     @Hook(injectOnExit = true, targetMethod = "<init>")
@@ -104,7 +105,7 @@ public class RPGHooks
     }
 
     /**
-     * Hook for ItemArmor
+     * Hook for {@link ItemArmor}
      */
     @Hook(returnCondition = ReturnCondition.ALWAYS)
     public static float applyArmorCalculations(EntityLivingBase entity, DamageSource source, float damage)
@@ -114,7 +115,7 @@ public class RPGHooks
 
 
     /**
-     * Hook for ItemBow
+     * Hook for {@link ItemBow}
      */
     @SideOnly(Side.CLIENT)
     @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
@@ -137,7 +138,7 @@ public class RPGHooks
     }
 
     /**
-     * Hook for ItemBow
+     * Hook for {@link ItemBow}
      */
     @SideOnly(Side.CLIENT)
     @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
@@ -176,7 +177,7 @@ public class RPGHooks
     }
 
     /**
-     * Hook for ItemBow
+     * Hook for {@link ItemBow}
      */
     @Hook(returnCondition = ReturnCondition.ALWAYS)
     public static void onPlayerStoppedUsing(ItemBow bow, ItemStack stack, World world, EntityPlayer player, int par)

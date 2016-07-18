@@ -38,7 +38,7 @@ public class ItemSniperBow extends RPGItemBow
 
             float powerMul = ItemAttributes.SHOT_POWER.hasIt(stack) ?
                     ItemAttributes.SHOT_POWER.get(stack, player) : 1F;
-            EntitySniperArrow entity = new EntitySniperArrow(world, player, power * 7, 0F);
+            EntitySniperArrow entity = new EntitySniperArrow(world, player, power * 10, 0F);
 
             entity.phisicDamage = ItemAttributes.SHOT_DAMAGE.hasIt(stack) ? ItemAttributes.SHOT_DAMAGE.get(stack, player) : 2F;
 
