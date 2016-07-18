@@ -17,12 +17,12 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "0.1.4"
+version = "1.0"
 group = "com.dahaka.dangerrpg"
 archivesBaseName = "DangerRPG"
 
 minecraft {
-    version = "1.7.10-10.13.4.1558-1.7.10"
+    version = "1.7.10-10.13.4.1614-1.7.10"
     runDir = "eclipse"
 }
 
@@ -30,24 +30,32 @@ dependencies {
 
 }
 
-processResources {
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+sourceSets {
 
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-        
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
+}
+
+compileJava {
+    targetCompatibility = '1.8'
+    sourceCompatibility = '1.8'
 }
 
 jar {
     manifest {
+        attributes 'FMLAT': 'dangerrpg_at.cfg'
         attributes 'FMLCorePlugin': 'dahaka.dangerrpg.hook.RPGHookLoader'
         attributes 'FMLCorePluginContainsFMLMod': 'true'
-        attributes 'FMLAT': 'dangerrpg-at.cfg'
+    }
+}
+
+processResources
+{
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
     }
 }
