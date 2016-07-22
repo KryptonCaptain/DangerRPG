@@ -6,9 +6,14 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -17,11 +22,30 @@ public class RPGRenderHelper
 {
     public static Minecraft mc = FMLClientHandler.instance().getClient();
 
-    public static final ResourceLocation ENCHANTMENT_GLINT = new ResourceLocation("minecraft",
-            "textures/misc/enchanted_item_glint.png");
+    public static final ResourceLocation ENCHANTMENT_GLINT = new ResourceLocation("minecraft", "textures/misc/enchanted_item_glint.png");
 
-    public static void renderItemIn2D(Tessellator tess, float maxU, float minV, float minU, float maxV, int width,
-            int height, float tickness)
+    public enum Color
+    {
+        R(2),
+        G(1),
+        B(0),
+
+        ;
+
+        private int i;
+
+        Color(int i)
+        {
+            this.i = i;
+        }
+
+        public float get(int color)
+        {
+            return (color >> (8 * i) & 255) / 255.0F;
+        }
+    }
+
+    public static void renderItemIn2D(Tessellator tess, float maxU, float minV, float minU, float maxV, int width, int height, float tickness)
     {
         tess.startDrawingQuads();
         tess.setNormal(0.0F, 0.0F, 1.0F);
@@ -99,8 +123,7 @@ public class RPGRenderHelper
         tess.draw();
     }
 
-    public static void renderEnchantEffect(Tessellator tessellator, ItemStack item, int iconwidth, int iconheight,
-            float thickness)
+    public static void renderEnchantEffect(Tessellator tessellator, ItemStack item, int iconwidth, int iconheight, float thickness)
     {
         if (item != null && item.hasEffect(0)) {
             GL11.glDepthFunc(GL11.GL_EQUAL);
@@ -131,5 +154,58 @@ public class RPGRenderHelper
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glDepthFunc(GL11.GL_LEQUAL);
         }
+    }
+
+    public static void copyModelBiped(ModelBiped from, ModelBiped to)
+    {
+        to.bipedBody.showModel     = from.bipedBody.showModel;
+        to.bipedHead.showModel     = from.bipedHead.showModel;
+        to.bipedHeadwear.showModel = false;
+        to.bipedLeftArm.showModel  = from.bipedLeftArm.showModel;
+        to.bipedLeftLeg.showModel  = from.bipedLeftLeg.showModel;
+        to.bipedRightArm.showModel = from.bipedRightArm.showModel;
+        to.bipedRightLeg.showModel = from.bipedRightLeg.showModel;
+    }
+
+    public static void copyModelRenderer(ModelRenderer from, ModelRenderer to)
+    {
+        to.rotateAngleX = from.rotateAngleX;
+        to.rotateAngleY = from.rotateAngleY;
+        to.rotateAngleZ = from.rotateAngleZ;
+        to.setRotationPoint(from.rotationPointX, from.rotationPointY, from.rotationPointZ);
+    }
+
+    public static ModelBiped modelBipedInit(EntityLivingBase entity, ModelBiped model, int slot)
+    {
+        model.bipedHead.showModel = slot == 0;
+        model.bipedHeadwear.showModel = slot == 0;
+        model.bipedBody.showModel = slot == 1 || slot == 2;
+        model.bipedRightArm.showModel = slot == 1;
+        model.bipedLeftArm.showModel = slot == 1;
+        model.bipedRightLeg.showModel = slot == 2 || slot == 3;
+        model.bipedLeftLeg.showModel = slot == 2 || slot == 3;
+
+        model.heldItemRight = 0;
+        model.aimedBow = false;
+        ItemStack stack = entity.getHeldItem();
+        if (stack != null) {
+            model.heldItemRight = 1;
+            if (entity instanceof EntityPlayer && ((EntityPlayer) entity).getItemInUseCount() > 0) {
+                EnumAction enumaction = stack.getItemUseAction();
+                if (enumaction == EnumAction.block)
+                {
+                    model.heldItemRight = 3;
+                }
+                else if (enumaction == EnumAction.bow)
+                {
+                    model.aimedBow = true;
+                }
+            }
+        }
+
+        model.isSneak = entity.isSneaking();
+        model.isRiding = entity.isRiding();
+        model.isChild = entity.isChild();
+        return model;
     }
 }

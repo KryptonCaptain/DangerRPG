@@ -1,30 +1,15 @@
 package mixac1.dangerrpg.client.model;
 
-import java.util.HashMap;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import mixac1.dangerrpg.init.RPGItems;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
 public class ModelHammer extends ModelBase
 {
     public static final ModelHammer INSTANCE = new ModelHammer();
-
-    public static final HashMap<String, ResourceLocation> TEXTURES = new HashMap<String, ResourceLocation>();
-    static {
-        TEXTURES.put(RPGItems.hammerIron.getUnlocalizedName(),        new ResourceLocation("DangerRPG:textures/models/items/hammer_iron.png"));
-        TEXTURES.put(RPGItems.hammerGold.getUnlocalizedName(),        new ResourceLocation("DangerRPG:textures/models/items/hammer_gold.png"));
-        TEXTURES.put(RPGItems.hammerDiamond.getUnlocalizedName(),     new ResourceLocation("DangerRPG:textures/models/items/hammer_diamond.png"));
-        TEXTURES.put(RPGItems.hammerObsidian.getUnlocalizedName(),    new ResourceLocation("DangerRPG:textures/models/items/hammer_obsidian.png"));
-        TEXTURES.put(RPGItems.hammerBedrock.getUnlocalizedName(),     new ResourceLocation("DangerRPG:textures/models/items/hammer_bedrock.png"));
-        TEXTURES.put(RPGItems.hammerBlackMatter.getUnlocalizedName(), new ResourceLocation("DangerRPG:textures/models/items/hammer_black_matter.png"));
-        TEXTURES.put(RPGItems.hammerWhiteMatter.getUnlocalizedName(), new ResourceLocation("DangerRPG:textures/models/items/hammer_white_matter.png"));
-    }
 
     public ModelRenderer shape1;
     public ModelRenderer shape21;

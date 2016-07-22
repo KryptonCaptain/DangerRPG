@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.client.RPGRenderHelper;
+import mixac1.dangerrpg.init.RPGRenderers;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -34,16 +35,19 @@ public abstract class RPGItemRenderModel implements IItemRenderer
         EntityLivingBase entityliving = (EntityLivingBase) data[1];
         RPGRenderHelper.mc.renderEngine.bindTexture(getTexture(stack));
         float tickness = specific(type, stack, entityliving);
-        getModel().render((Entity) data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, tickness);        
+        getModel().render((Entity) data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, tickness);
         GL11.glPopMatrix();
     }
-    
+
     public float specific(ItemRenderType type, ItemStack stack, EntityLivingBase entity)
     {
         return 0.0625F;
     }
-    
+
     public abstract ModelBase getModel();
-    
-    public abstract ResourceLocation getTexture(ItemStack stack);
+
+    public ResourceLocation getTexture(ItemStack stack)
+    {
+        return RPGRenderers.MODEL_TEXTURES.get(stack.getItem());
+    }
 }

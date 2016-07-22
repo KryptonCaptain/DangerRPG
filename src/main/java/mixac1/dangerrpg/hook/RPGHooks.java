@@ -113,7 +113,6 @@ public class RPGHooks
         return RPGCommonHelper.applyArmorCalculations(entity, source, damage);
     }
 
-
     /**
      * Hook for {@link ItemBow}
      */

@@ -14,7 +14,11 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import mixac1.dangerrpg.proxy.CommonProxy;
 
-@Mod(modid = DangerRPG.MODID, name = DangerRPG.MODNAME, version = DangerRPG.VERSION, acceptedMinecraftVersions = DangerRPG.ACCEPTED_VERSION, dependencies = "required-after:Forge")
+@Mod(modid = DangerRPG.MODID,
+     name = DangerRPG.MODNAME,
+     version = DangerRPG.VERSION,
+     acceptedMinecraftVersions = DangerRPG.ACCEPTED_VERSION,
+     dependencies = "required-after:Forge")
 public class DangerRPG
 {
     public static final String MODNAME          = "Danger RPG";
@@ -23,14 +27,15 @@ public class DangerRPG
     public static final String ACCEPTED_VERSION = "[1.7.10]";
 
     @Instance(DangerRPG.MODID)
-    public static DangerRPG    instance         = new DangerRPG();
+    public static DangerRPG instance = new DangerRPG();
 
-    @SidedProxy(clientSide = "mixac1.dangerrpg.proxy.ClientProxy", serverSide = "mixac1.dangerrpg.proxy.CommonProxy")
+    @SidedProxy(clientSide = "mixac1.dangerrpg.proxy.ClientProxy",
+                serverSide = "mixac1.dangerrpg.proxy.CommonProxy")
     public static CommonProxy  proxy;
 
-    public static final Random rand             = new Random();
+    public static final Random rand = new Random();
 
-    public static final Logger logger           = LogManager.getLogger(DangerRPG.MODID);
+    public static final Logger logger = LogManager.getLogger(DangerRPG.MODID);
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
@@ -50,8 +55,12 @@ public class DangerRPG
         proxy.postInit(event);
     }
 
-    public static void log(Object obj)
+    public static void log(Object... objs)
     {
-        DangerRPG.logger.info(obj);
+        StringBuffer buf = new StringBuffer();
+        for (Object obj : objs) {
+            buf.append(obj.toString()).append(" ");
+        }
+        DangerRPG.logger.info(buf.toString());
     }
 }

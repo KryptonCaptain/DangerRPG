@@ -27,6 +27,17 @@ public class RPGCommonHelper
 {
     static int i = 0;
 
+    public static float fixValue(float value, float min, float max)
+    {
+        if (value < min) {
+            return min;
+        }
+        else if (value > max) {
+            return max;
+        }
+        return value;
+    }
+
     public static void knockBack(EntityLivingBase entityliving, EntityLivingBase attacker, float knockback)
     {
         double i = Math.sqrt(knockback);
