@@ -21,10 +21,10 @@ public class RPGItemBow extends ItemBow implements ILvlableItemBow, IHasBooksInf
     public RPGBowComponent bowComponent;
     public float maxPower;
 
-    public RPGItemBow(RPGBowComponent bowComponent, float maxPower, String name)
+    public RPGItemBow(RPGBowComponent bowComponent, float maxPower)
     {
-        setUnlocalizedName(name);
-        setTextureName(DangerRPG.MODID + ":weapons/range/" + name);
+        setUnlocalizedName(bowComponent.name);
+        setTextureName(DangerRPG.MODID + ":weapons/range/" + unlocalizedName);
         setCreativeTab(RPGOther.tabDangerRPG);
         this.bowComponent = bowComponent;
         this.maxPower = maxPower;

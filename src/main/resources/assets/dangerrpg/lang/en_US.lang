@@ -82,25 +82,25 @@ item.multitool_bedrock.name=Bedrock Multitool
 item.multitool_black_matter.name=Black Matter Multitool
 item.multitool_white_matter.name=White Matter Multitool
 
-item.helmet_obsidian.name=Obsidian Helmet
-item.chestplate_obsidian.name=Obsidian Chestplate
-item.leggings_obsidian.name=Obsidian Leggings
-item.boots_obsidian.name=Obsidian Boots
+item.armor_obsidian_helmet.name=Obsidian Helmet
+item.armor_obsidian_chestplate.name=Obsidian Chestplate
+item.armor_obsidian_leggings.name=Obsidian Leggings
+item.armor_obsidian_boots.name=Obsidian Boots
 
-item.helmet_bedrock.name=Bedrock Helmet
-item.chestplate_bedrock.name=Bedrock Chestplate
-item.leggings_bedrock.name=Bedrock Leggings
-item.boots_bedrock.name=Bedrock Boots
+item.armor_bedrock_helmet.name=Bedrock Helmet
+item.armor_bedrock_chestplate.name=Bedrock Chestplate
+item.armor_bedrock_leggings.name=Bedrock Leggings
+item.armor_bedrock_boots.name=Bedrock Boots
 
-item.helmet_black_matter.name=Black Matter Helmet
-item.chestplate_black_matter.name=Black Matter Chestplate
-item.leggings_black_matter.name=Black Matter Leggings
-item.boots_black_matter.name=Black Matter Boots
+item.armor_black_matter_helmet.name=Black Matter Helmet
+item.armor_black_matter_chestplate.name=Black Matter Chestplate
+item.armor_black_matter_leggings.name=Black Matter Leggings
+item.armor_black_matter_boots.name=Black Matter Boots
 
-item.helmet_white_matter.name=White Matter Helmet
-item.chestplate_white_matter.name=White Matter Chestplate
-item.leggings_white_matter.name=White Matter Leggings
-item.boots_white_matter.name=White Matter Boots
+item.armor_white_matter_helmet.name=White Matter Helmet
+item.armor_white_matter_chestplate.name=White Matter Chestplate
+item.armor_white_matter_leggings.name=White Matter Leggings
+item.armor_white_matter_boots.name=White Matter Boots
 
 item.shadow_bow.name=Shadow Bow
 item.sniper_bow.name=Sniper Bow

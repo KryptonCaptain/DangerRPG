@@ -9,9 +9,9 @@ import net.minecraft.world.World;
 
 public class RPGWeaponKnife extends RPGThrowableWeapon
 {
-    public RPGWeaponKnife(ToolMaterial toolMaterial, RPGToolComponent toolComponent, String name)
+    public RPGWeaponKnife(ToolMaterial toolMaterial, RPGToolComponent toolComponent)
     {
-        super(toolMaterial, toolComponent, name);
+        super(toolMaterial, toolComponent);
     }
 
     @Override

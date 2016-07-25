@@ -9,9 +9,9 @@ import net.minecraft.world.World;
 
 public class RPGWeaponTomahawk extends RPGThrowableWeapon
 {
-    public RPGWeaponTomahawk(ToolMaterial toolMaterial, RPGToolComponent toolComponent, String name)
+    public RPGWeaponTomahawk(ToolMaterial toolMaterial, RPGToolComponent toolComponent)
     {
-        super(toolMaterial, toolComponent, name);
+        super(toolMaterial, toolComponent);
     }
 
     @Override

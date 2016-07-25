@@ -99,7 +99,7 @@ public interface ILvlableItem
     };
 
     public static final ILvlableItemTool DEFAULT_SWORD = new ILvlableItemTool()
-    {
+    {   	
         @Override
         public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map)
         {

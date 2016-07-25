@@ -9,6 +9,7 @@ import mixac1.dangerrpg.api.item.ItemAttribute;
 import mixac1.dangerrpg.capability.GemType;
 import mixac1.dangerrpg.capability.ItemAttrParams;
 import mixac1.dangerrpg.capability.LvlableItem;
+import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
@@ -30,15 +31,22 @@ public class RPGWeapon extends ItemSword implements ILvlableItemTool, IGemableIt
     public ToolMaterial toolMaterial;
     public RPGToolComponent toolComponent;
 
-    public RPGWeapon(ToolMaterial toolMaterial, RPGToolComponent toolComponent, String name)
+    public RPGWeapon(ToolMaterial toolMaterial, RPGToolComponent toolComponent)
     {
         super(toolMaterial);
         this.toolMaterial = toolMaterial;
         this.toolComponent = toolComponent;
-        setUnlocalizedName(name);
-        setTextureName(DangerRPG.MODID + ":weapons/melee/" + name);
+        setUnlocalizedName(RPGItems.getRPGName(getItemComponent(this), getToolMaterial(this)));
+        setTextureName(DangerRPG.MODID + ":weapons/melee/" + unlocalizedName);
         setCreativeTab(RPGOther.tabDangerRPG);
         setMaxStackSize(1);
+    }
+    
+    public RPGWeapon(ToolMaterial toolMaterial, RPGToolComponent toolComponent, String name)
+    {
+        this(toolMaterial, toolComponent);
+        setUnlocalizedName(name);
+        setTextureName(DangerRPG.MODID + ":weapons/melee/" + unlocalizedName);
     }
 
     @Override

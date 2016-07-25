@@ -11,5 +11,5 @@ public class RPGOther
         public Item getTabIconItem() {
             return Items.arrow;
         }
-    });;
+    });
 }

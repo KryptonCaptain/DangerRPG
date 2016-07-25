@@ -9,10 +9,12 @@ import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemArmor;
 import mixac1.dangerrpg.api.item.ItemAttribute;
 import mixac1.dangerrpg.capability.ItemAttrParams;
 import mixac1.dangerrpg.capability.LvlableItem;
+import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.RPGItemComponent;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,20 +24,20 @@ import net.minecraft.item.ItemStack;
 
 public class RPGItemArmor extends ItemArmor implements ILvlableItemArmor, IHasBooksInfo
 {
+	protected static String[] ARMOR_TYPES = new String[] {"_helmet", "_chestplate", "_leggings", "_boots"};
     protected ArmorMaterial armorMaterial;
-    private String texture;
+    protected String name;
+    protected String modelTexture;
 
     public RPGItemArmor(ArmorMaterial armorMaterial, int renderIndex, int armorType, String name)
     {
         super(armorMaterial, renderIndex, armorType);
         this.armorMaterial = armorMaterial;
-        texture = "DangerRPG:textures/models/armors/".concat(name).concat("_layer_");
-        name = (armorType == 0 ? "helmet_" :
-                armorType == 1 ? "chestplate_" :
-                armorType == 2 ? "leggings_" :
-                armorType == 3 ? "boots_" : "").concat(name);
-        setUnlocalizedName(name);
-        setTextureName(DangerRPG.MODID + ":armors/" + name);
+        this.name = name;
+        name = name.concat(RPGItems.getArmorMaterialName(armorMaterial));
+        modelTexture = "DangerRPG:textures/models/armors/".concat(name).concat("_layer_");
+        setUnlocalizedName(name.concat(ARMOR_TYPES[armorType]));
+        setTextureName(DangerRPG.MODID + ":armors/" + unlocalizedName);
         setCreativeTab(RPGOther.tabDangerRPG);
     }
 
@@ -47,6 +49,13 @@ public class RPGItemArmor extends ItemArmor implements ILvlableItemArmor, IHasBo
             new RPGItemArmor(armorMaterial, 0, 2, name),
             new RPGItemArmor(armorMaterial, 0, 3, name)
         };
+    }
+    
+    @Override
+	@SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister iconRegister)
+    {
+        this.itemIcon = iconRegister.registerIcon(getIconString());
     }
 
     @Override
@@ -76,7 +85,11 @@ public class RPGItemArmor extends ItemArmor implements ILvlableItemArmor, IHasBo
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
     {
-        return texture.concat(String.valueOf(slot == 2 ? 2 : 1)).concat(".png");
+    	String str = modelTexture.concat(String.valueOf(slot == 2 ? 2 : 1)).concat(".png");
+    	if (type != null) {
+    		str = str.concat(type);
+    	}
+        return str;
     }
 
     @Override

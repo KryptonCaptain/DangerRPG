@@ -10,6 +10,7 @@ import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemTool;
 import mixac1.dangerrpg.api.item.ItemAttribute;
 import mixac1.dangerrpg.capability.ItemAttrParams;
 import mixac1.dangerrpg.capability.LvlableItem;
+import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.RPGItemComponent;
@@ -32,11 +33,11 @@ public class RPGMultiTool extends ItemTool implements ILvlableItemTool, IHasBook
         Sets.newHashSet(new Block[] {Blocks.planks, Blocks.bookshelf, Blocks.log, Blocks.log2, Blocks.chest, Blocks.pumpkin, Blocks.lit_pumpkin})
     );
 
-    public RPGMultiTool(ToolMaterial material, String name)
+    public RPGMultiTool(ToolMaterial material)
     {
         super(3.0F, material, multitoolBlocks);
-        setUnlocalizedName(name);
-        setTextureName(DangerRPG.MODID + ":tools/" + name);
+        setUnlocalizedName(RPGItems.getRPGName(getItemComponent(this), getToolMaterial(this)));
+        setTextureName(DangerRPG.MODID + ":tools/" + unlocalizedName);
         setCreativeTab(RPGOther.tabDangerRPG);
         setMaxStackSize(1);
     }

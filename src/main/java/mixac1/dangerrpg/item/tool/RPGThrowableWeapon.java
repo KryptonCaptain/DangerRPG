@@ -13,10 +13,10 @@ public abstract class RPGThrowableWeapon extends RPGWeapon implements IUseItemEx
 {
     Class throwEntityClass;
 
-    public RPGThrowableWeapon(ToolMaterial toolMaterial, RPGToolComponent toolComponent, String name)
+    public RPGThrowableWeapon(ToolMaterial toolMaterial, RPGToolComponent toolComponent)
     {
-        super(toolMaterial, toolComponent, name);
-        setTextureName(DangerRPG.MODID + ":weapons/throwable/" + name);
+        super(toolMaterial, toolComponent);
+        setTextureName(DangerRPG.MODID + ":weapons/throwable/" + unlocalizedName);
     }
 
     @Override

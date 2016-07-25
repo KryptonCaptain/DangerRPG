@@ -14,9 +14,9 @@ import net.minecraft.world.World;
 
 public class ItemSniperBow extends RPGItemBow
 {
-    public ItemSniperBow(RPGBowComponent bowComponent, float maxPower, String name)
+    public ItemSniperBow(RPGBowComponent bowComponent, float maxPower)
     {
-        super(bowComponent, maxPower, name);
+        super(bowComponent, maxPower);
     }
 
     @Override

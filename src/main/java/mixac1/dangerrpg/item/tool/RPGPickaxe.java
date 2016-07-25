@@ -7,6 +7,7 @@ import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemTool;
 import mixac1.dangerrpg.api.item.ItemAttribute;
 import mixac1.dangerrpg.capability.ItemAttrParams;
 import mixac1.dangerrpg.capability.LvlableItem;
+import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.RPGItemComponent;
@@ -19,11 +20,11 @@ import net.minecraft.item.ItemStack;
 
 public class RPGPickaxe extends ItemPickaxe implements ILvlableItemTool, IHasBooksInfo
 {
-    public RPGPickaxe(ToolMaterial toolMaterial, String name)
+    public RPGPickaxe(ToolMaterial toolMaterial)
     {
         super(toolMaterial);
-        setUnlocalizedName(name);
-        setTextureName(DangerRPG.MODID + ":tools/" + name);
+        setUnlocalizedName(RPGItems.getRPGName(getItemComponent(this), getToolMaterial(this)));
+        setTextureName(DangerRPG.MODID + ":tools/" + unlocalizedName);
         setCreativeTab(RPGOther.tabDangerRPG);
         setMaxStackSize(1);
     }
