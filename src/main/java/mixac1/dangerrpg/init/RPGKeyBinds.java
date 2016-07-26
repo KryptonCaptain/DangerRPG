@@ -3,10 +3,13 @@ package mixac1.dangerrpg.init;
 import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.util.Translator;
 import net.minecraft.client.settings.KeyBinding;
 
+@SideOnly(Side.CLIENT)
 public class RPGKeyBinds
 {
     public static KeyBinding specialItemKey = new KeyBinding(Translator.trans("rpgstr.key.special_use"), Keyboard.KEY_F, DangerRPG.MODNAME);

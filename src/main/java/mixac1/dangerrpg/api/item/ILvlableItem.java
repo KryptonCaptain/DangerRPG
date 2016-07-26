@@ -30,6 +30,9 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraft.world.World;
 
+/**
+ * Implements this interface for creating LvlableItem
+ */
 public interface ILvlableItem
 {
     public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map);

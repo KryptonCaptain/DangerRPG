@@ -3,12 +3,15 @@ package mixac1.dangerrpg.init;
 import java.util.HashMap;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.api.RPGApi;
 import mixac1.dangerrpg.client.render.entity.RenderArrowRPG;
 import mixac1.dangerrpg.client.render.entity.RenderBit;
 import mixac1.dangerrpg.client.render.entity.RenderMaterial;
 import mixac1.dangerrpg.client.render.entity.RenderThrowKnife;
 import mixac1.dangerrpg.client.render.entity.RenderThrowTomahawk;
+import mixac1.dangerrpg.client.render.item.RPGItemRenderModel;
 import mixac1.dangerrpg.client.render.item.RenderHammer;
 import mixac1.dangerrpg.client.render.item.RenderKatana;
 import mixac1.dangerrpg.client.render.item.RenderKnife;
@@ -25,6 +28,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
 
+@SideOnly(Side.CLIENT)
 public class RPGRenderers
 {
     public static HashMap<Item, ResourceLocation> MODEL_TEXTURES = new HashMap<Item, ResourceLocation>();
@@ -70,13 +74,13 @@ public class RPGRenderers
         MinecraftForgeClient.registerItemRenderer(RPGItems.knifeBlackMatter, RenderKnife.INSTANCE);
         MinecraftForgeClient.registerItemRenderer(RPGItems.knifeWhiteMatter, RenderKnife.INSTANCE);
 
-        RPGApi.registerItemRendererModel(RPGItems.hammerIron,        RenderHammer.INSTANCE);
-        RPGApi.registerItemRendererModel(RPGItems.hammerGold,        RenderHammer.INSTANCE);
-        RPGApi.registerItemRendererModel(RPGItems.hammerDiamond,     RenderHammer.INSTANCE);
-        RPGApi.registerItemRendererModel(RPGItems.hammerObsidian,    RenderHammer.INSTANCE);
-        RPGApi.registerItemRendererModel(RPGItems.hammerBedrock,     RenderHammer.INSTANCE);
-        RPGApi.registerItemRendererModel(RPGItems.hammerBlackMatter, RenderHammer.INSTANCE);
-        RPGApi.registerItemRendererModel(RPGItems.hammerWhiteMatter, RenderHammer.INSTANCE);
+        registerItemRendererE(RPGItems.hammerIron,        RenderHammer.INSTANCE);
+        registerItemRendererE(RPGItems.hammerGold,        RenderHammer.INSTANCE);
+        registerItemRendererE(RPGItems.hammerDiamond,     RenderHammer.INSTANCE);
+        registerItemRendererE(RPGItems.hammerObsidian,    RenderHammer.INSTANCE);
+        registerItemRendererE(RPGItems.hammerBedrock,     RenderHammer.INSTANCE);
+        registerItemRendererE(RPGItems.hammerBlackMatter, RenderHammer.INSTANCE);
+        registerItemRendererE(RPGItems.hammerWhiteMatter, RenderHammer.INSTANCE);
 
         MinecraftForgeClient.registerItemRenderer(RPGItems.shadowBow, RenderShadowBow.INSTANCE);
         MinecraftForgeClient.registerItemRenderer(RPGItems.sniperBow, RenderSniperBow.INSTANCE);
@@ -97,5 +101,10 @@ public class RPGRenderers
     private static void registerBlockRenderer()
     {
         //ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLvlupTable.class, RenderTestBlock.INSTANCE);
+    }
+    
+    public static void registerItemRendererE(Item item, RPGItemRenderModel model)
+    {
+        RPGApi.registerItemRendererModel(item, model, "DangerRPG:textures/models/items/");
     }
 }

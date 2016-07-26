@@ -4,6 +4,9 @@ import mixac1.dangerrpg.capability.GemType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 
+/**
+ * Implements this interface for creating GemableItem
+ */
 public interface IGemableItem
 {
     public static final IGemableItem DEFAULT = new IGemableItem()

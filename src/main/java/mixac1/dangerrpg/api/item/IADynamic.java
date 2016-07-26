@@ -4,6 +4,9 @@ import mixac1.dangerrpg.capability.LvlableItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
+/**
+ * Extends this class for creating Dynamic {@link ItemAttribute} 
+ */
 public class IADynamic extends ItemAttribute
 {
     public IADynamic(String name)

@@ -8,8 +8,8 @@ import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.capability.PlayerData;
 import net.minecraft.entity.player.EntityPlayer;
 
-public class MsgReqUpPA implements IMessage {
-
+public class MsgReqUpPA implements IMessage
+{
     public int index;
 
     public MsgReqUpPA() {}
