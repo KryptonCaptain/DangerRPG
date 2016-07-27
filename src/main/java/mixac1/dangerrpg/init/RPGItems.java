@@ -9,6 +9,7 @@ import mixac1.dangerrpg.item.RPGItemBow;
 import mixac1.dangerrpg.item.RPGItemComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
 import mixac1.dangerrpg.item.RPGToolMaterial;
+import mixac1.dangerrpg.item.TestWand;
 import mixac1.dangerrpg.item.armor.ItemMageArmor;
 import mixac1.dangerrpg.item.armor.RPGItemArmor;
 import mixac1.dangerrpg.item.gem.GemWeaponWitherSkull;
@@ -156,6 +157,9 @@ public class RPGItems
     public static Item sniperBow = new ItemSniperBow(RPGItemComponent.SNIPER_BOW, 4F);
 
     public static Item gemWitherSkull = new GemWeaponWitherSkull("gem_wither_skull");
+    
+    public static Item testWand = new TestWand("test_wand");
+   
 
     public static void load()
     {
@@ -165,6 +169,8 @@ public class RPGItems
 
     private static void registerItems()
     {
+    	registerItem(testWand);
+    	
         registerItem(swordTraining);
 
         registerItem(knifeIron);

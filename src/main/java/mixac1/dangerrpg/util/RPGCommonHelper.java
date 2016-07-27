@@ -6,16 +6,17 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.capability.itemattr.ItemAttributes;
-import mixac1.dangerrpg.tileentity.TileEntityModifyTable;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -158,11 +159,12 @@ public class RPGCommonHelper
 
     public static void breakBlock(World world, int x, int y, int z, Block block, int par)
     {
-        TileEntityModifyTable tileEntity = (TileEntityModifyTable) world.getTileEntity(x, y, z);
+        TileEntity tileEntity = world.getTileEntity(x, y, z);
 
-        if (tileEntity != null) {
-            for (int i = 0; i < tileEntity.getSizeInventory(); ++i) {
-                ItemStack stack = tileEntity.getStackInSlot(i);
+        if (tileEntity != null && tileEntity instanceof IInventory) {
+        	IInventory inventory = (IInventory) tileEntity;
+            for (int i = 0; i < inventory.getSizeInventory(); ++i) {
+                ItemStack stack = inventory.getStackInSlot(i);
 
                 if (stack != null) {
                     float f = DangerRPG.rand.nextFloat() * 0.8F + 0.1F;

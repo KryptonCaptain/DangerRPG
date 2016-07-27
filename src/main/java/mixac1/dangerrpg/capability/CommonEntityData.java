@@ -39,10 +39,10 @@ public class CommonEntityData implements IExtendedEntityProperties
     @Override
     public void init(Entity entity, World world)
     {
-        for (EntityAttribute iter : entityAttributes) {
+        for (EntityAttribute iter : getEntityAttributes()) {
             iter.init((EntityLivingBase) entity);
         }
-        for (EntityAttribute iter : workAttributes) {
+        for (EntityAttribute iter : getWorkAttributes()) {
             iter.init((EntityLivingBase) entity);
         }
     }
@@ -89,13 +89,13 @@ public class CommonEntityData implements IExtendedEntityProperties
     @Override
     public void saveNBTData(NBTTagCompound nbt)
     {
-        for (EntityAttributeE iter : entityAttributes) {
+        for (EntityAttributeE iter : getEntityAttributes()) {
             NBTTagCompound tmp = new NBTTagCompound();
             tmp.setInteger("lvl", iter.getLvl(entity));
             tmp.setFloat("value", iter.getValue(entity));
             nbt.setTag(iter.name, tmp);
         }
-        for (EntityAttribute iter : workAttributes) {
+        for (EntityAttribute iter : getWorkAttributes()) {
             nbt.setFloat(iter.name, iter.getValue(entity));
         }
     }
@@ -103,14 +103,14 @@ public class CommonEntityData implements IExtendedEntityProperties
     @Override
     public void loadNBTData(NBTTagCompound nbt)
     {
-        for (EntityAttributeE iter : entityAttributes) {
+        for (EntityAttributeE iter : getEntityAttributes()) {
             if (nbt.hasKey(iter.name)) {
                 NBTTagCompound tmp = (NBTTagCompound) nbt.getTag(iter.name);
                 iter.setLvl(tmp.getInteger("lvl"), entity);
                 iter.setValue(tmp.getFloat("value"), entity, false);
             }
         }
-        for (EntityAttribute iter : workAttributes) {
+        for (EntityAttribute iter : getWorkAttributes()) {
             if (nbt.hasKey(iter.name)) {
                 iter.setValue(nbt.getFloat(iter.name), entity, false);
             }
@@ -129,12 +129,22 @@ public class CommonEntityData implements IExtendedEntityProperties
     
     public EntityAttribute getPlayerAttribute(int hash)
     {
-        return (EntityAttribute) getObject(hash, workAttributes);
+        return (EntityAttribute) getObject(hash, getWorkAttributes());
     }
     
     public EntityAttributeE getPlayerAttributeE(int hash)
     {
-        return (EntityAttributeE) getObject(hash, entityAttributes);
+        return (EntityAttributeE) getObject(hash, getEntityAttributes());
+    }
+    
+    public ArrayList<EntityAttribute> getWorkAttributes()
+    {
+    	return workAttributes;
+    }
+    
+    public ArrayList<EntityAttributeE> getEntityAttributes()
+    {
+    	return entityAttributes;
     }
     
     public static class EAValues

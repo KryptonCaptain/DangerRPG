@@ -11,9 +11,12 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 
 public class RPGGuiIngame extends Gui
@@ -75,34 +78,35 @@ public class RPGGuiIngame extends Gui
             int width = res.getScaledWidth();
             int height = res.getScaledHeight();
 
-            renderPlayerBar(10, 10);
+            renderPlayerBar(mc.thePlayer, 10, 10);
             renderChargeBar((width - chargeWidth) / 2, height - 40 - chargeHeight);
+            renderEnemyBar(510, 10);
 
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             GL11.glEnable(GL11.GL_BLEND);
         }
     }
 
-    private void renderPlayerBar(int offsetX, int offsetY)
+    private void renderPlayerBar(EntityPlayer player, int offsetX, int offsetY)
     {
-        GuiInventory.func_147046_a(offsetX + 18, offsetY + 37, 16, 30F, 00f, mc.thePlayer);
+        GuiInventory.func_147046_a(offsetX + 18, offsetY + 37, 16, 30F, 00f, player);
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         mc.getTextureManager().bindTexture(TEXTURE);
         drawTexturedModalRect(offsetX, offsetY, 0, 0, textureWidth, textureHeight);
 
-        float currHealth = mc.thePlayer.getHealth();
-        float absorbHealth = mc.thePlayer.getAbsorptionAmount();
-        float maxHealth = mc.thePlayer.getMaxHealth() + absorbHealth;
+        float currHealth = player.getHealth();
+        float absorbHealth = player.getAbsorptionAmount();
+        float maxHealth = player.getMaxHealth() + absorbHealth;
         if (maxHealth > 0) {
             int procHealth = getProcent(currHealth, maxHealth, healthBarWidth);
             int procAbsorb = getProcent(absorbHealth, maxHealth, healthBarWidth);
-            if (mc.thePlayer.isPotionActive(Potion.wither)) {
+            if (player.isPotionActive(Potion.wither)) {
                 drawTexturedModalRect(offsetX + healthBarOffsetX, offsetY + healthBarOffsetY, healthBarOffsetU, healthBarOffsetV + healthBarHeight * 3, healthBarWidth, healthBarHeight);
             }
             else {
                 if (procHealth > 0) {
-                    if (mc.thePlayer.isPotionActive(Potion.poison)) {
+                    if (player.isPotionActive(Potion.poison)) {
                         drawTexturedModalRect(offsetX + healthBarOffsetX, offsetY + healthBarOffsetY, healthBarOffsetU, healthBarOffsetV + healthBarHeight * 2, procHealth, healthBarHeight);
                     }
                     else {
@@ -115,8 +119,8 @@ public class RPGGuiIngame extends Gui
             }
         }
 
-        float currMana = PlayerAttributes.CURR_MANA.getValue(mc.thePlayer);
-        float maxMana = PlayerAttributes.MANA.getValue(mc.thePlayer);
+        float currMana = PlayerAttributes.CURR_MANA.getValue(player);
+        float maxMana = PlayerAttributes.MANA.getValue(player);
         if (maxMana > 0) {
             int procMana = getProcent(currMana, maxMana, healthBarWidth);
             if (procMana > 0) {
@@ -124,23 +128,23 @@ public class RPGGuiIngame extends Gui
             }
         }
 
-        float currArmor = RPGCommonHelper.calcTotalPhisicResistance(mc.thePlayer);
+        float currArmor = RPGCommonHelper.calcTotalPhisicResistance(player);
         int proc = getProcent(currArmor, 100F, healthBarWidth);
         if (proc > 0) {
             drawTexturedModalRect(offsetX + healthBarOffsetX, offsetY + healthBarOffsetY + healthBarIndent * 2, healthBarOffsetU, healthBarOffsetV + healthBarHeight * 5, proc, healthBarHeight);
         }
 
-        currArmor = RPGCommonHelper.calcTotalMagicResistance(mc.thePlayer);
+        currArmor = RPGCommonHelper.calcTotalMagicResistance(player);
         proc = getProcent(currArmor, 100F, healthBarWidth);
         if (proc > 0) {
             drawTexturedModalRect(offsetX + healthBarOffsetX, offsetY + healthBarOffsetY + healthBarIndent * 3, healthBarOffsetU, healthBarOffsetV + healthBarHeight * 6, proc, healthBarHeight);
         }
 
-        int level = mc.thePlayer.getFoodStats().getFoodLevel();
+        int level = player.getFoodStats().getFoodLevel();
         proc = getProcent(level, 20F, hungerBarHeight);
         if (level < 20) {
             drawTexturedModalRect(offsetX + hungerBarOffsetX, offsetY + hungerBarOffsetY, hungerBarOffsetU, hungerBarOffsetV, hungerBarWidth, hungerBarHeight);
-            if (mc.thePlayer.isPotionActive(Potion.hunger)) {
+            if (player.isPotionActive(Potion.hunger)) {
                 drawTexturedModalRect(offsetX + hungerIconOffsetX, offsetY + hungerIconOffsetY, hungerIconOffsetU + hungerIconWidth, hungerIconOffsetV, hungerIconWidth, hungerIconHeight);
                 drawTexturedModalRect(offsetX + hungerBarOffsetX, offsetY + hungerBarOffsetY, hungerBarOffsetU + hungerBarWidth * 2, hungerBarOffsetV, hungerBarWidth, proc);
             }
@@ -150,7 +154,7 @@ public class RPGGuiIngame extends Gui
             }
         }
 
-        int air = mc.thePlayer.getAir();
+        int air = player.getAir();
         proc = getProcent(air, 300F, hungerBarHeight);
         if (air < 300) {
             drawTexturedModalRect(offsetX + hungerIconOffsetX + hungerBarIndent, offsetY + hungerIconOffsetY, hungerIconOffsetU + hungerIconWidth * 2, hungerIconOffsetV, hungerIconWidth, hungerIconHeight);
@@ -158,10 +162,10 @@ public class RPGGuiIngame extends Gui
             drawTexturedModalRect(offsetX + hungerBarOffsetX + hungerBarIndent, offsetY + hungerBarOffsetY, hungerBarOffsetU + hungerBarWidth * 3, hungerBarOffsetV, hungerBarWidth, proc);
         }
 
-        String s = fr.trimStringToWidth(mc.thePlayer.getDisplayName(), line1Width - 6);
+        String s = fr.trimStringToWidth(player.getDisplayName(), line1Width - 6);
         fr.drawStringWithShadow(s, offsetX + line1OffsetX + (line1Width - fr.getStringWidth(s)) / 2, offsetY + line1OffsetY + (line1Height - fr.FONT_HEIGHT) / 2, 0xFFFFFF);
 
-        s = String.valueOf((int) EntityAttributes.LVL.getValue(mc.thePlayer));
+        s = String.valueOf((int) EntityAttributes.LVL.getValue(player));
         fr.drawStringWithShadow(s, offsetX + line2OffsetX + (line2Width - fr.getStringWidth(s)) / 2, offsetY + line2OffsetY + (line2Height - fr.FONT_HEIGHT) / 2, 0xFFFFFF);
     }
 
@@ -182,9 +186,37 @@ public class RPGGuiIngame extends Gui
         }
     }
 
+    private void renderEnemyBar(int offsetX, int offsetY)
+    {
+    	MovingObjectPosition mop = RPGCommonHelper.getMouseOver(0, 10);
+    	if (mop != null && mop.entityHit != null && mop.entityHit instanceof EntityLivingBase)
+    	{
+    		EntityLivingBase entity = (EntityLivingBase) mop.entityHit;
+    		if (entity instanceof EntityPlayer) {
+    			renderTestString(200, 10, entity.getCommandSenderName(),
+				         "lvl " + EntityAttributes.LVL.getValue(entity),
+				         "health " + PlayerAttributes.HEALTH.getValue(entity),
+    			         "mana " + PlayerAttributes.MANA.getValue(entity));
+    		}
+    		else {
+    			renderTestString(200, 10, entity.getCommandSenderName(),
+				         "lvl " + EntityAttributes.LVL.getValue(entity),
+				         "health " + EntityAttributes.HEALTH.getValue(entity));
+    		}
+    	}
+    }
+
     private int getProcent(float curr, float max, int width)
     {
         int value = (int) (curr /  max * width);
         return value == 0 && curr != 0 ? 1 : value > width ? width : value;
+    }
+
+    private void renderTestString(int x, int y, Object... str)
+    {
+    	int i = 0;
+    	for (Object tmp : str) {
+    		fr.drawStringWithShadow(tmp.toString(), x, y + fr.FONT_HEIGHT * i++, 0xffffff);
+    	}
     }
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import mixac1.dangerrpg.DangerRPG;
+import mixac1.dangerrpg.api.entity.EntityAttribute;
 import mixac1.dangerrpg.api.entity.EntityAttributeE;
 import mixac1.dangerrpg.capability.playerattr.PlayerAttributes;
 import mixac1.dangerrpg.init.RPGConfig;
@@ -15,6 +16,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 public class PlayerData extends CommonEntityData
 {
 	public final EntityPlayer player;
+	
+	public static ArrayList<EntityAttributeE> entityAttributes = new ArrayList<EntityAttributeE>(CommonEntityData.entityAttributes);    
+	public static ArrayList<EntityAttribute>  workAttributes   = new ArrayList<EntityAttribute>(CommonEntityData.workAttributes);
 	
 	static
 	{
@@ -99,5 +103,17 @@ public class PlayerData extends CommonEntityData
                 pas.remove(rand);
             }
         }
+    }
+    
+    @Override
+	public ArrayList<EntityAttribute> getWorkAttributes()
+    {
+    	return workAttributes;
+    }
+    
+    @Override
+	public ArrayList<EntityAttributeE> getEntityAttributes()
+    {
+    	return entityAttributes;
     }
 }

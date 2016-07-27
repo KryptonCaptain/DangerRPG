@@ -156,8 +156,6 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
     @Override
     public void onEntityUpdate()
     {
-        //DangerRPG.log(motionX + " " + motionY + " " + motionZ);
-
         if (++ticksAlive >= ticksExisted) {
             setDead();
             return;
@@ -398,7 +396,8 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
         motionZ *= -0.05D;
     }
 
-    public Entity getThrower()
+    @Override
+	public Entity getThrower()
     {
         if (thrower == null && throwerName != null && throwerName.length() > 0) {
             thrower = worldObj.getPlayerEntityByName(throwerName);
@@ -406,7 +405,8 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
         return thrower;
     }
 
-    public void setThrower(Entity entity) {
+    @Override
+	public void setThrower(Entity entity) {
         if (entity instanceof EntityLivingBase) {
             thrower = (EntityLivingBase) entity;
         }

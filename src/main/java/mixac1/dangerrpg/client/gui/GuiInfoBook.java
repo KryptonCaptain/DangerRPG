@@ -60,7 +60,7 @@ public class GuiInfoBook extends GuiScreen
     public GuiInfoBook(EntityPlayer player)
     {
         this.player = player;
-        attributes = CommonEntityData.get(player).entityAttributes;
+        attributes = CommonEntityData.get(player).getEntityAttributes();
     }
 
     @Override
