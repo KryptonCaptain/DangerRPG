@@ -42,7 +42,7 @@ public class RPGRegister
     {
         CommonEntityData.entityAttributes.add(pa);
     }
-    
+
     /**
 	 * Used for adding own {@link EntityAttribute} to {@link EntityLivingData}
 	 */
@@ -58,7 +58,7 @@ public class RPGRegister
     {
     	EntityLivingData.entityAttributes.add(pa);
     }
-    
+
     /**
 	 * Used for adding own {@link EntityAttribute} to {@link PlayerData}
 	 */
@@ -102,7 +102,7 @@ public class RPGRegister
         MinecraftForgeClient.registerItemRenderer(item, model);
         RPGRenderers.MODEL_TEXTURES.put(item, new ResourceLocation(resDomain, resPath.concat(item.getUnlocalizedName().concat(".png"))));
     }
-    
+
     /**
      * Advanced method model registering.
      * Also, it is registering {@link ResourceLocation} of texture for model.
@@ -112,9 +112,9 @@ public class RPGRegister
     public static void registerItemRendererModel(Item item, RPGItemRenderModel model, String resFullPath)
     {
         MinecraftForgeClient.registerItemRenderer(item, model);
-        RPGRenderers.MODEL_TEXTURES.put(item, new ResourceLocation(resFullPath.concat(item.getUnlocalizedName().concat(".png"))));
+        RPGRenderers.MODEL_TEXTURES.put(item, new ResourceLocation(resFullPath.concat(item.unlocalizedName.concat(".png"))));
     }
-    
+
     /**
      * Registering {@link ToolMaterial} name.
      * This name will be used, if you choose constructor of {@link RPGWeapon} and others classes without using item name.
@@ -124,7 +124,7 @@ public class RPGRegister
     {
     	RPGItems.TOOL_MATERIAL_NAMES.put(toolMaterial, name);
     }
-    
+
     /**
      * Registering {@link ArmorMaterial} name.
      * This name will be used, if you choose constructor of {@link RPGItemArmor} and others classes without using item name.

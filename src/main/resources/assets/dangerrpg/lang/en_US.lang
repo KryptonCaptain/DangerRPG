@@ -1,6 +1,8 @@
 itemGroup.tabDangerRPG=Danger RPG
 
 item.sword_training.name=Training Sword
+item.test_wand.name=Test Wand
+
 item.sword_obsidian.name=Obsidian Sword
 item.sword_bedrock.name=Bedrock Sword
 item.sword_black_matter.name=Black Matter Sword
@@ -180,11 +182,11 @@ it_attr.agi_mul=Agi to Speed
 it_attr.int_mul=Int to Magic damage
 
 pl_attr.health=Health
-pl_attr.health_info=Increases maximum level of health
+pl_attr.health.info=Increases maximum level of health
 pl_attr.mana=Mana
 pl_attr.mana.info=Increases maximum level of mana
 pl_attr.str=Strength
-pl_attr.str_info=Increases physical damage and power of knockback
+pl_attr.str.info=Increases physical damage and power of knockback
 pl_attr.agi=Agility
 pl_attr.agi.info=Increases attack speed
 pl_attr.int=Intelligence

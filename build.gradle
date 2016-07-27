@@ -42,7 +42,7 @@ compileJava {
 jar {
     manifest {
         attributes 'FMLAT': 'dangerrpg_at.cfg'
-        attributes 'FMLCorePlugin': 'dahaka.dangerrpg.hook.RPGHookLoader'
+        attributes 'FMLCorePlugin': 'mixac1.dangerrpg.hook.RPGHookLoader'
         attributes 'FMLCorePluginContainsFMLMod': 'true'
     }
 }

@@ -1,20 +1,21 @@
 package gloomyfolken.hooklib.asm;
 
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
-
-import gloomyfolken.hooklib.asm.HookLogger.SystemOutLogger;
-
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
+
+import gloomyfolken.hooklib.asm.HookLogger.SystemOutLogger;
+import mixac1.dangerrpg.hook.HookException;
+
 public class HookClassTransformer {
 
     public HookLogger logger = new SystemOutLogger();
-    protected HashMap<String, List<AsmHook>> hooksMap = new HashMap<String, List<AsmHook>>();
+    public HashMap<String, List<AsmHook>> hooksMap = new HashMap<String, List<AsmHook>>();
     private HookContainerParser containerParser = new HookContainerParser(this);
 
     public void registerHook(AsmHook hook) {
@@ -63,16 +64,23 @@ public class HookClassTransformer {
                         (numInjectedHooks == 1 ? "" : "s") + " to " + className);
                 for (AsmHook notInjected : hooksWriter.hooks) {
                     logger.warning("Can not found target method of hook " + notInjected);
+                    throw new HookException("Can not found target method of hook ", notInjected);
                 }
 
                 return cw.toByteArray();
-            } catch (Exception e) {
+            }
+            catch (HookException e) {
+                throw new HookException(e.getMessage().concat(e.hook.toString()));
+            }
+            catch (Exception e) {
                 logger.severe("A problem has occured during transformation of class " + className + ".");
                 logger.severe("Attached hooks:");
                 for (AsmHook hook : hooks) {
                     logger.severe(hook.toString());
                 }
                 logger.severe("Stack trace:", e);
+
+                throw new HookException("Some problems with hooks");
             }
         }
         return bytecode;

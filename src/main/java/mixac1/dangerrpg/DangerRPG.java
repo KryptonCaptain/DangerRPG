@@ -64,7 +64,7 @@ public class DangerRPG
         }
         DangerRPG.logger.info(buf.toString());
     }
-    
+
     public static String trans(String s)
     {
         return StatCollector.translateToLocal(s);

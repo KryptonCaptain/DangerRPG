@@ -77,7 +77,7 @@ public class GuiInfoBookContentPlayer extends GuiInfoBookContent
             s = mc.fontRenderer.trimStringToWidth(parent.attributes.get(currIndex).getDispayName().toUpperCase(), titleSizeX);
             mc.fontRenderer.drawStringWithShadow(s, offsetX + (titleSizeX - mc.fontRenderer.getStringWidth(s) + 4) / 2, offsetY + (titleSizeY - mc.fontRenderer.FONT_HEIGHT + 4) / 2, 0xffffff);
 
-            s = DangerRPG.trans("it_atr.lvl").concat(": ").concat(String.valueOf(parent.attributes.get(currIndex).getLvl(player)));
+            s = DangerRPG.trans("it_attr.lvl").concat(": ").concat(String.valueOf(parent.attributes.get(currIndex).getLvl(player)));
             mc.fontRenderer.drawStringWithShadow(s, offsetX + infoOffsetX, offsetY + infoOffsetY, 0xffffff);
 
             s = DangerRPG.trans("rpgstr.value").concat(": ").concat(String.valueOf(parent.attributes.get(currIndex).displayValue(player)));

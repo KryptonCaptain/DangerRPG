@@ -1,17 +1,17 @@
 package gloomyfolken.hooklib.minecraft;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
+
+import org.apache.commons.io.IOUtils;
+
 import cpw.mods.fml.common.asm.transformers.DeobfuscationTransformer;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import gloomyfolken.hooklib.asm.AsmHook;
 import gloomyfolken.hooklib.asm.HookClassTransformer;
 import gloomyfolken.hooklib.asm.ReadClassHelper;
-
-import org.apache.commons.io.IOUtils;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
 
 /**
  * Удобная базовая реализация IFMLLoadingPlugin для использования HookLib.
@@ -27,7 +27,7 @@ public abstract class HookLoader implements IFMLLoadingPlugin {
         }
     }
 
-    private static HookClassTransformer getTransformer() {
+    public static HookClassTransformer getTransformer() {
         return PrimaryClassTransformer.instance.registeredSecondTransformer ?
                 MinecraftClassTransformer.instance : PrimaryClassTransformer.instance;
     }
@@ -63,6 +63,7 @@ public abstract class HookLoader implements IFMLLoadingPlugin {
     }
 
     // 1.7.x only
+    @Override
     public String getAccessTransformerClass() {
         return null;
     }
