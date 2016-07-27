@@ -5,8 +5,8 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.api.player.PlayerAttribute;
-import mixac1.dangerrpg.capability.PlayerData;
+import mixac1.dangerrpg.api.entity.EntityAttribute;
+import mixac1.dangerrpg.capability.CommonEntityData;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class MsgSyncPA implements IMessage
@@ -42,7 +42,7 @@ public class MsgSyncPA implements IMessage
         public IMessage onMessage(MsgSyncPA message, MessageContext ctx)
         {
             EntityPlayer player = DangerRPG.proxy.getPlayerFromMessageCtx(ctx);
-            PlayerAttribute pa = PlayerData.get(player).getPlayerAttribute(message.hash);
+            EntityAttribute pa = CommonEntityData.get(player).getPlayerAttribute(message.hash);
             pa.setValue(message.value, player, false);
             return null;
         }

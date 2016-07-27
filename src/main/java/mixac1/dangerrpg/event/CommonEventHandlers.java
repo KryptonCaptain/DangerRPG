@@ -1,7 +1,9 @@
 package mixac1.dangerrpg.event;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import mixac1.dangerrpg.capability.EntityLivingData;
 import mixac1.dangerrpg.capability.PlayerData;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
@@ -16,13 +18,17 @@ public class CommonEventHandlers
         if (e.entity instanceof EntityPlayer) {
             PlayerData.register((EntityPlayer) e.entity);
         }
+        else if (e.entity instanceof EntityLivingBase)
+        {
+        	EntityLivingData.register((EntityLivingBase) e.entity);
+        }
     }
 
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent e)
     {
         if (e.entity instanceof EntityPlayer) {
-            PlayerData.get((EntityPlayer) e.entity).requestSyncAll();;
+        	PlayerData.get((EntityPlayer) e.entity).requestAll();
         }
     }
     

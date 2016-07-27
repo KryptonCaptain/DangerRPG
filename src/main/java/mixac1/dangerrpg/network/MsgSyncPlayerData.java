@@ -6,7 +6,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.capability.PlayerData;
+import mixac1.dangerrpg.capability.CommonEntityData;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class MsgSyncPlayerData implements IMessage
@@ -15,10 +15,10 @@ public class MsgSyncPlayerData implements IMessage
 
     public MsgSyncPlayerData () {}
 
-    public MsgSyncPlayerData(PlayerData playerData)
+    public MsgSyncPlayerData(CommonEntityData entityData)
     {
         this.data = new NBTTagCompound();
-        playerData.saveNBTData(this.data);
+        entityData.saveNBTData(this.data);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class MsgSyncPlayerData implements IMessage
         @Override
         public IMessage onMessage(MsgSyncPlayerData message, MessageContext ctx)
         {
-            PlayerData.get(DangerRPG.proxy.getPlayerFromMessageCtx(ctx)).loadNBTData(message.data);
+            CommonEntityData.get(DangerRPG.proxy.getPlayerFromMessageCtx(ctx)).loadNBTData(message.data);
             return null;
         }
     }
@@ -48,8 +48,54 @@ public class MsgSyncPlayerData implements IMessage
         @Override
         public IMessage onMessage(MsgSyncPlayerData message, MessageContext ctx)
         {
-            PlayerData.get(DangerRPG.proxy.getPlayerFromMessageCtx(ctx)).syncAll();
+            CommonEntityData.get(DangerRPG.proxy.getPlayerFromMessageCtx(ctx)).syncAll();
             return null;
         }
     }
+    
+    /*public static class MsgSyncEntityData extends MsgSyncPlayerData
+    {
+    	private int entityId;
+
+        public MsgSyncEntityData () {}
+
+        public MsgSyncEntityData(CommonEntityData entityData, int entityId)
+        {
+            super(entityData);
+        }
+
+        @Override
+        public void fromBytes(ByteBuf buf)
+        {
+        	super.fromBytes(buf);
+        	entityId = buf.readInt();
+        }
+
+        @Override
+        public void toBytes(ByteBuf buf)
+        {
+        	super.toBytes(buf);
+            buf.writeInt(entityId);
+        }
+        
+        public static class HandlerClient implements IMessageHandler<MsgSyncEntityData, IMessage>
+        {
+            @Override
+            public IMessage onMessage(MsgSyncEntityData message, MessageContext ctx)
+            {
+                CommonEntityData.get(DangerRPG.proxy.getPlayerFromMessageCtx(ctx)).loadNBTData(message.data);
+                return null;
+            }
+        }
+        
+        public static class HandlerServer implements IMessageHandler<MsgSyncEntityData, IMessage>
+        {
+            @Override
+            public IMessage onMessage(MsgSyncEntityData message, MessageContext ctx)
+            {
+                CommonEntityData.get(DangerRPG.proxy.getPlayerFromMessageCtx(ctx)).syncAll();
+                return null;
+            }
+        }
+    }*/
 }

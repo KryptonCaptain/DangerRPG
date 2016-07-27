@@ -1,7 +1,7 @@
 package mixac1.dangerrpg.capability;
 
+import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.item.gem.Gem;
-import mixac1.dangerrpg.util.Translator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -60,6 +60,6 @@ public enum GemType
     
     public String getDispayName()
     {
-        return Translator.trans("gem_type.".concat(name));
+        return DangerRPG.trans("gem_type.".concat(name));
     }
 }

@@ -2,10 +2,10 @@ package mixac1.dangerrpg.client.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.init.RPGBlocks;
 import mixac1.dangerrpg.inventory.ContainerLvlupTable;
-import mixac1.dangerrpg.util.Translator;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -105,8 +105,8 @@ public class GuiLvlupTable extends GuiContainer
                     }
                 }
             } 
-            mc.fontRenderer.drawSplitString(Translator.trans("rpgstr.lvlup_table.1button"), guiLeft + 65, guiTop + 47, 100, 0x322D23);
-            mc.fontRenderer.drawSplitString(Translator.trans("rpgstr.lvlup_table.2button"), guiLeft + 65, guiTop + 47 + butSizeY, butSizeX, 0x322D23);
+            mc.fontRenderer.drawSplitString(DangerRPG.trans("rpgstr.lvlup_table.1button"), guiLeft + 65, guiTop + 47, 100, 0x322D23);
+            mc.fontRenderer.drawSplitString(DangerRPG.trans("rpgstr.lvlup_table.2button"), guiLeft + 65, guiTop + 47 + butSizeY, butSizeX, 0x322D23);
         }
     }
     

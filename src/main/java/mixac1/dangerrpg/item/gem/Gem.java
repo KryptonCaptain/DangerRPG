@@ -6,7 +6,6 @@ import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.capability.GemType;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.IHasBooksInfo;
-import mixac1.dangerrpg.util.Translator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,7 +24,7 @@ public abstract class Gem extends Item implements IHasBooksInfo
     @SideOnly(Side.CLIENT)
     public String getInformationToInfoBook(ItemStack item, EntityPlayer player, ItemStack gem)
     {
-        return Translator.trans("rpgstr.type").concat(": ").concat(getGemType().getDispayName()).concat("\n\n");
+        return DangerRPG.trans("rpgstr.type").concat(": ").concat(getGemType().getDispayName()).concat("\n\n");
     }
     
     public abstract GemType getGemType();

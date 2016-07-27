@@ -4,10 +4,10 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.capability.GemType;
 import mixac1.dangerrpg.capability.playerattr.PlayerAttributes;
 import mixac1.dangerrpg.util.CopyPastedWorldHelper;
-import mixac1.dangerrpg.util.Translator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityWitherSkull;
 import net.minecraft.item.ItemStack;
@@ -66,17 +66,17 @@ public class GemWeaponWitherSkull extends GemWeaponSpecialAttack
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack item, EntityPlayer player, List list, boolean flag)
     {
-        list.add(EnumChatFormatting.GOLD + Translator.trans("rpgstr.gem_type") + ":");
-        list.add(EnumChatFormatting.GRAY + GemType.GEM_SPECIAL_ATTACK.getDispayName() + " (" + Translator.trans("rpgstr.weapon") + ")");
+        list.add(EnumChatFormatting.GOLD + DangerRPG.trans("rpgstr.gem_type") + ":");
+        list.add(EnumChatFormatting.GRAY + GemType.GEM_SPECIAL_ATTACK.getDispayName() + " (" + DangerRPG.trans("rpgstr.weapon") + ")");
         list.add("");
-        list.add(EnumChatFormatting.DARK_AQUA + Translator.trans("rpgstr.description") + ":");
-        list.add(EnumChatFormatting.GRAY + Translator.trans("rpgstr.item.gem_wither_skull"));
+        list.add(EnumChatFormatting.DARK_AQUA + DangerRPG.trans("rpgstr.description") + ":");
+        list.add(EnumChatFormatting.GRAY + DangerRPG.trans("rpgstr.item.gem_wither_skull"));
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public String getInformationToInfoBook(ItemStack item, EntityPlayer player, ItemStack gem)
     {
-        return super.getInformationToInfoBook(item, player, gem).concat(Translator.trans("rpgstr.no_info_yet"));
+        return super.getInformationToInfoBook(item, player, gem).concat(DangerRPG.trans("rpgstr.no_info_yet"));
     }
 }

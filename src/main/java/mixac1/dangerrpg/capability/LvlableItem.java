@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.api.RPGApi;
+import mixac1.dangerrpg.api.RPGRegister;
 import mixac1.dangerrpg.api.item.ILvlableItem;
 import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemArmor;
 import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemBow;
@@ -100,7 +100,7 @@ public class LvlableItem
 
     private static void registerParamsDefault(Item item, HashMap<ItemAttribute, ItemAttrParams> map)
     {
-        RPGApi.registerDynamicItemAttribute(map, ItemAttributes.MAX_EXP, RPGConfig.itemStartMaxExp, EXP_MUL);
+        RPGRegister.registerDynamicItemAttribute(map, ItemAttributes.MAX_EXP, RPGConfig.itemStartMaxExp, EXP_MUL);
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.DefaultIAEvent(item, map));
     }
 
@@ -118,8 +118,8 @@ public class LvlableItem
             durab = item.getMaxDamage();
         }
 
-        RPGApi.registerDynamicItemAttribute(map, ItemAttributes.ENCHANTABILITY, ench, Multiplier.ADD_1);
-        RPGApi.registerDynamicItemAttribute(map, ItemAttributes.MAX_DURABILITY, durab, DUR_MUL);
+        RPGRegister.registerDynamicItemAttribute(map, ItemAttributes.ENCHANTABILITY, ench, Multiplier.ADD_1);
+        RPGRegister.registerDynamicItemAttribute(map, ItemAttributes.MAX_DURABILITY, durab, DUR_MUL);
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemModIAEvent(item, map));
     }
 
@@ -130,14 +130,14 @@ public class LvlableItem
         RPGToolComponent comp = iLvl.getItemComponent(item);
         Item.ToolMaterial mat = iLvl.getToolMaterial(item);
 
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.MELEE_DAMAGE, comp.meleeDamage + mat.getDamageVsEntity() * comp.strMul * 2);
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.MELEE_SPEED,  comp.meleeSpeed);
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.MAGIC,        comp.magic);
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.STR_MUL,      comp.strMul);
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.AGI_MUL,      comp.agiMul);
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.INT_MUL,      comp.intMul);
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.KNOCKBACK,    comp.knBack);
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.REACH,        comp.reach);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.MELEE_DAMAGE, comp.meleeDamage + mat.getDamageVsEntity() * comp.strMul * 2);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.MELEE_SPEED,  comp.meleeSpeed);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.MAGIC,        comp.magic);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.STR_MUL,      comp.strMul);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.AGI_MUL,      comp.agiMul);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.INT_MUL,      comp.intMul);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.KNOCKBACK,    comp.knBack);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.REACH,        comp.reach);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemSwordIAEvent(item, map));
     }
@@ -149,15 +149,15 @@ public class LvlableItem
         RPGToolComponent comp = iLvl.getItemComponent(item);
         Item.ToolMaterial mat = iLvl.getToolMaterial(item);
 
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.MELEE_DAMAGE, comp.meleeDamage + mat.getDamageVsEntity() * comp.strMul * 2);
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.MELEE_SPEED,  comp.meleeSpeed);
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.MAGIC,        comp.magic);
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.STR_MUL,      comp.strMul);
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.AGI_MUL,      comp.agiMul);
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.INT_MUL,      comp.intMul);
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.KNOCKBACK,    comp.knBack);
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.REACH,        comp.reach);
-        RPGApi.registerDynamicItemAttribute(map, ItemAttributes.EFFICIENCY,  mat.getEfficiencyOnProperMaterial(), Multiplier.ADD_1);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.MELEE_DAMAGE, comp.meleeDamage + mat.getDamageVsEntity() * comp.strMul * 2);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.MELEE_SPEED,  comp.meleeSpeed);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.MAGIC,        comp.magic);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.STR_MUL,      comp.strMul);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.AGI_MUL,      comp.agiMul);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.INT_MUL,      comp.intMul);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.KNOCKBACK,    comp.knBack);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.REACH,        comp.reach);
+        RPGRegister.registerDynamicItemAttribute(map, ItemAttributes.EFFICIENCY,  mat.getEfficiencyOnProperMaterial(), Multiplier.ADD_1);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemToolIAEvent(item, map));
     }
@@ -168,8 +168,8 @@ public class LvlableItem
         ILvlableItemArmor iLvl = (ILvlableItemArmor) (item instanceof ILvlableItemArmor ? item : ILvlableItem.DEFAULT_ARMOR);
         ArmorMaterial mat = iLvl.getArmorMaterial(item);
 
-        RPGApi.registerStaticItemAttribute(map,  ItemAttributes.PHISIC_ARMOR, mat.getDamageReductionAmount(((ItemArmor) item).armorType));
-        RPGApi.registerDynamicItemAttribute(map, ItemAttributes.MAGIC_ARMOR,  RPGConfig.itemStartMagicArmor, Multiplier.ADD_1);
+        RPGRegister.registerStaticItemAttribute(map,  ItemAttributes.PHISIC_ARMOR, mat.getDamageReductionAmount(((ItemArmor) item).armorType));
+        RPGRegister.registerDynamicItemAttribute(map, ItemAttributes.MAGIC_ARMOR,  RPGConfig.itemStartMagicArmor, Multiplier.ADD_1);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemArmorIAEvent(item, map));
     }
@@ -180,16 +180,16 @@ public class LvlableItem
         ILvlableItemBow iLvl = (ILvlableItemBow) (item instanceof ILvlableItemBow ? item : ILvlableItem.DEFAULT_BOW);
         RPGBowComponent comp = iLvl.getItemComponent(item);
 
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.MELEE_DAMAGE, comp.meleeDamage);
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.MELEE_SPEED,  comp.meleeSpeed);
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.SHOT_DAMAGE,  comp.shotDamage);
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.SHOT_POWER,   comp.shotPower);
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.SHOT_SPEED,   comp.shotSpeed);
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.MAGIC,        comp.magic);
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.STR_MUL,      comp.strMul);
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.AGI_MUL,      comp.agiMul);
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.INT_MUL,      comp.intMul);
-        RPGApi.registerStaticItemAttribute(map, ItemAttributes.KNOCKBACK,    comp.knBack);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.MELEE_DAMAGE, comp.meleeDamage);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.MELEE_SPEED,  comp.meleeSpeed);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.SHOT_DAMAGE,  comp.shotDamage);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.SHOT_POWER,   comp.shotPower);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.SHOT_SPEED,   comp.shotSpeed);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.MAGIC,        comp.magic);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.STR_MUL,      comp.strMul);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.AGI_MUL,      comp.agiMul);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.INT_MUL,      comp.intMul);
+        RPGRegister.registerStaticItemAttribute(map, ItemAttributes.KNOCKBACK,    comp.knBack);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemBowIAEvent(item, map));
     }

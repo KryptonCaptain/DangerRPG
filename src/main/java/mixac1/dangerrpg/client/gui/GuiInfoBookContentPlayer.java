@@ -7,10 +7,8 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import mixac1.dangerrpg.api.player.PlayerAttributeE;
-import mixac1.dangerrpg.init.RPGNetwork;
-import mixac1.dangerrpg.network.MsgReqUpPA;
-import mixac1.dangerrpg.util.Translator;
+import mixac1.dangerrpg.DangerRPG;
+import mixac1.dangerrpg.api.entity.EntityAttributeE;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -58,7 +56,7 @@ public class GuiInfoBookContentPlayer extends GuiInfoBookContent
     public void init()
     {
         super.init();
-        for (PlayerAttributeE attr : parent.attributes) {
+        for (EntityAttributeE attr : parent.attributes) {
             list.add(new ContentItem(attr));
         }
     }
@@ -79,10 +77,10 @@ public class GuiInfoBookContentPlayer extends GuiInfoBookContent
             s = mc.fontRenderer.trimStringToWidth(parent.attributes.get(currIndex).getDispayName().toUpperCase(), titleSizeX);
             mc.fontRenderer.drawStringWithShadow(s, offsetX + (titleSizeX - mc.fontRenderer.getStringWidth(s) + 4) / 2, offsetY + (titleSizeY - mc.fontRenderer.FONT_HEIGHT + 4) / 2, 0xffffff);
 
-            s = Translator.trans("it_atr.lvl").concat(": ").concat(String.valueOf(parent.attributes.get(currIndex).getLvl(player)));
+            s = DangerRPG.trans("it_atr.lvl").concat(": ").concat(String.valueOf(parent.attributes.get(currIndex).getLvl(player)));
             mc.fontRenderer.drawStringWithShadow(s, offsetX + infoOffsetX, offsetY + infoOffsetY, 0xffffff);
 
-            s = Translator.trans("rpgstr.value").concat(": ").concat(String.valueOf(parent.attributes.get(currIndex).displayValue(player)));
+            s = DangerRPG.trans("rpgstr.value").concat(": ").concat(String.valueOf(parent.attributes.get(currIndex).displayValue(player)));
             mc.fontRenderer.drawStringWithShadow(s, offsetX + infoOffsetX, offsetY + infoOffsetY + indent, 0xffffff);
 
             s = parent.attributes.get(currIndex).getInfo(player);
@@ -99,7 +97,7 @@ public class GuiInfoBookContentPlayer extends GuiInfoBookContent
             mc.fontRenderer.drawStringWithShadow("/".concat(String.valueOf(value)), tmp + mc.fontRenderer.getStringWidth(s), offsetY + 73, 0xffffff);
         }
 
-        s = Translator.trans("rpgstr.player_stats");
+        s = DangerRPG.trans("rpgstr.player_stats");
         mc.fontRenderer.drawStringWithShadow(s, left + (listWidth - mc.fontRenderer.getStringWidth(s)) / 2, top - mc.fontRenderer.FONT_HEIGHT - 4, 0xffffff);
     }
 
@@ -126,9 +124,9 @@ public class GuiInfoBookContentPlayer extends GuiInfoBookContent
 
     public class ContentItem
     {
-        private PlayerAttributeE attr;
+        private EntityAttributeE attr;
 
-        public ContentItem(PlayerAttributeE attr)
+        public ContentItem(EntityAttributeE attr)
         {
             this.attr = attr;
         }
@@ -149,7 +147,7 @@ public class GuiInfoBookContentPlayer extends GuiInfoBookContent
 
         public LevelUpButton(int id, int x, int y, GuiInfoBookContentPlayer parent)
         {
-            super(id, x, y, butSizeX, butSizeY, Translator.trans("rpgstr.info_book.lvlup_but"));
+            super(id, x, y, butSizeX, butSizeY, DangerRPG.trans("rpgstr.info_book.lvlup_but"));
             this.parent = parent;
         }
 
@@ -186,7 +184,6 @@ public class GuiInfoBookContentPlayer extends GuiInfoBookContent
         public boolean mousePressed(Minecraft mc, int x, int y)
         {
             if (super.mousePressed(mc, x, y) && parent.parent.attributes.get(parent.currIndex).tryUp(parent.player)) {
-                RPGNetwork.net.sendToServer(new MsgReqUpPA(parent.currIndex));
                 return true;
             }
             return false;

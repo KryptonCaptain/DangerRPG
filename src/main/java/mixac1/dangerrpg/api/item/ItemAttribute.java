@@ -1,6 +1,6 @@
 package mixac1.dangerrpg.api.item;
 
-import mixac1.dangerrpg.util.Translator;
+import mixac1.dangerrpg.DangerRPG;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -45,7 +45,7 @@ public abstract class ItemAttribute
     
     public String getDispayName()
     {
-        return Translator.trans("it_atr.".concat(name));
+        return DangerRPG.trans("it_attr.".concat(name));
     }
     
     public String getDispayValue(ItemStack stack, EntityPlayer player)

@@ -1,10 +1,10 @@
 package mixac1.dangerrpg.capability.playerattr;
 
-import mixac1.dangerrpg.api.player.PlayerAttribute;
-import mixac1.dangerrpg.capability.PlayerData;
-import net.minecraft.entity.player.EntityPlayer;
+import mixac1.dangerrpg.api.entity.EntityAttribute;
+import mixac1.dangerrpg.util.RPGCommonHelper;
+import net.minecraft.entity.EntityLivingBase;
 
-public class PACurrMana extends PlayerAttribute
+public class PACurrMana extends EntityAttribute
 {
     public PACurrMana(String name)
     {
@@ -12,41 +12,26 @@ public class PACurrMana extends PlayerAttribute
     }
     
     @Override
-    public void init(EntityPlayer player)
+    public void init(EntityLivingBase entity)
     {
-        init(PlayerAttributes.MANA.getValue(player), player);
+        init(PlayerAttributes.MANA.getValue(entity), entity);
     }
     
     @Override
-    public float getValue(EntityPlayer player)
+	public boolean isValid(EntityLivingBase entity, float value)
     {
-        float value = PlayerData.get(player).attributeMap.get(hash).value;
-        if (value > PlayerAttributes.MANA.getValue(player) || value < 0) {
-            setValue(value, player);
-            value = PlayerData.get(player).attributeMap.get(hash).value;
-        }
-        return value;
+        return isValid(value) && value > PlayerAttributes.MANA.getValue(entity);
     }
     
     @Override
-    public void setValue(float value, EntityPlayer player)
+    public void setValue(float value, EntityLivingBase entity, boolean needSync)
     {
-        if (isValid(value)) {
-            PlayerData.get(player).attributeMap.get(hash).value = getValidValue(value, player);
-            apply(player);
-            sync(player);
+        if (isValid(entity, value)) {
+        	getEntityData(entity).attributeMap.get(hash).value = RPGCommonHelper.fixValue(value, 0f, PlayerAttributes.MANA.getValue(entity));
+            apply(entity);
+            if (needSync) {
+            	sync(entity);
+            }
         }
-    }
-    
-    private float getValidValue(float value, EntityPlayer player)
-    {
-        float tmp;
-        if (value > (tmp = PlayerAttributes.MANA.getValue(player))) {
-            return tmp;
-        }
-        else if (value < 0) {
-            return 0;
-        }
-        return value;
     }
 }

@@ -2,7 +2,7 @@ package mixac1.dangerrpg.client.gui;
 
 import org.lwjgl.opengl.GL11;
 
-import mixac1.dangerrpg.capability.PlayerData;
+import mixac1.dangerrpg.capability.entityattr.EntityAttributes;
 import mixac1.dangerrpg.capability.itemattr.ItemAttributes;
 import mixac1.dangerrpg.capability.playerattr.PlayerAttributes;
 import mixac1.dangerrpg.util.RPGCommonHelper;
@@ -161,7 +161,7 @@ public class RPGGuiIngame extends Gui
         String s = fr.trimStringToWidth(mc.thePlayer.getDisplayName(), line1Width - 6);
         fr.drawStringWithShadow(s, offsetX + line1OffsetX + (line1Width - fr.getStringWidth(s)) / 2, offsetY + line1OffsetY + (line1Height - fr.FONT_HEIGHT) / 2, 0xFFFFFF);
 
-        s = String.valueOf(PlayerData.get(mc.thePlayer).getLvl());
+        s = String.valueOf((int) EntityAttributes.LVL.getValue(mc.thePlayer));
         fr.drawStringWithShadow(s, offsetX + line2OffsetX + (line2Width - fr.getStringWidth(s)) / 2, offsetY + line2OffsetY + (line2Height - fr.FONT_HEIGHT) / 2, 0xFFFFFF);
     }
 

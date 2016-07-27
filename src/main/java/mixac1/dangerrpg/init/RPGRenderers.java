@@ -5,7 +5,7 @@ import java.util.HashMap;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import mixac1.dangerrpg.api.RPGApi;
+import mixac1.dangerrpg.api.RPGRegister;
 import mixac1.dangerrpg.client.render.entity.RenderArrowRPG;
 import mixac1.dangerrpg.client.render.entity.RenderBit;
 import mixac1.dangerrpg.client.render.entity.RenderMaterial;
@@ -105,6 +105,6 @@ public class RPGRenderers
     
     public static void registerItemRendererE(Item item, RPGItemRenderModel model)
     {
-        RPGApi.registerItemRendererModel(item, model, "DangerRPG:textures/models/items/");
+        RPGRegister.registerItemRendererModel(item, model, "DangerRPG:textures/models/items/");
     }
 }

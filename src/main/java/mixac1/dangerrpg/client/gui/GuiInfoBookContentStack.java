@@ -5,6 +5,7 @@ import java.util.Set;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.item.ItemAttribute;
 import mixac1.dangerrpg.capability.GemType;
 import mixac1.dangerrpg.capability.GemableItem;
@@ -12,7 +13,6 @@ import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.itemattr.ItemAttributes;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.gem.Gem;
-import mixac1.dangerrpg.util.Translator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
@@ -36,14 +36,14 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
         super.init();
 
         if (stack == null) {
-            addCenteredString(Translator.trans("rpgstr.no_item"));
+            addCenteredString(DangerRPG.trans("rpgstr.no_item"));
             return;
         }
 
         addCenteredString(stack.getDisplayName().toUpperCase());
         addString("");
 
-        addCenteredString(Translator.trans("rpgstr.item_description").toUpperCase());
+        addCenteredString(DangerRPG.trans("rpgstr.item_description").toUpperCase());
         addString("");
 
         if (LvlableItem.isLvlable(stack)) {
@@ -74,7 +74,7 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
             itemAttributes.remove(ItemAttributes.DURABILITY);
             itemAttributes.remove(ItemAttributes.MAX_DURABILITY);
             if (itemAttributes.size() != 0) {
-                addCenteredString(Translator.trans("rpgstr.parametres").toUpperCase());
+                addCenteredString(DangerRPG.trans("rpgstr.parametres").toUpperCase());
                 addString("");
                 boolean flag = false;
 
@@ -123,11 +123,11 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
                     if (gem != null && gem.getItem() instanceof Gem) {
                         if (empty) {
                             empty = false;
-                            addCenteredString(Translator.trans("rpgstr.gems").toUpperCase());
+                            addCenteredString(DangerRPG.trans("rpgstr.gems").toUpperCase());
                             addString("");
                         }
-                        addString(Translator.trans("rpgstr.name").concat(": ").concat(gem.getDisplayName()));
-                        addString(Translator.trans("rpgstr.type").concat(": ").concat(((Gem) gem.getItem()).getGemType().getDispayName()));
+                        addString(DangerRPG.trans("rpgstr.name").concat(": ").concat(gem.getDisplayName()));
+                        addString(DangerRPG.trans("rpgstr.type").concat(": ").concat(((Gem) gem.getItem()).getGemType().getDispayName()));
                         addString("");
                     }
                 }
@@ -161,7 +161,7 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
     {
         super.drawScreen(mouseX, mouseY, par3);
 
-        String s = Translator.trans("rpgstr.item_info");
+        String s = DangerRPG.trans("rpgstr.item_info");
         mc.fontRenderer.drawStringWithShadow(s, left + (listWidth - mc.fontRenderer.getStringWidth(s)) / 2, top - mc.fontRenderer.FONT_HEIGHT - 4, 0xffffff);
     }
 

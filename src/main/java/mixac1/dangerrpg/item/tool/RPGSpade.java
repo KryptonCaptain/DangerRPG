@@ -12,7 +12,6 @@ import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.RPGItemComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
-import mixac1.dangerrpg.util.Translator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemSpade;
@@ -32,7 +31,7 @@ public class RPGSpade extends ItemSpade implements ILvlableItemTool, IHasBooksIn
     @Override
     public String getInformationToInfoBook(ItemStack item, EntityPlayer player)
     {
-        return Translator.trans("rpgstr.no_info_yet");
+        return DangerRPG.trans("rpgstr.no_info_yet");
     }
 
     @Override

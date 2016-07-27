@@ -4,11 +4,13 @@ import java.util.HashMap;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import mixac1.dangerrpg.api.entity.EntityAttribute;
+import mixac1.dangerrpg.api.entity.EntityAttributeE;
 import mixac1.dangerrpg.api.item.IADynamic;
 import mixac1.dangerrpg.api.item.IAStatic;
 import mixac1.dangerrpg.api.item.ItemAttribute;
-import mixac1.dangerrpg.api.player.PlayerAttribute;
-import mixac1.dangerrpg.api.player.PlayerAttributeE;
+import mixac1.dangerrpg.capability.CommonEntityData;
+import mixac1.dangerrpg.capability.EntityLivingData;
 import mixac1.dangerrpg.capability.ItemAttrParams;
 import mixac1.dangerrpg.capability.PlayerData;
 import mixac1.dangerrpg.client.render.item.RPGItemRenderModel;
@@ -23,22 +25,54 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
 
-public class RPGApi
+public class RPGRegister
 {
 	/**
-	 * Used for adding own {@link PlayerAttribute} to {@link PlayerData}
+	 * Used for adding own {@link EntityAttribute} to {@link CommonEntityData}
 	 */
-    public static void registerPlayerAttribute(PlayerAttribute pa)
+    public static void registerCommonEntityAttribute(EntityAttribute pa)
+    {
+        CommonEntityData.workAttributes.add(pa);
+    }
+
+    /**
+	 * Used for adding own {@link EntityAttributeE} to {@link CommonEntityData}
+	 */
+    public static void registerCommonEntityAttributeE(EntityAttributeE pa)
+    {
+        CommonEntityData.entityAttributes.add(pa);
+    }
+    
+    /**
+	 * Used for adding own {@link EntityAttribute} to {@link EntityLivingData}
+	 */
+    public static void registerEntityAttribute(EntityAttribute pa)
+    {
+        EntityLivingData.workAttributes.add(pa);
+    }
+
+    /**
+	 * Used for adding own {@link EntityAttributeE} to {@link EntityLivingData}
+	 */
+    public static void registerEntityAttributeE(EntityAttributeE pa)
+    {
+    	EntityLivingData.entityAttributes.add(pa);
+    }
+    
+    /**
+	 * Used for adding own {@link EntityAttribute} to {@link PlayerData}
+	 */
+    public static void registerPlayerAttribute(EntityAttribute pa)
     {
         PlayerData.workAttributes.add(pa);
     }
 
     /**
-	 * Used for adding own {@link PlayerAttributeE} to {@link PlayerData}
+	 * Used for adding own {@link EntityAttributeE} to {@link PlayerData}
 	 */
-    public static void registerPlayerAttributeE(PlayerAttributeE pa)
+    public static void registerPlayerAttributeE(EntityAttributeE pa)
     {
-        PlayerData.playerAttributes.add(pa);
+    	PlayerData.entityAttributes.add(pa);
     }
 
     /**
