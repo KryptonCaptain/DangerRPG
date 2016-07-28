@@ -18,7 +18,7 @@ public class HookException extends RuntimeException
 
     public HookException(String msg, AsmHook hook)
     {
-        super(msg);
+        super(msg.concat(": ").concat(hook.toString()));
         this.hook = hook;
     }
 }

@@ -64,7 +64,6 @@ public class HookClassTransformer {
                         (numInjectedHooks == 1 ? "" : "s") + " to " + className);
                 for (AsmHook notInjected : hooksWriter.hooks) {
                     logger.warning("Can not found target method of hook " + notInjected);
-                    throw new HookException("Can not found target method of hook ", notInjected);
                 }
 
                 return cw.toByteArray();
@@ -80,7 +79,6 @@ public class HookClassTransformer {
                 }
                 logger.severe("Stack trace:", e);
 
-                throw new HookException("Some problems with hooks");
             }
         }
         return bytecode;

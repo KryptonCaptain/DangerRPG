@@ -4,6 +4,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import mixac1.dangerrpg.hook.RPGHookController;
 import mixac1.dangerrpg.init.RPGBlocks;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGConfig;
@@ -18,6 +19,8 @@ public class CommonProxy
 {
     public void preInit(FMLPreInitializationEvent e)
     {
+        RPGHookController.load();
+
         RPGConfig.load(e);
 
         RPGNetwork.load();

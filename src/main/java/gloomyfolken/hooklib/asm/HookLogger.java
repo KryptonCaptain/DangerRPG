@@ -1,8 +1,5 @@
 package gloomyfolken.hooklib.asm;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public interface HookLogger {
 
     void debug(String message);
@@ -36,34 +33,4 @@ public interface HookLogger {
             cause.printStackTrace();
         }
     }
-
-    class VanillaLogger implements HookLogger {
-
-        private Logger logger;
-
-        public VanillaLogger(Logger logger) {
-            this.logger = logger;
-        }
-
-        @Override
-        public void debug(String message) {
-            logger.fine(message);
-        }
-
-        @Override
-        public void warning(String message) {
-            logger.warning(message);
-        }
-
-        @Override
-        public void severe(String message) {
-            logger.severe(message);
-        }
-
-        @Override
-        public void severe(String message, Throwable cause) {
-            logger.log(Level.SEVERE, message, cause);
-        }
-    }
-
 }

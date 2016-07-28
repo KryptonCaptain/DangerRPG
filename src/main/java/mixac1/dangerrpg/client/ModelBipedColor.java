@@ -3,7 +3,7 @@ package mixac1.dangerrpg.client;
 import org.lwjgl.opengl.GL11;
 
 import mixac1.dangerrpg.client.RPGRenderHelper.Color;
-import mixac1.dangerrpg.util.RPGCommonHelper;
+import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 
@@ -28,7 +28,7 @@ public class ModelBipedColor extends ModelBiped
 
     public void setColor(int color)
     {
-        this.color = (int) RPGCommonHelper.fixValue(color, 0, 0xffffff);
+        this.color = (int) Utils.alignment(color, 0, 0xffffff);
     }
 
     @Override
@@ -41,6 +41,6 @@ public class ModelBipedColor extends ModelBiped
     	}
     	else {
     		super.render(entity, f, f1, f2, f3, f4, f5);
-    	}    	
+    	}
     }
 }
