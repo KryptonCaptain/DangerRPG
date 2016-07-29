@@ -10,7 +10,6 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
 import gloomyfolken.hooklib.asm.HookLogger.SystemOutLogger;
-import mixac1.dangerrpg.hook.HookException;
 import mixac1.dangerrpg.hook.RPGHookController;
 
 public class HookClassTransformer {
@@ -65,13 +64,10 @@ public class HookClassTransformer {
                         (numInjectedHooks == 1 ? "" : "s") + " to " + className);
                 for (AsmHook notInjected : hooksWriter.hooks) {
                     logger.warning("Can not found target method of hook " + notInjected);
-                    RPGHookController.addException(new HookException("Can not found target method of hook ", notInjected));
+                    RPGHookController.addException(notInjected, "Can not found target method of hook ");
                 }
 
                 return cw.toByteArray();
-            }
-            catch (HookException e) {
-                throw new HookException(e.getMessage().concat(e.hook.toString()));
             }
             catch (Exception e) {
                 logger.severe("A problem has occured during transformation of class " + className + ".");
@@ -81,7 +77,7 @@ public class HookClassTransformer {
                 }
                 logger.severe("Stack trace:", e);
 
-                RPGHookController.addException(new HookException("Some problems with hooks"));
+                RPGHookController.addException("Some problems with hook");
             }
         }
         return bytecode;

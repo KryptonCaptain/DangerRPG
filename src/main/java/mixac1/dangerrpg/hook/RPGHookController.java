@@ -3,6 +3,7 @@ package mixac1.dangerrpg.hook;
 import java.util.ArrayList;
 import java.util.List;
 
+import gloomyfolken.hooklib.asm.AsmHook;
 import mixac1.dangerrpg.util.Utils;
 
 public class RPGHookController
@@ -18,6 +19,18 @@ public class RPGHookController
         }
 
         wasLoad = true;
+    }
+
+    public static void addException(String message)
+    {
+        addException(new HookException(message));
+    }
+
+    public static void addException(AsmHook hook, String message)
+    {
+        if (hook.exceptionOnUnsuccess) {
+            addException(new HookException(message, hook));
+        }
     }
 
     public static void addException(HookException e)

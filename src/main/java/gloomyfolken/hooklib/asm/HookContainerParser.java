@@ -1,13 +1,17 @@
 package gloomyfolken.hooklib.asm;
 
-import org.objectweb.asm.*;
-
-import gloomyfolken.hooklib.asm.Hook.LocalVariable;
-import gloomyfolken.hooklib.asm.Hook.ReturnValue;
-
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map.Entry;
+
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
+
+import gloomyfolken.hooklib.asm.Hook.LocalVariable;
+import gloomyfolken.hooklib.asm.Hook.ReturnValue;
 
 public class HookContainerParser {
 
@@ -106,7 +110,9 @@ public class HookContainerParser {
             }
         }
 
-        if (injectOnExit) builder.setInjectorFactory(AsmHook.ON_EXIT_FACTORY);
+        if (injectOnExit) {
+            builder.setInjectorFactory(AsmHook.ON_EXIT_FACTORY);
+        }
 
         if (annotationValues.containsKey("injectOnLine")) {
             int line = (Integer) annotationValues.get("injectOnLine");
@@ -154,6 +160,11 @@ public class HookContainerParser {
         }
 
         builder.setHookMethodReturnType(methodType.getReturnType());
+
+        /**
+         * MY CHANGES
+         */
+        builder.setNeedExcOnUnscs(Boolean.TRUE.equals(annotationValues.get("exceptionOnUnsuccess")));
 
         transformer.registerHook(builder.build());
     }

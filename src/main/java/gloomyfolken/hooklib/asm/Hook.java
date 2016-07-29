@@ -115,4 +115,9 @@ public @interface Hook {
      */
     @Target(ElementType.PARAMETER)
     @interface ReturnValue {}
+
+    /**
+     * MY CHANGES
+     */
+    boolean exceptionOnUnsuccess() default true;
 }
