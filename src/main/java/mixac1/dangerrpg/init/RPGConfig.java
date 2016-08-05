@@ -47,11 +47,9 @@ public abstract class RPGConfig
         ConfigCategory cat = config.getCategory("Main Category");
         cat.setRequiresMcRestart(true);
         cat.setShowInGui(true);
-        Property prop;
 
-        prop = config.get(cat.getName(), "mainEnableModGui", true);
-        prop.comment = "Enable Modify Gui";
-        mainEnableModGui = prop.getBoolean(true);
+        mainEnableModGui = getBoolean(cat.getName(), "mainEnableModGui", true,
+                "Enable Modify Gui");
     }
 
     private static void initPlayerCategory()
@@ -61,9 +59,8 @@ public abstract class RPGConfig
         cat.setShowInGui(true);
         Property prop;
 
-        prop = config.get(cat.getName(), "playerLoseLvlCount", 3);
-        prop.comment = "Set number of lost points of level when player die";
-        playerLoseLvlCount = prop.getInt(3);
+        playerLoseLvlCount = getInteger(cat.getName(), "playerLoseLvlCount", 3,
+                "Set number of lost points of level when player die");
     }
 
     private static void initItemCategory()
@@ -73,29 +70,23 @@ public abstract class RPGConfig
         cat.setShowInGui(true);
         Property prop;
 
-        prop = config.get(cat.getName(), "itemAllItemsLvlable", true);
-        prop.comment = "Are all weapons, tools levelable and gemable";
-        itemAllItemsLvlable = prop.getBoolean(true);
+        itemAllItemsLvlable = getBoolean(cat.getName(), "itemAllItemsLvlable", true,
+                "Are all weapons, tools levelable and gemable");
 
-        prop = config.get(cat.getName(), "itemCanUpInTable", true);
-        prop.comment = "Can items upgrade in lvlup table without creative mode";
-        itemCanUpInTable = prop.getBoolean(true);
+        itemCanUpInTable = getBoolean(cat.getName(), "itemCanUpInTable", true,
+                "Can items upgrade in lvlup table without creative mode");
 
-        prop = config.get(cat.getName(), "itemMaxLevel", 100);
-        prop.comment = "Set items max level";
-        itemMaxLevel = prop.getInt(100);
+        itemMaxLevel = getInteger(cat.getName(), "itemMaxLevel", 100,
+                "Set items max level");
 
-        prop = config.get(cat.getName(), "itemStartMaxExp", 100);
-        prop.comment = "Set items start needed expirience";
-        itemStartMaxExp = prop.getInt(100);
+        itemStartMaxExp = getInteger(cat.getName(), "itemStartMaxExp", 100,
+                "Set items start needed expirience");
 
-        prop = config.get(cat.getName(), "itemExpMul", 1.15F);
-        prop.comment = "Set items expirience multiplier";
-        itemExpMul = (float) prop.getDouble(1.15F);
+        itemExpMul = (float) getDouble(cat.getName(), "itemExpMul", 1.15D,
+                "Set items expirience multiplier");
 
-        prop = config.get(cat.getName(), "itemStartMagicArmor", 1);
-        prop.comment = "Set default magic resistance";
-        itemStartMagicArmor = prop.getInt(1);
+        itemStartMagicArmor = getInteger(cat.getName(), "itemStartMagicArmor", 1,
+                "Set default magic resistance");
 
         ConfigCategory cat1 = RPGConfig.config.getCategory("Supported Lvl items");
         prop = config.get(cat1.getName(), "itemSupportedLvlItems", new String[] {});
@@ -103,6 +94,27 @@ public abstract class RPGConfig
         if (!RPGConfig.itemAllItemsLvlable) {
             itemSupportedLvlItems = new HashSet<String>(Arrays.asList(prop.getStringList()));
         }
+    }
+
+    private static int getInteger(String category, String field, int defValue, String comment)
+    {
+        Property prop = config.get(category, field, defValue);
+        prop.comment = comment;
+        return prop.getInt(defValue);
+    }
+
+    private static double getDouble(String category, String field, double defValue, String comment)
+    {
+        Property prop = config.get(category, field, defValue);
+        prop.comment = comment;
+        return prop.getDouble(defValue);
+    }
+
+    private static boolean getBoolean(String category, String field, boolean defValue, String comment)
+    {
+        Property prop = config.get(category, field, defValue);
+        prop.comment = comment;
+        return prop.getBoolean(defValue);
     }
 }
 

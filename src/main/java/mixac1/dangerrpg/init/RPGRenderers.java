@@ -30,7 +30,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 @SideOnly(Side.CLIENT)
-public class RPGRenderers
+public abstract class RPGRenderers
 {
     public static HashMap<Item, ResourceLocation> MODEL_TEXTURES = new HashMap<Item, ResourceLocation>();
 
@@ -85,7 +85,7 @@ public class RPGRenderers
 
         MinecraftForgeClient.registerItemRenderer(RPGItems.shadowBow, RenderShadowBow.INSTANCE);
         MinecraftForgeClient.registerItemRenderer(RPGItems.sniperBow, RenderSniperBow.INSTANCE);
-        
+
         MinecraftForgeClient.registerItemRenderer(RPGItems.testWand,  RPGItemRenderIcon.INSTANCE);
     }
 
@@ -99,13 +99,15 @@ public class RPGRenderers
 
         RenderingRegistry.registerEntityRenderingHandler(EntityThrowKnife.class, RenderThrowKnife.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityThrowTomahawk.class, RenderThrowTomahawk.INSTANCE);
+
+        //RenderingRegistry.registerEntityRenderingHandler(EntityTestt.class, RenderBit.INSTANCE);
     }
 
     private static void registerBlockRenderer()
     {
         //ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLvlupTable.class, RenderTestBlock.INSTANCE);
     }
-    
+
     public static void registerItemRendererE(Item item, RPGItemRenderModel model)
     {
         RPGRegister.registerItemRendererModel(item, model, "DangerRPG:textures/models/items/");
