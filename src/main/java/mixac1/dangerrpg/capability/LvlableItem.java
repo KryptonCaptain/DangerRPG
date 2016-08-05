@@ -31,7 +31,7 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 
-public class LvlableItem
+public abstract class LvlableItem
 {
     public static final String IS_LVLABLE = "rpg_lvlable";
 

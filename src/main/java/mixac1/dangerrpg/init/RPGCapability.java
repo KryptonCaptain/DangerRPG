@@ -10,8 +10,8 @@ import net.minecraft.item.Item;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Property;
 
-public class RPGCapability
-{    
+public abstract class RPGCapability
+{
     public static void load()
     {
         List<String> itemNames = new ArrayList<String>();
@@ -22,7 +22,7 @@ public class RPGCapability
                 itemNames.add(item.getUnlocalizedName());
             }
         }
-        
+
         if (RPGConfig.itemAllItemsLvlable) {
             ConfigCategory cat = RPGConfig.config.getCategory("Supported Lvl items");
             cat.clear();

@@ -10,10 +10,10 @@ import mixac1.dangerrpg.network.MsgSyncPlayerData;
 import mixac1.dangerrpg.network.MsgUseItemExtra;
 import mixac1.dangerrpg.network.MsgUseItemSpecial;
 
-public class RPGNetwork
+public abstract class RPGNetwork
 {
     public static SimpleNetworkWrapper net = new SimpleNetworkWrapper(DangerRPG.MODID);
-    
+
     public static void load()
     {
         int i = 0;

@@ -24,7 +24,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
-public class RPGCommonHelper
+public abstract class RPGCommonHelper
 {
     static int i = 0;
 

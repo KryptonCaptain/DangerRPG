@@ -68,7 +68,7 @@ public class RPGHooks
     }
 
     @SideOnly(Side.CLIENT)
-    @Hook(exceptionOnUnsuccess = false)
+    @Hook
     public static void addInformation(Item item, ItemStack stack, EntityPlayer player, List list, boolean par)
     {
         MinecraftForge.EVENT_BUS.post(new AddInformationEvent(stack, player, list, par));
@@ -117,7 +117,7 @@ public class RPGHooks
      * Hook for {@link ItemBow}
      */
     @SideOnly(Side.CLIENT)
-    @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS, exceptionOnUnsuccess = false)
+    @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
     public static IIcon getItemIcon(EntityPlayer player, ItemStack stack, int par, @ReturnValue IIcon returnValue)
     {
         if (player.getItemInUse() != null && stack.getItemUseAction() == EnumAction.bow && ItemAttributes.SHOT_SPEED.hasIt(stack)) {
@@ -140,7 +140,7 @@ public class RPGHooks
      * Hook for {@link ItemBow}
      */
     @SideOnly(Side.CLIENT)
-    @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS, exceptionOnUnsuccess = false)
+    @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
     public static float getFOVMultiplier(EntityPlayerSP player)
     {
         float f = 1.0F;

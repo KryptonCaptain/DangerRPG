@@ -25,7 +25,7 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
 
-public class RPGRegister
+public abstract class RPGRegister
 {
 	/**
 	 * Used for adding own {@link EntityAttribute} to {@link CommonEntityData}

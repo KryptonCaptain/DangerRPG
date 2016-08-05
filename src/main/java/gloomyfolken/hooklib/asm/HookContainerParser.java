@@ -161,11 +161,6 @@ public class HookContainerParser {
 
         builder.setHookMethodReturnType(methodType.getReturnType());
 
-        /**
-         * MY CHANGES
-         */
-        builder.setNeedExcOnUnscs(Boolean.TRUE.equals(annotationValues.get("exceptionOnUnsuccess")));
-
         transformer.registerHook(builder.build());
     }
 

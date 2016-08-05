@@ -11,17 +11,17 @@ import mixac1.dangerrpg.inventory.ContainerModifyTable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
-public class RPGGuiHandlers implements IGuiHandler
+public abstract class RPGGuiHandlers implements IGuiHandler
 {
     public static final int GUI_MODIFY_TABLE = 0;
     public static final int GUI_LVLUP_TABLE  = 1;
     public static final int GUI_INFO_BOOK    = 2;
-    
+
     public static void load()
     {
-        NetworkRegistry.INSTANCE.registerGuiHandler(DangerRPG.instance, new RPGGuiHandlers());
+        NetworkRegistry.INSTANCE.registerGuiHandler(DangerRPG.instance, new RPGGuiHandlers() {});
     }
-    
+
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {

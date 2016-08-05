@@ -28,7 +28,7 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 
 
-public class RPGItems
+public abstract class RPGItems
 {
 	public static HashMap<ToolMaterial, String> TOOL_MATERIAL_NAMES = new HashMap<ToolMaterial, String>()
     {{
@@ -42,7 +42,7 @@ public class RPGItems
     	put(RPGToolMaterial.BLACK_MATTER, "black_matter");
     	put(RPGToolMaterial.WHITE_MATTER, "white_matter");
 	}};
-    
+
     public static HashMap<ArmorMaterial, String> ARMOR_MATERIAL_NAMES = new HashMap<ArmorMaterial, String>()
 	{{
 		put(ArmorMaterial.CLOTH, "cloth");
@@ -55,7 +55,7 @@ public class RPGItems
 		put(RPGArmorMaterial.BLACK_MATTER, "black_matter");
 		put(RPGArmorMaterial.WHITE_MATTER, "white_matter");
 	}};
-	
+
     public static Item swordTraining = new RPGWeapon(ToolMaterial.WOOD, RPGItemComponent.TRAINING, "sword_training");
 
     public static Item swordObsidian     = new RPGWeapon(RPGToolMaterial.OBSIDIAN,     RPGItemComponent.SWORD);
@@ -157,9 +157,9 @@ public class RPGItems
     public static Item sniperBow = new ItemSniperBow(RPGItemComponent.SNIPER_BOW, 4F);
 
     public static Item gemWitherSkull = new GemWeaponWitherSkull("gem_wither_skull");
-    
+
     public static Item testWand = new TestWand("test_wand");
-   
+
 
     public static void load()
     {
@@ -170,7 +170,7 @@ public class RPGItems
     private static void registerItems()
     {
     	registerItem(testWand);
-    	
+
         registerItem(swordTraining);
 
         registerItem(knifeIron);
@@ -285,24 +285,24 @@ public class RPGItems
             registerItem(item);
         }
     }
-    
+
     /*********************************************************************/
-	
+
 	public static String getToolMaterialName(ToolMaterial toolMaterial)
 	{
 			return "_".concat(TOOL_MATERIAL_NAMES.get(toolMaterial));
 	}
-	
+
 	public static String getArmorMaterialName(ArmorMaterial armorMaterial)
 	{
 		return "_".concat(ARMOR_MATERIAL_NAMES.get(armorMaterial));
 	}
-	
+
 	public static String getRPGName(RPGToolComponent toolComponent, ToolMaterial toolMaterial)
 	{
 		return toolComponent.name.concat(getToolMaterialName(toolMaterial));
 	}
-	
+
 	public static String getRPGName(String name, ArmorMaterial armorMaterial)
 	{
 		return name.concat(getArmorMaterialName(armorMaterial));

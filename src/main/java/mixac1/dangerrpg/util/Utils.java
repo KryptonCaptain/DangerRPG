@@ -2,7 +2,7 @@ package mixac1.dangerrpg.util;
 
 import java.util.Collections;
 
-public class Utils
+public abstract class Utils
 {
     public static <T> Iterable<T> safe(Iterable<T> iterable)
     {

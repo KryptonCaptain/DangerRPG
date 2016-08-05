@@ -67,7 +67,6 @@ public class RPGGuiIngame extends Gui
     private static int chargeOffsetU = 0;
     private static int chargeOffsetV = 68;
 
-
     public void renderGameOverlay()
     {
         if (mc.playerController.gameIsSurvivalOrAdventure()) {

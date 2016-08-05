@@ -56,3 +56,6 @@ LICENSE-fml.txt
 MinecraftForge*
 README.txt
 build/
+gradle/
+gradlew
+gradlew.bat

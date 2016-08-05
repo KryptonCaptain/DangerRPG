@@ -34,7 +34,7 @@ public class ItemSniperBow extends RPGItemBow
             else if (power > 1.0F) {
                 power = 1.0F;
             }
-            power = 1.0F;
+            power = 1;
 
             float powerMul = ItemAttributes.SHOT_POWER.hasIt(stack) ?
                     ItemAttributes.SHOT_POWER.get(stack, player) : 1F;

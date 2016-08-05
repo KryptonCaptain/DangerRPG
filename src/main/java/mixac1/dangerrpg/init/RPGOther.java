@@ -4,7 +4,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 
-public class RPGOther
+public abstract class RPGOther
 {
     public static CreativeTabs tabDangerRPG = (new CreativeTabs("tabDangerRPG") {
         @Override

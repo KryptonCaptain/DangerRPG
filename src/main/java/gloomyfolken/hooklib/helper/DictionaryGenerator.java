@@ -35,6 +35,5 @@ public class DictionaryGenerator {
         }
 
         out.close();
-
     }
 }

@@ -9,10 +9,10 @@ import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.S2BPacketChangeGameState;
 import net.minecraft.util.AxisAlignedBB;
@@ -22,36 +22,29 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
-public class EntityProjectile extends Entity implements IProjectile, IThrowableEntity
+public class EntityProjectile extends EntityArrow implements IThrowableEntity
 {
-    protected int xTile;
-    protected int yTile;
-    protected int zTile;
-    protected Block inTile;
-    protected int inData;
-    protected boolean inGround;
     protected boolean beenInGround;
-    protected int ticksAlive;
-    public int untouch;
+    protected int lifespan;
 
     public EntityLivingBase thrower;
     protected String throwerName;
-    public float magicDamage;
+
+    {
+        arrowShake = getMaxUntouchability();
+        ticksExisted = -1;
+        renderDistanceWeight = 10.0D;
+        setSize(0.5F, 0.5F);
+    }
 
     public EntityProjectile(World world)
     {
         super(world);
-        renderDistanceWeight = 10.0D;
-        setSize(0.5F, 0.5F);
-        ticksExisted = 1200;
-        untouch = getMaxUntouchability();
     }
 
     public EntityProjectile(World world, double x, double y, double z)
     {
-        this(world);
-        setPosition(x, y, z);
-        yOffset = 0.0F;
+        super(world, x, y, z);
     }
 
     public EntityProjectile(World world, EntityLivingBase thrower, float speed, float deviation)
@@ -64,8 +57,7 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
         posY -= 0.1;
         posZ -= MathHelper.sin(rotationYaw / 180.0F * (float)Math.PI) * 0.16F;
 
-        Vec3 vec = thrower.getLook(1F);
-        setPosition(posX + vec.xCoord, posY + vec.yCoord, posZ + vec.zCoord);
+        setPosition(posX, posY, posZ);
 
         yOffset = 0.0F;
         motionX = -MathHelper.sin(rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float)Math.PI);
@@ -76,57 +68,20 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
 
     public EntityProjectile(World world, EntityLivingBase thrower, EntityLivingBase target, float speed, float deviation)
     {
-        this(world);
-        this.thrower = thrower;
-
-        posY = thrower.posY + thrower.getEyeHeight() - 0.1;
-        double d0 = target.posX - thrower.posX;
-        double d1 = target.boundingBox.minY + target.height / 3.0F - posY;
-        double d2 = target.posZ - thrower.posZ;
-        double d3 = MathHelper.sqrt_double(d0 * d0 + d2 * d2);
-
-        if (d3 >= 1.0E-7D) {
-            float f2 = (float)(Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
-            float f3 = (float)-(Math.atan2(d1, d3) * 180.0D / Math.PI);
-            double d4 = d0 / d3;
-            double d5 = d2 / d3;
-            setLocationAndAngles(thrower.posX + d4, posY, thrower.posZ + d5, f2, f3);
-            yOffset = 0.0F;
-            float f4 = (float)d3 * 0.2F;
-            setThrowableHeading(d0, d1 + f4, d2, speed, deviation);
-        }
+        super(world, thrower, target, speed, deviation);
     }
 
     @Override
-    public void entityInit() {}
+    public void entityInit()
+    {
+        super.entityInit();
+    }
 
     @Override
     public void setThrowableHeading(double x, double y, double z, float speed, float deviation)
     {
-        float f2 = MathHelper.sqrt_double(x * x + y * y + z * z);
-        x /= f2;
-        y /= f2;
-        z /= f2;
-        x += rand.nextGaussian() * (rand.nextBoolean() ? -1 : 1) * 0.0075 * deviation;
-        y += rand.nextGaussian() * (rand.nextBoolean() ? -1 : 1) * 0.0075 * deviation;
-        z += rand.nextGaussian() * (rand.nextBoolean() ? -1 : 1) * 0.0075 * deviation;
-        x *= speed;
-        y *= speed;
-        z *= speed;
-        motionX = x;
-        motionY = y;
-        motionZ = z;
-        float f3 = MathHelper.sqrt_double(x * x + z * z);
-        prevRotationYaw = rotationYaw = (float)(Math.atan2(x, z) * 180.0D / Math.PI);
-        prevRotationPitch = rotationPitch = (float)(Math.atan2(y, f3) * 180.0D / Math.PI);
-        ticksAlive = 0;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int par)
-    {
-        //super.setPositionAndRotation2(x, y, z, yaw, pitch, par);
+        super.setThrowableHeading(x, y, z, speed, deviation);
+        lifespan = 0;
     }
 
     @Override
@@ -137,7 +92,7 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
         motionY = y;
         motionZ = z;
 
-        if (prevRotationPitch == 0.0F && prevRotationYaw == 0.0F) {
+        if (needAimRotation() && prevRotationPitch == 0.0F && prevRotationYaw == 0.0F) {
             float f = MathHelper.sqrt_double(x * x + z * z);
             prevRotationYaw = rotationYaw = (float)(Math.atan2(x, z) * 180.0D / Math.PI);
             prevRotationPitch = rotationPitch = (float)(Math.atan2(y, f) * 180.0D / Math.PI);
@@ -156,43 +111,34 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
     @Override
     public void onEntityUpdate()
     {
-        if (++ticksAlive >= ticksExisted) {
+        super.onEntityUpdate();
+
+        if (getMaxLifespan() > 0 && ++lifespan >= getMaxLifespan()) {
             setDead();
             return;
         }
 
-        if (untouch > 0) {
-            untouch--;
+        if (arrowShake > 0) {
+            arrowShake--;
         }
 
-        lastTickPosX = posX;
-        lastTickPosY = posY;
-        lastTickPosZ = posZ;
-
-        super.onEntityUpdate();
-
-        if (needAimRotation()) {
+        if (needAimRotation() && prevRotationPitch == 0.0F && prevRotationYaw == 0.0F) {
             makeAimRotation();
         }
 
-        if (canRotation()) {
-            rotationYaw += getRotationOnYaw();
-            rotationPitch += getRotationOnPitch();
-        }
-
-        Block i = worldObj.getBlock(xTile, yTile, zTile);
+        Block i = worldObj.getBlock(field_145791_d, field_145792_e, field_145789_f);
         if (i != null) {
-            i.setBlockBoundsBasedOnState(worldObj, xTile, yTile, zTile);
-            AxisAlignedBB axisalignedbb = i.getCollisionBoundingBoxFromPool(worldObj, xTile, yTile, zTile);
+            i.setBlockBoundsBasedOnState(worldObj, field_145791_d, field_145792_e, field_145789_f);
+            AxisAlignedBB axisalignedbb = i.getCollisionBoundingBoxFromPool(worldObj, field_145791_d, field_145792_e, field_145789_f);
             if (axisalignedbb != null && axisalignedbb.isVecInside(Vec3.createVectorHelper(posX, posY, posZ))) {
                 inGround = true;
             }
         }
 
         if (inGround) {
-            Block j = worldObj.getBlock(xTile, yTile, zTile);
-            int k = worldObj.getBlockMetadata(xTile, yTile, zTile);
-            if (j == inTile && k == inData) {}
+            Block j = worldObj.getBlock(field_145791_d, field_145792_e, field_145789_f);
+            int k = worldObj.getBlockMetadata(field_145791_d, field_145792_e, field_145789_f);
+            if (j == field_145790_g && k == inData) {}
             else {
                 inGround = false;
                 motionX *= rand.nextFloat() * 0.2F;
@@ -216,31 +162,31 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
                     setDead();
                 }
             }
-            untouch = getMaxUntouchability();
+            arrowShake = getMaxUntouchability();
         }
 
         posX += motionX;
         posY += motionY;
         posZ += motionZ;
 
-        double r = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
-        rotationYaw = (float) (Math.atan2(motionX, motionZ) * 180.0 / Math.PI);
+        if (needAimRotation()) {
+            float tmp = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
+            rotationYaw = (float) (Math.atan2(motionX, motionZ) * 180.0D / Math.PI);
 
-        for (rotationPitch = (float) (Math.atan2(motionY, r) * 180.0D / Math.PI);
-             rotationPitch - prevRotationPitch < -180.0F;
-             prevRotationPitch -= 360.0F) {}
+            for (rotationPitch = (float) (Math.atan2(motionY, tmp) * 180.0D / Math.PI);
+                 rotationPitch - prevRotationPitch < -180.0F;
+                 prevRotationPitch -= 360.0F) {}
 
-        for (; rotationPitch - prevRotationPitch >= 180.0F;
-               prevRotationPitch += 360.0F) {}
+            for (; rotationPitch - prevRotationPitch >= 180.0F; prevRotationPitch += 360.0F) {}
 
-        for (; rotationYaw - prevRotationYaw < -180.0F;
-               prevRotationYaw -= 360.0F) {}
+            rotationPitch = prevRotationPitch + (rotationPitch - prevRotationPitch) * 0.2F;
+            rotationYaw = prevRotationYaw + (rotationYaw - prevRotationYaw) * 0.2F;
+        }
 
-        for (; rotationYaw - prevRotationYaw >= 180.0F;
-               prevRotationYaw += 360.0F) {}
-
-        rotationPitch = prevRotationPitch + (rotationPitch - prevRotationPitch) * 0.2F;
-        rotationYaw = prevRotationYaw + (rotationYaw - prevRotationYaw) * 0.2F;
+        if (canRotation()) {
+            rotationYaw += getRotationOnYaw();
+            rotationPitch += getRotationOnPitch();
+        }
 
         motionX *= getAirResistance();
         motionY *= getAirResistance();
@@ -282,7 +228,7 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
         List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.addCoord(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
         double d = 0.0D;
         for (Entity iterEntity : list) {
-            if (!iterEntity.canBeCollidedWith() || !(iterEntity instanceof EntityLivingBase) || iterEntity == thrower && ticksAlive < 5) {
+            if (!iterEntity.canBeCollidedWith() || !(iterEntity instanceof EntityLivingBase) || iterEntity == thrower && lifespan < 5) {
                 continue;
             }
             float f4 = 0.3F;
@@ -336,9 +282,9 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
             int knockback = EnchantmentHelper.getKnockbackModifier(thrower, entity);
             if (knockback != 0) {
                 entity.addVelocity(-MathHelper.sin(rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F, 0.1D, MathHelper.cos(rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F);
-                this.motionX *= 0.6D;
-                this.motionZ *= 0.6D;
-                this.setSprinting(false);
+                motionX *= 0.6D;
+                motionZ *= 0.6D;
+                setSprinting(false);
             }
 
             int fire = EnchantmentHelper.getFireAspectModifier(thrower);
@@ -348,16 +294,16 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
         }
 
         DamageSource dmgSource = DamageSource.causeIndirectMagicDamage(this, thrower == null ? this : thrower);
-        entity.attackEntityFrom(dmgSource, magicDamage);
+        entity.attackEntityFrom(dmgSource, (float) damage);
     }
 
     public void onGroundHit(MovingObjectPosition mop)
     {
-        xTile = mop.blockX;
-        yTile = mop.blockY;
-        zTile = mop.blockZ;
-        inTile = worldObj.getBlock(xTile, yTile, zTile);
-        inData = worldObj.getBlockMetadata(xTile, yTile, zTile);
+        field_145791_d = mop.blockX;
+        field_145792_e = mop.blockY;
+        field_145789_f = mop.blockZ;
+        field_145790_g = worldObj.getBlock(field_145791_d, field_145792_e, field_145789_f);
+        inData = worldObj.getBlockMetadata(field_145791_d, field_145792_e, field_145789_f);
         motionX = mop.hitVec.xCoord - posX;
         motionY = mop.hitVec.yCoord - posY;
         motionZ = mop.hitVec.zCoord - posZ;
@@ -367,11 +313,15 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
         posZ -= motionZ / f1 * 0.05D;
         inGround = true;
         beenInGround = true;
-        untouch = getMaxUntouchability();
+        arrowShake = getMaxUntouchability();
         playHitSound();
 
-        if (inTile != null) {
-            inTile.onEntityCollidedWithBlock(worldObj, xTile, yTile, zTile, this);
+        if (field_145790_g != null) {
+            field_145790_g.onEntityCollidedWithBlock(worldObj, field_145791_d, field_145792_e, field_145789_f, this);
+        }
+
+        if (needAimRotation()) {
+            makeAimRotation();
         }
     }
 
@@ -420,7 +370,7 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
     }
 
     @Override
-    protected boolean canTriggerWalking()
+    public boolean canTriggerWalking()
     {
         return false;
     }
@@ -437,7 +387,7 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
 
     public float getGravity()
     {
-        return 0F;
+        return 0.00F;
     }
 
     public int getMaxUntouchability()
@@ -452,7 +402,7 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
 
     public boolean dieAfterGroundHit()
     {
-        return true;
+        return false;
     }
 
     public boolean canRotation()
@@ -472,7 +422,12 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
 
     public boolean needAimRotation()
     {
-        return !canRotation() || getRotationOnPitch() == 0 && getRotationOnYaw() == 0;
+        return inGround || !inGround && (!canRotation() || getRotationOnYaw() == 0f && getRotationOnPitch() == 0f);
+    }
+
+    public int getMaxLifespan()
+    {
+        return 6000;
     }
 
     public void playHitSound() {}
@@ -480,16 +435,9 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt)
     {
-        nbt.setShort("xTile", (short) xTile);
-        nbt.setShort("yTile", (short) yTile);
-        nbt.setShort("zTile", (short) zTile);
-        nbt.setByte("inTile", (byte) Block.getIdFromBlock(inTile));
-        nbt.setByte("inData", (byte) inData);
-        nbt.setBoolean("inGround", inGround);
+        super.writeEntityToNBT(nbt);
         nbt.setBoolean("beenInGround", beenInGround);
-        nbt.setInteger("ticksAlive", ticksAlive);
-        nbt.setByte("untouch", (byte) untouch);
-        nbt.setFloat("magicDamage", magicDamage);
+        nbt.setInteger("lifespan", lifespan);
 
         if ((throwerName == null || throwerName.length() == 0) && thrower != null && thrower instanceof EntityPlayer) {
             throwerName = thrower.getCommandSenderName();
@@ -500,16 +448,9 @@ public class EntityProjectile extends Entity implements IProjectile, IThrowableE
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt)
     {
-        xTile = nbt.getShort("xTile");
-        yTile = nbt.getShort("yTile");
-        zTile = nbt.getShort("zTile");
-        inTile = Block.getBlockById(nbt.getByte("inTile") & 0xFF);
-        inData = nbt.getByte("inData") & 0xFF;
-        inGround = nbt.getBoolean("inGround");
+        super.readEntityFromNBT(nbt);
         beenInGround = nbt.getBoolean("beenInGrond");
-        ticksAlive = nbt.getInteger("ticksAlive");
-        untouch = nbt.getByte("untouch") & 0xFF;
-        magicDamage = nbt.getFloat("magicDamage");
+        lifespan = nbt.getInteger("lifespan");
 
         throwerName = nbt.getString("throwerName");
         if (throwerName != null && throwerName.length() == 0) {

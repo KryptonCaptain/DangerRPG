@@ -18,7 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
-public class RPGRenderHelper
+public abstract class RPGRenderHelper
 {
     public static Minecraft mc = FMLClientHandler.instance().getClient();
 

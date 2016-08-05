@@ -13,7 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-public class GemableItem
+public abstract class GemableItem
 {
     public static final String IS_GEMABLE = "rpg_gemable";
 

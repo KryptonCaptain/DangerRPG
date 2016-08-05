@@ -77,11 +77,6 @@ public class AsmHook implements Cloneable, Comparable<AsmHook> {
     // может быть без возвращаемого типа
     private String returnMethodDescription;
 
-    /**
-     * MY CHANGES
-     */
-    public boolean exceptionOnUnsuccess = true;
-
     protected String getTargetClassName() {
         return targetClassName;
     }
@@ -728,13 +723,6 @@ public class AsmHook implements Cloneable, Comparable<AsmHook> {
             }
 
             return hook;
-        }
-
-        /**
-         * MY CHANGES
-         */
-        public void setNeedExcOnUnscs(boolean state) {
-            AsmHook.this.exceptionOnUnsuccess = state;
         }
     }
 
