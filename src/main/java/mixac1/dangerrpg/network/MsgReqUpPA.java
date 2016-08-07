@@ -24,7 +24,7 @@ public class MsgReqUpPA implements IMessage
     public void fromBytes(ByteBuf buf)
     {
         this.hash = buf.readInt();
-       
+
     }
 
     @Override
@@ -32,13 +32,13 @@ public class MsgReqUpPA implements IMessage
     {
         buf.writeInt(this.hash);
     }
-    
+
     public static class Handler implements IMessageHandler<MsgReqUpPA, IMessage>
     {
         @Override
         public IMessage onMessage(MsgReqUpPA message, MessageContext ctx)
         {
-            EntityPlayer player = DangerRPG.proxy.getPlayerFromMessageCtx(ctx);
+            EntityPlayer player = DangerRPG.proxy.getPlayer(ctx);
             EntityAttributeE pa = CommonEntityData.get(player).getPlayerAttributeE(message.hash);
             pa.tryUp(player);
             return null;

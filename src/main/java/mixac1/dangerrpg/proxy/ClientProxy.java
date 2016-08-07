@@ -9,6 +9,7 @@ import cpw.mods.fml.relauncher.Side;
 import mixac1.dangerrpg.init.RPGEvents;
 import mixac1.dangerrpg.init.RPGKeyBinds;
 import mixac1.dangerrpg.init.RPGRenderers;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class ClientProxy extends CommonProxy
@@ -17,29 +18,42 @@ public class ClientProxy extends CommonProxy
     public void preInit(FMLPreInitializationEvent e)
     {
         super.preInit(e);
-        
+
         RPGKeyBinds.load();
     }
-    
+
     @Override
     public void init(FMLInitializationEvent e)
     {
         super.init(e);
-        
+
         RPGRenderers.load();
-        
+
         RPGEvents.loadClient();
     }
-    
+
     @Override
     public void postInit(FMLPostInitializationEvent e)
     {
         super.postInit(e);
     }
-    
+
     @Override
-    public EntityPlayer getPlayerFromMessageCtx(MessageContext ctx)
+    public EntityPlayer getClientPlayer()
     {
-        return (ctx.side == Side.CLIENT) ? FMLClientHandler.instance().getClient().thePlayer : ctx.getServerHandler().playerEntity;
+        return FMLClientHandler.instance().getClient().thePlayer;
+    }
+
+    @Override
+    public EntityPlayer getPlayer(MessageContext ctx)
+    {
+        return (ctx.side != Side.CLIENT) ? super.getPlayer(ctx) : getClientPlayer();
+    }
+
+    @Override
+    public Entity getEntityByID(MessageContext ctx, int entityId)
+    {
+        return (ctx.side != Side.CLIENT) ? super.getEntityByID(ctx, entityId) :
+            getClientPlayer().worldObj.getEntityByID(entityId);
     }
 }

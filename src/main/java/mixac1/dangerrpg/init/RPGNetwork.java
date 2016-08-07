@@ -4,9 +4,9 @@ import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.network.MsgReqUpPA;
-import mixac1.dangerrpg.network.MsgSyncPA;
-import mixac1.dangerrpg.network.MsgSyncPAE;
-import mixac1.dangerrpg.network.MsgSyncPlayerData;
+import mixac1.dangerrpg.network.MsgSyncEA;
+import mixac1.dangerrpg.network.MsgSyncEAE;
+import mixac1.dangerrpg.network.MsgSyncEntityData;
 import mixac1.dangerrpg.network.MsgUseItemExtra;
 import mixac1.dangerrpg.network.MsgUseItemSpecial;
 
@@ -19,10 +19,10 @@ public abstract class RPGNetwork
         int i = 0;
         net.registerMessage(MsgUseItemSpecial.Handler.class, MsgUseItemSpecial.class, i, Side.SERVER);
         net.registerMessage(MsgUseItemExtra.Handler.class, MsgUseItemExtra.class, ++i, Side.SERVER);
-        net.registerMessage(MsgSyncPA.Handler.class, MsgSyncPA.class, ++i, Side.CLIENT);
-        net.registerMessage(MsgSyncPAE.Handler.class, MsgSyncPAE.class, ++i, Side.CLIENT);
-        net.registerMessage(MsgSyncPlayerData.HandlerClient.class, MsgSyncPlayerData.class, ++i, Side.CLIENT);
-        net.registerMessage(MsgSyncPlayerData.HandlerServer.class, MsgSyncPlayerData.class, ++i, Side.SERVER);
+        net.registerMessage(MsgSyncEA.Handler.class, MsgSyncEA.class, ++i, Side.CLIENT);
+        net.registerMessage(MsgSyncEAE.Handler.class, MsgSyncEAE.class, ++i, Side.CLIENT);
+        net.registerMessage(MsgSyncEntityData.HandlerClient.class, MsgSyncEntityData.class, ++i, Side.CLIENT);
+        net.registerMessage(MsgSyncEntityData.HandlerServer.class, MsgSyncEntityData.class, ++i, Side.SERVER);
         net.registerMessage(MsgReqUpPA.Handler.class, MsgReqUpPA.class, ++i, Side.SERVER);
     }
 }

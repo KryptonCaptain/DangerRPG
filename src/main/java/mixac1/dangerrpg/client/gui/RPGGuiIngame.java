@@ -193,14 +193,15 @@ public class RPGGuiIngame extends Gui
     		EntityLivingBase entity = (EntityLivingBase) mop.entityHit;
     		if (entity instanceof EntityPlayer) {
     			renderTestString(200, 10, entity.getCommandSenderName(),
-				         "lvl " + EntityAttributes.LVL.getValue(entity),
-				         "health " + PlayerAttributes.HEALTH.getValue(entity),
-    			         "mana " + PlayerAttributes.MANA.getValue(entity));
+				         "lvl " + EntityAttributes.LVL.displayValue(entity),
+				         "health " + PlayerAttributes.HEALTH.displayValue(entity),
+    			         "mana " + PlayerAttributes.MANA.displayValue(entity),
+    			         "str " + PlayerAttributes.STRENGTH.displayValue(entity));
     		}
     		else {
     			renderTestString(200, 10, entity.getCommandSenderName(),
-				         "lvl " + EntityAttributes.LVL.getValue(entity),
-				         "health " + EntityAttributes.HEALTH.getValue(entity));
+				         "lvl " + EntityAttributes.LVL.displayValue(entity),
+				         "health " + EntityAttributes.HEALTH.displayValue(entity));
     		}
     	}
     }

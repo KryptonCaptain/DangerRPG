@@ -1,6 +1,7 @@
 package mixac1.dangerrpg.event;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import mixac1.dangerrpg.capability.CommonEntityData;
 import mixac1.dangerrpg.capability.EntityLivingData;
 import mixac1.dangerrpg.capability.PlayerData;
 import net.minecraft.entity.EntityLivingBase;
@@ -27,11 +28,11 @@ public class CommonEventHandlers
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent e)
     {
-        if (e.entity instanceof EntityPlayer) {
-        	PlayerData.get((EntityPlayer) e.entity).requestAll();
+        if (e.entity instanceof EntityLivingBase) {
+            CommonEntityData.get((EntityLivingBase) e.entity).request((EntityLivingBase) e.entity);
         }
     }
-    
+
     @SubscribeEvent
     public void onPlayerCloned(PlayerEvent.Clone e)
     {

@@ -32,7 +32,7 @@ public abstract class RPGRegister
 	 */
     public static void registerCommonEntityAttribute(EntityAttribute pa)
     {
-        CommonEntityData.workAttributes.add(pa);
+        CommonEntityData.staticAttributes.add(pa);
     }
 
     /**
@@ -40,7 +40,7 @@ public abstract class RPGRegister
 	 */
     public static void registerCommonEntityAttributeE(EntityAttributeE pa)
     {
-        CommonEntityData.entityAttributes.add(pa);
+        CommonEntityData.lvlableAttributes.add(pa);
     }
 
     /**
@@ -48,7 +48,7 @@ public abstract class RPGRegister
 	 */
     public static void registerEntityAttribute(EntityAttribute pa)
     {
-        EntityLivingData.workAttributes.add(pa);
+        EntityLivingData.staticAttributes.add(pa);
     }
 
     /**
@@ -56,7 +56,7 @@ public abstract class RPGRegister
 	 */
     public static void registerEntityAttributeE(EntityAttributeE pa)
     {
-    	EntityLivingData.entityAttributes.add(pa);
+    	EntityLivingData.lvlableAttributes.add(pa);
     }
 
     /**
@@ -64,7 +64,7 @@ public abstract class RPGRegister
 	 */
     public static void registerPlayerAttribute(EntityAttribute pa)
     {
-        PlayerData.workAttributes.add(pa);
+        PlayerData.staticAttributes.add(pa);
     }
 
     /**
@@ -72,7 +72,7 @@ public abstract class RPGRegister
 	 */
     public static void registerPlayerAttributeE(EntityAttributeE pa)
     {
-    	PlayerData.entityAttributes.add(pa);
+    	PlayerData.lvlableAttributes.add(pa);
     }
 
     /**

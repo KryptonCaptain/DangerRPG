@@ -14,19 +14,19 @@ import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 public class MsgUseItemExtra implements IMessage
 {
     public MsgUseItemExtra() {}
-    
+
     @Override
     public void fromBytes(ByteBuf buf) {}
 
     @Override
     public void toBytes(ByteBuf buf) {}
-    
+
     public static class Handler implements IMessageHandler<MsgUseItemExtra, IMessage>
     {
         @Override
         public IMessage onMessage(MsgUseItemExtra message, MessageContext ctx)
         {
-            EntityPlayer player = DangerRPG.proxy.getPlayerFromMessageCtx(ctx);
+            EntityPlayer player = DangerRPG.proxy.getPlayer(ctx);
             ItemStack stack = player.getCurrentEquippedItem();
             if (stack != null && stack.getItem() instanceof IUseItemExtra) {
                 ItemStack resStack = ((IUseItemExtra) stack.getItem()).onItemUseExtra(stack, player.worldObj, player);

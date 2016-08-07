@@ -9,38 +9,38 @@ import net.minecraft.entity.EntityLivingBase;
 
 public class EntityLivingData extends CommonEntityData
 {
-	public static ArrayList<EntityAttributeE> entityAttributes = new ArrayList<EntityAttributeE>(CommonEntityData.entityAttributes);    
-	public static ArrayList<EntityAttribute>  workAttributes   = new ArrayList<EntityAttribute>(CommonEntityData.workAttributes);
-	
+    public static ArrayList<EntityAttributeE> lvlableAttributes = new ArrayList<EntityAttributeE>(CommonEntityData.lvlableAttributes);
+    public static ArrayList<EntityAttribute>  staticAttributes  = new ArrayList<EntityAttribute>(CommonEntityData.staticAttributes);
+
 	static
     {
-		workAttributes.add(EntityAttributes.HEALTH);
+	    staticAttributes.add(EntityAttributes.HEALTH);
     }
-	
+
 	public EntityLivingData(EntityLivingBase entity)
 	{
 		super(entity);
 	}
-	
+
 	public static void register(EntityLivingBase entity)
     {
     	entity.registerExtendedProperties(ID, new EntityLivingData(entity));
     }
-    
+
     public static EntityLivingData get(EntityLivingBase entity)
     {
         return (EntityLivingData) entity.getExtendedProperties(ID);
     }
-    
+
     @Override
-	public ArrayList<EntityAttribute> getWorkAttributes()
+	public ArrayList<EntityAttribute> getStaticAttributes()
     {
-    	return workAttributes;
+    	return staticAttributes;
     }
-    
+
     @Override
-	public ArrayList<EntityAttributeE> getEntityAttributes()
+	public ArrayList<EntityAttributeE> getLvlableAttributes()
     {
-    	return entityAttributes;
+    	return lvlableAttributes;
     }
 }

@@ -5,28 +5,30 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.api.entity.EntityAttribute;
 import mixac1.dangerrpg.capability.CommonEntityData;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 
-public class MsgSyncPA implements IMessage
+public class MsgSyncEA implements IMessage
 {
     public int hash;
     public float value;
+    public int entityId;
 
-    public MsgSyncPA() {}
+    public MsgSyncEA() {}
 
-    public MsgSyncPA(int hash, float value)
+    public MsgSyncEA(int hash, float value, int entityId)
     {
         this.hash = hash;
         this.value = value;
+        this.entityId = entityId;
     }
 
     @Override
     public void fromBytes(ByteBuf buf)
     {
         this.hash = buf.readInt();
-        this.value = buf.readFloat();     
+        this.value = buf.readFloat();
+        this.entityId = buf.readInt();
     }
 
     @Override
@@ -34,16 +36,16 @@ public class MsgSyncPA implements IMessage
     {
         buf.writeInt(this.hash);
         buf.writeFloat(this.value);
+        buf.writeInt(this.entityId);
     }
-    
-    public static class Handler implements IMessageHandler<MsgSyncPA, IMessage>
+
+    public static class Handler implements IMessageHandler<MsgSyncEA, IMessage>
     {
         @Override
-        public IMessage onMessage(MsgSyncPA message, MessageContext ctx)
+        public IMessage onMessage(MsgSyncEA message, MessageContext ctx)
         {
-            EntityPlayer player = DangerRPG.proxy.getPlayerFromMessageCtx(ctx);
-            EntityAttribute pa = CommonEntityData.get(player).getPlayerAttribute(message.hash);
-            pa.setValue(message.value, player, false);
+            EntityLivingBase entity = (EntityLivingBase) DangerRPG.proxy.getEntityByID(ctx, message.entityId);
+            CommonEntityData.get(entity).getPlayerAttribute(message.hash).handle(entity, message);
             return null;
         }
     }

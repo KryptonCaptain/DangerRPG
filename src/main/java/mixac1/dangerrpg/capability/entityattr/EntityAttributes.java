@@ -19,8 +19,10 @@ public class EntityAttributes
             return value;
         }
     };
-    
+
+    public static final EntityAttribute IS_INIT = new EntityAttribute("init", 0F);
+
     public static final EntityAttribute LVL = new EntityAttribute("lvl", 1F);
-    
+
     public static final EntityAttribute HEALTH = new EAHealth("ea_health");
 }

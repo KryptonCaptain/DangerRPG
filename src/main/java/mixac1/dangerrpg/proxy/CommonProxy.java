@@ -12,6 +12,7 @@ import mixac1.dangerrpg.init.RPGEvents;
 import mixac1.dangerrpg.init.RPGGuiHandlers;
 import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGNetwork;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class CommonProxy
@@ -41,8 +42,18 @@ public class CommonProxy
         RPGCapability.load();
     }
 
-    public EntityPlayer getPlayerFromMessageCtx(MessageContext ctx)
+    public EntityPlayer getClientPlayer()
+    {
+        return null;
+    }
+
+    public EntityPlayer getPlayer(MessageContext ctx)
     {
         return ctx.getServerHandler().playerEntity;
+    }
+
+    public Entity getEntityByID(MessageContext ctx, int entityId)
+    {
+        return getPlayer(ctx).worldObj.getEntityByID(entityId);
     }
 }

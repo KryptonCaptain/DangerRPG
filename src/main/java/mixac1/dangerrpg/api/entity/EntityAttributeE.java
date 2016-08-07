@@ -1,16 +1,18 @@
 package mixac1.dangerrpg.api.entity;
 
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.capability.CommonEntityData;
 import mixac1.dangerrpg.capability.CommonEntityData.EAEValues;
 import mixac1.dangerrpg.capability.entityattr.EntityAttributes;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgReqUpPA;
-import mixac1.dangerrpg.network.MsgSyncPAE;
+import mixac1.dangerrpg.network.MsgSyncEAE;
 import mixac1.dangerrpg.util.Multiplier;
 import mixac1.dangerrpg.util.Multiplier.MultiplierE;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class EntityAttributeE extends EntityAttribute
 {
@@ -146,12 +148,40 @@ public class EntityAttributeE extends EntityAttribute
     public void sync(EntityLivingBase entity)
     {
     	if (CommonEntityData.isServerSide(entity)) {
-    		getEntityData(entity).sync(new MsgSyncPAE(hash, getLvl(entity), getValue(entity)));
+    	    RPGNetwork.net.sendToAll(new MsgSyncEAE(hash, getLvl(entity), getValue(entity), entity.getEntityId()));
     	}
+    }
+
+    @Override
+    public void handle(EntityLivingBase entity, IMessage msg)
+    {
+        if (!CommonEntityData.isServerSide(entity)) {
+            setLvl(((MsgSyncEAE) msg).level, entity);
+            setValue(((MsgSyncEAE) msg).value, entity, false);
+        }
     }
 
     public String getInfo(EntityLivingBase entity)
     {
         return DangerRPG.trans("pl_attr.".concat(name).concat(".info"));
+    }
+
+    @Override
+    public void saveToNBT(NBTTagCompound nbt, EntityLivingBase entity)
+    {
+        NBTTagCompound tmp = new NBTTagCompound();
+        tmp.setInteger("lvl", getLvl(entity));
+        tmp.setFloat("value", getValue(entity));
+        nbt.setTag(name, tmp);
+    }
+
+    @Override
+    public void loadFromNBT(NBTTagCompound nbt, EntityLivingBase entity)
+    {
+        if (nbt.hasKey(name)) {
+            NBTTagCompound tmp = (NBTTagCompound) nbt.getTag(name);
+            setLvl(tmp.getInteger("lvl"), entity);
+            setValue(tmp.getFloat("value"), entity, false);
+        }
     }
 }
