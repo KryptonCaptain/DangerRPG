@@ -1,9 +1,10 @@
 package mixac1.dangerrpg.event;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import mixac1.dangerrpg.capability.CommonEntityData;
 import mixac1.dangerrpg.capability.EntityLivingData;
 import mixac1.dangerrpg.capability.PlayerData;
+import mixac1.dangerrpg.init.RPGNetwork;
+import mixac1.dangerrpg.network.MsgSyncEntityData;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,7 +30,7 @@ public class CommonEventHandlers
     public void onEntityJoinWorld(EntityJoinWorldEvent e)
     {
         if (e.entity instanceof EntityLivingBase) {
-            CommonEntityData.get((EntityLivingBase) e.entity).request((EntityLivingBase) e.entity);
+            RPGNetwork.net.sendToServer(new MsgSyncEntityData((EntityLivingBase) e.entity));
         }
     }
 

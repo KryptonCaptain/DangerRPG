@@ -1,7 +1,5 @@
 package mixac1.dangerrpg.init;
 
-import java.util.HashMap;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 import mixac1.dangerrpg.item.ItemSniperBow;
 import mixac1.dangerrpg.item.RPGArmorMaterial;
@@ -30,32 +28,6 @@ import net.minecraft.item.ItemStack;
 
 public abstract class RPGItems
 {
-	public static HashMap<ToolMaterial, String> TOOL_MATERIAL_NAMES = new HashMap<ToolMaterial, String>()
-    {{
-    	put(ToolMaterial.WOOD, "wood");
-    	put(ToolMaterial.STONE, "stone");
-    	put(ToolMaterial.IRON, "iron");
-    	put(ToolMaterial.GOLD, "gold");
-    	put(ToolMaterial.EMERALD, "diamond");
-    	put(RPGToolMaterial.OBSIDIAN, "obsidian");
-    	put(RPGToolMaterial.BEDROCK, "bedrock");
-    	put(RPGToolMaterial.BLACK_MATTER, "black_matter");
-    	put(RPGToolMaterial.WHITE_MATTER, "white_matter");
-	}};
-
-    public static HashMap<ArmorMaterial, String> ARMOR_MATERIAL_NAMES = new HashMap<ArmorMaterial, String>()
-	{{
-		put(ArmorMaterial.CLOTH, "cloth");
-		put(ArmorMaterial.CHAIN, "chain");
-		put(ArmorMaterial.IRON, "iron");
-		put(ArmorMaterial.GOLD, "gold");
-		put(ArmorMaterial.DIAMOND, "diamond");
-		put(RPGArmorMaterial.OBSIDIAN, "obsidian");
-		put(RPGArmorMaterial.BEDROCK, "bedrock");
-		put(RPGArmorMaterial.BLACK_MATTER, "black_matter");
-		put(RPGArmorMaterial.WHITE_MATTER, "white_matter");
-	}};
-
     public static Item swordTraining = new RPGWeapon(ToolMaterial.WOOD, RPGItemComponent.TRAINING, "sword_training");
 
     public static Item swordObsidian     = new RPGWeapon(RPGToolMaterial.OBSIDIAN,     RPGItemComponent.SWORD);
@@ -290,12 +262,12 @@ public abstract class RPGItems
 
 	public static String getToolMaterialName(ToolMaterial toolMaterial)
 	{
-			return "_".concat(TOOL_MATERIAL_NAMES.get(toolMaterial));
+			return "_".concat(RPGOther.toolMaterialNames.get(toolMaterial));
 	}
 
 	public static String getArmorMaterialName(ArmorMaterial armorMaterial)
 	{
-		return "_".concat(ARMOR_MATERIAL_NAMES.get(armorMaterial));
+		return "_".concat(RPGOther.armorMaterialNames.get(armorMaterial));
 	}
 
 	public static String getRPGName(RPGToolComponent toolComponent, ToolMaterial toolMaterial)

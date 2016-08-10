@@ -3,9 +3,9 @@ package mixac1.dangerrpg.api.item;
 import java.util.HashMap;
 
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.capability.ItemAttrParams;
 import mixac1.dangerrpg.capability.LvlableItem;
-import mixac1.dangerrpg.capability.itemattr.ItemAttributes;
+import mixac1.dangerrpg.capability.LvlableItem.ItemAttrParams;
+import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.entity.projectile.EntityArrowRPG;
 import mixac1.dangerrpg.entity.projectile.EntityMaterial;
 import mixac1.dangerrpg.item.RPGItemComponent;
@@ -102,7 +102,7 @@ public interface ILvlableItem
     };
 
     public static final ILvlableItemTool DEFAULT_SWORD = new ILvlableItemTool()
-    {   	
+    {
         @Override
         public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map)
         {

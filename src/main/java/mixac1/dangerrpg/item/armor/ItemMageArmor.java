@@ -6,8 +6,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.item.ItemAttribute;
-import mixac1.dangerrpg.capability.ItemAttrParams;
 import mixac1.dangerrpg.capability.LvlableItem;
+import mixac1.dangerrpg.capability.LvlableItem.ItemAttrParams;
 import mixac1.dangerrpg.client.RPGRenderHelper;
 import mixac1.dangerrpg.client.model.ModelMageArmor;
 import mixac1.dangerrpg.item.RPGItemComponent;
@@ -23,7 +23,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class ItemMageArmor extends RPGItemArmor
 {
 	protected int DEFAULT_COLOR = 0x3371e4;
-	
+
     public ItemMageArmor(ArmorMaterial armorMaterial, int armorType, String name)
     {
         super(armorMaterial, 0, armorType, name);
@@ -38,7 +38,7 @@ public class ItemMageArmor extends RPGItemArmor
             new ItemMageArmor(armorMaterial, 3, name)
         };
     }
-    
+
     @Override
 	@SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
@@ -47,7 +47,7 @@ public class ItemMageArmor extends RPGItemArmor
     	itemIcon = iconRegister.registerIcon(tmp.concat(name).concat(ARMOR_TYPES[armorType]));
         overlayIcon = iconRegister.registerIcon(tmp.concat(unlocalizedName).concat("_overlay"));
     }
-    
+
     @Override
 	@SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses()
@@ -78,7 +78,7 @@ public class ItemMageArmor extends RPGItemArmor
     {
         return armorMaterial;
     }
-    
+
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
     {

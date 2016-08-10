@@ -1,6 +1,6 @@
 package mixac1.dangerrpg.entity.projectile;
 
-import mixac1.dangerrpg.capability.itemattr.ItemAttributes;
+import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.event.ItemStackEvent.HitEntityEvent;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;

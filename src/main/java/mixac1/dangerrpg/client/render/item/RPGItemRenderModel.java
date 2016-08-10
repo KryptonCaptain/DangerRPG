@@ -48,6 +48,6 @@ public abstract class RPGItemRenderModel implements IItemRenderer
 
     public ResourceLocation getTexture(ItemStack stack)
     {
-        return RPGRenderers.MODEL_TEXTURES.get(stack.getItem());
+        return RPGRenderers.modelTextures.get(stack.getItem());
     }
 }

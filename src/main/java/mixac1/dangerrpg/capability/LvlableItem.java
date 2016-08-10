@@ -10,8 +10,8 @@ import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemArmor;
 import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemBow;
 import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemMod;
 import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemTool;
+import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.api.item.ItemAttribute;
-import mixac1.dangerrpg.capability.itemattr.ItemAttributes;
 import mixac1.dangerrpg.event.RegIAEvent;
 import mixac1.dangerrpg.init.RPGConfig;
 import mixac1.dangerrpg.item.RPGItemComponent;
@@ -37,19 +37,19 @@ public abstract class LvlableItem
 
     public static HashMap<Item, HashMap<ItemAttribute, ItemAttrParams>> itemsAttrebutes = new HashMap<Item, HashMap<ItemAttribute, ItemAttrParams>>();
 
-    public static final Multiplier EXP_MUL = new Multiplier()
+    public static final Multiplier<Float> EXP_MUL = new Multiplier<Float>()
     {
         @Override
-        public float up(float value)
+        public Float up(Float value)
         {
             return value * RPGConfig.itemExpMul;
         }
     };
 
-    public static final Multiplier DUR_MUL = new Multiplier()
+    public static final Multiplier<Float> DUR_MUL = new Multiplier<Float>()
     {
         @Override
-        public float up(float value)
+        public Float up(Float value)
         {
             return value + 50;
         }
@@ -260,6 +260,23 @@ public abstract class LvlableItem
                 }
                 ItemAttributes.CURR_EXP.set(stack, currEXP);
             }
+        }
+    }
+
+    public static class ItemAttrParams
+    {
+        public float value;
+        public Multiplier<Float> mul;
+
+        public ItemAttrParams(float value, Multiplier<Float> mul)
+        {
+            this.value = value;
+            this.mul = mul;
+        }
+
+        public float up(float value)
+        {
+            return mul.up(value);
         }
     }
 }

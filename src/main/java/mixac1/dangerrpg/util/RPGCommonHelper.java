@@ -5,7 +5,7 @@ import java.util.List;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.capability.itemattr.ItemAttributes;
+import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;

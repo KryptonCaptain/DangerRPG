@@ -1,4 +1,4 @@
-package mixac1.dangerrpg.capability.itemattr;
+package mixac1.dangerrpg.capability.ia;
 
 import mixac1.dangerrpg.api.item.IADynamic;
 import mixac1.dangerrpg.api.item.IAStatic;

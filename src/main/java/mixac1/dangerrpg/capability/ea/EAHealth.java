@@ -1,24 +1,26 @@
-package mixac1.dangerrpg.capability.entityattr;
+package mixac1.dangerrpg.capability.ea;
 
 import java.util.UUID;
 
-import mixac1.dangerrpg.api.entity.EntityAttribute;
+import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
+import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 
-public class EAHealth extends EntityAttribute
+public class EAHealth extends EAFloat
 {
-	private final UUID ID = UUID.randomUUID();
-	
-	public EAHealth(String name)
+	private static float ff;
+    private final UUID ID = UUID.randomUUID();
+
+	public EAHealth(String name, float defaultValue, LvlEAProvider<Float> lvlProvider)
 	{
-		super(name);
+	    super(name, defaultValue, lvlProvider);
 	}
-	
+
 	@Override
-    public float displayValue(EntityLivingBase entity)
+    public Float displayValue(EntityLivingBase entity)
     {
         return entity.getMaxHealth();
     }

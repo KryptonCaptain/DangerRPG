@@ -3,7 +3,7 @@ package mixac1.dangerrpg.inventory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.capability.LvlableItem;
-import mixac1.dangerrpg.capability.itemattr.ItemAttributes;
+import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.init.RPGConfig;
 import mixac1.dangerrpg.util.RPGCommonHelper;
 import net.minecraft.entity.player.EntityPlayer;

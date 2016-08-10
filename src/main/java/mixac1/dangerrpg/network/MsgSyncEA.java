@@ -1,51 +1,55 @@
 package mixac1.dangerrpg.network;
 
+import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import mixac1.dangerrpg.DangerRPG;
+import mixac1.dangerrpg.api.entity.EntityAttribute;
 import mixac1.dangerrpg.capability.CommonEntityData;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class MsgSyncEA implements IMessage
 {
-    public int hash;
-    public float value;
-    public int entityId;
+    public NBTTagCompound nbt;
 
     public MsgSyncEA() {}
 
-    public MsgSyncEA(int hash, float value, int entityId)
+    public MsgSyncEA(EntityAttribute attr, EntityLivingBase entity)
     {
-        this.hash = hash;
-        this.value = value;
-        this.entityId = entityId;
-    }
+        nbt = new NBTTagCompound();
 
-    @Override
-    public void fromBytes(ByteBuf buf)
-    {
-        this.hash = buf.readInt();
-        this.value = buf.readFloat();
-        this.entityId = buf.readInt();
+        nbt.setInteger("hash", attr.hash);
+        nbt.setInteger("id", entity.getEntityId());
+        attr.toNBT(nbt, entity);
     }
 
     @Override
     public void toBytes(ByteBuf buf)
     {
-        buf.writeInt(this.hash);
-        buf.writeFloat(this.value);
-        buf.writeInt(this.entityId);
+        ByteBufUtils.writeTag(buf, nbt);
+    }
+
+    @Override
+    public void fromBytes(ByteBuf buf)
+    {
+        nbt = ByteBufUtils.readTag(buf);
     }
 
     public static class Handler implements IMessageHandler<MsgSyncEA, IMessage>
     {
         @Override
-        public IMessage onMessage(MsgSyncEA message, MessageContext ctx)
+        public IMessage onMessage(MsgSyncEA msg, MessageContext ctx)
         {
-            EntityLivingBase entity = (EntityLivingBase) DangerRPG.proxy.getEntityByID(ctx, message.entityId);
-            CommonEntityData.get(entity).getPlayerAttribute(message.hash).handle(entity, message);
+            EntityLivingBase entity = (EntityLivingBase) DangerRPG.proxy.getEntityByID(ctx, msg.nbt.getInteger("id"));
+            if (entity != null) {
+                EntityAttribute attr = CommonEntityData.get(entity).getEntityAttribute(msg.nbt.getInteger("hash"));
+                if (attr != null) {
+                    attr.fromNBT(msg.nbt, entity);
+                }
+            }
             return null;
         }
     }

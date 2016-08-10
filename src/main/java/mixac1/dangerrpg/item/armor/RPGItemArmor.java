@@ -7,8 +7,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemArmor;
 import mixac1.dangerrpg.api.item.ItemAttribute;
-import mixac1.dangerrpg.capability.ItemAttrParams;
 import mixac1.dangerrpg.capability.LvlableItem;
+import mixac1.dangerrpg.capability.LvlableItem.ItemAttrParams;
 import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.IHasBooksInfo;
@@ -50,7 +50,7 @@ public class RPGItemArmor extends ItemArmor implements ILvlableItemArmor, IHasBo
             new RPGItemArmor(armorMaterial, 0, 3, name)
         };
     }
-    
+
     @Override
 	@SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)

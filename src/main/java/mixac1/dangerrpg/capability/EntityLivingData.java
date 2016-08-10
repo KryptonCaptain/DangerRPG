@@ -3,19 +3,13 @@ package mixac1.dangerrpg.capability;
 import java.util.ArrayList;
 
 import mixac1.dangerrpg.api.entity.EntityAttribute;
-import mixac1.dangerrpg.api.entity.EntityAttributeE;
-import mixac1.dangerrpg.capability.entityattr.EntityAttributes;
+import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import net.minecraft.entity.EntityLivingBase;
 
 public class EntityLivingData extends CommonEntityData
 {
-    public static ArrayList<EntityAttributeE> lvlableAttributes = new ArrayList<EntityAttributeE>(CommonEntityData.lvlableAttributes);
-    public static ArrayList<EntityAttribute>  staticAttributes  = new ArrayList<EntityAttribute>(CommonEntityData.staticAttributes);
-
-	static
-    {
-	    staticAttributes.add(EntityAttributes.HEALTH);
-    }
+    public static ArrayList<LvlEAProvider>   lvlProviders     = new ArrayList<LvlEAProvider>(CommonEntityData.lvlProviders);
+    public static ArrayList<EntityAttribute> entityAttributes = new ArrayList<EntityAttribute>(CommonEntityData.entityAttributes);
 
 	public EntityLivingData(EntityLivingBase entity)
 	{
@@ -33,14 +27,14 @@ public class EntityLivingData extends CommonEntityData
     }
 
     @Override
-	public ArrayList<EntityAttribute> getStaticAttributes()
+    public ArrayList<EntityAttribute> getEntityAttributes()
     {
-    	return staticAttributes;
+        return entityAttributes;
     }
 
     @Override
-	public ArrayList<EntityAttributeE> getLvlableAttributes()
+    public ArrayList<LvlEAProvider> getLvlProviders()
     {
-    	return lvlableAttributes;
+        return lvlProviders;
     }
 }

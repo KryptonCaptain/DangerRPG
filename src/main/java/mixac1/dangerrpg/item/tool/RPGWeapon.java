@@ -7,8 +7,8 @@ import mixac1.dangerrpg.api.item.IGemableItem;
 import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemTool;
 import mixac1.dangerrpg.api.item.ItemAttribute;
 import mixac1.dangerrpg.capability.GemType;
-import mixac1.dangerrpg.capability.ItemAttrParams;
 import mixac1.dangerrpg.capability.LvlableItem;
+import mixac1.dangerrpg.capability.LvlableItem.ItemAttrParams;
 import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.IHasBooksInfo;
@@ -40,7 +40,7 @@ public class RPGWeapon extends ItemSword implements ILvlableItemTool, IGemableIt
         setCreativeTab(RPGOther.tabDangerRPG);
         setMaxStackSize(1);
     }
-    
+
     public RPGWeapon(ToolMaterial toolMaterial, RPGToolComponent toolComponent, String name)
     {
         this(toolMaterial, toolComponent);

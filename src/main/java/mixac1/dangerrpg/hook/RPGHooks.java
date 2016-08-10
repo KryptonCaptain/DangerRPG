@@ -14,7 +14,7 @@ import mixac1.dangerrpg.api.item.ILvlableItem;
 import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemBow;
 import mixac1.dangerrpg.capability.GemableItem;
 import mixac1.dangerrpg.capability.LvlableItem;
-import mixac1.dangerrpg.capability.itemattr.ItemAttributes;
+import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.event.ItemStackEvent.AddInformationEvent;
 import mixac1.dangerrpg.event.ItemStackEvent.GetAttributeModifiers;
 import mixac1.dangerrpg.event.ItemStackEvent.HitEntityEvent;

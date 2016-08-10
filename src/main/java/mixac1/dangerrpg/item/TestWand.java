@@ -1,7 +1,7 @@
 package mixac1.dangerrpg.item;
 
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.capability.entityattr.EntityAttributes;
+import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.init.RPGOther;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,14 +18,14 @@ public class TestWand extends Item
         setCreativeTab(RPGOther.tabDangerRPG);
         setMaxStackSize(1);
 	}
-	
+
 	@Override
 	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
     {
 		if (!entity.worldObj.isRemote && entity instanceof EntityLivingBase) {
-			EntityAttributes.HEALTH.addValue(1, (EntityLivingBase) entity);
+			EntityAttributes.HEALTH.addValue(1f, (EntityLivingBase) entity);
 		}
-		
+
         return true;
     }
 }

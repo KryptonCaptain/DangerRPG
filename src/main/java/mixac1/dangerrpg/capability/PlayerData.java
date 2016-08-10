@@ -4,8 +4,7 @@ import java.util.ArrayList;
 
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.EntityAttribute;
-import mixac1.dangerrpg.api.entity.EntityAttributeE;
-import mixac1.dangerrpg.capability.playerattr.PlayerAttributes;
+import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import mixac1.dangerrpg.init.RPGConfig;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -13,22 +12,8 @@ public class PlayerData extends CommonEntityData
 {
 	public final EntityPlayer player;
 
-	public static ArrayList<EntityAttributeE> lvlableAttributes = new ArrayList<EntityAttributeE>(CommonEntityData.lvlableAttributes);
-	public static ArrayList<EntityAttribute>  staticAttributes  = new ArrayList<EntityAttribute>(CommonEntityData.staticAttributes);
-
-	static
-	{
-	    lvlableAttributes.add(PlayerAttributes.HEALTH);
-	    lvlableAttributes.add(PlayerAttributes.MANA);
-	    lvlableAttributes.add(PlayerAttributes.STRENGTH);
-	    lvlableAttributes.add(PlayerAttributes.AGILITY);
-	    lvlableAttributes.add(PlayerAttributes.INTELLIGENCE);
-	    lvlableAttributes.add(PlayerAttributes.EFFICIENCY);
-	    lvlableAttributes.add(PlayerAttributes.MANA_REGEN);
-
-	    staticAttributes.add(PlayerAttributes.CURR_MANA);
-	    staticAttributes.add(PlayerAttributes.SPEED_COUNTER);
-    }
+	public static ArrayList<LvlEAProvider>   lvlProviders     = new ArrayList<LvlEAProvider>(CommonEntityData.lvlProviders);
+	public static ArrayList<EntityAttribute> entityAttributes = new ArrayList<EntityAttribute>(CommonEntityData.entityAttributes);
 
 	public PlayerData(EntityPlayer player)
 	{
@@ -56,8 +41,8 @@ public class PlayerData extends CommonEntityData
         int count = 0;
         int lvl;
 
-        ArrayList<EntityAttributeE> pas = new ArrayList<EntityAttributeE>();
-        for (EntityAttributeE it : getLvlableAttributes()) {
+        ArrayList<LvlEAProvider> pas = new ArrayList<LvlEAProvider>();
+        for (LvlEAProvider it : getLvlProviders()) {
             if ((lvl = it.getLvl(player)) > 1) {
                 pas.add(it);
                 count += lvl - 1;
@@ -78,14 +63,14 @@ public class PlayerData extends CommonEntityData
     }
 
     @Override
-	public ArrayList<EntityAttribute> getStaticAttributes()
+	public ArrayList<EntityAttribute> getEntityAttributes()
     {
-    	return staticAttributes;
+    	return entityAttributes;
     }
 
     @Override
-	public ArrayList<EntityAttributeE> getLvlableAttributes()
+	public ArrayList<LvlEAProvider> getLvlProviders()
     {
-    	return lvlableAttributes;
+    	return lvlProviders;
     }
 }

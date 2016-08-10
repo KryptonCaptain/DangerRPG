@@ -1,35 +1,50 @@
 package mixac1.dangerrpg.util;
 
-public interface Multiplier
+public interface Multiplier<Type>
 {
-    public static final MultiplierE ADD_1 = new MultiplierAdd(1F);
+    public Type up(Type value);
 
-    public float up(float value);
-
-    public interface MultiplierE extends Multiplier
+    public interface MultiplierE<Type> extends Multiplier<Type>
     {
-        public float down(float value);
+        public Type down(Type value);
     }
 
-    public static class MultiplierAdd implements MultiplierE
+    public static class MultiplierAdd implements MultiplierE<Float>
     {
-        private float add;
+        private Float add;
 
-        public MultiplierAdd(float add)
+        public MultiplierAdd(Float add)
         {
             this.add = add;
         }
 
         @Override
-        public float up(float value)
+        public Float up(Float value)
         {
             return value + add;
         }
 
         @Override
-        public float down(float value)
+        public Float down(Float value)
         {
             return value - add;
         }
     }
+
+    public static final MultiplierE ADD_1 = new MultiplierAdd(1F);
+
+    public static MultiplierE MUL_1 = new MultiplierE()
+    {
+        @Override
+        public Object up(Object value)
+        {
+            return value;
+        }
+
+        @Override
+        public Object down(Object value)
+        {
+            return value;
+        }
+    };
 }

@@ -32,7 +32,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 @SideOnly(Side.CLIENT)
 public abstract class RPGRenderers
 {
-    public static HashMap<Item, ResourceLocation> MODEL_TEXTURES = new HashMap<Item, ResourceLocation>();
+    public static HashMap<Item, ResourceLocation> modelTextures = new HashMap<Item, ResourceLocation>();
 
     public static void load()
     {

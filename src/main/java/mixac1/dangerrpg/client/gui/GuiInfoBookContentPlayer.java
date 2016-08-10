@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.api.entity.EntityAttributeE;
+import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -56,7 +56,7 @@ public class GuiInfoBookContentPlayer extends GuiInfoBookContent
     public void init()
     {
         super.init();
-        for (EntityAttributeE attr : parent.attributes) {
+        for (LvlEAProvider attr : parent.attributes) {
             list.add(new ContentItem(attr));
         }
     }
@@ -74,16 +74,16 @@ public class GuiInfoBookContentPlayer extends GuiInfoBookContent
             mc.getTextureManager().bindTexture(TEXTURE);
             parent.drawTexturedModalRect(offsetX, offsetY, 0, 0, imageWidth, imageHeight);
 
-            s = mc.fontRenderer.trimStringToWidth(parent.attributes.get(currIndex).getDispayName().toUpperCase(), titleSizeX);
+            s = mc.fontRenderer.trimStringToWidth(parent.attributes.get(currIndex).attr.getDisplayName().toUpperCase(), titleSizeX);
             mc.fontRenderer.drawStringWithShadow(s, offsetX + (titleSizeX - mc.fontRenderer.getStringWidth(s) + 4) / 2, offsetY + (titleSizeY - mc.fontRenderer.FONT_HEIGHT + 4) / 2, 0xffffff);
 
-            s = DangerRPG.trans("it_attr.lvl").concat(": ").concat(String.valueOf(parent.attributes.get(currIndex).getLvl(player)));
+            s = DangerRPG.trans("ia.lvl").concat(": ").concat(String.valueOf(parent.attributes.get(currIndex).getLvl(player)));
             mc.fontRenderer.drawStringWithShadow(s, offsetX + infoOffsetX, offsetY + infoOffsetY, 0xffffff);
 
-            s = DangerRPG.trans("rpgstr.value").concat(": ").concat(String.valueOf(parent.attributes.get(currIndex).displayValue(player)));
+            s = DangerRPG.trans("rpgstr.value").concat(": ").concat(String.valueOf(parent.attributes.get(currIndex).attr.displayValue(player)));
             mc.fontRenderer.drawStringWithShadow(s, offsetX + infoOffsetX, offsetY + infoOffsetY + indent, 0xffffff);
 
-            s = parent.attributes.get(currIndex).getInfo(player);
+            s = parent.attributes.get(currIndex).attr.getInfo();
             List list = mc.fontRenderer.listFormattedStringToWidth(s, infoWidth);
             for (int i = 0; i < list.size(); ++i) {
                 mc.fontRenderer.drawStringWithShadow(list.get(i).toString(), offsetX + infoOffsetX, offsetY + infoOffsetY + indent * (2 + i), 0xffffff);
@@ -124,16 +124,16 @@ public class GuiInfoBookContentPlayer extends GuiInfoBookContent
 
     public class ContentItem
     {
-        private EntityAttributeE attr;
+        private LvlEAProvider attr;
 
-        public ContentItem(EntityAttributeE attr)
+        public ContentItem(LvlEAProvider attr)
         {
             this.attr = attr;
         }
 
         public void draw(int x, int y, int color1, int color2)
         {
-            String s = mc.fontRenderer.trimStringToWidth(attr.getDispayName(), listWidth - 20);
+            String s = mc.fontRenderer.trimStringToWidth(attr.attr.getDisplayName(), listWidth - 20);
             mc.fontRenderer.drawStringWithShadow(s, x + (listWidth - mc.fontRenderer.getStringWidth(s)) / 2, y + (sizeContent - mc.fontRenderer.FONT_HEIGHT) / 2, attr.canUp(player) ? color2 : color1);
 
             s = String.valueOf(attr.getLvl(player));

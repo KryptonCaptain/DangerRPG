@@ -2,9 +2,9 @@ package mixac1.dangerrpg.client.gui;
 
 import org.lwjgl.opengl.GL11;
 
-import mixac1.dangerrpg.capability.entityattr.EntityAttributes;
-import mixac1.dangerrpg.capability.itemattr.ItemAttributes;
-import mixac1.dangerrpg.capability.playerattr.PlayerAttributes;
+import mixac1.dangerrpg.capability.ea.EntityAttributes;
+import mixac1.dangerrpg.capability.ea.PlayerAttributes;
+import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.util.RPGCommonHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

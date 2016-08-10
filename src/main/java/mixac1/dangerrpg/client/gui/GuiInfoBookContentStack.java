@@ -10,7 +10,7 @@ import mixac1.dangerrpg.api.item.ItemAttribute;
 import mixac1.dangerrpg.capability.GemType;
 import mixac1.dangerrpg.capability.GemableItem;
 import mixac1.dangerrpg.capability.LvlableItem;
-import mixac1.dangerrpg.capability.itemattr.ItemAttributes;
+import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.gem.Gem;
 import net.minecraft.client.Minecraft;

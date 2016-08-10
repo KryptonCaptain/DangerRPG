@@ -4,16 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.EntityAttribute;
-import mixac1.dangerrpg.api.entity.EntityAttributeE;
-import mixac1.dangerrpg.capability.entityattr.EntityAttributes;
+import mixac1.dangerrpg.api.entity.LvlEAProvider;
+import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgSyncEntityData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
@@ -24,17 +21,11 @@ public class CommonEntityData implements IExtendedEntityProperties
 
     public final EntityLivingBase entity;
 
-    public HashMap<Integer, EAEValues> attributeMapE = new HashMap<Integer, EAEValues>();
-    public HashMap<Integer, EAValues>  attributeMap  = new HashMap<Integer, EAValues>();
+    public HashMap<Integer, TypeStub> attributeMap = new HashMap<Integer, TypeStub>();
+    public HashMap<Integer, Integer>  lvlMap       = new HashMap<Integer, Integer>();
 
-    public static ArrayList<EntityAttributeE> lvlableAttributes = new ArrayList<EntityAttributeE>();
-    public static ArrayList<EntityAttribute>  staticAttributes  = new ArrayList<EntityAttribute>();
-
-    static
-    {
-        staticAttributes.add(EntityAttributes.IS_INIT);
-        staticAttributes.add(EntityAttributes.LVL);
-    }
+    public static ArrayList<LvlEAProvider>   lvlProviders     = new ArrayList<LvlEAProvider>();
+    public static ArrayList<EntityAttribute> entityAttributes = new ArrayList<EntityAttribute>();
 
     public CommonEntityData(EntityLivingBase entity)
     {
@@ -44,17 +35,13 @@ public class CommonEntityData implements IExtendedEntityProperties
     @Override
     public void init(Entity entity, World world)
     {
-        for (EntityAttribute iter : getLvlableAttributes()) {
+        for (EntityAttribute iter : getEntityAttributes()) {
             iter.init((EntityLivingBase) entity);
         }
-        for (EntityAttribute iter : getStaticAttributes()) {
-            iter.init((EntityLivingBase) entity);
-        }
-    }
 
-    public void serverInit()
-    {
-        EntityAttributes.IS_INIT.setValue(1f, entity, false);
+        if (isServerSide((EntityLivingBase) entity)) {
+            EntityAttributes.IS_INIT.setValueRaw(true, (EntityLivingBase) entity);
+        }
     }
 
     public static void register(EntityLivingBase entity)
@@ -74,80 +61,32 @@ public class CommonEntityData implements IExtendedEntityProperties
 
     public boolean checkValid()
     {
-        boolean result = EntityAttributes.IS_INIT.getValue(entity) != 0f;
+        boolean result = EntityAttributes.IS_INIT.getValue(entity);
         if (!result) {
             if (isServerSide(entity)) {
                 init(entity, entity.worldObj);
-                RPGNetwork.net.sendToAll(new MsgSyncEntityData(this, entity.getEntityId()));
+                RPGNetwork.net.sendToAll(new MsgSyncEntityData(entity, this));
             }
             else {
-                request(entity);
+                RPGNetwork.net.sendToServer(new MsgSyncEntityData(entity));
             }
         }
         return result;
     }
 
-    public void sync(EntityPlayerMP player, int entityId)
-    {
-        if (isServerSide(entity)) {
-            if (entityId == -1) {
-                RPGNetwork.net.sendTo(new MsgSyncEntityData(get(entity)), player);
-            }
-            else {
-                EntityLivingBase target = (EntityLivingBase) entity.worldObj.getEntityByID(entityId);
-                if (target != null) {
-                    RPGNetwork.net.sendTo(new MsgSyncEntityData(get(target), entityId), player);
-                }
-            }
-        }
-    }
-
-    public void request(EntityLivingBase entityTarget)
-    {
-        if (!isServerSide(entity)) {
-            if (entityTarget == DangerRPG.proxy.getClientPlayer()) {
-                RPGNetwork.net.sendToServer(new MsgSyncEntityData());
-            }
-            else {
-                RPGNetwork.net.sendToServer(new MsgSyncEntityData(entityTarget.getEntityId()));
-            }
-        }
-    }
-
-    public void handle(MsgSyncEntityData msg, MessageContext ctx)
-    {
-        EntityLivingBase entity;
-        if (msg.entityId == -1) {
-            entity = DangerRPG.proxy.getPlayer(ctx);
-        }
-        else {
-            entity = (EntityLivingBase) DangerRPG.proxy.getEntityByID(ctx, msg.entityId);
-        }
-
-        if (entity != null) {
-            get(entity).loadNBTData(msg.data);
-        }
-    }
-
     @Override
     public void saveNBTData(NBTTagCompound nbt)
     {
-        for (EntityAttributeE iter : getLvlableAttributes()) {
-            iter.saveToNBT(nbt, entity);
-        }
-        for (EntityAttribute iter : getStaticAttributes()) {
-            iter.saveToNBT(nbt, entity);
+        for (EntityAttribute iter : getEntityAttributes()) {
+            iter.toNBT(nbt, entity);
         }
     }
 
     @Override
     public void loadNBTData(NBTTagCompound nbt)
     {
-        for (EntityAttributeE iter : getLvlableAttributes()) {
-            iter.loadFromNBT(nbt, entity);
-        }
-        for (EntityAttribute iter : getStaticAttributes()) {
-            iter.loadFromNBT(nbt, entity);
+        for (EntityAttribute iter : getEntityAttributes()) {
+            iter.fromNBT(nbt, entity);
         }
     }
 
@@ -161,44 +100,28 @@ public class CommonEntityData implements IExtendedEntityProperties
         return null;
     }
 
-    public EntityAttribute getPlayerAttribute(int hash)
+    public EntityAttribute getEntityAttribute(int hash)
     {
-        return (EntityAttribute) getObject(hash, getStaticAttributes());
+        return (EntityAttribute) getObject(hash, getEntityAttributes());
     }
 
-    public EntityAttributeE getPlayerAttributeE(int hash)
+    public ArrayList<EntityAttribute> getEntityAttributes()
     {
-        return (EntityAttributeE) getObject(hash, getLvlableAttributes());
+    	return entityAttributes;
     }
 
-    public ArrayList<EntityAttribute> getStaticAttributes()
+    public ArrayList<LvlEAProvider> getLvlProviders()
     {
-    	return staticAttributes;
+    	return lvlProviders;
     }
 
-    public ArrayList<EntityAttributeE> getLvlableAttributes()
+    public static class TypeStub<Type>
     {
-    	return lvlableAttributes;
-    }
+        public Type value;
 
-    public static class EAValues
-    {
-        public float value;
-
-        public EAValues(float value)
+        public TypeStub(Type value)
         {
             this.value = value;
-        }
-    }
-
-    public static class EAEValues extends EAValues
-    {
-        public int lvl;
-
-        public EAEValues(int lvl, float value)
-        {
-            super(value);
-            this.lvl = lvl;
         }
     }
 }
