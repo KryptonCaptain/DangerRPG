@@ -12,6 +12,7 @@ import mixac1.dangerrpg.event.ItemStackEvent.AddInformationEvent;
 import mixac1.dangerrpg.event.ItemStackEvent.HitEntityEvent;
 import mixac1.dangerrpg.event.ItemStackEvent.OnLeftClickEntityEvent;
 import mixac1.dangerrpg.util.RPGCommonHelper;
+import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -67,10 +68,11 @@ public class LvlableItemEventHandlers
     public void addInformation(AddInformationEvent e)
     {
         if (LvlableItem.isLvlable(e.stack)) {
-            e.list.add(EnumChatFormatting.GOLD + ItemAttributes.LEVEL.getDispayName().concat(": ") +
-                     (int) ItemAttributes.LEVEL.get(e.stack));
-            e.list.add(EnumChatFormatting.GRAY + ItemAttributes.CURR_EXP.getDispayName().concat(": ") +
-                     (int) ItemAttributes.CURR_EXP.get(e.stack) + "/" + (int) ItemAttributes.MAX_EXP.get(e.stack));
+            e.list.add(Utils.toString(EnumChatFormatting.GOLD,
+                       ItemAttributes.LEVEL.getDispayName(), ": ", (int) ItemAttributes.LEVEL.get(e.stack)));
+            e.list.add(Utils.toString(EnumChatFormatting.GRAY,
+                       ItemAttributes.CURR_EXP.getDispayName(), ": ",
+                       (int) ItemAttributes.CURR_EXP.get(e.stack), "/", (int) ItemAttributes.MAX_EXP.get(e.stack)));
         }
     }
 

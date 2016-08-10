@@ -11,6 +11,7 @@ import mixac1.dangerrpg.capability.LvlableItem.ItemAttrParams;
 import mixac1.dangerrpg.client.RPGRenderHelper;
 import mixac1.dangerrpg.client.model.ModelMageArmor;
 import mixac1.dangerrpg.item.RPGItemComponent;
+import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -44,8 +45,8 @@ public class ItemMageArmor extends RPGItemArmor
     public void registerIcons(IIconRegister iconRegister)
     {
         String tmp = DangerRPG.MODID.concat(":armors/");
-        itemIcon = iconRegister.registerIcon(tmp.concat(name).concat(ARMOR_TYPES[armorType]));
-        overlayIcon = iconRegister.registerIcon(tmp.concat(unlocalizedName).concat("_overlay"));
+        itemIcon = iconRegister.registerIcon(Utils.toString(tmp, name, ARMOR_TYPES[armorType]));
+        overlayIcon = iconRegister.registerIcon(Utils.toString(tmp, unlocalizedName, "_overlay"));
     }
 
     @Override
@@ -85,11 +86,11 @@ public class ItemMageArmor extends RPGItemArmor
         ModelMageArmor model = slot == 2 ? ModelMageArmor.INSTANCE_LEGGINGS : ModelMageArmor.INSTANCE_ARMOR;
         if (type != null) {
             model.setColor(0xffffff);
-            return modelTexture.concat(String.valueOf(slot == 2 ? 2 : 1)).concat("_").concat(type).concat(".png");
+            return Utils.toString(modelTexture, slot == 2 ? 2 : 1, "_", type, ".png");
         }
         else {
             model.setColor(getColor(stack));
-            return "DangerRPG:textures/models/armors/".concat(name).concat("_layer_").concat(String.valueOf(slot == 2 ? 2 : 1)).concat(".png");
+            return Utils.toString("DangerRPG:textures/models/armors/", name, "_layer_", slot == 2 ? 2 : 1, ".png");
         }
     }
 

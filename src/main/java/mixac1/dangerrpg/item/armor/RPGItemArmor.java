@@ -13,6 +13,7 @@ import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.RPGItemComponent;
+import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -35,9 +36,9 @@ public class RPGItemArmor extends ItemArmor implements ILvlableItemArmor, IHasBo
         this.armorMaterial = armorMaterial;
         this.name = name;
         name = name.concat(RPGItems.getArmorMaterialName(armorMaterial));
-        modelTexture = "DangerRPG:textures/models/armors/".concat(name).concat("_layer_");
+        modelTexture = Utils.toString("DangerRPG:textures/models/armors/", name, "_layer_");
         setUnlocalizedName(name.concat(ARMOR_TYPES[armorType]));
-        setTextureName(DangerRPG.MODID + ":armors/" + unlocalizedName);
+        setTextureName(Utils.toString(DangerRPG.MODID, ":armors/", unlocalizedName));
         setCreativeTab(RPGOther.tabDangerRPG);
     }
 
@@ -85,11 +86,7 @@ public class RPGItemArmor extends ItemArmor implements ILvlableItemArmor, IHasBo
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
     {
-        String str = modelTexture.concat(String.valueOf(slot == 2 ? 2 : 1)).concat(".png");
-        if (type != null) {
-            str = str.concat(type);
-        }
-        return str;
+        return Utils.toString(modelTexture, slot == 2 ? 2 : 1, ".png");
     }
 
     @Override

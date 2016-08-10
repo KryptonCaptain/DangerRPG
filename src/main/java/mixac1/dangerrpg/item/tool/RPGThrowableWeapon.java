@@ -4,6 +4,7 @@ import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.entity.projectile.EntityThrowLvlItem;
 import mixac1.dangerrpg.item.IUseItemExtra;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
+import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -16,7 +17,7 @@ public abstract class RPGThrowableWeapon extends RPGWeapon implements IUseItemEx
     public RPGThrowableWeapon(ToolMaterial toolMaterial, RPGToolComponent toolComponent)
     {
         super(toolMaterial, toolComponent);
-        setTextureName(DangerRPG.MODID + ":weapons/throwable/" + unlocalizedName);
+        setTextureName(Utils.toString(DangerRPG.MODID, ":weapons/throwable/", unlocalizedName));
     }
 
     @Override

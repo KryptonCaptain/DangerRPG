@@ -3,7 +3,7 @@ package mixac1.dangerrpg.capability.ea;
 import java.util.UUID;
 
 import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
-import mixac1.dangerrpg.api.entity.LvlEAProvider;
+import mixac1.dangerrpg.capability.LvlEAProvider;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;

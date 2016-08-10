@@ -19,4 +19,13 @@ public abstract class Utils
         }
         return value;
     }
+
+    public static String toString(Object... objs)
+    {
+        StringBuilder buf = new StringBuilder();
+        for (Object obj : objs) {
+            buf.append(obj.toString());
+        }
+        return buf.toString();
+    }
 }

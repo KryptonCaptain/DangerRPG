@@ -12,6 +12,7 @@ import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.RPGItemComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
+import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
@@ -23,7 +24,7 @@ public class RPGPickaxe extends ItemPickaxe implements ILvlableItemTool, IHasBoo
     {
         super(toolMaterial);
         setUnlocalizedName(RPGItems.getRPGName(getItemComponent(this), getToolMaterial(this)));
-        setTextureName(DangerRPG.MODID + ":tools/" + unlocalizedName);
+        setTextureName(Utils.toString(DangerRPG.MODID, ":tools/", unlocalizedName));
         setCreativeTab(RPGOther.tabDangerRPG);
         setMaxStackSize(1);
     }

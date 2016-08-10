@@ -18,6 +18,7 @@ import mixac1.dangerrpg.init.RPGRenderers;
 import mixac1.dangerrpg.item.armor.RPGItemArmor;
 import mixac1.dangerrpg.item.tool.RPGWeapon;
 import mixac1.dangerrpg.util.Multiplier;
+import mixac1.dangerrpg.util.Utils;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
@@ -102,7 +103,7 @@ public abstract class RPGRegister
     public static void registerItemRendererModel(Item item, RPGItemRenderModel model, String resDomain, String resPath)
     {
         MinecraftForgeClient.registerItemRenderer(item, model);
-        RPGRenderers.modelTextures.put(item, new ResourceLocation(resDomain, resPath.concat(item.getUnlocalizedName().concat(".png"))));
+        RPGRenderers.modelTextures.put(item, new ResourceLocation(resDomain, Utils.toString(resPath, item.unlocalizedName, ".png")));
     }
 
     /**
@@ -114,7 +115,7 @@ public abstract class RPGRegister
     public static void registerItemRendererModel(Item item, RPGItemRenderModel model, String resFullPath)
     {
         MinecraftForgeClient.registerItemRenderer(item, model);
-        RPGRenderers.modelTextures.put(item, new ResourceLocation(resFullPath.concat(item.unlocalizedName.concat(".png"))));
+        RPGRenderers.modelTextures.put(item, new ResourceLocation(Utils.toString(resFullPath, item.unlocalizedName, ".png")));
     }
 
     /**

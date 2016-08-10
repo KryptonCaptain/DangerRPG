@@ -3,7 +3,6 @@ package mixac1.dangerrpg.capability;
 import java.util.ArrayList;
 
 import mixac1.dangerrpg.api.entity.EntityAttribute;
-import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import net.minecraft.entity.EntityLivingBase;
 
 public class EntityLivingData extends CommonEntityData

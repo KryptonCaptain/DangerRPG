@@ -15,6 +15,7 @@ import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.RPGItemComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
+import mixac1.dangerrpg.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -36,7 +37,7 @@ public class RPGMultiTool extends ItemTool implements ILvlableItemTool, IHasBook
     {
         super(3.0F, material, multitoolBlocks);
         setUnlocalizedName(RPGItems.getRPGName(getItemComponent(this), getToolMaterial(this)));
-        setTextureName(DangerRPG.MODID + ":tools/" + unlocalizedName);
+        setTextureName(Utils.toString(DangerRPG.MODID, ":tools/", unlocalizedName));
         setCreativeTab(RPGOther.tabDangerRPG);
         setMaxStackSize(1);
     }

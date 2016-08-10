@@ -13,6 +13,7 @@ import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.gem.Gem;
+import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
@@ -126,8 +127,8 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
                             addCenteredString(DangerRPG.trans("rpgstr.gems").toUpperCase());
                             addString("");
                         }
-                        addString(DangerRPG.trans("rpgstr.name").concat(": ").concat(gem.getDisplayName()));
-                        addString(DangerRPG.trans("rpgstr.type").concat(": ").concat(((Gem) gem.getItem()).getGemType().getDispayName()));
+                        addString(Utils.toString(DangerRPG.trans("rpgstr.name"), ": ", gem.getDisplayName()));
+                        addString(Utils.toString(DangerRPG.trans("rpgstr.type"), ": ", ((Gem) gem.getItem()).getGemType().getDispayName()));
                         addString("");
                     }
                 }

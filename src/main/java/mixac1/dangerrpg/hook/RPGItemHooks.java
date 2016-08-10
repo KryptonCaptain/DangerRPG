@@ -15,8 +15,8 @@ import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemBow;
 import mixac1.dangerrpg.capability.GemableItem;
 import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
+import mixac1.dangerrpg.event.ItemStackEvent.AddAttributeModifiers;
 import mixac1.dangerrpg.event.ItemStackEvent.AddInformationEvent;
-import mixac1.dangerrpg.event.ItemStackEvent.GetAttributeModifiers;
 import mixac1.dangerrpg.event.ItemStackEvent.HitEntityEvent;
 import mixac1.dangerrpg.event.ItemStackEvent.OnLeftClickEntityEvent;
 import mixac1.dangerrpg.util.RPGCommonHelper;
@@ -40,7 +40,7 @@ import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 
-public class RPGHooks
+public class RPGItemHooks
 {
     /**
      * Hook to creating {@link ItemStack}
@@ -82,7 +82,7 @@ public class RPGHooks
             returnValue.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF"), "Weapon modifier",
                     ItemAttributes.MELEE_DAMAGE.get(stack), 0));
         }
-        MinecraftForge.EVENT_BUS.post(new GetAttributeModifiers(stack, returnValue));
+        MinecraftForge.EVENT_BUS.post(new AddAttributeModifiers(stack, returnValue));
         return returnValue;
     }
 

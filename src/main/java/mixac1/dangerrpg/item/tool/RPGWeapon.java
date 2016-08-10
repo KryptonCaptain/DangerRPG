@@ -13,6 +13,7 @@ import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
+import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,7 +37,7 @@ public class RPGWeapon extends ItemSword implements ILvlableItemTool, IGemableIt
         this.toolMaterial = toolMaterial;
         this.toolComponent = toolComponent;
         setUnlocalizedName(RPGItems.getRPGName(getItemComponent(this), getToolMaterial(this)));
-        setTextureName(DangerRPG.MODID + ":weapons/melee/" + unlocalizedName);
+        setTextureName(Utils.toString(DangerRPG.MODID, ":weapons/melee/", unlocalizedName));
         setCreativeTab(RPGOther.tabDangerRPG);
         setMaxStackSize(1);
     }

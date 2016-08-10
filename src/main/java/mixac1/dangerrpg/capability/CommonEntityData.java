@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import mixac1.dangerrpg.api.entity.EntityAttribute;
-import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgSyncEntityData;

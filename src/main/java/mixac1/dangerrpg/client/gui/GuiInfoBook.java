@@ -8,12 +8,13 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import mixac1.dangerrpg.capability.CommonEntityData;
+import mixac1.dangerrpg.capability.LvlEAProvider;
 import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.client.gui.GuiInfoBookContentPlayer.LevelUpButton;
 import mixac1.dangerrpg.init.RPGKeyBinds;
 import mixac1.dangerrpg.item.IHasBooksInfo;
+import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -131,7 +132,7 @@ public class GuiInfoBook extends GuiScreen
         mc.getTextureManager().bindTexture(TEXTURE);
         drawTexturedModalRect(offsetX, offsetY, 0, 0, bookImageWidth, bookImageHeight);
 
-        String title = DangerRPG.trans("rpgstr.info_about").concat(" ").concat(player.getDisplayName());
+        String title = Utils.toString(DangerRPG.trans("rpgstr.info_about"), " ", player.getDisplayName());
         fontRendererObj.drawStringWithShadow(title, offsetX + (bookImageWidth - fontRendererObj.getStringWidth(title)) / 2, offsetY + (titleHeight - fontRendererObj.FONT_HEIGHT) / 2 + 2, 0xffffff);
 
         content[currContent].drawScreen(mouseX, mouseY, par3);

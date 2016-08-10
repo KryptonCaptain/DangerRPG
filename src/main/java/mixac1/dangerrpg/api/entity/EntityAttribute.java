@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.capability.CommonEntityData;
 import mixac1.dangerrpg.capability.CommonEntityData.TypeStub;
+import mixac1.dangerrpg.capability.LvlEAProvider;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgSyncEA;
 import mixac1.dangerrpg.util.ITypeProvider;
+import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -43,7 +45,7 @@ public class EntityAttribute<Type>
         return isValid(value);
     }
 
-    protected CommonEntityData getEntityData(EntityLivingBase entity)
+    public CommonEntityData getEntityData(EntityLivingBase entity)
     {
         return CommonEntityData.get(entity);
     }
@@ -142,7 +144,7 @@ public class EntityAttribute<Type>
 
     public String getInfo()
     {
-        return DangerRPG.trans("ea.".concat(name).concat(".info"));
+        return DangerRPG.trans(Utils.toString("ea.", name, ".info"));
     }
 
     @Override

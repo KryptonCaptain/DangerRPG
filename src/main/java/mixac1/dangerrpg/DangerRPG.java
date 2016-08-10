@@ -58,7 +58,7 @@ public class DangerRPG
 
     public static void log(Object... objs)
     {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         for (Object obj : objs) {
             buf.append(obj.toString()).append(" ");
         }

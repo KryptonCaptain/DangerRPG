@@ -8,7 +8,8 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.api.entity.LvlEAProvider;
+import mixac1.dangerrpg.capability.LvlEAProvider;
+import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -77,10 +78,10 @@ public class GuiInfoBookContentPlayer extends GuiInfoBookContent
             s = mc.fontRenderer.trimStringToWidth(parent.attributes.get(currIndex).attr.getDisplayName().toUpperCase(), titleSizeX);
             mc.fontRenderer.drawStringWithShadow(s, offsetX + (titleSizeX - mc.fontRenderer.getStringWidth(s) + 4) / 2, offsetY + (titleSizeY - mc.fontRenderer.FONT_HEIGHT + 4) / 2, 0xffffff);
 
-            s = DangerRPG.trans("ia.lvl").concat(": ").concat(String.valueOf(parent.attributes.get(currIndex).getLvl(player)));
+            s = Utils.toString(DangerRPG.trans("ia.lvl"), ": ", parent.attributes.get(currIndex).getLvl(player));
             mc.fontRenderer.drawStringWithShadow(s, offsetX + infoOffsetX, offsetY + infoOffsetY, 0xffffff);
 
-            s = DangerRPG.trans("rpgstr.value").concat(": ").concat(String.valueOf(parent.attributes.get(currIndex).attr.displayValue(player)));
+            s = Utils.toString(DangerRPG.trans("rpgstr.value"), ": ", parent.attributes.get(currIndex).attr.displayValue(player));
             mc.fontRenderer.drawStringWithShadow(s, offsetX + infoOffsetX, offsetY + infoOffsetY + indent, 0xffffff);
 
             s = parent.attributes.get(currIndex).attr.getInfo();

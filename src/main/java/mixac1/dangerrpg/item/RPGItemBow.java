@@ -10,6 +10,7 @@ import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.LvlableItem.ItemAttrParams;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGBowComponent;
+import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
@@ -24,7 +25,7 @@ public class RPGItemBow extends ItemBow implements ILvlableItemBow, IHasBooksInf
     public RPGItemBow(RPGBowComponent bowComponent, float maxPower)
     {
         setUnlocalizedName(bowComponent.name);
-        setTextureName(DangerRPG.MODID + ":weapons/range/" + unlocalizedName);
+        setTextureName(Utils.toString(DangerRPG.MODID, ":weapons/range/", unlocalizedName));
         setCreativeTab(RPGOther.tabDangerRPG);
         this.bowComponent = bowComponent;
         this.maxPower = maxPower;
