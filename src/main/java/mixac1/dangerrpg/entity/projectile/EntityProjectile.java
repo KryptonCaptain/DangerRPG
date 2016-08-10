@@ -347,7 +347,7 @@ public class EntityProjectile extends EntityArrow implements IThrowableEntity
     }
 
     @Override
-	public Entity getThrower()
+    public Entity getThrower()
     {
         if (thrower == null && throwerName != null && throwerName.length() > 0) {
             thrower = worldObj.getPlayerEntityByName(throwerName);
@@ -356,7 +356,7 @@ public class EntityProjectile extends EntityArrow implements IThrowableEntity
     }
 
     @Override
-	public void setThrower(Entity entity) {
+    public void setThrower(Entity entity) {
         if (entity instanceof EntityLivingBase) {
             thrower = (EntityLivingBase) entity;
         }

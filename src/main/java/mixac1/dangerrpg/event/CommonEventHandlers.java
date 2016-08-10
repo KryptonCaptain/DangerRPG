@@ -22,7 +22,7 @@ public class CommonEventHandlers
         }
         else if (e.entity instanceof EntityLivingBase)
         {
-        	EntityLivingData.register((EntityLivingBase) e.entity);
+            EntityLivingData.register((EntityLivingBase) e.entity);
         }
     }
 

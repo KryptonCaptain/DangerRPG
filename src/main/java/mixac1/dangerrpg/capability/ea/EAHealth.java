@@ -11,15 +11,15 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 
 public class EAHealth extends EAFloat
 {
-	private static float ff;
+    private static float ff;
     private final UUID ID = UUID.randomUUID();
 
-	public EAHealth(String name, float defaultValue, LvlEAProvider<Float> lvlProvider)
-	{
-	    super(name, defaultValue, lvlProvider);
-	}
+    public EAHealth(String name, float defaultValue, LvlEAProvider<Float> lvlProvider)
+    {
+        super(name, defaultValue, lvlProvider);
+    }
 
-	@Override
+    @Override
     public Float displayValue(EntityLivingBase entity)
     {
         return entity.getMaxHealth();

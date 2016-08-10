@@ -34,13 +34,13 @@ public class ModelBipedColor extends ModelBiped
     @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
     {
-    	if (color != 0xffffff) {
-    		GL11.glColor3f(Color.R.get(color), Color.G.get(color), Color.B.get(color));
+        if (color != 0xffffff) {
+            GL11.glColor3f(Color.R.get(color), Color.G.get(color), Color.B.get(color));
             super.render(entity, f, f1, f2, f3, f4, f5);
             GL11.glColor3f(1f, 1f, 1f);
-    	}
-    	else {
-    		super.render(entity, f, f1, f2, f3, f4, f5);
-    	}
+        }
+        else {
+            super.render(entity, f, f1, f2, f3, f4, f5);
+        }
     }
 }

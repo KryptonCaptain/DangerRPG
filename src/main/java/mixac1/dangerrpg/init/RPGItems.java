@@ -141,7 +141,7 @@ public abstract class RPGItems
 
     private static void registerItems()
     {
-    	registerItem(testWand);
+        registerItem(testWand);
 
         registerItem(swordTraining);
 
@@ -260,23 +260,23 @@ public abstract class RPGItems
 
     /*********************************************************************/
 
-	public static String getToolMaterialName(ToolMaterial toolMaterial)
-	{
-			return "_".concat(RPGOther.toolMaterialNames.get(toolMaterial));
-	}
+    public static String getToolMaterialName(ToolMaterial toolMaterial)
+    {
+            return "_".concat(RPGOther.toolMaterialNames.get(toolMaterial));
+    }
 
-	public static String getArmorMaterialName(ArmorMaterial armorMaterial)
-	{
-		return "_".concat(RPGOther.armorMaterialNames.get(armorMaterial));
-	}
+    public static String getArmorMaterialName(ArmorMaterial armorMaterial)
+    {
+        return "_".concat(RPGOther.armorMaterialNames.get(armorMaterial));
+    }
 
-	public static String getRPGName(RPGToolComponent toolComponent, ToolMaterial toolMaterial)
-	{
-		return toolComponent.name.concat(getToolMaterialName(toolMaterial));
-	}
+    public static String getRPGName(RPGToolComponent toolComponent, ToolMaterial toolMaterial)
+    {
+        return toolComponent.name.concat(getToolMaterialName(toolMaterial));
+    }
 
-	public static String getRPGName(String name, ArmorMaterial armorMaterial)
-	{
-		return name.concat(getArmorMaterialName(armorMaterial));
-	}
+    public static String getRPGName(String name, ArmorMaterial armorMaterial)
+    {
+        return name.concat(getArmorMaterialName(armorMaterial));
+    }
 }

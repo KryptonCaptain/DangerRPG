@@ -187,23 +187,23 @@ public class RPGGuiIngame extends Gui
 
     private void renderEnemyBar(int offsetX, int offsetY)
     {
-    	MovingObjectPosition mop = RPGCommonHelper.getMouseOver(0, 10);
-    	if (mop != null && mop.entityHit != null && mop.entityHit instanceof EntityLivingBase)
-    	{
-    		EntityLivingBase entity = (EntityLivingBase) mop.entityHit;
-    		if (entity instanceof EntityPlayer) {
-    			renderTestString(200, 10, entity.getCommandSenderName(),
-				         "lvl " + EntityAttributes.LVL.displayValue(entity),
-				         "health " + PlayerAttributes.HEALTH.displayValue(entity),
-    			         "mana " + PlayerAttributes.MANA.displayValue(entity),
-    			         "str " + PlayerAttributes.STRENGTH.displayValue(entity));
-    		}
-    		else {
-    			renderTestString(200, 10, entity.getCommandSenderName(),
-				         "lvl " + EntityAttributes.LVL.displayValue(entity),
-				         "health " + EntityAttributes.HEALTH.displayValue(entity));
-    		}
-    	}
+        MovingObjectPosition mop = RPGCommonHelper.getMouseOver(0, 10);
+        if (mop != null && mop.entityHit != null && mop.entityHit instanceof EntityLivingBase)
+        {
+            EntityLivingBase entity = (EntityLivingBase) mop.entityHit;
+            if (entity instanceof EntityPlayer) {
+                renderTestString(200, 10, entity.getCommandSenderName(),
+                         "lvl " + EntityAttributes.LVL.displayValue(entity),
+                         "health " + PlayerAttributes.HEALTH.displayValue(entity),
+                         "mana " + PlayerAttributes.MANA.displayValue(entity),
+                         "str " + PlayerAttributes.STRENGTH.displayValue(entity));
+            }
+            else {
+                renderTestString(200, 10, entity.getCommandSenderName(),
+                         "lvl " + EntityAttributes.LVL.displayValue(entity),
+                         "health " + EntityAttributes.HEALTH.displayValue(entity));
+            }
+        }
     }
 
     private int getProcent(float curr, float max, int width)
@@ -214,9 +214,9 @@ public class RPGGuiIngame extends Gui
 
     private void renderTestString(int x, int y, Object... str)
     {
-    	int i = 0;
-    	for (Object tmp : str) {
-    		fr.drawStringWithShadow(tmp.toString(), x, y + fr.FONT_HEIGHT * i++, 0xffffff);
-    	}
+        int i = 0;
+        for (Object tmp : str) {
+            fr.drawStringWithShadow(tmp.toString(), x, y + fr.FONT_HEIGHT * i++, 0xffffff);
+        }
     }
 }

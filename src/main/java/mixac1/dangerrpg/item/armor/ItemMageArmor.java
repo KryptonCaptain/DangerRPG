@@ -22,7 +22,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class ItemMageArmor extends RPGItemArmor
 {
-	protected int DEFAULT_COLOR = 0x3371e4;
+    protected int DEFAULT_COLOR = 0x3371e4;
 
     public ItemMageArmor(ArmorMaterial armorMaterial, int armorType, String name)
     {
@@ -40,16 +40,16 @@ public class ItemMageArmor extends RPGItemArmor
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
-    	String tmp = DangerRPG.MODID.concat(":armors/");
-    	itemIcon = iconRegister.registerIcon(tmp.concat(name).concat(ARMOR_TYPES[armorType]));
+        String tmp = DangerRPG.MODID.concat(":armors/");
+        itemIcon = iconRegister.registerIcon(tmp.concat(name).concat(ARMOR_TYPES[armorType]));
         overlayIcon = iconRegister.registerIcon(tmp.concat(unlocalizedName).concat("_overlay"));
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses()
     {
         return true;
@@ -82,22 +82,22 @@ public class ItemMageArmor extends RPGItemArmor
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
     {
-    	ModelMageArmor model = slot == 2 ? ModelMageArmor.INSTANCE_LEGGINGS : ModelMageArmor.INSTANCE_ARMOR;
-    	if (type != null) {
-    		model.setColor(0xffffff);
-    		return modelTexture.concat(String.valueOf(slot == 2 ? 2 : 1)).concat("_").concat(type).concat(".png");
-    	}
-    	else {
-    		model.setColor(getColor(stack));
-    		return "DangerRPG:textures/models/armors/".concat(name).concat("_layer_").concat(String.valueOf(slot == 2 ? 2 : 1)).concat(".png");
-    	}
+        ModelMageArmor model = slot == 2 ? ModelMageArmor.INSTANCE_LEGGINGS : ModelMageArmor.INSTANCE_ARMOR;
+        if (type != null) {
+            model.setColor(0xffffff);
+            return modelTexture.concat(String.valueOf(slot == 2 ? 2 : 1)).concat("_").concat(type).concat(".png");
+        }
+        else {
+            model.setColor(getColor(stack));
+            return "DangerRPG:textures/models/armors/".concat(name).concat("_layer_").concat(String.valueOf(slot == 2 ? 2 : 1)).concat(".png");
+        }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel(EntityLivingBase entity, ItemStack stack, int slot)
     {
-    	ModelBiped tmp = RPGRenderHelper.modelBipedInit(entity, slot == 2 ? ModelMageArmor.INSTANCE_LEGGINGS : ModelMageArmor.INSTANCE_ARMOR, slot);
+        ModelBiped tmp = RPGRenderHelper.modelBipedInit(entity, slot == 2 ? ModelMageArmor.INSTANCE_LEGGINGS : ModelMageArmor.INSTANCE_ARMOR, slot);
         return tmp;
     }
 

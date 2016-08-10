@@ -46,7 +46,7 @@ public class CommonEntityData implements IExtendedEntityProperties
 
     public static void register(EntityLivingBase entity)
     {
-    	entity.registerExtendedProperties(ID, new CommonEntityData(entity));
+        entity.registerExtendedProperties(ID, new CommonEntityData(entity));
     }
 
     public static CommonEntityData get(EntityLivingBase entity)
@@ -107,12 +107,12 @@ public class CommonEntityData implements IExtendedEntityProperties
 
     public ArrayList<EntityAttribute> getEntityAttributes()
     {
-    	return entityAttributes;
+        return entityAttributes;
     }
 
     public ArrayList<LvlEAProvider> getLvlProviders()
     {
-    	return lvlProviders;
+        return lvlProviders;
     }
 
     public static class TypeStub<Type>

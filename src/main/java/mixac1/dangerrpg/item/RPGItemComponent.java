@@ -66,7 +66,7 @@ public class RPGItemComponent
         
         public RPGToolComponent(String name)
         {
-        	this.name = name;
+            this.name = name;
         }
 
         private void init(float meleeDamage, float meleeSpeed, float magic, float strMul,
@@ -85,14 +85,14 @@ public class RPGItemComponent
 
     public static class RPGGunComponent extends RPGToolComponent
     {
-		public float shotDamage;
+        public float shotDamage;
         public float shotSpeed;
         public float shotPower;
         
         public RPGGunComponent(String name)
         {
-			super(name);
-		}
+            super(name);
+        }
 
         private void init(float meleeDamage, float meleeSpeed, float magic, float strMul,
                           float agiMul, float intMul, float knBack, float reach,
@@ -111,8 +111,8 @@ public class RPGItemComponent
         
         public RPGBowComponent(String name)
         {
-			super(name);
-		}
+            super(name);
+        }
 
         private void init(float meleeDamage, float meleeSpeed, float magic, float strMul,
                           float agiMul, float intMul, float knBack, float reach,
@@ -139,7 +139,7 @@ public class RPGItemComponent
 
     public static class RPGICWithoutTM extends RPGItemComponent implements IWithoutToolMaterial
     {
-		public float durab;
+        public float durab;
         public float ench;
 
         private void init(float durab, float ench)

@@ -26,17 +26,17 @@ import net.minecraftforge.client.MinecraftForgeClient;
 
 public abstract class RPGRegister
 {
-	/**
-	 * Used for adding own {@link EntityAttribute} to {@link CommonEntityData}
-	 */
+    /**
+     * Used for adding own {@link EntityAttribute} to {@link CommonEntityData}
+     */
     public static void registerCommonEntityAttribute(EntityAttribute ea)
     {
         CommonEntityData.entityAttributes.add(ea);
     }
 
     /**
-	 * Used for adding own lvlable {@link EntityAttribute} to {@link CommonEntityData}
-	 */
+     * Used for adding own lvlable {@link EntityAttribute} to {@link CommonEntityData}
+     */
     public static void registerLvlCommonEntityAttribute(EntityAttribute ea)
     {
         CommonEntityData.entityAttributes.add(ea);
@@ -44,37 +44,37 @@ public abstract class RPGRegister
     }
 
     /**
-	 * Used for adding own {@link EntityAttribute} to {@link EntityLivingData}
-	 */
+     * Used for adding own {@link EntityAttribute} to {@link EntityLivingData}
+     */
     public static void registerEntityAttribute(EntityAttribute ea)
     {
         EntityLivingData.entityAttributes.add(ea);
     }
 
     /**
-	 * Used for adding own lvlable {@link EntityAttribute} to {@link EntityLivingData}
-	 */
+     * Used for adding own lvlable {@link EntityAttribute} to {@link EntityLivingData}
+     */
     public static void registerLvlEntityAttribute(EntityAttribute ea)
     {
         EntityLivingData.entityAttributes.add(ea);
-    	EntityLivingData.lvlProviders.add(ea.lvlProvider);
+        EntityLivingData.lvlProviders.add(ea.lvlProvider);
     }
 
     /**
-	 * Used for adding own {@link EntityAttribute} to {@link PlayerData}
-	 */
+     * Used for adding own {@link EntityAttribute} to {@link PlayerData}
+     */
     public static void registerPlayerAttribute(EntityAttribute ea)
     {
         PlayerData.entityAttributes.add(ea);
     }
 
     /**
-	 * Used for adding own lvlable {@link EntityAttribute} to {@link PlayerData}
-	 */
+     * Used for adding own lvlable {@link EntityAttribute} to {@link PlayerData}
+     */
     public static void registerLvlPlayerAttribute(EntityAttribute ea)
     {
         PlayerData.entityAttributes.add(ea);
-    	PlayerData.lvlProviders.add(ea.lvlProvider);
+        PlayerData.lvlProviders.add(ea.lvlProvider);
     }
 
     /**
@@ -124,7 +124,7 @@ public abstract class RPGRegister
      */
     public static void registerToolMaterialName(ToolMaterial toolMaterial, String name)
     {
-    	RPGOther.toolMaterialNames.put(toolMaterial, name);
+        RPGOther.toolMaterialNames.put(toolMaterial, name);
     }
 
     /**

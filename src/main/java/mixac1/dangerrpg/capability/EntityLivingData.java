@@ -11,14 +11,14 @@ public class EntityLivingData extends CommonEntityData
     public static ArrayList<LvlEAProvider>   lvlProviders     = new ArrayList<LvlEAProvider>(CommonEntityData.lvlProviders);
     public static ArrayList<EntityAttribute> entityAttributes = new ArrayList<EntityAttribute>(CommonEntityData.entityAttributes);
 
-	public EntityLivingData(EntityLivingBase entity)
-	{
-		super(entity);
-	}
-
-	public static void register(EntityLivingBase entity)
+    public EntityLivingData(EntityLivingBase entity)
     {
-    	entity.registerExtendedProperties(ID, new EntityLivingData(entity));
+        super(entity);
+    }
+
+    public static void register(EntityLivingBase entity)
+    {
+        entity.registerExtendedProperties(ID, new EntityLivingData(entity));
     }
 
     public static EntityLivingData get(EntityLivingBase entity)

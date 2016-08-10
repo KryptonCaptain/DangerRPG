@@ -11,20 +11,20 @@ import net.minecraft.item.ItemStack;
 
 public class TestWand extends Item
 {
-	public TestWand(String name)
-	{
-		setUnlocalizedName(name);
+    public TestWand(String name)
+    {
+        setUnlocalizedName(name);
         setTextureName(DangerRPG.MODID + ":" + unlocalizedName);
         setCreativeTab(RPGOther.tabDangerRPG);
         setMaxStackSize(1);
-	}
+    }
 
-	@Override
-	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
+    @Override
+    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
     {
-		if (!entity.worldObj.isRemote && entity instanceof EntityLivingBase) {
-			EntityAttributes.HEALTH.addValue(1f, (EntityLivingBase) entity);
-		}
+        if (!entity.worldObj.isRemote && entity instanceof EntityLivingBase) {
+            EntityAttributes.HEALTH.addValue(1f, (EntityLivingBase) entity);
+        }
 
         return true;
     }

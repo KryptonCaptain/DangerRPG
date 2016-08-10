@@ -24,7 +24,7 @@ import net.minecraft.item.ItemStack;
 
 public class RPGItemArmor extends ItemArmor implements ILvlableItemArmor, IHasBooksInfo
 {
-	protected static String[] ARMOR_TYPES = new String[] {"_helmet", "_chestplate", "_leggings", "_boots"};
+    protected static String[] ARMOR_TYPES = new String[] {"_helmet", "_chestplate", "_leggings", "_boots"};
     protected ArmorMaterial armorMaterial;
     protected String name;
     protected String modelTexture;
@@ -52,7 +52,7 @@ public class RPGItemArmor extends ItemArmor implements ILvlableItemArmor, IHasBo
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
         this.itemIcon = iconRegister.registerIcon(getIconString());
@@ -85,10 +85,10 @@ public class RPGItemArmor extends ItemArmor implements ILvlableItemArmor, IHasBo
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
     {
-    	String str = modelTexture.concat(String.valueOf(slot == 2 ? 2 : 1)).concat(".png");
-    	if (type != null) {
-    		str = str.concat(type);
-    	}
+        String str = modelTexture.concat(String.valueOf(slot == 2 ? 2 : 1)).concat(".png");
+        if (type != null) {
+            str = str.concat(type);
+        }
         return str;
     }
 

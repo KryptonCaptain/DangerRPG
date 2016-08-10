@@ -10,25 +10,25 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class PlayerData extends CommonEntityData
 {
-	public final EntityPlayer player;
+    public final EntityPlayer player;
 
-	public static ArrayList<LvlEAProvider>   lvlProviders     = new ArrayList<LvlEAProvider>(CommonEntityData.lvlProviders);
-	public static ArrayList<EntityAttribute> entityAttributes = new ArrayList<EntityAttribute>(CommonEntityData.entityAttributes);
+    public static ArrayList<LvlEAProvider>   lvlProviders     = new ArrayList<LvlEAProvider>(CommonEntityData.lvlProviders);
+    public static ArrayList<EntityAttribute> entityAttributes = new ArrayList<EntityAttribute>(CommonEntityData.entityAttributes);
 
-	public PlayerData(EntityPlayer player)
-	{
-		super(player);
-		this.player = player;
-	}
-
-	public EntityPlayer getPlayer()
-	{
-		return (EntityPlayer) entity;
-	}
-
-	public static void register(EntityPlayer player)
+    public PlayerData(EntityPlayer player)
     {
-		player.registerExtendedProperties(ID, new PlayerData(player));
+        super(player);
+        this.player = player;
+    }
+
+    public EntityPlayer getPlayer()
+    {
+        return (EntityPlayer) entity;
+    }
+
+    public static void register(EntityPlayer player)
+    {
+        player.registerExtendedProperties(ID, new PlayerData(player));
     }
 
     public static PlayerData get(EntityPlayer player)
@@ -63,14 +63,14 @@ public class PlayerData extends CommonEntityData
     }
 
     @Override
-	public ArrayList<EntityAttribute> getEntityAttributes()
+    public ArrayList<EntityAttribute> getEntityAttributes()
     {
-    	return entityAttributes;
+        return entityAttributes;
     }
 
     @Override
-	public ArrayList<LvlEAProvider> getLvlProviders()
+    public ArrayList<LvlEAProvider> getLvlProviders()
     {
-    	return lvlProviders;
+        return lvlProviders;
     }
 }

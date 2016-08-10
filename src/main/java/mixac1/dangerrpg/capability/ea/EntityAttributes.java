@@ -7,9 +7,9 @@ import mixac1.dangerrpg.util.Multiplier.MultiplierE;
 
 public class EntityAttributes
 {
-	protected static final MultiplierE<Float> ADD_2   = new MultiplierAdd(2F);
+    protected static final MultiplierE<Float> ADD_2   = new MultiplierAdd(2F);
 
-	protected static final MultiplierE<Float> ADD_0d2 = new MultiplierAdd(0.2F);
+    protected static final MultiplierE<Float> ADD_0d2 = new MultiplierAdd(0.2F);
 
     public static final EntityAttribute<Boolean> IS_INIT = new EntityAttribute<Boolean>(ITypeProvider.BOOLEAN, "init", false, null);
 
