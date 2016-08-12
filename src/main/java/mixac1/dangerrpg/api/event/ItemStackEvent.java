@@ -1,4 +1,4 @@
-package mixac1.dangerrpg.event;
+package mixac1.dangerrpg.api.event;
 
 import java.util.List;
 
@@ -9,6 +9,7 @@ import cpw.mods.fml.common.eventhandler.Event;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 @Cancelable
@@ -21,6 +22,10 @@ public class ItemStackEvent extends Event
         this.stack = stack;
     }
 
+    /**
+     * It is fires whenever a {@link Item#onLeftClickEntity(ItemStack, EntityPlayer, Entity)} is processed
+     * and stack is lvlable item
+     */
     @Cancelable
     public static class OnLeftClickEntityEvent extends ItemStackEvent
     {
@@ -35,6 +40,10 @@ public class ItemStackEvent extends Event
         }
     }
 
+    /**
+     * It is fires whenever a {@link Item#hitEntity(ItemStack, EntityLivingBase, EntityLivingBase)} is processed
+     * and stack is lvlable item
+     */
     @Cancelable
     public static class HitEntityEvent extends ItemStackEvent
     {
@@ -49,6 +58,10 @@ public class ItemStackEvent extends Event
         }
     }
 
+    /**
+     * It is fires whenever a {@link Item#addInformation(ItemStack, EntityPlayer, List, boolean)} is processed
+     * and stack is lvlable item
+     */
     @Cancelable
     public static class AddInformationEvent extends ItemStackEvent
     {
@@ -65,6 +78,10 @@ public class ItemStackEvent extends Event
         }
     }
 
+    /**
+     * It is fires whenever a {@link Item#getAttributeModifiers(ItemStack)} is processed
+     * and stack is lvlable item
+     */
     @Cancelable
     public static class AddAttributeModifiers extends ItemStackEvent
     {

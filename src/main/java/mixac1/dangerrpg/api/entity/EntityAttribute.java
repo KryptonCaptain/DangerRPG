@@ -13,6 +13,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+/**
+ * Default entity attribute. It supports any Type, but you must create {@link ITypeProvider} for this Type. <br>
+ * {@link LvlEAProvider} allows make this attribute lvlable.
+ */
 public class EntityAttribute<Type>
 {
     public final String name;
@@ -156,6 +160,7 @@ public class EntityAttribute<Type>
     }
 
     /********************************************************************/
+    //T0D0: implements of EntityAttribute for default types
 
     public static class EABoolean extends EntityAttribute<Boolean>
     {

@@ -10,15 +10,15 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gloomyfolken.hooklib.asm.Hook;
 import gloomyfolken.hooklib.asm.Hook.ReturnValue;
 import gloomyfolken.hooklib.asm.ReturnCondition;
+import mixac1.dangerrpg.api.event.ItemStackEvent.AddAttributeModifiers;
+import mixac1.dangerrpg.api.event.ItemStackEvent.AddInformationEvent;
+import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
+import mixac1.dangerrpg.api.event.ItemStackEvent.OnLeftClickEntityEvent;
 import mixac1.dangerrpg.api.item.ILvlableItem;
 import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemBow;
 import mixac1.dangerrpg.capability.GemableItem;
 import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
-import mixac1.dangerrpg.event.ItemStackEvent.AddAttributeModifiers;
-import mixac1.dangerrpg.event.ItemStackEvent.AddInformationEvent;
-import mixac1.dangerrpg.event.ItemStackEvent.HitEntityEvent;
-import mixac1.dangerrpg.event.ItemStackEvent.OnLeftClickEntityEvent;
 import mixac1.dangerrpg.util.RPGCommonHelper;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.enchantment.Enchantment;
@@ -63,7 +63,7 @@ public class RPGItemHooks
     public static boolean onLeftClickEntity(Item item, ItemStack stack, EntityPlayer player, Entity entity, @ReturnValue boolean returnValue)
     {
         if (LvlableItem.isLvlable(stack)) {
-            return !MinecraftForge.EVENT_BUS.post(new OnLeftClickEntityEvent(stack, player, entity));
+            return MinecraftForge.EVENT_BUS.post(new OnLeftClickEntityEvent(stack, player, entity));
         }
         return returnValue;
     }

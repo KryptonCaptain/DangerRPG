@@ -20,7 +20,7 @@ public class EACurrMana extends EAFloat
     @Override
     public boolean isValid(Float value, EntityLivingBase entity)
     {
-        return isValid(value) && value > PlayerAttributes.MANA.getValue(entity);
+        return isValid(value) && value <= PlayerAttributes.MANA.getValue(entity);
     }
 
     @Override

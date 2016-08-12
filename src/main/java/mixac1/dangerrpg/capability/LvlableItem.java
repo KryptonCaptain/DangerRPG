@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import mixac1.dangerrpg.DangerRPG;
+import mixac1.dangerrpg.api.event.RegIAEvent;
 import mixac1.dangerrpg.api.item.IADynamic;
 import mixac1.dangerrpg.api.item.IAStatic;
 import mixac1.dangerrpg.api.item.ILvlableItem;
@@ -13,7 +14,6 @@ import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemMod;
 import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemTool;
 import mixac1.dangerrpg.api.item.ItemAttribute;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
-import mixac1.dangerrpg.event.RegIAEvent;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGConfig;
 import mixac1.dangerrpg.item.RPGItemComponent;

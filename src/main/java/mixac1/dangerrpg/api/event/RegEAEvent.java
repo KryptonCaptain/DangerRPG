@@ -1,8 +1,11 @@
-package mixac1.dangerrpg.event;
+package mixac1.dangerrpg.api.event;
 
 import cpw.mods.fml.common.eventhandler.Event;
+import mixac1.dangerrpg.api.entity.EntityAttribute;
 import mixac1.dangerrpg.capability.EntityData.EntityAttributesSet;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class RegEAEvent extends Event
 {
@@ -15,6 +18,10 @@ public class RegEAEvent extends Event
         this.set = set;
     }
 
+    /**
+     * It is fires whenever a {@link EntityLivingBase} registering own default {@link EntityAttribute}
+     * and {@link EntityLivingBase} is RPG entity
+     */
     public static class DefaultEAEvent extends RegEAEvent
     {
         public DefaultEAEvent(Class<? extends EntityLivingBase> entityClass, EntityAttributesSet set)
@@ -23,6 +30,10 @@ public class RegEAEvent extends Event
         }
     }
 
+    /**
+     * It is fires whenever a {@link EntityLiving} registering own default {@link EntityAttribute}
+     * and {@link EntityLiving} is RPG entity
+     */
     public static class EntytyLivingEAEvent extends RegEAEvent
     {
         public EntytyLivingEAEvent(Class<? extends EntityLivingBase> entityClass, EntityAttributesSet set)
@@ -31,6 +42,10 @@ public class RegEAEvent extends Event
         }
     }
 
+    /**
+     * It is fires whenever a {@link EntityPlayer} registering own default {@link EntityAttribute}
+     * and {@link EntityPlayer} is RPG entity
+     */
     public static class PlayerEAEvent extends RegEAEvent
     {
         public PlayerEAEvent(Class<? extends EntityLivingBase> entityClass, EntityAttributesSet set)

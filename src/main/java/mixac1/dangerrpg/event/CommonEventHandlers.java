@@ -23,7 +23,9 @@ public class CommonEventHandlers
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent e)
     {
-        if (e.entity instanceof EntityLivingBase && EntityData.hasIt((EntityLivingBase) e.entity)) {
+        if (e.entity.worldObj.isRemote
+            && e.entity instanceof EntityLivingBase
+            && EntityData.hasIt((EntityLivingBase) e.entity)) {
             RPGNetwork.net.sendToServer(new MsgSyncEntityData((EntityLivingBase) e.entity));
         }
     }

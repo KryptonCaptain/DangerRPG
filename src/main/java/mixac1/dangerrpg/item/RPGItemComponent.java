@@ -31,14 +31,14 @@ public class RPGItemComponent
         TRAINING.init    (0.0F,   10.0F,  0.0F,   0.5F,   1.0F,   0.25F,   10.0F,  2.5F);
 
         SWORD.init       (4.0F,   10.0F,  0.0F,   0.5F,   1.0F,   0.25F,   1.0F,   0.0F);
-        NAGINATA.init    (4.0F,   8.0F,   0.0F,   0.5F,   0.8F,   0.25F,   1.1F,   1.5F);
-        KATANA.init      (3.5F,   11.0F,  0.0F,   0.5F,   1.1F,   0.25F,   0.5F,   0.0F);
-        SCYTHE.init      (5.0F,   7.0F,   0.0F,   0.65F,  0.7F,   0.25F,   1.2F,   1.0F);
-        HAMMER.init      (6.0F,   3.0F,   0.0F,   0.8F,   0.3F,   0.25F,   1.5F,   0.0F);
-        TOMAHAWK.init    (3.5F,   10.5F,  0.0F,   0.4F,   1.1F,   0.25F,   0.4F,   0.0F);
-        KNIFE.init       (1.0F,   12.5F,  0.0F,   0.25F,  1.25F,  0.25F,   0.1F,   0.0F);
+        NAGINATA.init    (4.0F,   12.0F,  0.0F,   0.5F,   0.8F,   0.25F,   1.1F,   1.5F);
+        KATANA.init      (3.5F,   9.0F,   0.0F,   0.5F,   1.1F,   0.25F,   0.5F,   0.0F);
+        SCYTHE.init      (5.0F,   13.0F,  0.0F,   0.65F,  0.7F,   0.25F,   1.2F,   1.0F);
+        HAMMER.init      (6.0F,   17.0F,  0.0F,   0.8F,   0.3F,   0.25F,   1.5F,   0.0F);
+        TOMAHAWK.init    (3.5F,   9.5F,   0.0F,   0.4F,   1.1F,   0.25F,   0.4F,   0.0F);
+        KNIFE.init       (1.0F,   7.5F,   0.0F,   0.25F,  1.25F,  0.25F,   0.1F,   0.0F);
 
-        AXE.init         (3.0F,   9.0F,   0.0F,   0.55F,  0.8F,   0.25F,   1.0F,   0.0F);
+        AXE.init         (3.0F,   11.0F,   0.0F,   0.55F,  0.8F,   0.25F,   1.0F,   0.0F);
         PICKAXE.init     (2.0F,   10.0F,  0.0F,   0.3F,   0.8F,   0.25F,   1.0F,   0.0F);
         SHOVEL.init      (1.0F,   10.0F,  0.0F,   0.3F,   0.8F,   0.25F,   1.0F,   0.0F);
         HOE.init         (1.0F,   10.0F,  0.0F,   0.4F,   0.8F,   0.25F,   1.0F,   0.0F);
@@ -50,7 +50,7 @@ public class RPGItemComponent
         SHADOW_BOW.init  (4.0F,   10.0F,  0.0F,   0.16F,  1.0F,   0.25F,   1.0F,   0.0F,   2.5F,   16.0F,  3.0F,   500F,   5F);
         SNIPER_BOW.init  (1.0F,   10.0F,  0.0F,   0.16F,  1.0F,   0.25F,   1.0F,   0.0F,   4.0F,   40.0F,  3.5F,   1000F,  10F);
     }
-    
+
     public String name;
 
     public static class RPGToolComponent extends RPGItemComponent
@@ -63,7 +63,7 @@ public class RPGItemComponent
         public float intMul;
         public float knBack;
         public float reach;
-        
+
         public RPGToolComponent(String name)
         {
             this.name = name;
@@ -88,7 +88,7 @@ public class RPGItemComponent
         public float shotDamage;
         public float shotSpeed;
         public float shotPower;
-        
+
         public RPGGunComponent(String name)
         {
             super(name);
@@ -108,7 +108,7 @@ public class RPGItemComponent
     public static class RPGBowComponent extends RPGGunComponent implements IWithoutToolMaterial
     {
         private RPGICWithoutTM itemComponent = new RPGICWithoutTM();
-        
+
         public RPGBowComponent(String name)
         {
             super(name);

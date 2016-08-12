@@ -43,7 +43,7 @@ public abstract class RPGRegister
     /**
      * Registering {@link ToolMaterial} name.<br>
      * This name will be used, if you choose constructor of {@link RPGWeapon} and others classes without using item name.<br>
-     * Used for faster naming.
+     * Used for faster naming. Register this before creating item.
      */
     public static void registerToolMaterialName(ToolMaterial toolMaterial, String name)
     {
@@ -53,7 +53,7 @@ public abstract class RPGRegister
     /**
      * Registering {@link ArmorMaterial} name.<br>
      * This name will be used, if you choose constructor of {@link RPGItemArmor} and others classes without using item name.<br>
-     * Used for faster naming.
+     * Used for faster naming. Register this before creating item.
      */
     public static void registerArmorMaterialName(ArmorMaterial armorMaterial, String name)
     {

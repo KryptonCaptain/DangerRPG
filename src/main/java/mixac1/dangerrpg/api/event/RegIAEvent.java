@@ -1,4 +1,4 @@
-package mixac1.dangerrpg.event;
+package mixac1.dangerrpg.api.event;
 
 import cpw.mods.fml.common.eventhandler.Event;
 import mixac1.dangerrpg.capability.LvlableItem.ItemAttributesMap;

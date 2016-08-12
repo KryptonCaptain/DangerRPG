@@ -20,6 +20,16 @@ public abstract class Utils
         return value;
     }
 
+    public static float invert(float value)
+    {
+        return -value;
+    }
+
+    public static float invert(float value, boolean isInvert)
+    {
+        return isInvert ? invert(value) : value;
+    }
+
     public static String toString(Object... objs)
     {
         StringBuilder buf = new StringBuilder();
