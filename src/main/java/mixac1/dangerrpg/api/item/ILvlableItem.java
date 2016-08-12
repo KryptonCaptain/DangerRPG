@@ -1,10 +1,8 @@
 package mixac1.dangerrpg.api.item;
 
-import java.util.HashMap;
-
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.capability.LvlableItem;
-import mixac1.dangerrpg.capability.LvlableItem.ItemAttrParams;
+import mixac1.dangerrpg.capability.LvlableItem.ItemAttributesMap;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.entity.projectile.EntityArrowRPG;
 import mixac1.dangerrpg.entity.projectile.EntityMaterial;
@@ -35,7 +33,7 @@ import net.minecraft.world.World;
  */
 public interface ILvlableItem
 {
-    public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map);
+    public void registerAttributes(Item item, ItemAttributesMap map);
 
     public RPGItemComponent getItemComponent(Item item);
 
@@ -77,7 +75,7 @@ public interface ILvlableItem
     public static final ILvlableItem DEFAULT_ITEM = new ILvlableItem()
     {
         @Override
-        public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map) {}
+        public void registerAttributes(Item item, ItemAttributesMap map) {}
 
         @Override
         public RPGItemComponent getItemComponent(Item item)
@@ -89,7 +87,7 @@ public interface ILvlableItem
     public static final ILvlableItem DEFAULT_ITEM_MOD = new ILvlableItemMod()
     {
         @Override
-        public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map)
+        public void registerAttributes(Item item, ItemAttributesMap map)
         {
             LvlableItem.registerParamsItemMod(item, map);
         }
@@ -104,7 +102,7 @@ public interface ILvlableItem
     public static final ILvlableItemTool DEFAULT_SWORD = new ILvlableItemTool()
     {
         @Override
-        public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map)
+        public void registerAttributes(Item item, ItemAttributesMap map)
         {
             LvlableItem.registerParamsItemSword(item, map);
         }
@@ -125,7 +123,7 @@ public interface ILvlableItem
     public static final ILvlableItemTool DEFAULT_TOOL = new ILvlableItemTool()
     {
         @Override
-        public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map)
+        public void registerAttributes(Item item, ItemAttributesMap map)
         {
             LvlableItem.registerParamsItemTool(item, map);
         }
@@ -164,7 +162,7 @@ public interface ILvlableItem
     public static final ILvlableItemArmor DEFAULT_ARMOR = new ILvlableItemArmor()
     {
         @Override
-        public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map)
+        public void registerAttributes(Item item, ItemAttributesMap map)
         {
             LvlableItem.registerParamsItemArmor(item, map);
         }
@@ -185,7 +183,7 @@ public interface ILvlableItem
     public static final ILvlableItemBow DEFAULT_BOW = new ILvlableItemBow()
     {
         @Override
-        public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map)
+        public void registerAttributes(Item item, ItemAttributesMap map)
         {
             LvlableItem.registerParamsItemBow(item, map);
         }

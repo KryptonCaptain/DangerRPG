@@ -1,11 +1,10 @@
 package mixac1.dangerrpg.api.entity;
 
-import java.util.ArrayList;
-
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.capability.CommonEntityData;
-import mixac1.dangerrpg.capability.CommonEntityData.TypeStub;
+import mixac1.dangerrpg.capability.EntityData;
+import mixac1.dangerrpg.capability.EntityData.TypeStub;
 import mixac1.dangerrpg.capability.LvlEAProvider;
+import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgSyncEA;
 import mixac1.dangerrpg.util.ITypeProvider;
@@ -35,6 +34,11 @@ public class EntityAttribute<Type>
         }
     }
 
+    public boolean hasIt(EntityLivingBase entity)
+    {
+        return RPGCapability.getEntityAttributesSet(entity).attributes.contains(this);
+    }
+
     public boolean isValid(Type value)
     {
         return typeProvider.isValid(value);
@@ -45,17 +49,15 @@ public class EntityAttribute<Type>
         return isValid(value);
     }
 
-    public CommonEntityData getEntityData(EntityLivingBase entity)
+    public EntityData getEntityData(EntityLivingBase entity)
     {
-        return CommonEntityData.get(entity);
+        return EntityData.get(entity);
     }
 
     @Deprecated
     public Type getValueRaw(EntityLivingBase entity)
     {
-        CommonEntityData data = getEntityData(entity);
-        ArrayList<EntityAttribute> list = data.getEntityAttributes();
-        return (Type) data.attributeMap.get(hash).value;
+        return (Type) getEntityData(entity).attributeMap.get(hash).value;
     }
 
     @Deprecated
@@ -103,7 +105,7 @@ public class EntityAttribute<Type>
 
     public void sync(EntityLivingBase entity)
     {
-        if (CommonEntityData.isServerSide(entity)) {
+        if (EntityData.isServerSide(entity)) {
             RPGNetwork.net.sendToAll(new MsgSyncEA(this, entity));
         }
     }

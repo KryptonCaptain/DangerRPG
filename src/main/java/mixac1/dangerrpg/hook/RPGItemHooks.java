@@ -21,12 +21,16 @@ import mixac1.dangerrpg.event.ItemStackEvent.HitEntityEvent;
 import mixac1.dangerrpg.event.ItemStackEvent.OnLeftClickEntityEvent;
 import mixac1.dangerrpg.util.RPGCommonHelper;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -49,7 +53,7 @@ public class RPGItemHooks
     @Hook(injectOnExit = true, targetMethod = "<init>")
     public static void ItemStack(ItemStack stack, Item item, int size, int metadata)
     {
-        if (LvlableItem.itemsAttrebutes.containsKey(item)) {
+        if (LvlableItem.isLvlable(stack)) {
             LvlableItem.createLvlableItem(stack);
             GemableItem.createGemableItem(stack);
         }
@@ -58,39 +62,51 @@ public class RPGItemHooks
     @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
     public static boolean onLeftClickEntity(Item item, ItemStack stack, EntityPlayer player, Entity entity, @ReturnValue boolean returnValue)
     {
-        return !returnValue && MinecraftForge.EVENT_BUS.post(new OnLeftClickEntityEvent(stack, player, entity));
+        if (LvlableItem.isLvlable(stack)) {
+            return !MinecraftForge.EVENT_BUS.post(new OnLeftClickEntityEvent(stack, player, entity));
+        }
+        return returnValue;
     }
 
     @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
     public static boolean hitEntity(ItemSword item, ItemStack stack, EntityLivingBase entity, EntityLivingBase attacker, @ReturnValue boolean returnValue)
     {
-        return returnValue && MinecraftForge.EVENT_BUS.post(new HitEntityEvent(stack, entity, attacker));
+        if (LvlableItem.isLvlable(stack)) {
+            return MinecraftForge.EVENT_BUS.post(new HitEntityEvent(stack, entity, attacker));
+        }
+        return returnValue;
     }
 
     @SideOnly(Side.CLIENT)
     @Hook
     public static void addInformation(Item item, ItemStack stack, EntityPlayer player, List list, boolean par)
     {
-        MinecraftForge.EVENT_BUS.post(new AddInformationEvent(stack, player, list, par));
+        if (LvlableItem.isLvlable(stack)) {
+            MinecraftForge.EVENT_BUS.post(new AddInformationEvent(stack, player, list, par));
+        }
     }
 
     @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
     public static Multimap getAttributeModifiers(Item item, ItemStack stack, @ReturnValue Multimap returnValue)
     {
-        if (ItemAttributes.MELEE_DAMAGE.hasIt(stack)) {
-            returnValue.removeAll(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName());
-            returnValue.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF"), "Weapon modifier",
-                    ItemAttributes.MELEE_DAMAGE.get(stack), 0));
+        if (LvlableItem.isLvlable(stack)) {
+            if (ItemAttributes.MELEE_DAMAGE.hasIt(stack)) {
+                returnValue.removeAll(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName());
+                returnValue.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF"), "Weapon modifier",
+                        ItemAttributes.MELEE_DAMAGE.get(stack), 0));
+            }
+            MinecraftForge.EVENT_BUS.post(new AddAttributeModifiers(stack, returnValue));
         }
-        MinecraftForge.EVENT_BUS.post(new AddAttributeModifiers(stack, returnValue));
         return returnValue;
     }
 
     @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
     public static int getItemEnchantability(Item item, ItemStack stack, @ReturnValue int returnValue)
     {
-        if (ItemAttributes.ENCHANTABILITY.hasIt(stack)) {
-            return (int) ItemAttributes.ENCHANTABILITY.get(stack);
+        if (LvlableItem.isLvlable(stack)) {
+            if (ItemAttributes.ENCHANTABILITY.hasIt(stack)) {
+                return (int) ItemAttributes.ENCHANTABILITY.get(stack);
+            }
         }
         return returnValue;
     }
@@ -98,8 +114,10 @@ public class RPGItemHooks
     @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
     public static int getMaxDamage(ItemStack stack, @ReturnValue int returnValue)
     {
-        if (returnValue > 0 && ItemAttributes.MAX_DURABILITY.hasIt(stack)) {
-            return (int) ItemAttributes.MAX_DURABILITY.get(stack);
+        if (LvlableItem.isLvlable(stack)) {
+            if (returnValue > 0 && ItemAttributes.MAX_DURABILITY.hasIt(stack)) {
+                return (int) ItemAttributes.MAX_DURABILITY.get(stack);
+            }
         }
         return returnValue;
     }
@@ -120,7 +138,8 @@ public class RPGItemHooks
     @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
     public static IIcon getItemIcon(EntityPlayer player, ItemStack stack, int par, @ReturnValue IIcon returnValue)
     {
-        if (player.getItemInUse() != null && stack.getItemUseAction() == EnumAction.bow && ItemAttributes.SHOT_SPEED.hasIt(stack)) {
+        if (LvlableItem.isLvlable(stack) && player.getItemInUse() != null &&
+            stack.getItemUseAction() == EnumAction.bow && ItemAttributes.SHOT_SPEED.hasIt(stack)) {
             int ticks = stack.getMaxItemUseDuration() - player.getItemInUseCount();
             float speed = ItemAttributes.SHOT_SPEED.get(stack, player);
             if (ticks >= speed) {
@@ -189,7 +208,84 @@ public class RPGItemHooks
         }
         useDuration = event.charge;
 
-        ((ILvlableItemBow) (bow instanceof ILvlableItemBow ? bow : ILvlableItem.DEFAULT_BOW)).onStoppedUsing(stack, world, player, useDuration);
+        if (LvlableItem.isLvlable(stack)) {
+            if (bow instanceof ILvlableItemBow) {
+                ((ILvlableItemBow) bow).onStoppedUsing(stack, world, player, useDuration);
+            }
+            else {
+                ILvlableItem.DEFAULT_BOW.onStoppedUsing(stack, world, player, useDuration);
+            }
+        }
+        else {
+            onPlayerStoppedUsingDefault(bow, stack, world, player, useDuration);
+        }
+    }
+
+    /**
+     * Default method (stub) for {@link RPGItemHooks#onPlayerStoppedUsing(ItemBow, ItemStack, World, EntityPlayer, int)} hook
+     */
+    public static void onPlayerStoppedUsingDefault(ItemBow bow, ItemStack stack, World world, EntityPlayer player, float useDuration)
+    {
+        boolean flag = player.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, stack) > 0;
+
+        if (flag || player.inventory.hasItem(Items.arrow))
+        {
+            float f = useDuration / 20.0F;
+            f = (f * f + f * 2.0F) / 3.0F;
+
+            if (f < 0.1D)
+            {
+                return;
+            }
+
+            if (f > 1.0F)
+            {
+                f = 1.0F;
+            }
+
+            EntityArrow entityarrow = new EntityArrow(world, player, f * 2.0F);
+
+            if (f == 1.0F)
+            {
+                entityarrow.setIsCritical(true);
+            }
+
+            int k = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, stack);
+
+            if (k > 0)
+            {
+                entityarrow.setDamage(entityarrow.getDamage() + k * 0.5D + 0.5D);
+            }
+
+            int l = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, stack);
+
+            if (l > 0)
+            {
+                entityarrow.setKnockbackStrength(l);
+            }
+
+            if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, stack) > 0)
+            {
+                entityarrow.setFire(100);
+            }
+
+            stack.damageItem(1, player);
+            world.playSoundAtEntity(player, "random.bow", 1.0F, 1.0F / (bow.itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+
+            if (flag)
+            {
+                entityarrow.canBePickedUp = 2;
+            }
+            else
+            {
+                player.inventory.consumeInventoryItem(Items.arrow);
+            }
+
+            if (!world.isRemote)
+            {
+                world.spawnEntityInWorld(entityarrow);
+            }
+        }
     }
 }
 

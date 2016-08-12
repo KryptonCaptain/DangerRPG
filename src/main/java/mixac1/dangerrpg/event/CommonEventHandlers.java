@@ -1,12 +1,10 @@
 package mixac1.dangerrpg.event;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import mixac1.dangerrpg.capability.EntityLivingData;
-import mixac1.dangerrpg.capability.PlayerData;
+import mixac1.dangerrpg.capability.EntityData;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgSyncEntityData;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -17,19 +15,15 @@ public class CommonEventHandlers
     @SubscribeEvent
     public void onEntityConstructing(EntityConstructing e)
     {
-        if (e.entity instanceof EntityPlayer) {
-            PlayerData.register((EntityPlayer) e.entity);
-        }
-        else if (e.entity instanceof EntityLivingBase)
-        {
-            EntityLivingData.register((EntityLivingBase) e.entity);
+        if (e.entity instanceof EntityLivingBase && EntityData.hasIt((EntityLivingBase) e.entity)) {
+            EntityData.register((EntityLivingBase) e.entity);
         }
     }
 
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent e)
     {
-        if (e.entity instanceof EntityLivingBase) {
+        if (e.entity instanceof EntityLivingBase && EntityData.hasIt((EntityLivingBase) e.entity)) {
             RPGNetwork.net.sendToServer(new MsgSyncEntityData((EntityLivingBase) e.entity));
         }
     }
@@ -38,10 +32,10 @@ public class CommonEventHandlers
     public void onPlayerCloned(PlayerEvent.Clone e)
     {
         if (e.wasDeath) {
-            PlayerData.get(e.original).rebuildOnDeath();
+            EntityData.get(e.original).rebuildOnDeath();
         }
         NBTTagCompound nbt = new NBTTagCompound();
-        PlayerData.get(e.original).saveNBTData(nbt);
-        PlayerData.get(e.entityPlayer).loadNBTData(nbt);
+        EntityData.get(e.original).saveNBTData(nbt);
+        EntityData.get(e.entityPlayer).loadNBTData(nbt);
     }
 }

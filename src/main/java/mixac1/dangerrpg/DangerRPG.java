@@ -12,6 +12,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import mixac1.dangerrpg.init.RPGConfig;
 import mixac1.dangerrpg.proxy.CommonProxy;
 import net.minecraft.util.StatCollector;
 
@@ -36,7 +37,7 @@ public class DangerRPG
 
     public static final Random rand = new Random();
 
-    public static final Logger logger = LogManager.getLogger(DangerRPG.MODID);
+    private static final Logger logger = LogManager.getLogger(DangerRPG.MODID);
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
@@ -56,13 +57,20 @@ public class DangerRPG
         proxy.postInit(event);
     }
 
-    public static void log(Object... objs)
+    public static void debugDump(Object... objs)
     {
         StringBuilder buf = new StringBuilder();
         for (Object obj : objs) {
             buf.append(obj.toString()).append(" ");
         }
         DangerRPG.logger.info(buf.toString());
+    }
+
+    public static void infoLog(Object obj)
+    {
+        if (RPGConfig.mainEnableInfoLog) {
+            DangerRPG.logger.info(obj.toString());
+        }
     }
 
     public static String trans(String s)

@@ -4,8 +4,8 @@ import mixac1.dangerrpg.api.entity.EntityAttribute;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgReqUpEA;
-import mixac1.dangerrpg.util.Multiplier;
-import mixac1.dangerrpg.util.Multiplier.MultiplierE;
+import mixac1.dangerrpg.util.IMultiplier;
+import mixac1.dangerrpg.util.IMultiplier.IMultiplierE;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -13,12 +13,12 @@ public class LvlEAProvider<Type>
 {
     public EntityAttribute<Type> attr;
 
-    protected MultiplierE<Type> mulValue;
+    protected IMultiplierE<Type> mulValue;
     protected int maxLvl;
     protected int startExpCost;
-    protected Multiplier<Integer> mulExpCost;
+    protected IMultiplier<Integer> mulExpCost;
 
-    public LvlEAProvider(int startExpCost, int maxLvl, MultiplierE<Type> mulValue, Multiplier<Integer> mulExpCost)
+    public LvlEAProvider(int startExpCost, int maxLvl, IMultiplierE<Type> mulValue, IMultiplier<Integer> mulExpCost)
     {
         this.mulValue = mulValue;
         this.maxLvl = maxLvl;
@@ -67,7 +67,7 @@ public class LvlEAProvider<Type>
                 else {
                     int exp = getExpUp(player);
                     if (exp <= player.experienceLevel) {
-                        if (CommonEntityData.isServerSide(entity)) {
+                        if (EntityData.isServerSide(entity)) {
                             player.addExperienceLevel(-exp);
                         }
                         return up(player, true);
@@ -85,7 +85,7 @@ public class LvlEAProvider<Type>
     @Deprecated
     public boolean up(EntityLivingBase entity, boolean flag)
     {
-        if (CommonEntityData.isServerSide(entity)) {
+        if (EntityData.isServerSide(entity)) {
             int lvl= getLvl(entity);
             if (flag) {
                 if (lvl < maxLvl) {

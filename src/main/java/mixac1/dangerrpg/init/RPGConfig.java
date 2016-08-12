@@ -14,18 +14,24 @@ public abstract class RPGConfig
     public static Configuration config;
 
     /* MAIN */
-    public static boolean mainEnableModGui;
+    public static boolean   mainEnableModGui;
+    public static boolean   mainEnableInfoLog;
 
     /* PLAYER */
-    public static int playerLoseLvlCount;
+    public static int       playerLoseLvlCount;
+
+    /* ENTITY */
+    public static boolean   entityAllEntityRPG;
+
+    public static HashSet<String> entitySupportedRPGEntities = new HashSet<String>();
 
     /* ITEM */
-    public static boolean itemAllItemsLvlable;
-    public static boolean itemCanUpInTable;
-    public static int itemMaxLevel;
-    public static int itemStartMaxExp;
-    public static float itemExpMul;
-    public static int itemStartMagicArmor;
+    public static boolean   itemAllItemsLvlable;
+    public static boolean   itemCanUpInTable;
+    public static int       itemMaxLevel;
+    public static int       itemStartMaxExp;
+    public static float     itemExpMul;
+
     public static HashSet<String> itemSupportedLvlItems = new HashSet<String>();
 
     public static void load(FMLPreInitializationEvent e)
@@ -35,6 +41,7 @@ public abstract class RPGConfig
 
         initMainCategory();
         initPlayerCategory();
+        initEntityCategory();
         initItemCategory();
 
         if (config.hasChanged()) {
@@ -50,6 +57,9 @@ public abstract class RPGConfig
 
         mainEnableModGui = getBoolean(cat.getName(), "mainEnableModGui", true,
                 "Enable Modify Gui");
+
+        mainEnableInfoLog = getBoolean(cat.getName(), "mainEnableInfoLog", true,
+                "Enable writing info message to log");
     }
 
     private static void initPlayerCategory()
@@ -63,6 +73,23 @@ public abstract class RPGConfig
                 "Set number of lost points of level when player die");
     }
 
+    private static void initEntityCategory()
+    {
+        ConfigCategory cat = config.getCategory("Entity Category");
+        cat.setRequiresMcRestart(true);
+        cat.setShowInGui(true);
+        Property prop;
+
+        entityAllEntityRPG = getBoolean(cat.getName(), "entityAllEntityRPG", true,
+                "Are all entity RPGable?");
+
+        prop = getPropertyStrings("Supported RPG entities", "entitySupportedRPGEntities", new String[] {},
+                "Set supported RPGable entities (activated if 'entityAllEntityRPG' is false)", false);
+        if (!entityAllEntityRPG) {
+            entitySupportedRPGEntities = new HashSet<String>(Arrays.asList(prop.getStringList()));
+        }
+    }
+
     private static void initItemCategory()
     {
         ConfigCategory cat = config.getCategory("Item Category");
@@ -71,10 +98,10 @@ public abstract class RPGConfig
         Property prop;
 
         itemAllItemsLvlable = getBoolean(cat.getName(), "itemAllItemsLvlable", true,
-                "Are all weapons, tools levelable and gemable");
+                "Are all weapons, tools levelable and gemable?");
 
         itemCanUpInTable = getBoolean(cat.getName(), "itemCanUpInTable", true,
-                "Can items upgrade in lvlup table without creative mode");
+                "Can items upgrade in lvlup table without creative mode?");
 
         itemMaxLevel = getInteger(cat.getName(), "itemMaxLevel", 100,
                 "Set items max level");
@@ -85,35 +112,50 @@ public abstract class RPGConfig
         itemExpMul = (float) getDouble(cat.getName(), "itemExpMul", 1.15D,
                 "Set items expirience multiplier");
 
-        itemStartMagicArmor = getInteger(cat.getName(), "itemStartMagicArmor", 1,
-                "Set default magic resistance");
-
-        ConfigCategory cat1 = RPGConfig.config.getCategory("Supported Lvl items");
-        prop = config.get(cat1.getName(), "itemSupportedLvlItems", new String[] {});
-        prop.comment = "Set supported lvlable items (activated if 'itemAllItemsLvlable' is false)";
-        if (!RPGConfig.itemAllItemsLvlable) {
+        prop = getPropertyStrings("Supported Lvl items", "itemSupportedLvlItems", new String[] {},
+                "Set supported lvlable items (activated if 'itemAllItemsLvlable' is false)", false);
+        if (!itemAllItemsLvlable) {
             itemSupportedLvlItems = new HashSet<String>(Arrays.asList(prop.getStringList()));
         }
+    }
+
+    public static Property getPropertyStrings(String category, String field, String[] defValue, String comment, boolean needClear)
+    {
+        ConfigCategory cat = config.getCategory(category);
+        if (needClear) {
+            cat.clear();
+        }
+        Property prop = config.get(category, field, defValue);
+        if (comment != null) {
+            prop.comment = comment;
+        }
+        return prop;
     }
 
     private static int getInteger(String category, String field, int defValue, String comment)
     {
         Property prop = config.get(category, field, defValue);
-        prop.comment = comment;
+        if (comment != null) {
+            prop.comment = comment;
+        }
         return prop.getInt(defValue);
     }
 
     private static double getDouble(String category, String field, double defValue, String comment)
     {
         Property prop = config.get(category, field, defValue);
-        prop.comment = comment;
+        if (comment != null) {
+            prop.comment = comment;
+        }
         return prop.getDouble(defValue);
     }
 
     private static boolean getBoolean(String category, String field, boolean defValue, String comment)
     {
         Property prop = config.get(category, field, defValue);
-        prop.comment = comment;
+        if (comment != null) {
+            prop.comment = comment;
+        }
         return prop.getBoolean(defValue);
     }
 }

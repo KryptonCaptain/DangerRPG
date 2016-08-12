@@ -1,14 +1,11 @@
 package mixac1.dangerrpg.item.armor;
 
-import java.util.HashMap;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemArmor;
-import mixac1.dangerrpg.api.item.ItemAttribute;
 import mixac1.dangerrpg.capability.LvlableItem;
-import mixac1.dangerrpg.capability.LvlableItem.ItemAttrParams;
+import mixac1.dangerrpg.capability.LvlableItem.ItemAttributesMap;
 import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.IHasBooksInfo;
@@ -66,7 +63,7 @@ public class RPGItemArmor extends ItemArmor implements ILvlableItemArmor, IHasBo
     }
 
     @Override
-    public void registerAttributes(Item item, HashMap<ItemAttribute, ItemAttrParams> map)
+    public void registerAttributes(Item item, ItemAttributesMap map)
     {
         LvlableItem.registerParamsItemArmor(item, map);
     }

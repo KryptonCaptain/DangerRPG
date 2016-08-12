@@ -142,8 +142,6 @@ public abstract class RPGCommonHelper
         {
             i -= 9;
         }
-
-        DangerRPG.log(i);
     }
 
     public static void breakBlock(World world, int x, int y, int z, Block block, int par)

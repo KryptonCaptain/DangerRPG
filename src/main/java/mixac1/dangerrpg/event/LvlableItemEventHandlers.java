@@ -25,21 +25,19 @@ import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 public class LvlableItemEventHandlers
 {
     @SubscribeEvent
-    public boolean onLeftClickEntity(OnLeftClickEntityEvent e)
+    public void onLeftClickEntity(OnLeftClickEntityEvent e)
     {
         if (e.entity instanceof EntityLivingBase) {
             if (PlayerAttributes.SPEED_COUNTER.getValue(e.player) != 0) {
                 e.setCanceled(true);
-                return true;
+                return;
             }
             ((EntityLivingBase) e.entity).hurtResistantTime = 0;
         }
-
-        return false;
     }
 
     @SubscribeEvent
-    public boolean hitEntity(HitEntityEvent e)
+    public void hitEntity(HitEntityEvent e)
     {
         if (e.attacker instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) e.attacker;
@@ -59,8 +57,6 @@ public class LvlableItemEventHandlers
                 PlayerAttributes.SPEED_COUNTER.setValue(speed < 0 ? 0 : speed, player);
             }
         }
-
-        return true;
     }
 
     @SubscribeEvent

@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.capability.CommonEntityData;
+import mixac1.dangerrpg.capability.EntityData;
 import mixac1.dangerrpg.capability.LvlEAProvider;
 import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.client.gui.GuiInfoBookContentPlayer.LevelUpButton;
@@ -61,7 +61,7 @@ public class GuiInfoBook extends GuiScreen
     public GuiInfoBook(EntityPlayer player)
     {
         this.player = player;
-        attributes = CommonEntityData.get(player).getLvlProviders();
+        attributes = EntityData.get(player).getLvlProviders();
     }
 
     @Override
