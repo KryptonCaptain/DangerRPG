@@ -14,6 +14,8 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class ClientProxy extends CommonProxy
 {
+    protected int tickClient = 0;
+
     @Override
     public void preInit(FMLPreInitializationEvent e)
     {
@@ -47,13 +49,13 @@ public class ClientProxy extends CommonProxy
     @Override
     public EntityPlayer getPlayer(MessageContext ctx)
     {
-        return (ctx.side != Side.CLIENT) ? super.getPlayer(ctx) : getClientPlayer();
+        return (ctx.side == Side.SERVER) ? super.getPlayer(ctx) : getClientPlayer();
     }
 
     @Override
     public Entity getEntityByID(MessageContext ctx, int entityId)
     {
-        return (ctx.side != Side.CLIENT) ? super.getEntityByID(ctx, entityId) :
+        return (ctx.side == Side.SERVER) ? super.getEntityByID(ctx, entityId) :
             getClientPlayer().worldObj.getEntityByID(entityId);
     }
 }

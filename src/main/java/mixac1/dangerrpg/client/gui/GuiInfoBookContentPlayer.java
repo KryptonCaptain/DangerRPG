@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.capability.LvlEAProvider;
+import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;

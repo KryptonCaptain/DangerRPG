@@ -2,12 +2,14 @@ package mixac1.dangerrpg.capability.ea;
 
 import java.util.UUID;
 
+import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
-import mixac1.dangerrpg.capability.LvlEAProvider;
+import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class EAHealth extends EAFloat
 {
@@ -28,16 +30,21 @@ public class EAHealth extends EAFloat
     @Override
     public void apply(EntityLivingBase entity)
     {
-        float proc = entity.getHealth() / entity.getMaxHealth();
+        if (!entity.worldObj.isRemote) {
+            float proc = entity.getHealth() / entity.getMaxHealth();
 
-        IAttributeInstance attribute = entity.getEntityAttribute(SharedMonsterAttributes.maxHealth);
-        AttributeModifier bonusHeartModifier = attribute.getModifier(ID);
-        if (bonusHeartModifier != null) {
-            attribute.removeModifier(bonusHeartModifier);
+            IAttributeInstance attribute = entity.getEntityAttribute(SharedMonsterAttributes.maxHealth);
+            AttributeModifier bonusHeartModifier = attribute.getModifier(ID);
+            if (bonusHeartModifier != null) {
+                attribute.removeModifier(bonusHeartModifier);
+            }
+            AttributeModifier newModifier = new AttributeModifier(ID, name, getValue(entity), 0).setSaved(true);
+            attribute.applyModifier(newModifier);
+
+            if (entity instanceof EntityPlayer) {
+                DangerRPG.debugDump(entity.getMaxHealth(), proc);
+            }
+            entity.setHealth(entity.getMaxHealth() * proc);
         }
-        AttributeModifier newModifier = new AttributeModifier(ID, name, getValue(entity), 0).setSaved(true);
-        attribute.applyModifier(newModifier);
-
-        entity.setHealth(entity.getMaxHealth() * proc);
     }
 }

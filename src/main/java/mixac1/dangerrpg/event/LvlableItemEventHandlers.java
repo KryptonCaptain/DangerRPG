@@ -5,6 +5,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.event.ItemStackEvent.AddInformationEvent;
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
 import mixac1.dangerrpg.api.event.ItemStackEvent.OnLeftClickEntityEvent;
@@ -13,6 +14,7 @@ import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.util.RPGCommonHelper;
 import mixac1.dangerrpg.util.Utils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -75,16 +77,23 @@ public class LvlableItemEventHandlers
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent e)
     {
-        if (e.phase == TickEvent.Phase.START && !e.player.worldObj.isRemote) {
-            float tmp;
-            if (e.player != null && (tmp = PlayerAttributes.SPEED_COUNTER.getValue(e.player)) > 0) {
-                PlayerAttributes.SPEED_COUNTER.setValue(tmp - 1, e.player);
-            }
+        if (e.phase == TickEvent.Phase.START) {
+            float tmp1, tmp2;
+            if (!e.player.worldObj.isRemote) {
+                DangerRPG.proxy.fireTick();
 
-            if (e.player.worldObj.getTotalWorldTime() % 20 == 0 &&
-                PlayerAttributes.CURR_MANA.getValue(e.player) < PlayerAttributes.MANA.getValue(e.player) &&
-                (tmp = PlayerAttributes.MANA_REGEN.getValue(e.player)) != 0) {
-                PlayerAttributes.CURR_MANA.addValue(tmp, e.player);
+                if (e.player != null && (tmp1 = PlayerAttributes.SPEED_COUNTER.getValue(e.player)) > 0) {
+                    PlayerAttributes.SPEED_COUNTER.setValue(tmp1 - 1, e.player);
+                }
+
+                if (DangerRPG.proxy.getTick() == 0 &&
+                    (tmp1 = PlayerAttributes.CURR_MANA.getValue(e.player)) < PlayerAttributes.MANA.getValue(e.player) &&
+                    (tmp2 = PlayerAttributes.MANA_REGEN.getValue(e.player)) != 0) {
+                    PlayerAttributes.CURR_MANA.setValue(tmp1 + tmp2, e.player);
+                }
+            }
+            else {
+
             }
         }
     }
@@ -93,11 +102,8 @@ public class LvlableItemEventHandlers
     @SubscribeEvent
     public void onPlayerTickClient(TickEvent.PlayerTickEvent e)
     {
+        Minecraft m;
         if (e.phase == TickEvent.Phase.END) {
-            if (e.player == null) {
-                return;
-            }
-
             if (e.player.swingProgressInt == 1) {
                 ItemStack stack = e.player.getCurrentEquippedItem();
                 if (stack != null && ItemAttributes.REACH.hasIt(stack)) {

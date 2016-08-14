@@ -1,7 +1,7 @@
 package mixac1.dangerrpg.capability.ea;
 
+import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
-import mixac1.dangerrpg.capability.LvlEAProvider;
 import mixac1.dangerrpg.util.IMultiplier;
 
 public class PlayerAttributes extends EntityAttributes

@@ -1,7 +1,7 @@
 package mixac1.dangerrpg.capability.ea;
 
 import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
-import mixac1.dangerrpg.capability.LvlEAProvider;
+import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import net.minecraft.entity.EntityLivingBase;
 
 public class EAMana extends EAFloat
@@ -17,9 +17,9 @@ public class EAMana extends EAFloat
         if (isValid(value, entity)) {
             float max = getValue(entity);
             setValueRaw(value, entity);
-            PlayerAttributes.CURR_MANA.setValue(value * PlayerAttributes.CURR_MANA.getValue(entity) / max, entity);
             apply(entity);
             sync(entity);
+            PlayerAttributes.CURR_MANA.setValue(value * PlayerAttributes.CURR_MANA.getValue(entity) / max, entity);
         }
     }
 }

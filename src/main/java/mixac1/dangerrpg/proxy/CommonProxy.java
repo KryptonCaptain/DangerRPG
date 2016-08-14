@@ -17,6 +17,8 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class CommonProxy
 {
+    protected int tick;
+
     public void preInit(FMLPreInitializationEvent e)
     {
         RPGConfig.load(e);
@@ -55,5 +57,17 @@ public class CommonProxy
     public Entity getEntityByID(MessageContext ctx, int entityId)
     {
         return getPlayer(ctx).worldObj.getEntityByID(entityId);
+    }
+
+    public void fireTick()
+    {
+        if (++tick > 20) {
+            tick = 0;
+        }
+    }
+
+    public int getTick()
+    {
+        return tick;
     }
 }

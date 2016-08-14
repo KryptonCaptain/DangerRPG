@@ -18,15 +18,9 @@ public class EACurrMana extends EAFloat
     }
 
     @Override
-    public boolean isValid(Float value, EntityLivingBase entity)
-    {
-        return isValid(value) && value <= PlayerAttributes.MANA.getValue(entity);
-    }
-
-    @Override
     @Deprecated
     public void setValueRaw(Float value, EntityLivingBase entity)
     {
-        getEntityData(entity).attributeMap.get(hash).value = Utils.alignment(value, 0f, PlayerAttributes.MANA.getValue(entity));
+        getEntityData(entity).attributeMap.get(hash).value = Utils.alignment(value, 0f, PlayerAttributes.MANA.getValueRaw(entity));
     }
 }

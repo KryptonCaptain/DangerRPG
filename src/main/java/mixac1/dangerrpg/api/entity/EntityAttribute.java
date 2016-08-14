@@ -3,7 +3,6 @@ package mixac1.dangerrpg.api.entity;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.capability.EntityData;
 import mixac1.dangerrpg.capability.EntityData.TypeStub;
-import mixac1.dangerrpg.capability.LvlEAProvider;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgSyncEA;

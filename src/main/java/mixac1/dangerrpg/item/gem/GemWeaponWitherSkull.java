@@ -29,11 +29,6 @@ public class GemWeaponWitherSkull extends GemWeaponSpecialAttack
     @Override
     public void upgrade(ItemStack stack, World world, EntityPlayer player)
     {
-        Vec3 vector = CopyPastedWorldHelper.getVecFromEntity(player, 6.0F);
-        if (vector == null) {
-            return;
-        }
-
         if (!world.isRemote) {
             float need;
             if (!player.capabilities.isCreativeMode) {
@@ -44,6 +39,8 @@ public class GemWeaponWitherSkull extends GemWeaponSpecialAttack
                     return;
                 }
             }
+
+            Vec3 vector = CopyPastedWorldHelper.getVecFromEntity(player, 6.0F);
             double motionX = vector.xCoord - player.posX;
             double motionY = vector.yCoord - (player.posY + player.getEyeHeight());
             double motionZ = vector.zCoord - player.posZ;

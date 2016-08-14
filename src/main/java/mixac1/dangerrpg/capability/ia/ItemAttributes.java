@@ -194,8 +194,11 @@ public class ItemAttributes
     private static String getStringSpeed(float value, float normalValue)
     {
         value = - (value - normalValue);
-        if (value >= 0) {
+        if (value > 0) {
             return String.format("+%.2f", value);
+        }
+        else if (value == 0) {
+            return "+0.00";
         }
         return String.format("%.2f", value);
     }
