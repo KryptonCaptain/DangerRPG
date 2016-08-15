@@ -12,18 +12,16 @@ import gloomyfolken.hooklib.asm.Hook.ReturnValue;
 import gloomyfolken.hooklib.asm.ReturnCondition;
 import mixac1.dangerrpg.api.event.ItemStackEvent.AddAttributeModifiers;
 import mixac1.dangerrpg.api.event.ItemStackEvent.AddInformationEvent;
-import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
-import mixac1.dangerrpg.api.event.ItemStackEvent.OnLeftClickEntityEvent;
 import mixac1.dangerrpg.api.item.ILvlableItem;
 import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemBow;
 import mixac1.dangerrpg.capability.GemableItem;
 import mixac1.dangerrpg.capability.LvlableItem;
+import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.util.RPGCommonHelper;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -36,7 +34,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -57,24 +54,6 @@ public class RPGItemHooks
             LvlableItem.createLvlableItem(stack);
             GemableItem.createGemableItem(stack);
         }
-    }
-
-    @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
-    public static boolean onLeftClickEntity(Item item, ItemStack stack, EntityPlayer player, Entity entity, @ReturnValue boolean returnValue)
-    {
-        if (LvlableItem.isLvlable(stack)) {
-            return MinecraftForge.EVENT_BUS.post(new OnLeftClickEntityEvent(stack, player, entity));
-        }
-        return returnValue;
-    }
-
-    @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
-    public static boolean hitEntity(ItemSword item, ItemStack stack, EntityLivingBase entity, EntityLivingBase attacker, @ReturnValue boolean returnValue)
-    {
-        if (LvlableItem.isLvlable(stack)) {
-            return MinecraftForge.EVENT_BUS.post(new HitEntityEvent(stack, entity, attacker));
-        }
-        return returnValue;
     }
 
     @SideOnly(Side.CLIENT)
@@ -286,6 +265,15 @@ public class RPGItemHooks
                 world.spawnEntityInWorld(entityarrow);
             }
         }
+    }
+
+    @Hook(returnCondition = ReturnCondition.ALWAYS)
+    public static boolean onEntitySwing(Item item, EntityLivingBase entity, ItemStack stack)
+    {
+        if (entity instanceof EntityPlayer) {
+            return PlayerAttributes.SPEED_COUNTER.getValue(entity) != 0;
+        }
+        return false;
     }
 }
 

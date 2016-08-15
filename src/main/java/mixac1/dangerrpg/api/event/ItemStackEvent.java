@@ -6,7 +6,6 @@ import com.google.common.collect.Multimap;
 
 import cpw.mods.fml.common.eventhandler.Cancelable;
 import cpw.mods.fml.common.eventhandler.Event;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -23,24 +22,6 @@ public class ItemStackEvent extends Event
     }
 
     /**
-     * It is fires whenever a {@link Item#onLeftClickEntity(ItemStack, EntityPlayer, Entity)} is processed
-     * and stack is lvlable item
-     */
-    @Cancelable
-    public static class OnLeftClickEntityEvent extends ItemStackEvent
-    {
-        public EntityPlayer player;
-        public Entity entity;
-
-        public OnLeftClickEntityEvent(ItemStack stack, EntityPlayer player, Entity entity)
-        {
-            super(stack);
-            this.player = player;
-            this.entity = entity;
-        }
-    }
-
-    /**
      * It is fires whenever a {@link Item#hitEntity(ItemStack, EntityLivingBase, EntityLivingBase)} is processed
      * and stack is lvlable item
      */
@@ -50,11 +31,18 @@ public class ItemStackEvent extends Event
         public EntityLivingBase entity;
         public EntityLivingBase attacker;
 
-        public HitEntityEvent(ItemStack stack, EntityLivingBase entity, EntityLivingBase attacker)
+        public float damage;
+        public float knockback;
+        public boolean isRangeed;
+
+        public HitEntityEvent(ItemStack stack, EntityLivingBase entity, EntityLivingBase attacker, float damage, float knockback, boolean isRangeed)
         {
             super(stack);
             this.entity = entity;
             this.attacker = attacker;
+            this.damage = damage;
+            this.knockback = knockback;
+            this.isRangeed = isRangeed;
         }
     }
 

@@ -92,9 +92,7 @@ public class RPGGuiIngame extends Gui
             renderChargeBar((width - chargeWidth) / 2, height - 40 - chargeHeight);
             renderEnemyBar(10, 10, res);
 
-            /*DangerRPG.debugDump("Player (", String.format("%.2f %.2f %.2f", mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ), ")",
-                                mc.theWorld.getSpawnPoint(),
-                                Utils.getDiagonal(mc.thePlayer.posX - mc.theWorld.getSpawnPoint().posX, mc.thePlayer.posY - mc.theWorld.getSpawnPoint().posY));*/
+            renderTestString(250, 10, String.format("Speed counter: %.1f", PlayerAttributes.SPEED_COUNTER.getValue(mc.thePlayer)));
 
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             GL11.glEnable(GL11.GL_BLEND);

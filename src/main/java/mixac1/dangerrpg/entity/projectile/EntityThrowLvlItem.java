@@ -13,7 +13,7 @@ public class EntityThrowLvlItem extends EntityMaterial
     {
         super(world);
     }
-    
+
     public EntityThrowLvlItem(World world, ItemStack stack)
     {
         super(world, stack);
@@ -23,7 +23,7 @@ public class EntityThrowLvlItem extends EntityMaterial
     {
         super(world, stack, x, y, z);
     }
-    
+
     public EntityThrowLvlItem(World world, EntityLivingBase thrower, ItemStack stack, float speed, float deviation)
     {
         super(world, thrower, stack, speed, deviation);
@@ -33,14 +33,14 @@ public class EntityThrowLvlItem extends EntityMaterial
     {
         super(world, thrower, target, stack, speed, deviation);
     }
-    
+
     @Override
     public void entityInit()
     {
         super.entityInit();
         pickupMode = PICKUP_ALL;
     }
-    
+
     @Override
     public void applyEntityHitEffects(EntityLivingBase entity)
     {
@@ -52,7 +52,9 @@ public class EntityThrowLvlItem extends EntityMaterial
             else if (ItemAttributes.MELEE_DAMAGE.hasIt(stack)) {
                 phisicDamage = ItemAttributes.MELEE_DAMAGE.get(stack);
             }
-            MinecraftForge.EVENT_BUS.post(new HitEntityEvent(stack, entity, thrower));
+            HitEntityEvent event = new HitEntityEvent(stack, entity, thrower, phisicDamage, 0, true);
+            MinecraftForge.EVENT_BUS.post(event);
+            phisicDamage += event.damage;
         }
         super.applyEntityHitEffects(entity);
     }
