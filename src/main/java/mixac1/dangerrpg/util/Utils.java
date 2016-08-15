@@ -20,12 +20,12 @@ public abstract class Utils
         return value;
     }
 
-    public static float invert(float value)
+    public static double invert(double value)
     {
         return -value;
     }
 
-    public static float invert(float value, boolean isInvert)
+    public static double invert(double value, boolean isInvert)
     {
         return isInvert ? invert(value) : value;
     }
@@ -37,5 +37,15 @@ public abstract class Utils
             buf.append(obj.toString());
         }
         return buf.toString();
+    }
+
+    public static double getDiagonal(double x, double y)
+    {
+        return Math.sqrt(x * x + y * y);
+    }
+
+    public static double getDiagonal(double x, double y, double z)
+    {
+        return Math.sqrt(x * x + y * y + z * z);
     }
 }

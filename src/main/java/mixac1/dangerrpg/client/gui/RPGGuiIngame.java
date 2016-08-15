@@ -15,6 +15,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
@@ -28,7 +29,7 @@ public class RPGGuiIngame extends Gui
     public static FontRenderer fr = mc.fontRenderer;
     public ScaledResolution res;
 
-    public static final ResourceLocation TEXTURE = new ResourceLocation("DangerRPG:textures/gui/player_bar.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation("DangerRPG:textures/gui/entity_bar.png");
 
     private static int textureWidth = 139;
     private static int textureHeight = 59;
@@ -91,6 +92,10 @@ public class RPGGuiIngame extends Gui
             renderChargeBar((width - chargeWidth) / 2, height - 40 - chargeHeight);
             renderEnemyBar(10, 10, res);
 
+            /*DangerRPG.debugDump("Player (", String.format("%.2f %.2f %.2f", mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ), ")",
+                                mc.theWorld.getSpawnPoint(),
+                                Utils.getDiagonal(mc.thePlayer.posX - mc.theWorld.getSpawnPoint().posX, mc.thePlayer.posY - mc.theWorld.getSpawnPoint().posY));*/
+
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             GL11.glEnable(GL11.GL_BLEND);
         }
@@ -105,7 +110,7 @@ public class RPGGuiIngame extends Gui
             offsetX = res.getScaledWidth() - offsetX;
         }
 
-        GuiInventory.func_147046_a(offsetX + invert(18), offsetY + 37, 16, invert(30F), 00f, entity);
+        GuiInventory.func_147046_a(offsetX + invert(18), offsetY + 37, 16, invert(30), 00f, entity);
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         mc.getTextureManager().bindTexture(TEXTURE);
@@ -188,6 +193,13 @@ public class RPGGuiIngame extends Gui
             yFal += barHeight;
         }
 
+        // T0D0: damage
+        if (entity instanceof EntityMob) {
+            drawTexturedModalRect(offsetX + invert(barOffsetX), offsetY + barOffsetY + yFal, barOffsetU, barOffsetV + barHeight * 4, barWidth, barHeight, isInverted);
+
+            yFal += barHeight;
+        }
+
         // T0D0: food
         if (entity == mc.thePlayer) {
             curr = mc.thePlayer.getFoodStats().getFoodLevel();
@@ -239,6 +251,12 @@ public class RPGGuiIngame extends Gui
             s = String.format("%.1f", PlayerAttributes.CURR_MANA.getValue(entity));
             fr.drawStringWithShadow(s, offsetX + getOffsetX(s, healthBarOffsetX + healthBarWidth + 4, isInverted), offsetY + healthBarOffsetY + barHeight + (healthBarHeight - fr.FONT_HEIGHT) / 2 + 1, 0xFFFFFF);
         }
+
+        // T0D0: damage value
+        if (entity instanceof EntityMob) {
+            s = String.format("%.1f", EntityAttributes.DAMAGE.displayValue(entity));
+            fr.drawStringWithShadow(s, offsetX + getOffsetX(s, healthBarOffsetX, isInverted), offsetY + healthBarOffsetY + barHeight * 2 + (healthBarHeight - fr.FONT_HEIGHT) / 2 + 1, 0xFFFFFF);
+        }
     }
 
     public void renderChargeBar(int offsetX, int offsetY)
@@ -280,7 +298,7 @@ public class RPGGuiIngame extends Gui
 
     private boolean isInvert = true;
 
-    private float invert(float value)
+    private double invert(double value)
     {
         return Utils.invert(value, isInvert);
     }

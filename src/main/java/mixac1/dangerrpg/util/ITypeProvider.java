@@ -11,7 +11,9 @@ public interface ITypeProvider<Type>
 {
     public void toNBT(Type value, String key, NBTTagCompound nbt);
 
-    public Type fromNBT(String key, NBTTagCompound nbt);;
+    public Type fromNBT(String key, NBTTagCompound nbt);
+
+    public Type getEmpty();
 
     /**
      * Default validator for Type
@@ -59,6 +61,12 @@ public interface ITypeProvider<Type>
         {
             return value.toString();
         }
+
+        @Override
+        public Boolean getEmpty()
+        {
+            return false;
+        }
     };
 
     public static final ITypeProvider<Integer> INTEGER = new ITypeProvider<Integer>()
@@ -91,6 +99,12 @@ public interface ITypeProvider<Type>
         public String toString(Integer value)
         {
             return value.toString();
+        }
+
+        @Override
+        public Integer getEmpty()
+        {
+            return 0;
         }
     };
 
@@ -125,6 +139,12 @@ public interface ITypeProvider<Type>
         {
             return String.format("%.2f", value);
         }
+
+        @Override
+        public Float getEmpty()
+        {
+            return 0F;
+        }
     };
 
     public static final ITypeProvider<String> STRING = new ITypeProvider<String>()
@@ -158,6 +178,12 @@ public interface ITypeProvider<Type>
         public String toString(String value)
         {
             return value;
+        }
+
+        @Override
+        public String getEmpty()
+        {
+            return "";
         }
     };
 
@@ -196,6 +222,12 @@ public interface ITypeProvider<Type>
         {
             return value.toString();
         }
+
+        @Override
+        public NBTTagCompound getEmpty()
+        {
+            return new NBTTagCompound();
+        }
     };
 
     public static final ITypeProvider<ItemStack> ITEM_STACK = new ITypeProvider<ItemStack>()
@@ -232,6 +264,12 @@ public interface ITypeProvider<Type>
         public String toString(ItemStack value)
         {
             return value.toString();
+        }
+
+        @Override
+        public ItemStack getEmpty()
+        {
+            return null;
         }
     };
 };

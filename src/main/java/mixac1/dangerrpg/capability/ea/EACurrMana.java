@@ -12,15 +12,20 @@ public class EACurrMana extends EAFloat
     }
 
     @Override
-    public void init(EntityLivingBase entity)
+    public void serverInit(EntityLivingBase entity)
     {
-        init(PlayerAttributes.MANA.getValue(entity), entity);
+        setValueRaw(PlayerAttributes.MANA.getValue(entity), entity);
     }
 
     @Override
     @Deprecated
-    public void setValueRaw(Float value, EntityLivingBase entity)
+    public boolean setValueRaw(Float value, EntityLivingBase entity)
     {
-        getEntityData(entity).attributeMap.get(hash).value = Utils.alignment(value, 0f, PlayerAttributes.MANA.getValueRaw(entity));
+        if (!value.equals(getValueRaw(entity))) {
+            getEntityData(entity).attributeMap.get(hash).value = Utils.alignment(value, 0f, PlayerAttributes.MANA.getValueRaw(entity));
+            apply(entity);
+            return true;
+        }
+        return false;
     }
 }

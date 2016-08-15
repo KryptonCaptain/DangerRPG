@@ -9,6 +9,7 @@ import java.util.Set;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.EntityAttribute;
 import mixac1.dangerrpg.api.entity.LvlEAProvider;
+import mixac1.dangerrpg.api.event.InitRPGEntityEvent;
 import mixac1.dangerrpg.api.event.RegEAEvent;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
@@ -18,6 +19,7 @@ import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgSyncEntityData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -44,9 +46,18 @@ public class EntityData implements IExtendedEntityProperties
         for (EntityAttribute iter : getEntityAttributes()) {
             iter.init((EntityLivingBase) entity);
         }
+    }
 
-        if (isServerSide((EntityLivingBase) entity)) {
-            EntityAttributes.IS_INIT.setValueRaw(true, (EntityLivingBase) entity);
+    public void serverInit()
+    {
+        if (isServerSide(entity) && !EntityAttributes.LVL.isInitedEntity(entity)) {
+            for (EntityAttribute iter : getEntityAttributes()) {
+                iter.serverInit(entity);
+            }
+
+            if (!(entity instanceof EntityPlayer)) {
+                MinecraftForge.EVENT_BUS.post(new InitRPGEntityEvent(entity));
+            }
         }
     }
 
@@ -67,7 +78,7 @@ public class EntityData implements IExtendedEntityProperties
 
     public boolean checkValid()
     {
-        boolean result = EntityAttributes.IS_INIT.getValue(entity);
+        boolean result = EntityAttributes.LVL.isInitedEntity(entity);
         if (!result) {
             if (isServerSide(entity)) {
                 init(entity, entity.worldObj);
@@ -109,16 +120,21 @@ public class EntityData implements IExtendedEntityProperties
     @Override
     public void saveNBTData(NBTTagCompound nbt)
     {
+        NBTTagCompound tmp = new NBTTagCompound();
         for (EntityAttribute iter : getEntityAttributes()) {
-            iter.toNBT(nbt, entity);
+            iter.toNBT(tmp, entity);
         }
+        nbt.setTag(ID, tmp);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound nbt)
     {
-        for (EntityAttribute iter : getEntityAttributes()) {
-            iter.fromNBT(nbt, entity);
+        NBTTagCompound tmp = (NBTTagCompound) nbt.getTag(ID);
+        if (tmp != null) {
+            for (EntityAttribute iter : getEntityAttributes()) {
+                iter.fromNBT(tmp, entity);
+            }
         }
     }
 
@@ -175,6 +191,9 @@ public class EntityData implements IExtendedEntityProperties
             }
             else {
                 registerEntityLiving(entityClass, set);
+                if (EntityMob.class.isAssignableFrom(entityClass)) {
+                    registerEntityMob(entityClass, set);
+                }
             }
             RPGCapability.eaMap.put(entityClass, set);
 
@@ -187,7 +206,6 @@ public class EntityData implements IExtendedEntityProperties
 
     private static void registerEntityDefault(Class<? extends EntityLivingBase> entityClass, EntityAttributesSet set)
     {
-        set.addEntityAttribute(EntityAttributes.IS_INIT);
         set.addEntityAttribute(EntityAttributes.LVL);
         MinecraftForge.EVENT_BUS.post(new RegEAEvent.DefaultEAEvent(entityClass, set));
     }
@@ -196,6 +214,12 @@ public class EntityData implements IExtendedEntityProperties
     {
         set.addEntityAttribute(EntityAttributes.HEALTH);
         MinecraftForge.EVENT_BUS.post(new RegEAEvent.EntytyLivingEAEvent(entityClass, set));
+    }
+
+    private static void registerEntityMob(Class<? extends EntityLivingBase> entityClass, EntityAttributesSet set)
+    {
+        set.addEntityAttribute(EntityAttributes.DAMAGE);
+        MinecraftForge.EVENT_BUS.post(new RegEAEvent.EntytyMobEAEvent(entityClass, set));
     }
 
     private static void registerEntityPlayer(Class<? extends EntityLivingBase> entityClass, EntityAttributesSet set)

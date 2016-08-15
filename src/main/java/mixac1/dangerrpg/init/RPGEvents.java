@@ -4,7 +4,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.client.event.ClientEventHandlers;
-import mixac1.dangerrpg.event.CommonEventHandlers;
+import mixac1.dangerrpg.event.EntityEventHandlers;
 import mixac1.dangerrpg.event.LvlableItemEventHandlers;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -12,7 +12,7 @@ public abstract class RPGEvents
 {
     public static void load()
     {
-        registerEvent(new CommonEventHandlers());
+        registerEvent(new EntityEventHandlers());
         registerEvent(new LvlableItemEventHandlers());
     }
 

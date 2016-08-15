@@ -5,6 +5,7 @@ import mixac1.dangerrpg.api.entity.EntityAttribute;
 import mixac1.dangerrpg.capability.EntityData.EntityAttributesSet;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class RegEAEvent extends Event
@@ -37,6 +38,18 @@ public class RegEAEvent extends Event
     public static class EntytyLivingEAEvent extends RegEAEvent
     {
         public EntytyLivingEAEvent(Class<? extends EntityLivingBase> entityClass, EntityAttributesSet set)
+        {
+            super(entityClass, set);
+        }
+    }
+
+    /**
+     * It is fires whenever a {@link EntityMob} registering own default {@link EntityAttribute}
+     * and {@link EntityMob} is RPG entity
+     */
+    public static class EntytyMobEAEvent extends RegEAEvent
+    {
+        public EntytyMobEAEvent(Class<? extends EntityLivingBase> entityClass, EntityAttributesSet set)
         {
             super(entityClass, set);
         }

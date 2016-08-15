@@ -24,9 +24,8 @@ public class TestWand extends Item
     public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
     {
         if (!entity.worldObj.isRemote && entity instanceof EntityLivingBase) {
-            EntityAttributes.HEALTH.addValue(100f, (EntityLivingBase) entity);
+            EntityAttributes.DAMAGE.addValue(1f, (EntityLivingBase) entity);
         }
-
         return true;
     }
 }

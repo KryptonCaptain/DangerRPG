@@ -37,6 +37,19 @@ public class EntityAttribute<Type>
         }
     }
 
+    public void init(EntityLivingBase entity)
+    {
+        getEntityData(entity).attributeMap.put(hash, new TypeStub<Type>((Type) typeProvider.getEmpty()));
+        if (lvlProvider != null) {
+            lvlProvider.init(entity);
+        }
+    }
+
+    public void serverInit(EntityLivingBase entity)
+    {
+        setValueRaw(startValue, entity);
+    }
+
     public boolean hasIt(EntityLivingBase entity)
     {
         return RPGCapability.getEntityAttributesSet(entity).attributes.contains(this);
@@ -64,10 +77,14 @@ public class EntityAttribute<Type>
     }
 
     @Deprecated
-    public void setValueRaw(Type value, EntityLivingBase entity)
+    public boolean setValueRaw(Type value, EntityLivingBase entity)
     {
-        getEntityData(entity).attributeMap.get(hash).value = value;
-        apply(entity);
+        if (!value.equals(getValueRaw(entity))) {
+            getEntityData(entity).attributeMap.get(hash).value = value;
+            apply(entity);
+            return true;
+        }
+        return false;
     }
 
     public Type getValue(EntityLivingBase entity)
@@ -83,27 +100,15 @@ public class EntityAttribute<Type>
     public void setValue(Type value, EntityLivingBase entity)
     {
         if (isValid(value, entity)) {
-            setValueRaw(value, entity);
-            sync(entity);
+            if (setValueRaw(value, entity)) {
+                sync(entity);
+            }
         }
     }
 
     public void addValue(Type value, EntityLivingBase entity)
     {
         setValue((Type) typeProvider.concat(getValue(entity), value), entity);
-    }
-
-    public void init(Type value, EntityLivingBase entity)
-    {
-        getEntityData(entity).attributeMap.put(hash, new TypeStub(value));
-        if (lvlProvider != null) {
-            lvlProvider.init(entity);
-        }
-    }
-
-    public void init(EntityLivingBase entity)
-    {
-        init(startValue, entity);
     }
 
     public void sync(EntityLivingBase entity)

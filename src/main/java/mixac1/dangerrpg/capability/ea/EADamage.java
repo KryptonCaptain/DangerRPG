@@ -9,11 +9,11 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 
-public class EAHealth extends EAFloat
+public class EADamage extends EAFloat
 {
     private final UUID ID = UUID.randomUUID();
 
-    public EAHealth(String name, LvlEAProvider<Float> lvlProvider)
+    public EADamage(String name, LvlEAProvider<Float> lvlProvider)
     {
         super(name, 0f, lvlProvider);
     }
@@ -21,24 +21,21 @@ public class EAHealth extends EAFloat
     @Override
     public Float displayValue(EntityLivingBase entity)
     {
-        return entity.getMaxHealth();
+        return (float) entity.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
     }
 
     @Override
     public void apply(EntityLivingBase entity)
     {
         if (!entity.worldObj.isRemote) {
-            float tmp = entity.getHealth() / entity.getMaxHealth();
-
-            IAttributeInstance attr= entity.getEntityAttribute(SharedMonsterAttributes.maxHealth);
+            IAttributeInstance attr= entity.getEntityAttribute(SharedMonsterAttributes.attackDamage);
+            float tmp = (float) attr.getAttributeValue();
             AttributeModifier mod = attr.getModifier(ID);
             if (mod != null) {
                 attr.removeModifier(mod);
             }
             AttributeModifier newMod = new AttributeModifier(ID, name, getValueRaw(entity), 0).setSaved(true);
             attr.applyModifier(newMod);
-
-            entity.setHealth(entity.getMaxHealth() * tmp);
         }
     }
 }
