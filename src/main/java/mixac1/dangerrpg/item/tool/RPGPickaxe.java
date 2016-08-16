@@ -9,6 +9,7 @@ import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.RPGItemComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
+import mixac1.dangerrpg.item.RPGToolMaterial;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -17,9 +18,12 @@ import net.minecraft.item.ItemStack;
 
 public class RPGPickaxe extends ItemPickaxe implements ILvlableItemTool, IHasBooksInfo
 {
-    public RPGPickaxe(ToolMaterial toolMaterial)
+    RPGToolMaterial toolMaterial;
+
+    public RPGPickaxe(RPGToolMaterial toolMaterial)
     {
-        super(toolMaterial);
+        super(toolMaterial.material);
+        this.toolMaterial = toolMaterial;
         setUnlocalizedName(RPGItems.getRPGName(getItemComponent(this), getToolMaterial(this)));
         setTextureName(Utils.toString(DangerRPG.MODID, ":tools/", unlocalizedName));
         setCreativeTab(RPGOther.tabDangerRPG);
@@ -39,7 +43,7 @@ public class RPGPickaxe extends ItemPickaxe implements ILvlableItemTool, IHasBoo
     }
 
     @Override
-    public ToolMaterial getToolMaterial(Item item)
+    public RPGToolMaterial getToolMaterial(Item item)
     {
         return toolMaterial;
     }

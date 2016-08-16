@@ -98,6 +98,7 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
                 flag |= addAttribute(ItemAttributes.STR_MUL, itemAttributes);
                 flag |= addAttribute(ItemAttributes.AGI_MUL, itemAttributes);
                 flag |= addAttribute(ItemAttributes.INT_MUL, itemAttributes);
+                flag |= addAttribute(ItemAttributes.KNBACK_MUL, itemAttributes);
 
                 if (flag) {
                     addString("");

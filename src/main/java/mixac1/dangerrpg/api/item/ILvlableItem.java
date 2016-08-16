@@ -6,19 +6,19 @@ import mixac1.dangerrpg.capability.LvlableItem.ItemAttributesMap;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.entity.projectile.EntityArrowRPG;
 import mixac1.dangerrpg.entity.projectile.EntityMaterial;
+import mixac1.dangerrpg.item.RPGArmorMaterial;
 import mixac1.dangerrpg.item.RPGItemComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGBowComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGGunComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGICWithoutTM;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
+import mixac1.dangerrpg.item.RPGToolMaterial;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemPickaxe;
@@ -44,12 +44,12 @@ public interface ILvlableItem
         @Override
         public RPGToolComponent getItemComponent(Item item);
 
-        public ToolMaterial getToolMaterial(Item item);
+        public RPGToolMaterial getToolMaterial(Item item);
     }
 
     public interface ILvlableItemArmor extends ILvlableItem
     {
-        public ArmorMaterial getArmorMaterial(Item item);
+        public RPGArmorMaterial getArmorMaterial(Item item);
     }
 
     public interface ILvlableItemGun extends ILvlableItemTool
@@ -114,9 +114,9 @@ public interface ILvlableItem
         }
 
         @Override
-        public ToolMaterial getToolMaterial(Item item)
+        public RPGToolMaterial getToolMaterial(Item item)
         {
-            return ((ItemSword) item).field_150933_b;
+            return RPGToolMaterial.getDefaultRPGToolMaterial(((ItemSword) item).field_150933_b);
         }
     };
 
@@ -147,13 +147,13 @@ public interface ILvlableItem
         }
 
         @Override
-        public ToolMaterial getToolMaterial(Item item)
+        public RPGToolMaterial getToolMaterial(Item item)
         {
             if (item instanceof ItemTool) {
-                return ((ItemTool) item).func_150913_i();
+                return RPGToolMaterial.getDefaultRPGToolMaterial(((ItemTool) item).func_150913_i());
             }
             else if (item instanceof ItemHoe) {
-                return ((ItemHoe) item).theToolMaterial;
+                return RPGToolMaterial.getDefaultRPGToolMaterial(((ItemHoe) item).theToolMaterial);
             }
             return null;
         }
@@ -174,9 +174,9 @@ public interface ILvlableItem
         }
 
         @Override
-        public ArmorMaterial getArmorMaterial(Item item)
+        public RPGArmorMaterial getArmorMaterial(Item item)
         {
-            return ((ItemArmor) item).getArmorMaterial();
+            return RPGArmorMaterial.getDefaultRPGArmorMaterial(((ItemArmor) item).getArmorMaterial());
         }
     };
 
@@ -195,7 +195,7 @@ public interface ILvlableItem
         }
 
         @Override
-        public ToolMaterial getToolMaterial(Item item)
+        public RPGToolMaterial getToolMaterial(Item item)
         {
             return null;
         }

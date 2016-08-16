@@ -26,29 +26,29 @@ public class RPGItemComponent
 
     static
     {
-     /* TOOLS             mDmg    mSpeed  magic   strMul  agiMul  intMul   knBack  reach */
+     /* TOOLS             mDmg    mSpeed  magic   strMul  agiMul  intMul   knBack  knbMul    reach */
 
-        TRAINING.init    (0.0F,   10.0F,  0.0F,   0.5F,   1.0F,   0.25F,   10.0F,  2.5F);
+        TRAINING.init    (0.0F,   10.0F,  0.0F,   0.5F,   1.0F,   0.25F,   10.0F,  0.00F,    2.5F);
 
-        SWORD.init       (4.0F,   10.0F,  0.0F,   0.5F,   1.0F,   0.25F,   1.0F,   0.0F);
-        NAGINATA.init    (4.0F,   12.0F,  0.0F,   0.5F,   0.8F,   0.25F,   1.1F,   1.5F);
-        KATANA.init      (3.5F,   9.0F,   0.0F,   0.5F,   1.1F,   0.25F,   0.5F,   0.0F);
-        SCYTHE.init      (5.0F,   13.0F,  0.0F,   0.65F,  0.7F,   0.25F,   1.2F,   1.0F);
-        HAMMER.init      (6.0F,   17.0F,  0.0F,   0.8F,   0.3F,   0.25F,   1.5F,   0.0F);
-        TOMAHAWK.init    (3.5F,   9.5F,   0.0F,   0.4F,   1.1F,   0.25F,   0.4F,   0.0F);
-        KNIFE.init       (1.0F,   7.5F,   0.0F,   0.25F,  1.25F,  0.25F,   0.1F,   0.0F);
+        SWORD.init       (4.0F,   10.0F,  0.0F,   0.5F,   1.0F,   0.25F,   0.0F,   0.10F,    0.0F);
+        NAGINATA.init    (4.0F,   12.0F,  0.0F,   0.5F,   0.8F,   0.25F,   0.5F,   0.15F,    1.5F);
+        KATANA.init      (3.5F,   9.0F,   0.0F,   0.5F,   1.1F,   0.25F,   0.0F,   0.05F,    0.0F);
+        SCYTHE.init      (5.0F,   13.0F,  0.0F,   0.65F,  0.7F,   0.25F,   0.5F,   0.15F,    1.0F);
+        HAMMER.init      (6.0F,   17.0F,  0.0F,   0.8F,   0.3F,   0.25F,   1.0F,   0.25F,    0.0F);
+        TOMAHAWK.init    (3.5F,   9.5F,   0.0F,   0.4F,   1.1F,   0.25F,   0.0F,   0.00F,    0.0F);
+        KNIFE.init       (1.0F,   7.5F,   0.0F,   0.25F,  1.25F,  0.25F,   0.0F,   0.00F,    0.0F);
 
-        AXE.init         (3.0F,   11.0F,   0.0F,   0.55F,  0.8F,   0.25F,   1.0F,   0.0F);
-        PICKAXE.init     (2.0F,   10.0F,  0.0F,   0.3F,   0.8F,   0.25F,   1.0F,   0.0F);
-        SHOVEL.init      (1.0F,   10.0F,  0.0F,   0.3F,   0.8F,   0.25F,   1.0F,   0.0F);
-        HOE.init         (1.0F,   10.0F,  0.0F,   0.4F,   0.8F,   0.25F,   1.0F,   0.0F);
-        MULTITOOL.init   (3.0F,   10.0F,  0.0F,   0.55F,  0.8F,   0.25F,   1.0F,   0.0F);
+        AXE.init         (3.0F,   11.0F,  0.0F,   0.55F,  0.8F,   0.25F,   0.0F,   0.10F,    0.0F);
+        PICKAXE.init     (2.0F,   10.0F,  0.0F,   0.3F,   0.8F,   0.25F,   0.0F,   0.10F,    0.0F);
+        SHOVEL.init      (1.0F,   10.0F,  0.0F,   0.3F,   0.8F,   0.25F,   0.0F,   0.10F,    0.0F);
+        HOE.init         (1.0F,   10.0F,  0.0F,   0.4F,   0.8F,   0.25F,   0.0F,   0.10F,    0.0F);
+        MULTITOOL.init   (1.0F,   10.0F,  0.0F,   0.4F,   0.8F,   0.25F,   0.0F,   0.10F,    0.0F);
 
-     /* BOWS              mDmg    mSpeed  magic   strMul  agiMul  intMul   knBack  reach   rDmg    rSpeed  rPow    durab   ench */
+     /* BOWS              mDmg    mSpeed  magic   strMul  agiMul  intMul   knBack  knbMul    reach   rDmg    rSpeed  rPow    durab   ench */
 
-        BOW.init         (1.0F,   10.0F,  0.0F,   0.16F,  1.0F,   0.25F,   1.0F,   0.0F,   2.0F,   20.0F,  3.0F,   -0F,    3F);
-        SHADOW_BOW.init  (4.0F,   10.0F,  0.0F,   0.16F,  1.0F,   0.25F,   1.0F,   0.0F,   2.5F,   16.0F,  3.0F,   500F,   5F);
-        SNIPER_BOW.init  (1.0F,   10.0F,  0.0F,   0.16F,  1.0F,   0.25F,   1.0F,   0.0F,   4.0F,   40.0F,  3.5F,   1000F,  10F);
+        BOW.init         (1.0F,   10.0F,  0.0F,   0.16F,  1.0F,   0.25F,   0.0F,   0.10F,    0.0F,   2.0F,   20.0F,  3.0F,   -0F,    3F);
+        SHADOW_BOW.init  (4.0F,   10.0F,  0.0F,   0.16F,  1.0F,   0.25F,   0.0F,   0.10F,    0.0F,   2.5F,   16.0F,  3.5F,   500F,   5F);
+        SNIPER_BOW.init  (1.0F,   10.0F,  0.0F,   0.16F,  1.0F,   0.25F,   1.0F,   0.20F,    0.0F,   4.0F,   40.0F,  5.5F,   1000F,  10F);
     }
 
     public String name;
@@ -62,6 +62,7 @@ public class RPGItemComponent
         public float agiMul;
         public float intMul;
         public float knBack;
+        public float knbMul;
         public float reach;
 
         public RPGToolComponent(String name)
@@ -70,7 +71,7 @@ public class RPGItemComponent
         }
 
         private void init(float meleeDamage, float meleeSpeed, float magic, float strMul,
-                          float agiMul, float intMul, float knBack, float reach)
+                          float agiMul, float intMul, float knBack, float knbMul, float reach)
         {
             this.meleeDamage = meleeDamage;
             this.meleeSpeed  = meleeSpeed;
@@ -79,6 +80,7 @@ public class RPGItemComponent
             this.agiMul      = agiMul;
             this.intMul      = intMul;
             this.knBack      = knBack;
+            this.knbMul      = knbMul;
             this.reach       = reach;
         }
     }
@@ -95,10 +97,10 @@ public class RPGItemComponent
         }
 
         private void init(float meleeDamage, float meleeSpeed, float magic, float strMul,
-                          float agiMul, float intMul, float knBack, float reach,
+                          float agiMul, float intMul, float knBack, float knbMul, float reach,
                           float shotDamage, float shotSpeed, float shotPower)
         {
-            super.init(meleeDamage, meleeSpeed, magic, strMul, agiMul, intMul, knBack, reach);
+            super.init(meleeDamage, meleeSpeed, magic, strMul, agiMul, intMul, knBack, knbMul, reach);
             this.shotDamage = shotDamage;
             this.shotSpeed  = shotSpeed;
             this.shotPower  = shotPower;
@@ -115,12 +117,12 @@ public class RPGItemComponent
         }
 
         private void init(float meleeDamage, float meleeSpeed, float magic, float strMul,
-                          float agiMul, float intMul, float knBack, float reach,
+                          float agiMul, float intMul, float knBack, float knbMul, float reach,
                           float shotDamage, float shotSpeed, float shotPower,
                           float durab, float ench)
         {
             super.init(meleeDamage, meleeSpeed, magic, strMul, agiMul, intMul,
-                       knBack, reach, shotDamage, shotSpeed, shotPower);
+                       knBack, knbMul, reach, shotDamage, shotSpeed, shotPower);
             itemComponent.init(durab, ench);
         }
 

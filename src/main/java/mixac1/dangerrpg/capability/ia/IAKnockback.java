@@ -11,10 +11,10 @@ public class IAKnockback extends IAStatic
     {
         super(name);
     }
-    
+
     @Override
     public float get(ItemStack stack, EntityPlayer player)
     {
-        return get(stack) * PlayerAttributes.STRENGTH.getValue(player);
+        return get(stack) + PlayerAttributes.STRENGTH.getValue(player) * ItemAttributes.KNBACK_MUL.get(stack, player);
     }
 }

@@ -10,6 +10,7 @@ import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
+import mixac1.dangerrpg.item.RPGToolMaterial;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -25,12 +26,12 @@ public class RPGWeapon extends ItemSword implements ILvlableItemTool, IGemableIt
             GemType.GEM_DEFENCE
     };
 
-    public ToolMaterial toolMaterial;
+    public RPGToolMaterial toolMaterial;
     public RPGToolComponent toolComponent;
 
-    public RPGWeapon(ToolMaterial toolMaterial, RPGToolComponent toolComponent)
+    public RPGWeapon(RPGToolMaterial toolMaterial, RPGToolComponent toolComponent)
     {
-        super(toolMaterial);
+        super(toolMaterial.material);
         this.toolMaterial = toolMaterial;
         this.toolComponent = toolComponent;
         setUnlocalizedName(RPGItems.getRPGName(getItemComponent(this), getToolMaterial(this)));
@@ -39,7 +40,7 @@ public class RPGWeapon extends ItemSword implements ILvlableItemTool, IGemableIt
         setMaxStackSize(1);
     }
 
-    public RPGWeapon(ToolMaterial toolMaterial, RPGToolComponent toolComponent, String name)
+    public RPGWeapon(RPGToolMaterial toolMaterial, RPGToolComponent toolComponent, String name)
     {
         this(toolMaterial, toolComponent);
         setUnlocalizedName(name);
@@ -65,7 +66,7 @@ public class RPGWeapon extends ItemSword implements ILvlableItemTool, IGemableIt
     }
 
     @Override
-    public ToolMaterial getToolMaterial(Item item)
+    public RPGToolMaterial getToolMaterial(Item item)
     {
         return toolMaterial;
     }

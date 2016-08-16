@@ -19,65 +19,64 @@ import mixac1.dangerrpg.item.tool.RPGSpade;
 import mixac1.dangerrpg.item.tool.RPGWeapon;
 import mixac1.dangerrpg.item.tool.RPGWeaponKnife;
 import mixac1.dangerrpg.item.tool.RPGWeaponTomahawk;
+import mixac1.dangerrpg.util.Utils;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.Item.ToolMaterial;
-import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 
 
 public abstract class RPGItems
 {
-    public static Item swordTraining = new RPGWeapon(ToolMaterial.WOOD, RPGItemComponent.TRAINING, "sword_training");
+    public static Item swordTraining = new RPGWeapon(RPGToolMaterial.WOOD, RPGItemComponent.TRAINING, "sword_training");
 
     public static Item swordObsidian     = new RPGWeapon(RPGToolMaterial.OBSIDIAN,     RPGItemComponent.SWORD);
     public static Item swordBedrock      = new RPGWeapon(RPGToolMaterial.BEDROCK,      RPGItemComponent.SWORD);
     public static Item swordBlackMatter  = new RPGWeapon(RPGToolMaterial.BLACK_MATTER, RPGItemComponent.SWORD);
     public static Item swordWhiteMatter  = new RPGWeapon(RPGToolMaterial.WHITE_MATTER, RPGItemComponent.SWORD);
 
-    public static Item naginataIron        = new RPGWeapon(ToolMaterial.IRON,            RPGItemComponent.NAGINATA);
-    public static Item naginataGold        = new RPGWeapon(ToolMaterial.GOLD,            RPGItemComponent.NAGINATA);
-    public static Item naginataDiamond     = new RPGWeapon(ToolMaterial.EMERALD,         RPGItemComponent.NAGINATA);
+    public static Item naginataIron        = new RPGWeapon(RPGToolMaterial.IRON,         RPGItemComponent.NAGINATA);
+    public static Item naginataGold        = new RPGWeapon(RPGToolMaterial.GOLD,         RPGItemComponent.NAGINATA);
+    public static Item naginataDiamond     = new RPGWeapon(RPGToolMaterial.DIAMOND,      RPGItemComponent.NAGINATA);
     public static Item naginataObsidian    = new RPGWeapon(RPGToolMaterial.OBSIDIAN,     RPGItemComponent.NAGINATA);
     public static Item naginataBedrock     = new RPGWeapon(RPGToolMaterial.BEDROCK,      RPGItemComponent.NAGINATA);
     public static Item naginataBlackMatter = new RPGWeapon(RPGToolMaterial.BLACK_MATTER, RPGItemComponent.NAGINATA);
     public static Item naginataWhiteMatter = new RPGWeapon(RPGToolMaterial.WHITE_MATTER, RPGItemComponent.NAGINATA);
 
-    public static Item katanaIron        = new RPGWeapon(ToolMaterial.IRON,            RPGItemComponent.KATANA);
-    public static Item katanaGold        = new RPGWeapon(ToolMaterial.GOLD,            RPGItemComponent.KATANA);
-    public static Item katanaDiamond     = new RPGWeapon(ToolMaterial.EMERALD,         RPGItemComponent.KATANA);
+    public static Item katanaIron        = new RPGWeapon(RPGToolMaterial.IRON,            RPGItemComponent.KATANA);
+    public static Item katanaGold        = new RPGWeapon(RPGToolMaterial.GOLD,            RPGItemComponent.KATANA);
+    public static Item katanaDiamond     = new RPGWeapon(RPGToolMaterial.DIAMOND,         RPGItemComponent.KATANA);
     public static Item katanaObsidian    = new RPGWeapon(RPGToolMaterial.OBSIDIAN,     RPGItemComponent.KATANA);
     public static Item katanaBedrock     = new RPGWeapon(RPGToolMaterial.BEDROCK,      RPGItemComponent.KATANA);
     public static Item katanaBlackMatter = new RPGWeapon(RPGToolMaterial.BLACK_MATTER, RPGItemComponent.KATANA);
     public static Item katanaWhiteMatter = new RPGWeapon(RPGToolMaterial.WHITE_MATTER, RPGItemComponent.KATANA);
 
-    public static Item scytheIron        = new RPGWeapon(ToolMaterial.IRON,            RPGItemComponent.SCYTHE);
-    public static Item scytheGold        = new RPGWeapon(ToolMaterial.GOLD,            RPGItemComponent.SCYTHE);
-    public static Item scytheDiamond     = new RPGWeapon(ToolMaterial.EMERALD,         RPGItemComponent.SCYTHE);
+    public static Item scytheIron        = new RPGWeapon(RPGToolMaterial.IRON,         RPGItemComponent.SCYTHE);
+    public static Item scytheGold        = new RPGWeapon(RPGToolMaterial.GOLD,         RPGItemComponent.SCYTHE);
+    public static Item scytheDiamond     = new RPGWeapon(RPGToolMaterial.DIAMOND,      RPGItemComponent.SCYTHE);
     public static Item scytheObsidian    = new RPGWeapon(RPGToolMaterial.OBSIDIAN,     RPGItemComponent.SCYTHE);
     public static Item scytheBedrock     = new RPGWeapon(RPGToolMaterial.BEDROCK,      RPGItemComponent.SCYTHE);
     public static Item scytheBlackMatter = new RPGWeapon(RPGToolMaterial.BLACK_MATTER, RPGItemComponent.SCYTHE);
     public static Item scytheWhiteMatter = new RPGWeapon(RPGToolMaterial.WHITE_MATTER, RPGItemComponent.SCYTHE);
 
-    public static Item hammerIron        = new RPGWeapon(ToolMaterial.IRON,            RPGItemComponent.HAMMER);
-    public static Item hammerGold        = new RPGWeapon(ToolMaterial.GOLD,            RPGItemComponent.HAMMER);
-    public static Item hammerDiamond     = new RPGWeapon(ToolMaterial.EMERALD,         RPGItemComponent.HAMMER);
+    public static Item hammerIron        = new RPGWeapon(RPGToolMaterial.IRON,         RPGItemComponent.HAMMER);
+    public static Item hammerGold        = new RPGWeapon(RPGToolMaterial.GOLD,         RPGItemComponent.HAMMER);
+    public static Item hammerDiamond     = new RPGWeapon(RPGToolMaterial.DIAMOND,      RPGItemComponent.HAMMER);
     public static Item hammerObsidian    = new RPGWeapon(RPGToolMaterial.OBSIDIAN,     RPGItemComponent.HAMMER);
     public static Item hammerBedrock     = new RPGWeapon(RPGToolMaterial.BEDROCK,      RPGItemComponent.HAMMER);
     public static Item hammerBlackMatter = new RPGWeapon(RPGToolMaterial.BLACK_MATTER, RPGItemComponent.HAMMER);
     public static Item hammerWhiteMatter = new RPGWeapon(RPGToolMaterial.WHITE_MATTER, RPGItemComponent.HAMMER);
 
-    public static Item tomahawkIron        = new RPGWeaponTomahawk(ToolMaterial.IRON,            RPGItemComponent.TOMAHAWK);
-    public static Item tomahawkGold        = new RPGWeaponTomahawk(ToolMaterial.GOLD,            RPGItemComponent.TOMAHAWK);
-    public static Item tomahawkDiamond     = new RPGWeaponTomahawk(ToolMaterial.EMERALD,         RPGItemComponent.TOMAHAWK);
+    public static Item tomahawkIron        = new RPGWeaponTomahawk(RPGToolMaterial.IRON,         RPGItemComponent.TOMAHAWK);
+    public static Item tomahawkGold        = new RPGWeaponTomahawk(RPGToolMaterial.GOLD,         RPGItemComponent.TOMAHAWK);
+    public static Item tomahawkDiamond     = new RPGWeaponTomahawk(RPGToolMaterial.DIAMOND,      RPGItemComponent.TOMAHAWK);
     public static Item tomahawkObsidian    = new RPGWeaponTomahawk(RPGToolMaterial.OBSIDIAN,     RPGItemComponent.TOMAHAWK);
     public static Item tomahawkBedrock     = new RPGWeaponTomahawk(RPGToolMaterial.BEDROCK,      RPGItemComponent.TOMAHAWK);
     public static Item tomahawkBlackMatter = new RPGWeaponTomahawk(RPGToolMaterial.BLACK_MATTER, RPGItemComponent.TOMAHAWK);
     public static Item tomahawkWhiteMatter = new RPGWeaponTomahawk(RPGToolMaterial.WHITE_MATTER, RPGItemComponent.TOMAHAWK);
 
-    public static Item knifeIron        = new RPGWeaponKnife(ToolMaterial.IRON,            RPGItemComponent.KNIFE);
-    public static Item knifeGold        = new RPGWeaponKnife(ToolMaterial.GOLD,            RPGItemComponent.KNIFE);
-    public static Item knifeDiamond     = new RPGWeaponKnife(ToolMaterial.EMERALD,         RPGItemComponent.KNIFE);
+    public static Item knifeIron        = new RPGWeaponKnife(RPGToolMaterial.IRON,         RPGItemComponent.KNIFE);
+    public static Item knifeGold        = new RPGWeaponKnife(RPGToolMaterial.GOLD,         RPGItemComponent.KNIFE);
+    public static Item knifeDiamond     = new RPGWeaponKnife(RPGToolMaterial.DIAMOND,      RPGItemComponent.KNIFE);
     public static Item knifeObsidian    = new RPGWeaponKnife(RPGToolMaterial.OBSIDIAN,     RPGItemComponent.KNIFE);
     public static Item knifeBedrock     = new RPGWeaponKnife(RPGToolMaterial.BEDROCK,      RPGItemComponent.KNIFE);
     public static Item knifeBlackMatter = new RPGWeaponKnife(RPGToolMaterial.BLACK_MATTER, RPGItemComponent.KNIFE);
@@ -103,9 +102,9 @@ public abstract class RPGItems
     public static Item shovelBlackMatter  = new RPGSpade(RPGToolMaterial.BLACK_MATTER);
     public static Item shovelWhiteMatter  = new RPGSpade(RPGToolMaterial.WHITE_MATTER);
 
-    public static Item multitoolIron        = new RPGMultiTool(ToolMaterial.IRON);
-    public static Item multitoolGold        = new RPGMultiTool(ToolMaterial.GOLD);
-    public static Item multitoolDiamond     = new RPGMultiTool(ToolMaterial.EMERALD);
+    public static Item multitoolIron        = new RPGMultiTool(RPGToolMaterial.IRON);
+    public static Item multitoolGold        = new RPGMultiTool(RPGToolMaterial.GOLD);
+    public static Item multitoolDiamond     = new RPGMultiTool(RPGToolMaterial.DIAMOND);
     public static Item multitoolObsidian    = new RPGMultiTool(RPGToolMaterial.OBSIDIAN);
     public static Item multitoolBedrock     = new RPGMultiTool(RPGToolMaterial.BEDROCK);
     public static Item multitoolBlackMatter = new RPGMultiTool(RPGToolMaterial.BLACK_MATTER);
@@ -116,10 +115,10 @@ public abstract class RPGItems
     public static Item[] armorBlackMatter = RPGItemArmor.createFullSet(RPGArmorMaterial.BLACK_MATTER, "armor");
     public static Item[] armorWhiteMatter = RPGItemArmor.createFullSet(RPGArmorMaterial.WHITE_MATTER, "armor");
 
-    public static Item[] mageArmorCloth       = ItemMageArmor.createFullSet(ArmorMaterial.CLOTH,           "mage_armor");
-    public static Item[] mageArmorIron        = ItemMageArmor.createFullSet(ArmorMaterial.IRON,            "mage_armor");
-    public static Item[] mageArmorGold        = ItemMageArmor.createFullSet(ArmorMaterial.GOLD,            "mage_armor");
-    public static Item[] mageArmorDiamond     = ItemMageArmor.createFullSet(ArmorMaterial.DIAMOND,         "mage_armor");
+    public static Item[] mageArmorCloth       = ItemMageArmor.createFullSet(RPGArmorMaterial.CLOTH,        "mage_armor");
+    public static Item[] mageArmorIron        = ItemMageArmor.createFullSet(RPGArmorMaterial.IRON,         "mage_armor");
+    public static Item[] mageArmorGold        = ItemMageArmor.createFullSet(RPGArmorMaterial.GOLD,         "mage_armor");
+    public static Item[] mageArmorDiamond     = ItemMageArmor.createFullSet(RPGArmorMaterial.DIAMOND,      "mage_armor");
     public static Item[] mageArmorObsidian    = ItemMageArmor.createFullSet(RPGArmorMaterial.OBSIDIAN,     "mage_armor");
     public static Item[] mageArmorBedrock     = ItemMageArmor.createFullSet(RPGArmorMaterial.BEDROCK,      "mage_armor");
     public static Item[] mageArmorBlackMatter = ItemMageArmor.createFullSet(RPGArmorMaterial.BLACK_MATTER, "mage_armor");
@@ -258,25 +257,13 @@ public abstract class RPGItems
         }
     }
 
-    /*********************************************************************/
-
-    public static String getToolMaterialName(ToolMaterial toolMaterial)
+    public static String getRPGName(RPGToolComponent toolComponent, RPGToolMaterial toolMaterial)
     {
-            return "_".concat(RPGOther.toolMaterialNames.get(toolMaterial));
+        return Utils.toString(toolComponent.name, "_", toolMaterial.name);
     }
 
-    public static String getArmorMaterialName(ArmorMaterial armorMaterial)
+    public static String getRPGName(RPGArmorMaterial armorMaterial)
     {
-        return "_".concat(RPGOther.armorMaterialNames.get(armorMaterial));
-    }
-
-    public static String getRPGName(RPGToolComponent toolComponent, ToolMaterial toolMaterial)
-    {
-        return toolComponent.name.concat(getToolMaterialName(toolMaterial));
-    }
-
-    public static String getRPGName(String name, ArmorMaterial armorMaterial)
-    {
-        return name.concat(getArmorMaterialName(armorMaterial));
+        return Utils.toString("_", armorMaterial.name);
     }
 }

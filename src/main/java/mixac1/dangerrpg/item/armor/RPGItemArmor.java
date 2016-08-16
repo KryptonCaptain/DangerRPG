@@ -9,6 +9,7 @@ import mixac1.dangerrpg.capability.LvlableItem.ItemAttributesMap;
 import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.IHasBooksInfo;
+import mixac1.dangerrpg.item.RPGArmorMaterial;
 import mixac1.dangerrpg.item.RPGItemComponent;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.model.ModelBiped;
@@ -23,23 +24,23 @@ import net.minecraft.item.ItemStack;
 public class RPGItemArmor extends ItemArmor implements ILvlableItemArmor, IHasBooksInfo
 {
     protected static String[] ARMOR_TYPES = new String[] {"_helmet", "_chestplate", "_leggings", "_boots"};
-    protected ArmorMaterial armorMaterial;
+    protected RPGArmorMaterial armorMaterial;
     protected String name;
     protected String modelTexture;
 
-    public RPGItemArmor(ArmorMaterial armorMaterial, int renderIndex, int armorType, String name)
+    public RPGItemArmor(RPGArmorMaterial armorMaterial, int renderIndex, int armorType, String name)
     {
-        super(armorMaterial, renderIndex, armorType);
+        super(armorMaterial.material, renderIndex, armorType);
         this.armorMaterial = armorMaterial;
         this.name = name;
-        name = name.concat(RPGItems.getArmorMaterialName(armorMaterial));
+        name = name.concat(RPGItems.getRPGName(armorMaterial));
         modelTexture = Utils.toString("DangerRPG:textures/models/armors/", name, "_layer_");
         setUnlocalizedName(name.concat(ARMOR_TYPES[armorType]));
         setTextureName(Utils.toString(DangerRPG.MODID, ":armors/", unlocalizedName));
         setCreativeTab(RPGOther.tabDangerRPG);
     }
 
-    public static RPGItemArmor[] createFullSet(ArmorMaterial armorMaterial, String name)
+    public static RPGItemArmor[] createFullSet(RPGArmorMaterial armorMaterial, String name)
     {
         return new RPGItemArmor[] {
             new RPGItemArmor(armorMaterial, 0, 0, name),
@@ -75,7 +76,7 @@ public class RPGItemArmor extends ItemArmor implements ILvlableItemArmor, IHasBo
     }
 
     @Override
-    public ArmorMaterial getArmorMaterial(Item item)
+    public RPGArmorMaterial getArmorMaterial(Item item)
     {
         return armorMaterial;
     }

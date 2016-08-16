@@ -47,7 +47,7 @@ public class RPGItemBow extends ItemBow implements ILvlableItemBow, IHasBooksInf
     }
 
     @Override
-    public ToolMaterial getToolMaterial(Item item)
+    public RPGToolMaterial getToolMaterial(Item item)
     {
         return null;
     }

@@ -13,6 +13,7 @@ import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.RPGItemComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
+import mixac1.dangerrpg.item.RPGToolMaterial;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,9 +32,12 @@ public class RPGMultiTool extends ItemTool implements ILvlableItemTool, IHasBook
         Sets.newHashSet(new Block[] {Blocks.planks, Blocks.bookshelf, Blocks.log, Blocks.log2, Blocks.chest, Blocks.pumpkin, Blocks.lit_pumpkin})
     );
 
-    public RPGMultiTool(ToolMaterial material)
+    RPGToolMaterial toolMaterial;
+
+    public RPGMultiTool(RPGToolMaterial toolMaterial)
     {
-        super(3.0F, material, multitoolBlocks);
+        super(3.0F, toolMaterial.material, multitoolBlocks);
+        this.toolMaterial = toolMaterial;
         setUnlocalizedName(RPGItems.getRPGName(getItemComponent(this), getToolMaterial(this)));
         setTextureName(Utils.toString(DangerRPG.MODID, ":tools/", unlocalizedName));
         setCreativeTab(RPGOther.tabDangerRPG);
@@ -55,7 +59,7 @@ public class RPGMultiTool extends ItemTool implements ILvlableItemTool, IHasBook
     @Override
     public int getHarvestLevel(ItemStack stack, String toolClass)
     {
-        return toolMaterial.getHarvestLevel();
+        return super.toolMaterial.getHarvestLevel();
     }
 
     @Override
@@ -77,7 +81,7 @@ public class RPGMultiTool extends ItemTool implements ILvlableItemTool, IHasBook
     }
 
     @Override
-    public ToolMaterial getToolMaterial(Item item)
+    public RPGToolMaterial getToolMaterial(Item item)
     {
         return toolMaterial;
     }

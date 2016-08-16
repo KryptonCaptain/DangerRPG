@@ -7,6 +7,7 @@ import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.LvlableItem.ItemAttributesMap;
 import mixac1.dangerrpg.client.RPGRenderHelper;
 import mixac1.dangerrpg.client.model.ModelMageArmor;
+import mixac1.dangerrpg.item.RPGArmorMaterial;
 import mixac1.dangerrpg.item.RPGItemComponent;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.model.ModelBiped;
@@ -22,12 +23,12 @@ public class ItemMageArmor extends RPGItemArmor
 {
     protected int DEFAULT_COLOR = 0x3371e4;
 
-    public ItemMageArmor(ArmorMaterial armorMaterial, int armorType, String name)
+    public ItemMageArmor(RPGArmorMaterial armorMaterial, int armorType, String name)
     {
         super(armorMaterial, 0, armorType, name);
     }
 
-    public static ItemMageArmor[] createFullSet(ArmorMaterial armorMaterial, String name)
+    public static ItemMageArmor[] createFullSet(RPGArmorMaterial armorMaterial, String name)
     {
         return new ItemMageArmor[] {
             new ItemMageArmor(armorMaterial, 0, name),
@@ -72,7 +73,7 @@ public class ItemMageArmor extends RPGItemArmor
     }
 
     @Override
-    public ArmorMaterial getArmorMaterial(Item item)
+    public RPGArmorMaterial getArmorMaterial(Item item)
     {
         return armorMaterial;
     }

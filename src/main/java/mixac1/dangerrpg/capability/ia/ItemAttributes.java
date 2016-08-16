@@ -136,6 +136,15 @@ public class ItemAttributes
         }
     };
 
+    public static final IAStatic KNBACK_MUL = new IAStatic("knb_mul")
+    {
+        @Override
+        public String getDispayValue(ItemStack stack, EntityPlayer player)
+        {
+            return getStringProcentage(get(stack, player));
+        }
+    };
+
     /*********************************************************************************/
 
     public static final IADynamic ENCHANTABILITY = new IADynamic("ench")

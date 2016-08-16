@@ -180,6 +180,7 @@ ia.magic_armor=Magical Resistance
 ia.str_mul=Str to Damage
 ia.agi_mul=Agi to Speed
 ia.int_mul=Int to Magic damage
+ia.knb_mul=Str to KnockBack
 
 ea.health=Health
 ea.health.info=Increases maximum level of health
