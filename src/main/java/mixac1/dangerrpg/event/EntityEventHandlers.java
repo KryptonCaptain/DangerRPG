@@ -4,14 +4,18 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import mixac1.dangerrpg.api.event.InitRPGEntityEvent;
 import mixac1.dangerrpg.capability.EntityData;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
+import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgSyncEntityData;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
 public class EntityEventHandlers
@@ -65,6 +69,22 @@ public class EntityEventHandlers
         }
         if (EntityAttributes.DAMAGE.hasIt(e.entity)) {
             EntityAttributes.DAMAGE.setValue(0.5f * lvl, e.entity);
+        }
+    }
+
+    @SubscribeEvent
+    public void onLivingJump(LivingJumpEvent e)
+    {
+        if (e.entityLiving instanceof EntityPlayer) {
+            e.entityLiving.motionY += PlayerAttributes.JUMP_HEIGHT.getValue(e.entityLiving);
+        }
+    }
+
+    @SubscribeEvent
+    public void onLivingFall(LivingFallEvent e)
+    {
+        if (e.entityLiving instanceof EntityPlayer) {
+            e.distance -= PlayerAttributes.STEEL_MUSC.getValue(e.entityLiving);
         }
     }
 }

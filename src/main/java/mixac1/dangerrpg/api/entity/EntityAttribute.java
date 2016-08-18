@@ -142,9 +142,9 @@ public class EntityAttribute<Type>
         }
     }
 
-    public Type displayValue(EntityLivingBase entity)
+    public String getDisplayValue(EntityLivingBase entity)
     {
-        return (Type) typeProvider.toString(getValue(entity));
+        return typeProvider.toString(getValue(entity));
     }
 
     public String getDisplayName()

@@ -232,6 +232,17 @@ public class EntityData implements IExtendedEntityProperties
         set.addLvlableEntityAttribute(PlayerAttributes.EFFICIENCY);
         set.addLvlableEntityAttribute(PlayerAttributes.MANA_REGEN);
 
+        set.addLvlableEntityAttribute(PlayerAttributes.MOVE_SPEED);
+        set.addLvlableEntityAttribute(PlayerAttributes.SNEAK_SPEED);
+        set.addLvlableEntityAttribute(PlayerAttributes.FLY_SPEED);
+        set.addLvlableEntityAttribute(PlayerAttributes.SWIM_SPEED);
+        set.addLvlableEntityAttribute(PlayerAttributes.JUMP_HEIGHT);
+        set.addLvlableEntityAttribute(PlayerAttributes.JUMP_RANGE);
+
+        set.addLvlableEntityAttribute(PlayerAttributes.STEEL_MUSC);
+        set.addLvlableEntityAttribute(PlayerAttributes.STONESKIN);
+        set.addLvlableEntityAttribute(PlayerAttributes.MAG_IMUN);
+
         set.addEntityAttribute(PlayerAttributes.CURR_MANA);
         set.addEntityAttribute(PlayerAttributes.SPEED_COUNTER);
 

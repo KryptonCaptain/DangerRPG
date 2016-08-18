@@ -28,7 +28,7 @@ public class LvlEAProvider<Type>
 
     public void init(EntityLivingBase entity)
     {
-        attr.getEntityData(entity).lvlMap.put(attr.hash, 1);
+        attr.getEntityData(entity).lvlMap.put(attr.hash, 0);
     }
 
     public int getLvl(EntityLivingBase entity)

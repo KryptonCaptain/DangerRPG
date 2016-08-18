@@ -2,9 +2,8 @@ package mixac1.dangerrpg.util;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
+import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -26,8 +25,6 @@ import net.minecraft.world.World;
 
 public abstract class RPGCommonHelper
 {
-    static int i = 0;
-
     public static void knockBack(EntityLivingBase entityliving, EntityLivingBase attacker, float knockback)
     {
         double i = Math.sqrt(knockback);
@@ -55,6 +52,7 @@ public abstract class RPGCommonHelper
     }
 
     /**
+     * 40 armor == 100% resistance
      * @return % of phisical resistance from one armor item
      */
     public static float calcPhisicResistance(float phisicArmor)
@@ -76,6 +74,11 @@ public abstract class RPGCommonHelper
     public static float calcTotalPhisicResistance(EntityLivingBase entity)
     {
         float value = calcPhisicResistance(entity.getTotalArmorValue());
+
+        if (entity instanceof EntityPlayer) {
+            value += PlayerAttributes.STONESKIN.getValue(entity);
+        }
+
         return value > 100F ? 100F : value;
     }
 
@@ -84,17 +87,22 @@ public abstract class RPGCommonHelper
      */
     public static float calcTotalMagicResistance(EntityLivingBase entity)
     {
-        float i = 0;
+        float value = 0;
         ItemStack[] stacks = entity instanceof EntityPlayer ?
                              ((EntityPlayer) entity).inventory.armorInventory :
                              entity.getLastActiveItems();
         for (ItemStack stack : stacks) {
             if (stack != null && stack.getItem() instanceof ItemArmor && ItemAttributes.MAGIC_ARMOR.hasIt(stack))
             {
-                i += calcMagicResistance(ItemAttributes.MAGIC_ARMOR.get(stack));
+                value += calcMagicResistance(ItemAttributes.MAGIC_ARMOR.get(stack));
             }
         }
-        return i > 100F ? 100F : i;
+
+        if (entity instanceof EntityPlayer) {
+            value += PlayerAttributes.MAG_IMUN.getValue(entity);
+        }
+
+        return value > 100F ? 100F : value;
     }
 
     public static void rebuildPlayerExp(EntityPlayer player)
@@ -119,30 +127,30 @@ public abstract class RPGCommonHelper
         player.addExperience(exp);
     }
 
-    @SideOnly(Side.CLIENT)
-    public static void wheelScroll(int value)
-    {
-        if (value == 0) {
-            return;
-        }
-
-        if (value > 0) {
-            value = 1;
-        }
-
-        if (value < 0) {
-            value = -1;
-        }
-
-        for (i -= value; i < 0; i += 9) {
-            ;
-        }
-
-        while (i >= 9)
-        {
-            i -= 9;
-        }
-    }
+//    @SideOnly(Side.CLIENT)
+//    public static void wheelScroll(int value)
+//    {
+//        if (value == 0) {
+//            return;
+//        }
+//
+//        if (value > 0) {
+//            value = 1;
+//        }
+//
+//        if (value < 0) {
+//            value = -1;
+//        }
+//
+//        for (i -= value; i < 0; i += 9) {
+//            ;
+//        }
+//
+//        while (i >= 9)
+//        {
+//            i -= 9;
+//        }
+//    }
 
     public static void breakBlock(World world, int x, int y, int z, Block block, int par)
     {

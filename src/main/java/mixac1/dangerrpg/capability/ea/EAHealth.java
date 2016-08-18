@@ -19,9 +19,9 @@ public class EAHealth extends EAFloat
     }
 
     @Override
-    public Float displayValue(EntityLivingBase entity)
+    public String getDisplayValue(EntityLivingBase entity)
     {
-        return entity.getMaxHealth();
+        return String.format("%.1f", entity.getMaxHealth());
     }
 
     @Override

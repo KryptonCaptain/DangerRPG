@@ -92,7 +92,8 @@ public class RPGGuiIngame extends Gui
             renderChargeBar((width - chargeWidth) / 2, height - 40 - chargeHeight);
             renderEnemyBar(10, 10, res);
 
-            renderTestString(250, 10, String.format("Speed counter: %.1f", PlayerAttributes.SPEED_COUNTER.getValue(mc.thePlayer)));
+            renderTestString(250, 10,
+                    "");
 
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             GL11.glEnable(GL11.GL_BLEND);
@@ -246,13 +247,13 @@ public class RPGGuiIngame extends Gui
 
         // T0D0: mana value
         if (entity instanceof EntityPlayer) {
-            s = String.format("%.1f", PlayerAttributes.CURR_MANA.getValue(entity));
+            s = PlayerAttributes.CURR_MANA.getDisplayValue(entity);
             fr.drawStringWithShadow(s, offsetX + getOffsetX(s, healthBarOffsetX + healthBarWidth + 4, isInverted), offsetY + healthBarOffsetY + barHeight + (healthBarHeight - fr.FONT_HEIGHT) / 2 + 1, 0xFFFFFF);
         }
 
         // T0D0: damage value
         if (entity instanceof EntityMob) {
-            s = String.format("%.1f", EntityAttributes.DAMAGE.displayValue(entity));
+            s = EntityAttributes.DAMAGE.getDisplayValue(entity);
             fr.drawStringWithShadow(s, offsetX + getOffsetX(s, healthBarOffsetX, isInverted), offsetY + healthBarOffsetY + barHeight * 2 + (healthBarHeight - fr.FONT_HEIGHT) / 2 + 1, 0xFFFFFF);
         }
     }

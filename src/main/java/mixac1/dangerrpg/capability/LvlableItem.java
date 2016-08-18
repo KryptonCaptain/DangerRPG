@@ -155,7 +155,7 @@ public abstract class LvlableItem
         RPGArmorMaterial mat = iLvl.getArmorMaterial(item);
 
         map.addStaticItemAttribute( ItemAttributes.PHISIC_ARMOR, mat.material.getDamageReductionAmount(((ItemArmor) item).armorType));
-        map.addDynamicItemAttribute(ItemAttributes.MAGIC_ARMOR,  1f, IMultiplier.ADD_1);
+        map.addDynamicItemAttribute(ItemAttributes.MAGIC_ARMOR,  0f, IMultiplier.ADD_1);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemArmorIAEvent(item, map));
     }

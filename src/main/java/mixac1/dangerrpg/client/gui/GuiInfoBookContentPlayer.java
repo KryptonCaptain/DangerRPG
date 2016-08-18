@@ -66,7 +66,7 @@ public class GuiInfoBookContentPlayer extends GuiInfoBookContent
     public void drawScreen(int mouseX, int mouseY, float par3)
     {
         super.drawScreen(mouseX, mouseY, par3);
-        String s;
+        String s, s1;
         if (currIndex >= 0) {
             int offsetX = left;
             int offsetY = bottom + offset;
@@ -81,8 +81,11 @@ public class GuiInfoBookContentPlayer extends GuiInfoBookContent
             s = Utils.toString(DangerRPG.trans("ia.lvl"), ": ", parent.attributes.get(currIndex).getLvl(player));
             mc.fontRenderer.drawStringWithShadow(s, offsetX + infoOffsetX, offsetY + infoOffsetY, 0xffffff);
 
-            s = Utils.toString(DangerRPG.trans("rpgstr.value"), ": ", parent.attributes.get(currIndex).attr.displayValue(player));
-            mc.fontRenderer.drawStringWithShadow(s, offsetX + infoOffsetX, offsetY + infoOffsetY + indent, 0xffffff);
+            s1 = parent.attributes.get(currIndex).attr.getDisplayValue(player);
+            if (s1 != null) {
+                s = Utils.toString(DangerRPG.trans("rpgstr.value"), ": ", s1);
+                mc.fontRenderer.drawStringWithShadow(s, offsetX + infoOffsetX, offsetY + infoOffsetY + indent, 0xffffff);
+            }
 
             s = parent.attributes.get(currIndex).attr.getInfo();
             List list = mc.fontRenderer.listFormattedStringToWidth(s, infoWidth);

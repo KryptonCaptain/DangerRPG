@@ -19,9 +19,9 @@ public class EADamage extends EAFloat
     }
 
     @Override
-    public Float displayValue(EntityLivingBase entity)
+    public String getDisplayValue(EntityLivingBase entity)
     {
-        return (float) entity.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
+        return String.format("%.1f", entity.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue());
     }
 
     @Override

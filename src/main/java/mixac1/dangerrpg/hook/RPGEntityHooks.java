@@ -1,6 +1,7 @@
 package mixac1.dangerrpg.hook;
 
 import gloomyfolken.hooklib.asm.Hook;
+import gloomyfolken.hooklib.asm.Hook.ReturnValue;
 import gloomyfolken.hooklib.asm.ReturnCondition;
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
 import mixac1.dangerrpg.capability.LvlableItem;
@@ -157,6 +158,63 @@ public class RPGEntityHooks
                     entity.extinguish();
                 }
             }
+        }
+    }
+
+    @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
+    public static float getAIMoveSpeed(EntityPlayer player, @ReturnValue float returnValue)
+    {
+        if (player.isSneaking()) {
+            return returnValue + PlayerAttributes.SNEAK_SPEED.getValue(player) * 3;
+        }
+        return returnValue + PlayerAttributes.MOVE_SPEED.getValue(player);
+    }
+
+    @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
+    public static void onLivingUpdate(EntityPlayer player)
+    {
+        player.jumpMovementFactor += PlayerAttributes.JUMP_RANGE.getValue(player);
+    }
+
+    @Hook
+    public static void moveEntityWithHeading(EntityLivingBase entity, float par1, float par2)
+    {
+        if (entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isFlying && entity.ridingEntity == null) {
+            entity.jumpMovementFactor += PlayerAttributes.FLY_SPEED.getValue(entity);
+        }
+    }
+
+    @Hook(returnCondition = ReturnCondition.ALWAYS)
+    public static void moveFlying(Entity entity, float par1, float par2, float speed)
+    {
+        float f3 = par1 * par1 + par2 * par2;
+
+        if (f3 >= 1.0E-4F) {
+            if (entity instanceof EntityPlayer) {
+                if (!((EntityPlayer) entity).capabilities.isFlying) {
+                    if (entity.isInWater()) {
+                        speed += PlayerAttributes.SWIM_SPEED.getValue((EntityPlayer) entity);
+                    }
+                    else if (entity.handleLavaMovement()) {
+                        speed += PlayerAttributes.SWIM_SPEED.getValue((EntityPlayer) entity) / 2;
+                    }
+                }
+            }
+
+            f3 = MathHelper.sqrt_float(f3);
+
+            if (f3 < 1.0F)
+            {
+                f3 = 1.0F;
+            }
+
+            f3 = speed / f3;
+            par1 *= f3;
+            par2 *= f3;
+            float f4 = MathHelper.sin(entity.rotationYaw * (float)Math.PI / 180.0F);
+            float f5 = MathHelper.cos(entity.rotationYaw * (float)Math.PI / 180.0F);
+            entity.motionX += par1 * f5 - par2 * f4;
+            entity.motionZ += par2 * f5 + par1 * f4;
         }
     }
 }
