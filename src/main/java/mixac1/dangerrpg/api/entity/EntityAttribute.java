@@ -91,7 +91,7 @@ public class EntityAttribute<Type>
     {
         Type value = getValueRaw(entity);
         if (!isValid(value, entity)) {
-            init(entity);
+            serverInit(entity);
             value = getValueRaw(entity);
         }
         return value;

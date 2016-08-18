@@ -10,7 +10,7 @@ import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.RPGArmorMaterial;
-import mixac1.dangerrpg.item.RPGItemComponent;
+import mixac1.dangerrpg.item.RPGItemComponent.RPGArmorComponent;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -25,28 +25,29 @@ public class RPGItemArmor extends ItemArmor implements ILvlableItemArmor, IHasBo
 {
     protected static String[] ARMOR_TYPES = new String[] {"_helmet", "_chestplate", "_leggings", "_boots"};
     protected RPGArmorMaterial armorMaterial;
+    protected RPGArmorComponent armorComponent;
     protected String name;
     protected String modelTexture;
 
-    public RPGItemArmor(RPGArmorMaterial armorMaterial, int renderIndex, int armorType, String name)
+    public RPGItemArmor(RPGArmorMaterial armorMaterial, RPGArmorComponent armorComponent, int renderIndex, int armorType)
     {
         super(armorMaterial.material, renderIndex, armorType);
         this.armorMaterial = armorMaterial;
-        this.name = name;
-        name = name.concat(RPGItems.getRPGName(armorMaterial));
+        this.armorComponent = armorComponent;
+        name = RPGItems.getRPGName(armorComponent, armorMaterial);
         modelTexture = Utils.toString("DangerRPG:textures/models/armors/", name, "_layer_");
         setUnlocalizedName(name.concat(ARMOR_TYPES[armorType]));
         setTextureName(Utils.toString(DangerRPG.MODID, ":armors/", unlocalizedName));
         setCreativeTab(RPGOther.tabDangerRPG);
     }
 
-    public static RPGItemArmor[] createFullSet(RPGArmorMaterial armorMaterial, String name)
+    public static RPGItemArmor[] createFullSet(RPGArmorMaterial armorMaterial, RPGArmorComponent armorComponent)
     {
         return new RPGItemArmor[] {
-            new RPGItemArmor(armorMaterial, 0, 0, name),
-            new RPGItemArmor(armorMaterial, 0, 1, name),
-            new RPGItemArmor(armorMaterial, 0, 2, name),
-            new RPGItemArmor(armorMaterial, 0, 3, name)
+            new RPGItemArmor(armorMaterial, armorComponent, 0, 0),
+            new RPGItemArmor(armorMaterial, armorComponent, 0, 1),
+            new RPGItemArmor(armorMaterial, armorComponent, 0, 2),
+            new RPGItemArmor(armorMaterial, armorComponent, 0, 3)
         };
     }
 
@@ -70,9 +71,9 @@ public class RPGItemArmor extends ItemArmor implements ILvlableItemArmor, IHasBo
     }
 
     @Override
-    public RPGItemComponent getItemComponent(Item item)
+    public RPGArmorComponent getItemComponent(Item item)
     {
-        return null;
+        return armorComponent;
     }
 
     @Override

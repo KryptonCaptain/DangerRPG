@@ -11,7 +11,7 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 
 public class EAHealth extends EAFloat
 {
-    private final UUID ID = UUID.randomUUID();
+    private final UUID ID = UUID.fromString("fd6315bf-9f57-46cb-bb38-4aacb5d2967a");
 
     public EAHealth(String name, LvlEAProvider<Float> lvlProvider)
     {

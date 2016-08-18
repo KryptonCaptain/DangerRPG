@@ -5,6 +5,7 @@ import mixac1.dangerrpg.item.ItemSniperBow;
 import mixac1.dangerrpg.item.RPGArmorMaterial;
 import mixac1.dangerrpg.item.RPGItemBow;
 import mixac1.dangerrpg.item.RPGItemComponent;
+import mixac1.dangerrpg.item.RPGItemComponent.RPGArmorComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
 import mixac1.dangerrpg.item.RPGToolMaterial;
 import mixac1.dangerrpg.item.TestWand;
@@ -110,22 +111,22 @@ public abstract class RPGItems
     public static Item multitoolBlackMatter = new RPGMultiTool(RPGToolMaterial.BLACK_MATTER);
     public static Item multitoolWhiteMatter = new RPGMultiTool(RPGToolMaterial.WHITE_MATTER);
 
-    public static Item[] armorObsidian    = RPGItemArmor.createFullSet(RPGArmorMaterial.OBSIDIAN,     "armor");
-    public static Item[] armorBedrock     = RPGItemArmor.createFullSet(RPGArmorMaterial.BEDROCK,      "armor");
-    public static Item[] armorBlackMatter = RPGItemArmor.createFullSet(RPGArmorMaterial.BLACK_MATTER, "armor");
-    public static Item[] armorWhiteMatter = RPGItemArmor.createFullSet(RPGArmorMaterial.WHITE_MATTER, "armor");
+    public static Item[] armorObsidian    = RPGItemArmor.createFullSet(RPGArmorMaterial.OBSIDIAN,     RPGArmorComponent.ARMOR);
+    public static Item[] armorBedrock     = RPGItemArmor.createFullSet(RPGArmorMaterial.BEDROCK,      RPGArmorComponent.ARMOR);
+    public static Item[] armorBlackMatter = RPGItemArmor.createFullSet(RPGArmorMaterial.BLACK_MATTER, RPGArmorComponent.ARMOR);
+    public static Item[] armorWhiteMatter = RPGItemArmor.createFullSet(RPGArmorMaterial.WHITE_MATTER, RPGArmorComponent.ARMOR);
 
-    public static Item[] mageArmorCloth       = ItemMageArmor.createFullSet(RPGArmorMaterial.CLOTH,        "mage_armor");
-    public static Item[] mageArmorIron        = ItemMageArmor.createFullSet(RPGArmorMaterial.IRON,         "mage_armor");
-    public static Item[] mageArmorGold        = ItemMageArmor.createFullSet(RPGArmorMaterial.GOLD,         "mage_armor");
-    public static Item[] mageArmorDiamond     = ItemMageArmor.createFullSet(RPGArmorMaterial.DIAMOND,      "mage_armor");
-    public static Item[] mageArmorObsidian    = ItemMageArmor.createFullSet(RPGArmorMaterial.OBSIDIAN,     "mage_armor");
-    public static Item[] mageArmorBedrock     = ItemMageArmor.createFullSet(RPGArmorMaterial.BEDROCK,      "mage_armor");
-    public static Item[] mageArmorBlackMatter = ItemMageArmor.createFullSet(RPGArmorMaterial.BLACK_MATTER, "mage_armor");
-    public static Item[] mageArmorWhiteMatter = ItemMageArmor.createFullSet(RPGArmorMaterial.WHITE_MATTER, "mage_armor");
+    public static Item[] mageArmorCloth       = ItemMageArmor.createFullSet(RPGArmorMaterial.CLOTH,        RPGArmorComponent.MAGE_ARMOR);
+    public static Item[] mageArmorIron        = ItemMageArmor.createFullSet(RPGArmorMaterial.IRON,         RPGArmorComponent.MAGE_ARMOR);
+    public static Item[] mageArmorGold        = ItemMageArmor.createFullSet(RPGArmorMaterial.GOLD,         RPGArmorComponent.MAGE_ARMOR);
+    public static Item[] mageArmorDiamond     = ItemMageArmor.createFullSet(RPGArmorMaterial.DIAMOND,      RPGArmorComponent.MAGE_ARMOR);
+    public static Item[] mageArmorObsidian    = ItemMageArmor.createFullSet(RPGArmorMaterial.OBSIDIAN,     RPGArmorComponent.MAGE_ARMOR);
+    public static Item[] mageArmorBedrock     = ItemMageArmor.createFullSet(RPGArmorMaterial.BEDROCK,      RPGArmorComponent.MAGE_ARMOR);
+    public static Item[] mageArmorBlackMatter = ItemMageArmor.createFullSet(RPGArmorMaterial.BLACK_MATTER, RPGArmorComponent.MAGE_ARMOR);
+    public static Item[] mageArmorWhiteMatter = ItemMageArmor.createFullSet(RPGArmorMaterial.WHITE_MATTER, RPGArmorComponent.MAGE_ARMOR);
 
-    public static Item shadowBow = new RPGItemBow   (RPGItemComponent.SHADOW_BOW, 3F);
-    public static Item sniperBow = new ItemSniperBow(RPGItemComponent.SNIPER_BOW, 4F);
+    public static Item shadowBow = new RPGItemBow   (RPGItemComponent.SHADOW_BOW);
+    public static Item sniperBow = new ItemSniperBow(RPGItemComponent.SNIPER_BOW);
 
     public static Item gemWitherSkull = new GemWeaponWitherSkull("gem_wither_skull");
 
@@ -262,8 +263,8 @@ public abstract class RPGItems
         return Utils.toString(toolComponent.name, "_", toolMaterial.name);
     }
 
-    public static String getRPGName(RPGArmorMaterial armorMaterial)
+    public static String getRPGName(RPGArmorComponent armorComponent, RPGArmorMaterial armorMaterial)
     {
-        return Utils.toString("_", armorMaterial.name);
+        return Utils.toString(armorComponent.name, "_", armorMaterial.name);
     }
 }

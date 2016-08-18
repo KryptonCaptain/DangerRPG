@@ -137,7 +137,7 @@ public interface ITypeProvider<Type>
         @Override
         public String toString(Float value)
         {
-            return String.format("%.2f", value);
+            return String.format("%.1f", value);
         }
 
         @Override

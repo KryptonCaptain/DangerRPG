@@ -2,27 +2,30 @@ package mixac1.dangerrpg.item;
 
 public class RPGItemComponent
 {
-    public static final RPGItemComponent NULL      = new RPGItemComponent();
+    public static final RPGItemComponent  NULL      = new RPGItemComponent();
 
-    public static final RPGToolComponent TRAINING  = new RPGToolComponent("training");
+    public static final RPGToolComponent  TRAINING  = new RPGToolComponent("training");
 
-    public static final RPGToolComponent SWORD     = new RPGToolComponent("sword");
-    public static final RPGToolComponent NAGINATA  = new RPGToolComponent("naginata");
-    public static final RPGToolComponent KATANA    = new RPGToolComponent("katana");
-    public static final RPGToolComponent SCYTHE    = new RPGToolComponent("scythe");
-    public static final RPGToolComponent HAMMER    = new RPGToolComponent("hammer");
-    public static final RPGToolComponent TOMAHAWK  = new RPGToolComponent("tomahawk");
-    public static final RPGToolComponent KNIFE     = new RPGToolComponent("knife");
+    public static final RPGToolComponent  SWORD     = new RPGToolComponent("sword");
+    public static final RPGToolComponent  NAGINATA  = new RPGToolComponent("naginata");
+    public static final RPGToolComponent  KATANA    = new RPGToolComponent("katana");
+    public static final RPGToolComponent  SCYTHE    = new RPGToolComponent("scythe");
+    public static final RPGToolComponent  HAMMER    = new RPGToolComponent("hammer");
+    public static final RPGToolComponent  TOMAHAWK  = new RPGToolComponent("tomahawk");
+    public static final RPGToolComponent  KNIFE     = new RPGToolComponent("knife");
 
-    public static final RPGToolComponent AXE       = new RPGToolComponent("axe");
-    public static final RPGToolComponent PICKAXE   = new RPGToolComponent("pickaxe");
-    public static final RPGToolComponent SHOVEL    = new RPGToolComponent("shovel");
-    public static final RPGToolComponent HOE       = new RPGToolComponent("hoe");
-    public static final RPGToolComponent MULTITOOL = new RPGToolComponent("multitool");
+    public static final RPGToolComponent  AXE       = new RPGToolComponent("axe");
+    public static final RPGToolComponent  PICKAXE   = new RPGToolComponent("pickaxe");
+    public static final RPGToolComponent  SHOVEL    = new RPGToolComponent("shovel");
+    public static final RPGToolComponent  HOE       = new RPGToolComponent("hoe");
+    public static final RPGToolComponent  MULTITOOL = new RPGToolComponent("multitool");
 
-    public static final RPGBowComponent  BOW        = new RPGBowComponent("bow");
-    public static final RPGBowComponent  SHADOW_BOW = new RPGBowComponent("shadow_bow");
-    public static final RPGBowComponent  SNIPER_BOW = new RPGBowComponent("sniper_bow");
+    public static final RPGBowComponent   BOW        = new RPGBowComponent("bow");
+    public static final RPGBowComponent   SHADOW_BOW = new RPGBowComponent("shadow_bow");
+    public static final RPGBowComponent   SNIPER_BOW = new RPGBowComponent("sniper_bow");
+
+    public static final RPGArmorComponent ARMOR      = new RPGArmorComponent("armor");
+    public static final RPGArmorComponent MAGE_ARMOR = new RPGArmorComponent("mage_armor");
 
     static
     {
@@ -49,6 +52,11 @@ public class RPGItemComponent
         BOW.init         (1.0F,   10.0F,  0.0F,   0.16F,  1.0F,   0.25F,   0.0F,   0.10F,    0.0F,   2.0F,   20.0F,  3.0F,   -0F,    3F);
         SHADOW_BOW.init  (4.0F,   10.0F,  0.0F,   0.16F,  1.0F,   0.25F,   0.0F,   0.10F,    0.0F,   2.5F,   16.0F,  3.5F,   500F,   5F);
         SNIPER_BOW.init  (1.0F,   10.0F,  0.0F,   0.16F,  1.0F,   0.25F,   1.0F,   0.20F,    0.0F,   4.0F,   40.0F,  5.5F,   1000F,  10F);
+
+     /* ARMORS            mRes */
+
+        ARMOR.init       (1.0f, 0.5f);
+        MAGE_ARMOR.init  (0.5f, 1.0f);
     }
 
     public String name;
@@ -70,8 +78,8 @@ public class RPGItemComponent
             this.name = name;
         }
 
-        private void init(float meleeDamage, float meleeSpeed, float magic, float strMul,
-                          float agiMul, float intMul, float knBack, float knbMul, float reach)
+        protected void init(float meleeDamage, float meleeSpeed, float magic, float strMul,
+                            float agiMul, float intMul, float knBack, float knbMul, float reach)
         {
             this.meleeDamage = meleeDamage;
             this.meleeSpeed  = meleeSpeed;
@@ -96,9 +104,9 @@ public class RPGItemComponent
             super(name);
         }
 
-        private void init(float meleeDamage, float meleeSpeed, float magic, float strMul,
-                          float agiMul, float intMul, float knBack, float knbMul, float reach,
-                          float shotDamage, float shotSpeed, float shotPower)
+        protected void init(float meleeDamage, float meleeSpeed, float magic, float strMul,
+                            float agiMul, float intMul, float knBack, float knbMul, float reach,
+                            float shotDamage, float shotSpeed, float shotPower)
         {
             super.init(meleeDamage, meleeSpeed, magic, strMul, agiMul, intMul, knBack, knbMul, reach);
             this.shotDamage = shotDamage;
@@ -116,10 +124,10 @@ public class RPGItemComponent
             super(name);
         }
 
-        private void init(float meleeDamage, float meleeSpeed, float magic, float strMul,
-                          float agiMul, float intMul, float knBack, float knbMul, float reach,
-                          float shotDamage, float shotSpeed, float shotPower,
-                          float durab, float ench)
+        protected void init(float meleeDamage, float meleeSpeed, float magic, float strMul,
+                            float agiMul, float intMul, float knBack, float knbMul, float reach,
+                            float shotDamage, float shotSpeed, float shotPower,
+                            float durab, float ench)
         {
             super.init(meleeDamage, meleeSpeed, magic, strMul, agiMul, intMul,
                        knBack, knbMul, reach, shotDamage, shotSpeed, shotPower);
@@ -139,12 +147,29 @@ public class RPGItemComponent
         }
     }
 
+    public static class RPGArmorComponent extends RPGItemComponent
+    {
+        public float phisicalResMul;
+        public float magicResMul;
+
+        public RPGArmorComponent(String name)
+        {
+            this.name = name;
+        }
+
+        protected void init(float phisicalResMul, float magicResMul)
+        {
+            this.phisicalResMul = phisicalResMul;
+            this.magicResMul = magicResMul;
+        }
+    }
+
     public static class RPGICWithoutTM extends RPGItemComponent implements IWithoutToolMaterial
     {
         public float durab;
         public float ench;
 
-        private void init(float durab, float ench)
+        protected void init(float durab, float ench)
         {
             this.durab = durab;
             this.ench  = ench;

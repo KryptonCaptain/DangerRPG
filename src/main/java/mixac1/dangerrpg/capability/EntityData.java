@@ -3,8 +3,6 @@ package mixac1.dangerrpg.capability;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.EntityAttribute;
@@ -18,6 +16,7 @@ import mixac1.dangerrpg.init.RPGConfig;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgSyncEntityData;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -153,7 +152,7 @@ public class EntityData implements IExtendedEntityProperties
         return (EntityAttribute) getObject(hash, getEntityAttributes());
     }
 
-    public Set<EntityAttribute> getEntityAttributes()
+    public ArrayList<EntityAttribute> getEntityAttributes()
     {
         return RPGCapability.getEntityAttributesSet(entity).attributes;
     }
@@ -210,19 +209,19 @@ public class EntityData implements IExtendedEntityProperties
         MinecraftForge.EVENT_BUS.post(new RegEAEvent.DefaultEAEvent(entityClass, set));
     }
 
-    private static void registerEntityLiving(Class<? extends EntityLivingBase> entityClass, EntityAttributesSet set)
+    private static void registerEntityLiving(Class<? extends EntityLiving> entityClass, EntityAttributesSet set)
     {
         set.addEntityAttribute(EntityAttributes.HEALTH);
         MinecraftForge.EVENT_BUS.post(new RegEAEvent.EntytyLivingEAEvent(entityClass, set));
     }
 
-    private static void registerEntityMob(Class<? extends EntityLivingBase> entityClass, EntityAttributesSet set)
+    private static void registerEntityMob(Class<? extends EntityMob> entityClass, EntityAttributesSet set)
     {
         set.addEntityAttribute(EntityAttributes.DAMAGE);
         MinecraftForge.EVENT_BUS.post(new RegEAEvent.EntytyMobEAEvent(entityClass, set));
     }
 
-    private static void registerEntityPlayer(Class<? extends EntityLivingBase> entityClass, EntityAttributesSet set)
+    private static void registerEntityPlayer(Class<? extends EntityPlayer> entityClass, EntityAttributesSet set)
     {
         set.addLvlableEntityAttribute(PlayerAttributes.HEALTH);
         set.addLvlableEntityAttribute(PlayerAttributes.MANA);
@@ -231,6 +230,7 @@ public class EntityData implements IExtendedEntityProperties
         set.addLvlableEntityAttribute(PlayerAttributes.INTELLIGENCE);
         set.addLvlableEntityAttribute(PlayerAttributes.EFFICIENCY);
         set.addLvlableEntityAttribute(PlayerAttributes.MANA_REGEN);
+        set.addLvlableEntityAttribute(PlayerAttributes.HEALTH_REGEN);
 
         set.addLvlableEntityAttribute(PlayerAttributes.MOVE_SPEED);
         set.addLvlableEntityAttribute(PlayerAttributes.SNEAK_SPEED);
@@ -251,7 +251,7 @@ public class EntityData implements IExtendedEntityProperties
 
     public static class EntityAttributesSet
     {
-        public HashSet<EntityAttribute> attributes = new HashSet<EntityAttribute>();
+        public ArrayList<EntityAttribute> attributes = new ArrayList<EntityAttribute>();
         public ArrayList<LvlEAProvider> lvlProviders = new ArrayList<LvlEAProvider>();
 
         public void addLvlableEntityAttribute(EntityAttribute attr)

@@ -5,7 +5,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.event.ItemStackEvent.AddInformationEvent;
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
 import mixac1.dangerrpg.capability.LvlableItem;
@@ -56,30 +55,6 @@ public class LvlableItemEventHandlers
             e.list.add(Utils.toString(EnumChatFormatting.GRAY,
                        ItemAttributes.CURR_EXP.getDispayName(), ": ",
                        (int) ItemAttributes.CURR_EXP.get(e.stack), "/", (int) ItemAttributes.MAX_EXP.get(e.stack)));
-        }
-    }
-
-    @SubscribeEvent
-    public void onPlayerTick(TickEvent.PlayerTickEvent e)
-    {
-        if (e.phase == TickEvent.Phase.START) {
-            float tmp1, tmp2;
-            if (!e.player.worldObj.isRemote) {
-                DangerRPG.proxy.fireTick();
-
-                if (e.player != null && (tmp1 = PlayerAttributes.SPEED_COUNTER.getValue(e.player)) > 0) {
-                    PlayerAttributes.SPEED_COUNTER.setValue(tmp1 - 1, e.player);
-                }
-
-                if (DangerRPG.proxy.getTick() == 0 &&
-                    (tmp1 = PlayerAttributes.CURR_MANA.getValue(e.player)) < PlayerAttributes.MANA.getValue(e.player) &&
-                    (tmp2 = PlayerAttributes.MANA_REGEN.getValue(e.player)) != 0) {
-                    PlayerAttributes.CURR_MANA.setValue(tmp1 + tmp2, e.player);
-                }
-            }
-            else {
-
-            }
         }
     }
 

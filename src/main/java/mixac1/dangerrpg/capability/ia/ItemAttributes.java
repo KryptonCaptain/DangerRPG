@@ -98,7 +98,7 @@ public class ItemAttributes
         }
     };
 
-    public static final IADynamic MAGIC_ARMOR = new IADynamic("magic_armor")
+    public static final IAStatic MAGIC_ARMOR = new IAStatic("magic_armor")
     {
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)

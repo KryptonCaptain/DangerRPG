@@ -61,11 +61,12 @@ public abstract class RPGCommonHelper
     }
 
     /**
+     * 100 armor == 100% resistance
      * @return % of magic resistance from one armor item
      */
     public static float calcMagicResistance(float magicArmor)
     {
-        return (-2000F / (magicArmor + 20) + 100) / 4F;
+        return magicArmor;
     }
 
     /**
@@ -73,7 +74,20 @@ public abstract class RPGCommonHelper
      */
     public static float calcTotalPhisicResistance(EntityLivingBase entity)
     {
-        float value = calcPhisicResistance(entity.getTotalArmorValue());
+        float value = 0;
+        ItemStack[] stacks = entity instanceof EntityPlayer ?
+                             ((EntityPlayer) entity).inventory.armorInventory :
+                             entity.getLastActiveItems();
+        for (ItemStack stack : stacks) {
+            if (stack != null && stack.getItem() instanceof ItemArmor) {
+                if (ItemAttributes.PHISIC_ARMOR.hasIt(stack)) {
+                    value += calcPhisicResistance(ItemAttributes.PHISIC_ARMOR.get(stack));
+                }
+                else {
+                    value += calcPhisicResistance(((ItemArmor) stack.getItem()).damageReduceAmount);
+                }
+            }
+        }
 
         if (entity instanceof EntityPlayer) {
             value += PlayerAttributes.STONESKIN.getValue(entity);
@@ -92,8 +106,7 @@ public abstract class RPGCommonHelper
                              ((EntityPlayer) entity).inventory.armorInventory :
                              entity.getLastActiveItems();
         for (ItemStack stack : stacks) {
-            if (stack != null && stack.getItem() instanceof ItemArmor && ItemAttributes.MAGIC_ARMOR.hasIt(stack))
-            {
+            if (stack != null && stack.getItem() instanceof ItemArmor && ItemAttributes.MAGIC_ARMOR.hasIt(stack)) {
                 value += calcMagicResistance(ItemAttributes.MAGIC_ARMOR.get(stack));
             }
         }

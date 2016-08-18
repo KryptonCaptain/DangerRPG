@@ -8,6 +8,7 @@ import mixac1.dangerrpg.entity.projectile.EntityArrowRPG;
 import mixac1.dangerrpg.entity.projectile.EntityMaterial;
 import mixac1.dangerrpg.item.RPGArmorMaterial;
 import mixac1.dangerrpg.item.RPGItemComponent;
+import mixac1.dangerrpg.item.RPGItemComponent.RPGArmorComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGBowComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGGunComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGICWithoutTM;
@@ -49,6 +50,9 @@ public interface ILvlableItem
 
     public interface ILvlableItemArmor extends ILvlableItem
     {
+        @Override
+        public RPGArmorComponent getItemComponent(Item item);
+
         public RPGArmorMaterial getArmorMaterial(Item item);
     }
 
@@ -168,9 +172,9 @@ public interface ILvlableItem
         }
 
         @Override
-        public RPGItemComponent getItemComponent(Item item)
+        public RPGArmorComponent getItemComponent(Item item)
         {
-            return null;
+            return RPGArmorComponent.ARMOR;
         }
 
         @Override

@@ -15,6 +15,19 @@ public class RPGToolMaterial
     public static final RPGToolMaterial BLACK_MATTER    = new RPGToolMaterial("black_matter",   EnumHelper.addToolMaterial("BLACK_MATTER", 3, 8000,  18.0F, 21.0F, 19));
     public static final RPGToolMaterial WHITE_MATTER    = new RPGToolMaterial("white_matter",   EnumHelper.addToolMaterial("WHITE_MATTER", 3, 10000, 24.0F, 36.0F, 22));
 
+    static
+    {
+        WOOD.init();
+        STONE.init();
+        IRON.init();
+        GOLD.init();
+        DIAMOND.init();
+        OBSIDIAN.init();
+        BEDROCK.init();
+        BLACK_MATTER.init();
+        WHITE_MATTER.init();
+    }
+
     public ToolMaterial material;
     public String name;
 
@@ -22,6 +35,11 @@ public class RPGToolMaterial
     {
         this.name = name;
         this.material = material;
+    }
+
+    protected void init()
+    {
+
     }
 
     public static RPGToolMaterial getDefaultRPGToolMaterial(ToolMaterial material)

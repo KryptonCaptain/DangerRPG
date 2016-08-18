@@ -104,9 +104,9 @@ item.armor_white_matter_chestplate.name=White Matter Chestplate
 item.armor_white_matter_leggings.name=White Matter Leggings
 item.armor_white_matter_boots.name=White Matter Boots
 
-item.mage_armor_cloth_helmet_name=Cloth Mage Hood
-item.mage_armor_cloth_chestplate_name=Cloth Mage Robe
-item.mage_armor_cloth_leggings_name=Cloth Mage Paints
+item.mage_armor_cloth_helmet.name=Cloth Mage Hood
+item.mage_armor_cloth_chestplate.name=Cloth Mage Robe
+item.mage_armor_cloth_leggings.name=Cloth Mage Paints
 item.mage_armor_cloth_boots.name=Cloth Mage Boots
 
 item.mage_armor_iron_helmet.name=Iron Mage Hood
@@ -192,6 +192,8 @@ ea.agi=Agility
 ea.agi.info=Increases attack speed
 ea.int=Intelligence
 ea.int.info=Increases magic damage
+ea.health_regen=Health regeneration
+ea.health_regen.info=Increases health regeneration
 ea.mana_regen=Mana regeneration
 ea.mana_regen.info=Increases mana regeneration
 ea.effic=Mining speed

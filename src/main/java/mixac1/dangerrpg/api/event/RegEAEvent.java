@@ -37,7 +37,7 @@ public class RegEAEvent extends Event
      */
     public static class EntytyLivingEAEvent extends RegEAEvent
     {
-        public EntytyLivingEAEvent(Class<? extends EntityLivingBase> entityClass, EntityAttributesSet set)
+        public EntytyLivingEAEvent(Class<? extends EntityLiving> entityClass, EntityAttributesSet set)
         {
             super(entityClass, set);
         }
@@ -49,7 +49,7 @@ public class RegEAEvent extends Event
      */
     public static class EntytyMobEAEvent extends RegEAEvent
     {
-        public EntytyMobEAEvent(Class<? extends EntityLivingBase> entityClass, EntityAttributesSet set)
+        public EntytyMobEAEvent(Class<? extends EntityMob> entityClass, EntityAttributesSet set)
         {
             super(entityClass, set);
         }
@@ -61,7 +61,7 @@ public class RegEAEvent extends Event
      */
     public static class PlayerEAEvent extends RegEAEvent
     {
-        public PlayerEAEvent(Class<? extends EntityLivingBase> entityClass, EntityAttributesSet set)
+        public PlayerEAEvent(Class<? extends EntityPlayer> entityClass, EntityAttributesSet set)
         {
             super(entityClass, set);
         }

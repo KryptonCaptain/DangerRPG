@@ -19,6 +19,7 @@ import mixac1.dangerrpg.init.RPGConfig;
 import mixac1.dangerrpg.item.RPGArmorMaterial;
 import mixac1.dangerrpg.item.RPGItemComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.IWithoutToolMaterial;
+import mixac1.dangerrpg.item.RPGItemComponent.RPGArmorComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGBowComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
 import mixac1.dangerrpg.item.RPGToolMaterial;
@@ -153,9 +154,10 @@ public abstract class LvlableItem
         registerParamsItemMod(item, map);
         ILvlableItemArmor iLvl = (ILvlableItemArmor) (item instanceof ILvlableItemArmor ? item : ILvlableItem.DEFAULT_ARMOR);
         RPGArmorMaterial mat = iLvl.getArmorMaterial(item);
+        RPGArmorComponent com = iLvl.getItemComponent(item);
 
-        map.addStaticItemAttribute( ItemAttributes.PHISIC_ARMOR, mat.material.getDamageReductionAmount(((ItemArmor) item).armorType));
-        map.addDynamicItemAttribute(ItemAttributes.MAGIC_ARMOR,  0f, IMultiplier.ADD_1);
+        map.addStaticItemAttribute(ItemAttributes.PHISIC_ARMOR, mat.material.getDamageReductionAmount(((ItemArmor) item).armorType) * com.phisicalResMul);
+        map.addStaticItemAttribute(ItemAttributes.MAGIC_ARMOR,  mat.magicRes * com.magicResMul);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemArmorIAEvent(item, map));
     }

@@ -11,7 +11,7 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 
 public class EADamage extends EAFloat
 {
-    private final UUID ID = UUID.randomUUID();
+    private final UUID ID = UUID.fromString("04a931c2-b0bf-44de-bbed-1a8f0d56c584");
 
     public EADamage(String name, LvlEAProvider<Float> lvlProvider)
     {

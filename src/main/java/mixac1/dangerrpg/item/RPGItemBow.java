@@ -17,15 +17,13 @@ import net.minecraft.world.World;
 public class RPGItemBow extends ItemBow implements ILvlableItemBow, IHasBooksInfo
 {
     public RPGBowComponent bowComponent;
-    public float maxPower;
 
-    public RPGItemBow(RPGBowComponent bowComponent, float maxPower)
+    public RPGItemBow(RPGBowComponent bowComponent)
     {
         setUnlocalizedName(bowComponent.name);
         setTextureName(Utils.toString(DangerRPG.MODID, ":weapons/range/", unlocalizedName));
         setCreativeTab(RPGOther.tabDangerRPG);
         this.bowComponent = bowComponent;
-        this.maxPower = maxPower;
     }
 
     @Override

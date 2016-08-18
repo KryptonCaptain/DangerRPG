@@ -1,6 +1,8 @@
 package mixac1.dangerrpg.event;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.event.InitRPGEntityEvent;
 import mixac1.dangerrpg.capability.EntityData;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
@@ -85,6 +87,32 @@ public class EntityEventHandlers
     {
         if (e.entityLiving instanceof EntityPlayer) {
             e.distance -= PlayerAttributes.STEEL_MUSC.getValue(e.entityLiving);
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerTick(TickEvent.PlayerTickEvent e)
+    {
+        if (e.phase == TickEvent.Phase.START) {
+            float tmp1, tmp2;
+            if (!e.player.worldObj.isRemote) {
+                DangerRPG.proxy.fireTick();
+
+                if (e.player != null && (tmp1 = PlayerAttributes.SPEED_COUNTER.getValue(e.player)) > 0) {
+                    PlayerAttributes.SPEED_COUNTER.setValue(tmp1 - 1, e.player);
+                }
+
+                if (DangerRPG.proxy.getTick() == 0) {
+                    if ((tmp1 = PlayerAttributes.CURR_MANA.getValue(e.player)) < PlayerAttributes.MANA.getValue(e.player) &&
+                        (tmp2 = PlayerAttributes.MANA_REGEN.getValue(e.player)) != 0) {
+                        PlayerAttributes.CURR_MANA.setValue(tmp1 + tmp2, e.player);
+                    }
+                    e.player.heal(PlayerAttributes.HEALTH_REGEN.getValue(e.player));
+                }
+            }
+            else {
+
+            }
         }
     }
 }
