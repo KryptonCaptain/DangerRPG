@@ -8,23 +8,19 @@ import cpw.mods.fml.client.GuiScrollingList;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
 
 @SideOnly(Side.CLIENT)
 public abstract class GuiInfoBookContent extends GuiScrollingList
 {
     protected Minecraft mc;
-    protected EntityPlayer player;
     protected ArrayList list;
     protected GuiInfoBook parent;
 
-    public GuiInfoBookContent(Minecraft mc, int width, int height, int top, int size, int left, int entryHeight, GuiScreen parent, EntityPlayer player)
+    public GuiInfoBookContent(Minecraft mc, int width, int height, int top, int size, int left, int entryHeight, GuiInfoBook parent)
     {
         super(mc, width, height, top, top + size, left, entryHeight);
         this.mc = mc;
-        this.parent = (GuiInfoBook) parent;
-        this.player = player;
+        this.parent = parent;
         init();
     }
 

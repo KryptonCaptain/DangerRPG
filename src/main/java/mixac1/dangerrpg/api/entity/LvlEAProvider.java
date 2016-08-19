@@ -47,65 +47,63 @@ public class LvlEAProvider<Type>
         return startExpCost + mulExpCost.up(getLvl(entity));
     }
 
-    public boolean canUp(EntityLivingBase entity)
+    public boolean isMaxLvl(EntityLivingBase entity)
     {
-        if (entity instanceof EntityPlayer) {
-            return ((EntityPlayer) entity).capabilities.isCreativeMode ||
-                   ((EntityPlayer) entity).experienceLevel >= getExpUp(entity);
-        }
-        return true;
+        return getLvl(entity) >= maxLvl;
     }
 
-    public boolean tryUp(EntityLivingBase entity)
+    public boolean canUp(EntityLivingBase target, EntityPlayer upper)
     {
-        if (entity instanceof EntityPlayer) {
-            if (getLvl(entity) < maxLvl) {
-                EntityPlayer player = (EntityPlayer) entity;
-                if (player.capabilities.isCreativeMode) {
-                    return up(player, true);
-                }
-                else {
-                    int exp = getExpUp(player);
-                    if (exp <= player.experienceLevel) {
-                        if (EntityData.isServerSide(entity)) {
-                            player.addExperienceLevel(-exp);
-                        }
-                        return up(player, true);
+        return (upper.capabilities.isCreativeMode || upper.experienceLevel >= getExpUp(target))
+               && !isMaxLvl(target);
+    }
+
+    public boolean tryUp(EntityLivingBase target, EntityPlayer upper)
+    {
+        if (!isMaxLvl(target)) {
+            if (upper.capabilities.isCreativeMode) {
+                return up(target, upper, true);
+            }
+            else {
+                int exp = getExpUp(target);
+                if (exp <= upper.experienceLevel) {
+                    if (EntityData.isServerSide(target)) {
+                        upper.addExperienceLevel(-exp);
                     }
+                    return up(target, upper, true);
                 }
             }
-            return false;
         }
-        return up(entity, true);
+        return false;
     }
 
     /**
      * @param flag - if true, then lvl up, else down
      */
     @Deprecated
-    public boolean up(EntityLivingBase entity, boolean flag)
+    public boolean up(EntityLivingBase target, EntityPlayer upper, boolean flag)
     {
-        if (EntityData.isServerSide(entity)) {
-            int lvl= getLvl(entity);
+        if (EntityData.isServerSide(target)) {
+            int lvl= getLvl(target);
             if (flag) {
                 if (lvl < maxLvl) {
-                    setLvl(lvl + 1, entity);
-                    EntityAttributes.LVL.addValue(1, entity);
-                    attr.setValue(mulValue.up(attr.getValue(entity)), entity);
+                    setLvl(lvl + 1, target);
+                    EntityAttributes.LVL.addValue(1, target);
+                    attr.setValue(mulValue.up(attr.getValue(target)), target);
                     return true;
                 }
             }
             else if (lvl > 1) {
-                setLvl(lvl - 1, entity);
-                EntityAttributes.LVL.addValue(-1, entity);
-                attr.setValue(mulValue.down(attr.getValue(entity)), entity);
+                setLvl(lvl - 1, target);
+                EntityAttributes.LVL.addValue(-1, target);
+                attr.setValue(mulValue.down(attr.getValue(target)), target);
                 return true;
             }
             return false;
         }
         else {
             if (flag) {
-                RPGNetwork.net.sendToServer(new MsgReqUpEA(attr.hash, entity.getEntityId()));
+                RPGNetwork.net.sendToServer(new MsgReqUpEA(attr.hash, target.getEntityId(), upper.getEntityId()));
             }
             return flag;
         }

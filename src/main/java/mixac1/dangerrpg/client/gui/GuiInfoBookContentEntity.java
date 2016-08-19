@@ -12,13 +12,11 @@ import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
-public class GuiInfoBookContentPlayer extends GuiInfoBookContent
+public class GuiInfoBookContentEntity extends GuiInfoBookContent
 {
     public static final ResourceLocation TEXTURE = new ResourceLocation("DangerRPG:textures/gui/info_book_player_content.png");
     private LevelUpButton button;
@@ -48,9 +46,9 @@ public class GuiInfoBookContentPlayer extends GuiInfoBookContent
 
     private int currIndex = -1;
 
-    public GuiInfoBookContentPlayer(Minecraft mc, int width, int height, int top, int size, int left, GuiScreen parent, EntityPlayer player)
+    public GuiInfoBookContentEntity(Minecraft mc, int width, int height, int top, int size, int left, GuiInfoBook parent)
     {
-        super(mc, width, height, top, size - imageHeight - offset, left, sizeContent, parent, player);
+        super(mc, width, height, top, size - imageHeight - offset, left, sizeContent, parent);
     }
 
     @Override
@@ -71,44 +69,59 @@ public class GuiInfoBookContentPlayer extends GuiInfoBookContent
             int offsetX = left;
             int offsetY = bottom + offset;
             int indent = infoIndent + mc.fontRenderer.FONT_HEIGHT;
+            LvlEAProvider lvlProv = parent.attributes.get(currIndex);
 
             mc.getTextureManager().bindTexture(TEXTURE);
             parent.drawTexturedModalRect(offsetX, offsetY, 0, 0, imageWidth, imageHeight);
 
-            s = mc.fontRenderer.trimStringToWidth(parent.attributes.get(currIndex).attr.getDisplayName().toUpperCase(), titleSizeX);
+            s = mc.fontRenderer.trimStringToWidth(lvlProv.attr.getDisplayName().toUpperCase(), titleSizeX);
             mc.fontRenderer.drawStringWithShadow(s, offsetX + (titleSizeX - mc.fontRenderer.getStringWidth(s) + 4) / 2, offsetY + (titleSizeY - mc.fontRenderer.FONT_HEIGHT + 4) / 2, 0xffffff);
 
-            s = Utils.toString(DangerRPG.trans("ia.lvl"), ": ", parent.attributes.get(currIndex).getLvl(player));
+            int k = 0;
+            s = Utils.toString(DangerRPG.trans("ia.lvl"), ": ", lvlProv.getLvl(parent.target));
             mc.fontRenderer.drawStringWithShadow(s, offsetX + infoOffsetX, offsetY + infoOffsetY, 0xffffff);
+            k += indent;
 
-            s1 = parent.attributes.get(currIndex).attr.getDisplayValue(player);
+            s1 = lvlProv.attr.getDisplayValue(parent.target);
             if (s1 != null) {
                 s = Utils.toString(DangerRPG.trans("rpgstr.value"), ": ", s1);
-                mc.fontRenderer.drawStringWithShadow(s, offsetX + infoOffsetX, offsetY + infoOffsetY + indent, 0xffffff);
+                mc.fontRenderer.drawStringWithShadow(s, offsetX + infoOffsetX, offsetY + infoOffsetY + k, 0xffffff);
+                k += indent;
             }
 
-            s = parent.attributes.get(currIndex).attr.getInfo();
+            s = lvlProv.attr.getInfo();
             List list = mc.fontRenderer.listFormattedStringToWidth(s, infoWidth);
             for (int i = 0; i < list.size(); ++i) {
-                mc.fontRenderer.drawStringWithShadow(list.get(i).toString(), offsetX + infoOffsetX, offsetY + infoOffsetY + indent * (2 + i), 0xffffff);
+                mc.fontRenderer.drawStringWithShadow(list.get(i).toString(), offsetX + infoOffsetX, offsetY + infoOffsetY + k, 0xffffff);
+                k += indent;
             }
 
-            int value = parent.attributes.get(currIndex).getExpUp(player);
-            s = String.format("%d/%d", player.experienceLevel, value);
-            int tmp = offsetX + (infoWidth - mc.fontRenderer.getStringWidth(s)) / 2;
-            s = String.valueOf(player.experienceLevel);
-            mc.fontRenderer.drawStringWithShadow(s, tmp, offsetY + 73, parent.attributes.get(currIndex).canUp(player) ? 0x00bf00 : 0xbf0000);
-            mc.fontRenderer.drawStringWithShadow("/".concat(String.valueOf(value)), tmp + mc.fontRenderer.getStringWidth(s), offsetY + 73, 0xffffff);
+
+            if (!lvlProv.isMaxLvl(parent.target)) {
+                int value = lvlProv.getExpUp(parent.target);
+                s = String.format("%d/%d", parent.player.experienceLevel, value);
+                int tmp = offsetX + (infoWidth - mc.fontRenderer.getStringWidth(s)) / 2;
+                mc.fontRenderer.drawStringWithShadow(s, offsetX + (infoWidth - mc.fontRenderer.getStringWidth(s)) / 2, offsetY + 73, lvlProv.canUp(parent.target, parent.player) ? 0x00bf00 : 0xbf0000);
+            }
+            else {
+                s = mc.fontRenderer.trimStringToWidth(DangerRPG.trans("rpgstr.max"), infoWidth);
+                mc.fontRenderer.drawStringWithShadow(s, offsetX + (infoWidth - mc.fontRenderer.getStringWidth(s)) / 2, offsetY + 73, 0xefef00);
+            }
         }
 
-        s = DangerRPG.trans("rpgstr.player_stats");
+        s = DangerRPG.trans("rpgstr.stats");
         mc.fontRenderer.drawStringWithShadow(s, left + (listWidth - mc.fontRenderer.getStringWidth(s)) / 2, top - mc.fontRenderer.FONT_HEIGHT - 4, 0xffffff);
     }
 
     @Override
     protected void elementClicked(int index, boolean doubleClick)
     {
-        currIndex = index;
+        if (currIndex == index) {
+            currIndex = -1;
+        }
+        else {
+            currIndex = index;
+        }
     }
 
     @Override
@@ -138,18 +151,19 @@ public class GuiInfoBookContentPlayer extends GuiInfoBookContent
         public void draw(int x, int y, int color1, int color2)
         {
             String s = mc.fontRenderer.trimStringToWidth(attr.attr.getDisplayName(), listWidth - 20);
-            mc.fontRenderer.drawStringWithShadow(s, x + (listWidth - mc.fontRenderer.getStringWidth(s)) / 2, y + (sizeContent - mc.fontRenderer.FONT_HEIGHT) / 2, attr.canUp(player) ? color2 : color1);
+            mc.fontRenderer.drawStringWithShadow(s, x + (listWidth - mc.fontRenderer.getStringWidth(s)) / 2, y + (sizeContent - mc.fontRenderer.FONT_HEIGHT) / 2, 0xffffff);
 
-            s = String.valueOf(attr.getLvl(player));
-            mc.fontRenderer.drawStringWithShadow(s, x + 5, y + (sizeContent - mc.fontRenderer.FONT_HEIGHT) / 2, color1);
+            s = String.valueOf(attr.getLvl(parent.target));
+            int color = attr.isMaxLvl(parent.target) ? 0xefef00 : attr.canUp(parent.target, parent.player) ? 0x00bf00 : 0xffffff;
+            mc.fontRenderer.drawStringWithShadow(s, x + 5, y + (sizeContent - mc.fontRenderer.FONT_HEIGHT) / 2, color);
         }
     }
 
     public static class LevelUpButton extends GuiButton
     {
-        private GuiInfoBookContentPlayer parent;
+        private GuiInfoBookContentEntity parent;
 
-        public LevelUpButton(int id, int x, int y, GuiInfoBookContentPlayer parent)
+        public LevelUpButton(int id, int x, int y, GuiInfoBookContentEntity parent)
         {
             super(id, x, y, butSizeX, butSizeY, DangerRPG.trans("rpgstr.info_book.lvlup_but"));
             this.parent = parent;
@@ -164,19 +178,19 @@ public class GuiInfoBookContentPlayer extends GuiInfoBookContent
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 mc.getTextureManager().bindTexture(TEXTURE);
 
-                enabled = parent.parent.attributes.get(parent.currIndex).canUp(parent.player);
+                enabled = parent.parent.attributes.get(parent.currIndex).canUp(parent.parent.target, parent.parent.player);
                 int color = 0x919191;
 
                 if (enabled) {
                     if (flag) {
                         if (!Mouse.isButtonDown(0)) {
                             this.drawTexturedModalRect(xPosition, yPosition, butOffsetU, butOffsetV + butSizeY, width, height);
-                            color = 0x00bf00;
+                            color = 0xefef00;
                         }
                     }
                     else {
                         this.drawTexturedModalRect(xPosition, yPosition, butOffsetU, butOffsetV, width, height);
-                        color = 0x00bf00;
+                        color = 0xefef00;
                     }
                 }
 
@@ -187,7 +201,7 @@ public class GuiInfoBookContentPlayer extends GuiInfoBookContent
         @Override
         public boolean mousePressed(Minecraft mc, int x, int y)
         {
-            if (super.mousePressed(mc, x, y) && parent.parent.attributes.get(parent.currIndex).tryUp(parent.player)) {
+            if (super.mousePressed(mc, x, y) && parent.parent.attributes.get(parent.currIndex).tryUp(parent.parent.target, parent.parent.player)) {
                 return true;
             }
             return false;

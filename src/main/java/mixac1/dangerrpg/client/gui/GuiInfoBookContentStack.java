@@ -15,7 +15,6 @@ import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.gem.Gem;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -24,11 +23,15 @@ import net.minecraft.item.ItemStack;
 public class GuiInfoBookContentStack extends GuiInfoBookContent
 {
     private ItemStack stack;
+    private EntityPlayer player;
 
-    public GuiInfoBookContentStack(Minecraft mc, int width, int height, int top, int size, int left, GuiScreen parent, EntityPlayer player, ItemStack stack)
+    public GuiInfoBookContentStack(Minecraft mc, int width, int height, int top, int size, int left, GuiInfoBook parent, ItemStack stack)
     {
-        super(mc, width, height, top, size, left, mc.fontRenderer.FONT_HEIGHT + 2, parent, player);
+        super(mc, width, height, top, size, left, mc.fontRenderer.FONT_HEIGHT + 2, parent);
         this.stack = stack;
+        if (parent.target instanceof EntityPlayer) {
+            player = (EntityPlayer) parent.target;
+        }
     }
 
     @Override
@@ -38,6 +41,10 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
 
         if (stack == null) {
             addCenteredString(DangerRPG.trans("rpgstr.no_item"));
+            return;
+        }
+
+        if (player == null) {
             return;
         }
 

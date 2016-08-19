@@ -11,15 +11,19 @@ import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import mixac1.dangerrpg.capability.EntityData;
 import mixac1.dangerrpg.capability.LvlableItem;
-import mixac1.dangerrpg.client.gui.GuiInfoBookContentPlayer.LevelUpButton;
+import mixac1.dangerrpg.client.gui.GuiInfoBookContentEntity.LevelUpButton;
 import mixac1.dangerrpg.init.RPGKeyBinds;
 import mixac1.dangerrpg.item.IHasBooksInfo;
+import mixac1.dangerrpg.util.RPGCommonHelper;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
@@ -27,7 +31,9 @@ public class GuiInfoBook extends GuiScreen
 {
     public static final ResourceLocation TEXTURE = new ResourceLocation("DangerRPG:textures/gui/info_book.png");
 
-    private EntityPlayer player;
+    public EntityPlayer player;
+    public EntityLivingBase target;
+    public boolean isTargetPlayer;
     public ArrayList<LvlEAProvider> attributes;
     private ItemStack[] stacks;
     public int currContent;
@@ -61,7 +67,18 @@ public class GuiInfoBook extends GuiScreen
     public GuiInfoBook(EntityPlayer player)
     {
         this.player = player;
-        attributes = EntityData.get(player).getLvlProviders();
+
+        MovingObjectPosition mop = RPGCommonHelper.getMouseOver(0, 10);
+        if (mop != null && mop.entityHit != null && mop.entityHit instanceof EntityLivingBase) {
+            target = (EntityLivingBase) mop.entityHit;
+            isTargetPlayer = target instanceof EntityPlayer;
+        }
+        else {
+            target = player;
+            isTargetPlayer = true;
+        }
+
+        attributes = EntityData.get(target).getLvlProviders();
     }
 
     @Override
@@ -70,13 +87,21 @@ public class GuiInfoBook extends GuiScreen
         super.setWorldAndResolution(mc, width, height);
         currContent = 0;
 
-        stacks = new ItemStack[] {
-            player.getCurrentEquippedItem(),
-            player.getCurrentArmor(3),
-            player.getCurrentArmor(2),
-            player.getCurrentArmor(1),
-            player.getCurrentArmor(0)
-        };
+        EntityPlayer tmp = null;
+        if (isTargetPlayer) {
+            tmp = (EntityPlayer) target;
+            stacks = new ItemStack[] {
+                tmp.getCurrentEquippedItem(),
+                tmp.getCurrentArmor(3),
+                tmp.getCurrentArmor(2),
+                tmp.getCurrentArmor(1),
+                tmp.getCurrentArmor(0)
+            };
+        }
+        else {
+            stacks = new ItemStack[5];
+        }
+
 
         if (stacks[0] != null && !(LvlableItem.isLvlable(stacks[0]) || stacks[0].getItem() instanceof IHasBooksInfo)) {
             stacks[0] = null;
@@ -85,11 +110,11 @@ public class GuiInfoBook extends GuiScreen
         offsetX = (width  - bookImageWidth)  / 2;
         offsetY = (height - bookImageHeight) / 2;
 
-        content[0] = new GuiInfoBookContentPlayer(mc, bookImageWidth - contentOffsetX * 2, 0, offsetY + contentOffsetY, contentSize, offsetX + contentOffsetX, this, player);
+        content[0] = new GuiInfoBookContentEntity(mc, bookImageWidth - contentOffsetX * 2, 0, offsetY + contentOffsetY, contentSize, offsetX + contentOffsetX, this);
         for (int i = 1; i < content.length; ++i) {
-            content[i] = new GuiInfoBookContentStack(mc, bookImageWidth - contentOffsetX * 2, 0, offsetY + contentOffsetY, contentSize, offsetX + contentOffsetX, this, player, stacks[i - 1]);
+            content[i] = new GuiInfoBookContentStack(mc, bookImageWidth - contentOffsetX * 2, 0, offsetY + contentOffsetY, contentSize, offsetX + contentOffsetX, this, stacks[i - 1]);
         }
-        buttonList.add(button = new LevelUpButton(100, offsetX + contentOffsetX + GuiInfoBookContentPlayer.butOffsetX, offsetY + contentOffsetY + contentSize + GuiInfoBookContentPlayer.butOffsetY - GuiInfoBookContentPlayer.imageHeight, (GuiInfoBookContentPlayer) content[0]));
+        buttonList.add(button = new LevelUpButton(100, offsetX + contentOffsetX + GuiInfoBookContentEntity.butOffsetX, offsetY + contentOffsetY + contentSize + GuiInfoBookContentEntity.butOffsetY - GuiInfoBookContentEntity.imageHeight, (GuiInfoBookContentEntity) content[0]));
     }
 
     @Override
@@ -132,7 +157,7 @@ public class GuiInfoBook extends GuiScreen
         mc.getTextureManager().bindTexture(TEXTURE);
         drawTexturedModalRect(offsetX, offsetY, 0, 0, bookImageWidth, bookImageHeight);
 
-        String title = Utils.toString(DangerRPG.trans("rpgstr.info_about"), " ", player.getDisplayName());
+        String title = Utils.toString(DangerRPG.trans("rpgstr.info_about"), " ", target.getCommandSenderName());
         fontRendererObj.drawStringWithShadow(title, offsetX + (bookImageWidth - fontRendererObj.getStringWidth(title)) / 2, offsetY + (titleHeight - fontRendererObj.FONT_HEIGHT) / 2 + 2, 0xffffff);
 
         content[currContent].drawScreen(mouseX, mouseY, par3);
@@ -151,7 +176,9 @@ public class GuiInfoBook extends GuiScreen
         public void drawButton(Minecraft mc, int par1, int par2)
         {
             if (this.visible) {
+                enabled = id == 0 || id != 0 && stacks[id - 1] != null;
                 boolean flag = par1 >= xPosition && par2 >= yPosition && par1 < xPosition + width && par2 < yPosition + height;
+
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 mc.getTextureManager().bindTexture(TEXTURE);
 
@@ -163,11 +190,13 @@ public class GuiInfoBook extends GuiScreen
                 }
 
                 if (id != 0 && stacks[id - 1] != null) {
-                    mc.getTextureManager().bindTexture(mc.getTextureManager().getResourceLocation(1));
-                    drawTexturedModelRectFromIcon(xPosition + 2, yPosition + 2, stacks[id - 1].getItem().getIconFromDamage(0), 16, 16);
+                    RenderHelper.enableGUIStandardItemLighting();
+                    GuiScreen.itemRender.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.getTextureManager(), stacks[id - 1], xPosition + 2, yPosition + 2);
+                    GuiScreen.itemRender.renderItemOverlayIntoGUI(mc.fontRenderer, mc.getTextureManager(), stacks[id - 1], xPosition + 2, yPosition + 2);
+                    GL11.glEnable(GL11.GL_BLEND);
                 }
                 else {
-                    drawTexturedModalRect(xPosition + 2, yPosition + 2, emptyIconOffsetU, emptyIconOffsetV + id * 16, 16, 16);
+                    drawTexturedModalRect(xPosition + 2, yPosition + 2, emptyIconOffsetU + (isTargetPlayer ? 0 : 16), emptyIconOffsetV + id * 16, 16, 16);
                 }
             }
         }

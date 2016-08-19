@@ -231,7 +231,7 @@ rpgstr.lvlup_table.2button=Put all exp
 rpgstr.info_book.lvlup_but=Up
 
 rpgstr.info_about=Info about
-rpgstr.player_stats=Player Stats
+rpgstr.stats=Stats
 rpgstr.item_info=Item Info
 rpgstr.item_description=Item Description
 rpgstr.parametres=Parametres
@@ -240,6 +240,7 @@ rpgstr.gems=Gems
 rpgstr.name=Name
 rpgstr.type=Type
 rpgstr.value=Value
+rpgstr.max=Max
 
 rpgstr.no_item=There is no item
 rpgstr.no_info=There is no information

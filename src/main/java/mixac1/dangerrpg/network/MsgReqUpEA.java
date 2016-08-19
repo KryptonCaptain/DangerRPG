@@ -8,32 +8,37 @@ import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.EntityAttribute;
 import mixac1.dangerrpg.capability.EntityData;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class MsgReqUpEA implements IMessage
 {
     public int hash;
-    public int entityId;
+    public int targetId;
+    public int upperId;
 
     public MsgReqUpEA() {}
 
-    public MsgReqUpEA(int hash, int entityId)
+    public MsgReqUpEA(int hash, int targetId, int upperId)
     {
         this.hash = hash;
-        this.entityId = entityId;
+        this.targetId = targetId;
+        this.upperId = upperId;
     }
 
     @Override
     public void fromBytes(ByteBuf buf)
     {
         this.hash = buf.readInt();
-        this.entityId = buf.readInt();
+        this.targetId = buf.readInt();
+        this.upperId = buf.readInt();
     }
 
     @Override
     public void toBytes(ByteBuf buf)
     {
         buf.writeInt(this.hash);
-        buf.writeInt(this.entityId);
+        buf.writeInt(this.targetId);
+        buf.writeInt(this.upperId);
     }
 
     public static class Handler implements IMessageHandler<MsgReqUpEA, IMessage>
@@ -41,11 +46,12 @@ public class MsgReqUpEA implements IMessage
         @Override
         public IMessage onMessage(MsgReqUpEA message, MessageContext ctx)
         {
-            EntityLivingBase entity = (EntityLivingBase) DangerRPG.proxy.getEntityByID(ctx, message.entityId);
-            if (entity != null) {
-                EntityAttribute ea = EntityData.get(entity).getEntityAttribute(message.hash);
+            EntityLivingBase target = (EntityLivingBase) DangerRPG.proxy.getEntityByID(ctx, message.targetId);
+            EntityLivingBase upper =  (EntityLivingBase) DangerRPG.proxy.getEntityByID(ctx, message.upperId);
+            if (target != null && upper != null && upper instanceof EntityPlayer) {
+                EntityAttribute ea = EntityData.get(target).getEntityAttribute(message.hash);
                 if (ea != null && ea.lvlProvider != null) {
-                    ea.lvlProvider.tryUp(entity);
+                    ea.lvlProvider.tryUp(target, (EntityPlayer) upper);
                 }
             }
             return null;
