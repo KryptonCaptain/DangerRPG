@@ -109,7 +109,7 @@ public class EntityData implements IExtendedEntityProperties
 
         for (int i = 0; i < count; ++i) {
             int rand = DangerRPG.rand.nextInt(pas.size());
-            pas.get(rand).up(entity, false);
+            pas.get(rand).up(entity, null, false);
             if (pas.get(rand).getLvl(entity) <= 1) {
                 pas.remove(rand);
             }

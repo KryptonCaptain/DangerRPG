@@ -1,10 +1,14 @@
 package mixac1.dangerrpg.item;
 
+import java.util.HashMap;
+
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.common.util.EnumHelper;
 
 public class RPGArmorMaterial
 {
+    public static HashMap<ArmorMaterial, RPGArmorMaterial> map = new HashMap<ArmorMaterial, RPGArmorMaterial>();
+
     public static final RPGArmorMaterial CLOTH           = new RPGArmorMaterial("cloth",          ArmorMaterial.CLOTH);
     public static final RPGArmorMaterial CHAIN           = new RPGArmorMaterial("chain",          ArmorMaterial.CHAIN);
     public static final RPGArmorMaterial IRON            = new RPGArmorMaterial("iron",           ArmorMaterial.IRON);
@@ -37,6 +41,7 @@ public class RPGArmorMaterial
     {
         this.name = name;
         this.material = material;
+        map.put(material, this);
     }
 
     protected void init(float magicRes)
@@ -44,8 +49,8 @@ public class RPGArmorMaterial
         this.magicRes = magicRes;
     }
 
-    public static RPGArmorMaterial getDefaultRPGArmorMaterial(ArmorMaterial material)
+    public static RPGArmorMaterial getRPGArmorMaterial(ArmorMaterial material)
     {
-        return new RPGArmorMaterial("", material);
+        return map.get(material);
     }
 }

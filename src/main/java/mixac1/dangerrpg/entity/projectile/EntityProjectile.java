@@ -5,6 +5,7 @@ import java.util.List;
 import cpw.mods.fml.common.registry.IThrowableEntity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import mixac1.dangerrpg.capability.LvlableItem;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -260,7 +261,14 @@ public class EntityProjectile extends EntityArrow implements IThrowableEntity
     public void onEntityHit(EntityLivingBase entity)
     {
         if (!worldObj.isRemote) {
+            float points = entity.getHealth();
+
             applyEntityHitEffects(entity);
+
+            points -= entity.getHealth();
+            if (points > 0 && thrower instanceof EntityPlayer) {
+                LvlableItem.upEquipment((EntityPlayer) thrower, entity, null, points);
+            }
         }
         bounceBack();
     }
@@ -292,7 +300,6 @@ public class EntityProjectile extends EntityArrow implements IThrowableEntity
                 entity.setFire(1);
             }
         }
-
         DamageSource dmgSource = DamageSource.causeIndirectMagicDamage(this, thrower == null ? this : thrower);
         entity.attackEntityFrom(dmgSource, (float) damage);
     }

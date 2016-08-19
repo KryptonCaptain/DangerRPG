@@ -29,7 +29,7 @@ public class RPGGuiIngame extends Gui
     public static FontRenderer fr = mc.fontRenderer;
     public ScaledResolution res;
 
-    public static final ResourceLocation TEXTURE = new ResourceLocation("DangerRPG:textures/gui/entity_bar.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation("DangerRPG:textures/gui/gui_in_game.png");
 
     private static int textureWidth = 139;
     private static int textureHeight = 59;
@@ -268,9 +268,17 @@ public class RPGGuiIngame extends Gui
 
             int useDuration = mc.thePlayer.getItemInUseDuration();
             float maxCharge = ItemAttributes.SHOT_SPEED.get(stack, mc.thePlayer);
-            int proc = getProcent(useDuration, maxCharge, chargeWidth);
+            float power = useDuration / maxCharge;
+            power = (power * power + power * 2.0F) / 3.0F;
+            int proc = getProcent(power, 1f, chargeWidth);
             if (proc > 0) {
                 drawTexturedModalRect(offsetX, offsetY, chargeOffsetU, chargeOffsetV + chargeHeight, proc, chargeHeight);
+            }
+
+            if (ItemAttributes.MIN_SHOT_POWER.hasIt(stack)) {
+                float tmp = ItemAttributes.MIN_SHOT_POWER.get(stack, mc.thePlayer);
+                proc = getProcent(maxCharge * tmp, maxCharge, chargeWidth);
+                drawTexturedModalRect(offsetX + proc, offsetY, chargeOffsetU, chargeOffsetV + chargeHeight * 2, 1, chargeHeight);
             }
         }
     }

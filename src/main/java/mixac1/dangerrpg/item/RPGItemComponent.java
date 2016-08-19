@@ -1,5 +1,9 @@
 package mixac1.dangerrpg.item;
 
+import java.util.HashMap;
+
+import net.minecraft.item.Item;
+
 public class RPGItemComponent
 {
     public static final RPGItemComponent  NULL      = new RPGItemComponent();
@@ -47,11 +51,11 @@ public class RPGItemComponent
         HOE.init         (1.0F,   10.0F,  0.0F,   0.4F,   0.8F,   0.25F,   0.0F,   0.10F,    0.0F);
         MULTITOOL.init   (1.0F,   10.0F,  0.0F,   0.4F,   0.8F,   0.25F,   0.0F,   0.10F,    0.0F);
 
-     /* BOWS              mDmg    mSpeed  magic   strMul  agiMul  intMul   knBack  knbMul    reach   rDmg    rSpeed  rPow    durab   ench */
+     /* BOWS              mDmg    mSpeed  magic   strMul  agiMul  intMul   knBack  knbMul    reach   rDmg    rSpeed  rPow   rMinP   durab   ench */
 
-        BOW.init         (1.0F,   10.0F,  0.0F,   0.16F,  1.0F,   0.25F,   0.0F,   0.10F,    0.0F,   2.0F,   20.0F,  3.0F,   -0F,    3F);
-        SHADOW_BOW.init  (4.0F,   10.0F,  0.0F,   0.16F,  1.0F,   0.25F,   0.0F,   0.10F,    0.0F,   2.5F,   16.0F,  3.5F,   500F,   5F);
-        SNIPER_BOW.init  (1.0F,   10.0F,  0.0F,   0.16F,  1.0F,   0.25F,   1.0F,   0.20F,    0.0F,   4.0F,   40.0F,  5.5F,   1000F,  10F);
+        BOW.init         (1.0F,   10.0F,  0.0F,   0.16F,  1.0F,   0.25F,   0.0F,   0.10F,    0.0F,   2.0F,   20.0F,  3.0F,  0.4f,   -0F,    3F);
+        SHADOW_BOW.init  (4.0F,   10.0F,  0.0F,   0.16F,  1.0F,   0.25F,   0.0F,   0.10F,    0.0F,   2.5F,   16.0F,  3.5F,  0.2f,   500F,   5F);
+        SNIPER_BOW.init  (1.0F,   10.0F,  0.0F,   0.16F,  1.0F,   0.25F,   1.0F,   0.20F,    0.0F,   4.0F,   40.0F,  5.5F,  0.8f,   1000F,  10F);
 
      /* ARMORS            mRes */
 
@@ -98,6 +102,7 @@ public class RPGItemComponent
         public float shotDamage;
         public float shotSpeed;
         public float shotPower;
+        public float shotMinPower;
 
         public RPGGunComponent(String name)
         {
@@ -106,12 +111,13 @@ public class RPGItemComponent
 
         protected void init(float meleeDamage, float meleeSpeed, float magic, float strMul,
                             float agiMul, float intMul, float knBack, float knbMul, float reach,
-                            float shotDamage, float shotSpeed, float shotPower)
+                            float shotDamage, float shotSpeed, float shotPower, float shotMinPower)
         {
             super.init(meleeDamage, meleeSpeed, magic, strMul, agiMul, intMul, knBack, knbMul, reach);
-            this.shotDamage = shotDamage;
-            this.shotSpeed  = shotSpeed;
-            this.shotPower  = shotPower;
+            this.shotDamage   = shotDamage;
+            this.shotSpeed    = shotSpeed;
+            this.shotPower    = shotPower;
+            this.shotMinPower = shotMinPower;
         }
     }
 
@@ -126,11 +132,11 @@ public class RPGItemComponent
 
         protected void init(float meleeDamage, float meleeSpeed, float magic, float strMul,
                             float agiMul, float intMul, float knBack, float knbMul, float reach,
-                            float shotDamage, float shotSpeed, float shotPower,
+                            float shotDamage, float shotSpeed, float shotPower, float shotMinPower,
                             float durab, float ench)
         {
             super.init(meleeDamage, meleeSpeed, magic, strMul, agiMul, intMul,
-                       knBack, knbMul, reach, shotDamage, shotSpeed, shotPower);
+                       knBack, knbMul, reach, shotDamage, shotSpeed, shotPower, shotMinPower);
             itemComponent.init(durab, ench);
         }
 
@@ -193,5 +199,17 @@ public class RPGItemComponent
         public float getMaxDurability();
 
         public float getEnchantability();
+    }
+
+    /****************************************************************************/
+
+    public static HashMap<Item, RPGItemComponent> map = new HashMap<Item, RPGItemComponent>();
+
+    public static <Type extends RPGItemComponent> Type toolComponentHook(Item item, Type itemComponent)
+    {
+        if (map.containsKey(item)) {
+            return (Type) map.get(item);
+        }
+        return itemComponent;
     }
 }

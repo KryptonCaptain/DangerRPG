@@ -1,10 +1,12 @@
 package mixac1.dangerrpg.capability;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.event.RegIAEvent;
+import mixac1.dangerrpg.api.event.UpEquipmentEvent;
 import mixac1.dangerrpg.api.item.IADynamic;
 import mixac1.dangerrpg.api.item.IAStatic;
 import mixac1.dangerrpg.api.item.ILvlableItem;
@@ -24,6 +26,8 @@ import mixac1.dangerrpg.item.RPGItemComponent.RPGBowComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
 import mixac1.dangerrpg.item.RPGToolMaterial;
 import mixac1.dangerrpg.util.IMultiplier;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBlock;
@@ -168,17 +172,18 @@ public abstract class LvlableItem
         ILvlableItemBow iLvl = (ILvlableItemBow) (item instanceof ILvlableItemBow ? item : ILvlableItem.DEFAULT_BOW);
         RPGBowComponent comp = iLvl.getItemComponent(item);
 
-        map.addStaticItemAttribute(ItemAttributes.MELEE_DAMAGE, comp.meleeDamage);
-        map.addStaticItemAttribute(ItemAttributes.MELEE_SPEED,  comp.meleeSpeed);
-        map.addStaticItemAttribute(ItemAttributes.SHOT_DAMAGE,  comp.shotDamage);
-        map.addStaticItemAttribute(ItemAttributes.SHOT_POWER,   comp.shotPower);
-        map.addStaticItemAttribute(ItemAttributes.SHOT_SPEED,   comp.shotSpeed);
-        map.addStaticItemAttribute(ItemAttributes.MAGIC,        comp.magic);
-        map.addStaticItemAttribute(ItemAttributes.STR_MUL,      comp.strMul);
-        map.addStaticItemAttribute(ItemAttributes.AGI_MUL,      comp.agiMul);
-        map.addStaticItemAttribute(ItemAttributes.INT_MUL,      comp.intMul);
-        map.addStaticItemAttribute(ItemAttributes.KNOCKBACK,    comp.knBack);
-        map.addStaticItemAttribute(ItemAttributes.KNBACK_MUL,   comp.knbMul);
+        map.addStaticItemAttribute(ItemAttributes.MELEE_DAMAGE,   comp.meleeDamage);
+        map.addStaticItemAttribute(ItemAttributes.MELEE_SPEED,    comp.meleeSpeed);
+        map.addStaticItemAttribute(ItemAttributes.SHOT_DAMAGE,    comp.shotDamage);
+        map.addStaticItemAttribute(ItemAttributes.SHOT_POWER,     comp.shotPower);
+        map.addStaticItemAttribute(ItemAttributes.MIN_SHOT_POWER, comp.shotMinPower);
+        map.addStaticItemAttribute(ItemAttributes.SHOT_SPEED,     comp.shotSpeed);
+        map.addStaticItemAttribute(ItemAttributes.MAGIC,          comp.magic);
+        map.addStaticItemAttribute(ItemAttributes.STR_MUL,        comp.strMul);
+        map.addStaticItemAttribute(ItemAttributes.AGI_MUL,        comp.agiMul);
+        map.addStaticItemAttribute(ItemAttributes.INT_MUL,        comp.intMul);
+        map.addStaticItemAttribute(ItemAttributes.KNOCKBACK,      comp.knBack);
+        map.addStaticItemAttribute(ItemAttributes.KNBACK_MUL,     comp.knbMul);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemBowIAEvent(item, map));
     }
@@ -234,6 +239,9 @@ public abstract class LvlableItem
     public static void addExp(ItemStack stack, int value)
     {
         if (isLvlable(stack)) {
+            if (value <= 0) {
+                return;
+            }
             int level = (int) ItemAttributes.LEVEL.get(stack);
 
             if (level < RPGConfig.itemMaxLevel) {
@@ -252,6 +260,33 @@ public abstract class LvlableItem
                     }
                 }
                 ItemAttributes.CURR_EXP.set(stack, currEXP);
+            }
+        }
+    }
+
+    public static void upEquipment(EntityPlayer player, EntityLivingBase target, ItemStack stack, float points)
+    {
+        UpEquipmentEvent e = new UpEquipmentEvent(player, target, stack, points);
+        MinecraftForge.EVENT_BUS.post(e);
+
+        if (e.points > 0) {
+            ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
+
+            stack = player.getCurrentEquippedItem();
+            if (e.needUp[0] && stack != null && isLvlable(stack)) {
+                stacks.add(stack);
+            }
+
+            ItemStack[] armors = player.inventory.armorInventory;
+            for (int i = 0; i < armors.length; ++i) {
+                if (e.needUp[i + 1] && armors[i] != null && isLvlable(armors[i])) {
+                    stacks.add(armors[i]);
+                }
+            }
+
+            e.points = e.points / stacks.size();
+            for (ItemStack tmp : stacks) {
+                addExp(tmp, (int) e.points);
             }
         }
     }
@@ -286,5 +321,5 @@ public abstract class LvlableItem
                 return mul.up(value);
             }
         }
-}
+    }
 }

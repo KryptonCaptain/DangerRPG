@@ -1,10 +1,14 @@
 package mixac1.dangerrpg.item;
 
+import java.util.HashMap;
+
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.common.util.EnumHelper;
 
 public class RPGToolMaterial
 {
+    public static HashMap<ToolMaterial, RPGToolMaterial> map = new HashMap<ToolMaterial, RPGToolMaterial>();
+
     public static final RPGToolMaterial WOOD            = new RPGToolMaterial("wood",           ToolMaterial.WOOD);
     public static final RPGToolMaterial STONE           = new RPGToolMaterial("stone",          ToolMaterial.STONE);
     public static final RPGToolMaterial IRON            = new RPGToolMaterial("iron",           ToolMaterial.IRON);
@@ -35,6 +39,7 @@ public class RPGToolMaterial
     {
         this.name = name;
         this.material = material;
+        map.put(material, this);
     }
 
     protected void init()
@@ -42,8 +47,8 @@ public class RPGToolMaterial
 
     }
 
-    public static RPGToolMaterial getDefaultRPGToolMaterial(ToolMaterial material)
+    public static RPGToolMaterial getRPGToolMaterial(ToolMaterial material)
     {
-        return new RPGToolMaterial("", material);
+        return map.get(material);
     }
 }

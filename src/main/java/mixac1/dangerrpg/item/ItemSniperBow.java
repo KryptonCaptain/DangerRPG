@@ -28,13 +28,13 @@ public class ItemSniperBow extends RPGItemBow
                     ItemAttributes.SHOT_SPEED.get(stack, player) : 20F);
             power = (power * power + power * 2.0F) / 3.0F;
 
-            if (power < 0.9D) {
-                return;
-            }
-            else if (power > 1.0F) {
+            float minPower = ItemAttributes.MIN_SHOT_POWER.hasIt(stack) ? ItemAttributes.MIN_SHOT_POWER.get(stack, player) : 0.8f;
+            if (power > 1.0F) {
                 power = 1.0F;
             }
-            power = 1;
+            else if (power < minPower) {
+                return;
+            }
 
             float powerMul = ItemAttributes.SHOT_POWER.hasIt(stack) ?
                     ItemAttributes.SHOT_POWER.get(stack, player) : 1F;

@@ -44,6 +44,15 @@ public class ItemAttributes
 
     public static final IAStatic SHOT_POWER = new IAStatic("shot_power");
 
+    public static final IAStatic MIN_SHOT_POWER = new IAStatic("min_shot_power")
+    {
+        @Override
+        public boolean isVisibleInInfoBook(ItemStack stack)
+        {
+            return false;
+        }
+    };
+
     public static final IAStatic MELEE_SPEED = new IASpeed("melee_speed", 10F)
     {
         @Override

@@ -96,7 +96,19 @@ public class RPGEntityHooks
                     knockback = event.knockback;
                 }
 
+                float points = 0;
+                if (entity instanceof EntityLivingBase) {
+                    points = ((EntityLivingBase) entity).getHealth();
+                }
+
                 if (entity.attackEntityFrom(DamageSource.causePlayerDamage(player), dmg)) {
+                    if (entity instanceof EntityLivingBase) {
+                        points -= ((EntityLivingBase) entity).getHealth();
+                        if (points > 0) {
+                            LvlableItem.upEquipment(player, (EntityLivingBase) entity, stack, points);
+                        }
+                    }
+
                     if (knockback > 0) {
                         entity.addVelocity(-MathHelper.sin(player.rotationYaw * (float)Math.PI / 180.0F) * knockback * 0.5F,
                                             0.1D,

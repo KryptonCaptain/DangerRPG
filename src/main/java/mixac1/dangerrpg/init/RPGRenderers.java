@@ -43,6 +43,8 @@ public abstract class RPGRenderers
 
     private static void registerItemRenderer()
     {
+        MinecraftForgeClient.registerItemRenderer(RPGItems.naginataWood,        RenderLongItem.INSTANCE);
+        MinecraftForgeClient.registerItemRenderer(RPGItems.naginataStone,       RenderLongItem.INSTANCE);
         MinecraftForgeClient.registerItemRenderer(RPGItems.naginataIron,        RenderLongItem.INSTANCE);
         MinecraftForgeClient.registerItemRenderer(RPGItems.naginataGold,        RenderLongItem.INSTANCE);
         MinecraftForgeClient.registerItemRenderer(RPGItems.naginataDiamond,     RenderLongItem.INSTANCE);
@@ -51,6 +53,8 @@ public abstract class RPGRenderers
         MinecraftForgeClient.registerItemRenderer(RPGItems.naginataBlackMatter, RenderLongItem.INSTANCE);
         MinecraftForgeClient.registerItemRenderer(RPGItems.naginataWhiteMatter, RenderLongItem.INSTANCE);
 
+        MinecraftForgeClient.registerItemRenderer(RPGItems.katanaWood,        RenderKatana.INSTANCE);
+        MinecraftForgeClient.registerItemRenderer(RPGItems.katanaStone,       RenderKatana.INSTANCE);
         MinecraftForgeClient.registerItemRenderer(RPGItems.katanaIron,        RenderKatana.INSTANCE);
         MinecraftForgeClient.registerItemRenderer(RPGItems.katanaGold,        RenderKatana.INSTANCE);
         MinecraftForgeClient.registerItemRenderer(RPGItems.katanaDiamond,     RenderKatana.INSTANCE);
@@ -59,6 +63,8 @@ public abstract class RPGRenderers
         MinecraftForgeClient.registerItemRenderer(RPGItems.katanaBlackMatter, RenderKatana.INSTANCE);
         MinecraftForgeClient.registerItemRenderer(RPGItems.katanaWhiteMatter, RenderKatana.INSTANCE);
 
+        MinecraftForgeClient.registerItemRenderer(RPGItems.scytheWood,        RenderLongItem.INSTANCE);
+        MinecraftForgeClient.registerItemRenderer(RPGItems.scytheStone,       RenderLongItem.INSTANCE);
         MinecraftForgeClient.registerItemRenderer(RPGItems.scytheIron,        RenderLongItem.INSTANCE);
         MinecraftForgeClient.registerItemRenderer(RPGItems.scytheGold,        RenderLongItem.INSTANCE);
         MinecraftForgeClient.registerItemRenderer(RPGItems.scytheDiamond,     RenderLongItem.INSTANCE);
@@ -67,6 +73,8 @@ public abstract class RPGRenderers
         MinecraftForgeClient.registerItemRenderer(RPGItems.scytheBlackMatter, RenderLongItem.INSTANCE);
         MinecraftForgeClient.registerItemRenderer(RPGItems.scytheWhiteMatter, RenderLongItem.INSTANCE);
 
+        MinecraftForgeClient.registerItemRenderer(RPGItems.knifeWood,        RenderKnife.INSTANCE);
+        MinecraftForgeClient.registerItemRenderer(RPGItems.knifeStone,       RenderKnife.INSTANCE);
         MinecraftForgeClient.registerItemRenderer(RPGItems.knifeIron,        RenderKnife.INSTANCE);
         MinecraftForgeClient.registerItemRenderer(RPGItems.knifeGold,        RenderKnife.INSTANCE);
         MinecraftForgeClient.registerItemRenderer(RPGItems.knifeDiamond,     RenderKnife.INSTANCE);
@@ -75,6 +83,8 @@ public abstract class RPGRenderers
         MinecraftForgeClient.registerItemRenderer(RPGItems.knifeBlackMatter, RenderKnife.INSTANCE);
         MinecraftForgeClient.registerItemRenderer(RPGItems.knifeWhiteMatter, RenderKnife.INSTANCE);
 
+        registerItemRendererE(RPGItems.hammerWood,        RenderHammer.INSTANCE);
+        registerItemRendererE(RPGItems.hammerStone,       RenderHammer.INSTANCE);
         registerItemRendererE(RPGItems.hammerIron,        RenderHammer.INSTANCE);
         registerItemRendererE(RPGItems.hammerGold,        RenderHammer.INSTANCE);
         registerItemRendererE(RPGItems.hammerDiamond,     RenderHammer.INSTANCE);
@@ -99,8 +109,6 @@ public abstract class RPGRenderers
 
         RenderingRegistry.registerEntityRenderingHandler(EntityThrowKnife.class, RenderThrowKnife.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityThrowTomahawk.class, RenderThrowTomahawk.INSTANCE);
-
-        //RenderingRegistry.registerEntityRenderingHandler(EntityTestt.class, RenderBit.INSTANCE);
     }
 
     private static void registerBlockRenderer()
