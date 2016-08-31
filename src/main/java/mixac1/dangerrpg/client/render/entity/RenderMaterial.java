@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 public class RenderMaterial extends RenderProjectile
 {
     public static final RenderMaterial INSTANCE = new RenderMaterial();
-    
+
     @Override
     protected ResourceLocation getEntityTexture(Entity entity)
     {
@@ -29,14 +29,14 @@ public class RenderMaterial extends RenderProjectile
     {
         if (entity instanceof EntityMaterial) {
             Tessellator tess = Tessellator.instance;
-            ItemStack stack = ((EntityMaterial) entity).getPickupItem();
+            ItemStack stack = ((EntityMaterial) entity).getStack();
             IIcon icon = stack.getItem().getIconFromDamage(0);
             float tickness = itemSpecific(stack);
             ItemRenderer.renderItemIn2D(tess, icon.getMaxU(), icon.getMinV(), icon.getMinU(), icon.getMaxV(), icon.getIconWidth(), icon.getIconHeight(), tickness);
             RPGRenderHelper.renderEnchantEffect(tess, stack, 256, 256, tickness);
         }
     }
-    
+
     protected float itemSpecific(ItemStack stack)
     {
         GL11.glTranslatef(-1F, 0F, 0F);

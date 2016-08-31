@@ -4,7 +4,9 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.entity.projectile.EntityArrowRPG;
+import mixac1.dangerrpg.entity.projectile.EntityMagicOrb;
 import mixac1.dangerrpg.entity.projectile.EntityMaterial;
+import mixac1.dangerrpg.entity.projectile.EntityPowerMagicOrb;
 import mixac1.dangerrpg.entity.projectile.EntityProjectile;
 import mixac1.dangerrpg.entity.projectile.EntitySniperArrow;
 import mixac1.dangerrpg.entity.projectile.EntityThrowKnife;
@@ -30,18 +32,21 @@ public abstract class RPGEntities
 
     private static void loadProjectileEntities()
     {
-        registerEntityProjecttile(EntityProjectile.class, "EntityProjectile");
-        registerEntityProjecttile(EntityMaterial.class, "EntityMaterial");
-        registerEntityProjecttile(EntityThrowLvlItem.class, "EntityThrowLvlItem");
+        registerEntityProjecttile(EntityProjectile.class);
+        registerEntityProjecttile(EntityMaterial.class);
+        registerEntityProjecttile(EntityThrowLvlItem.class);
 
-        registerEntityProjecttile(EntityThrowKnife.class, "EntityThrowKnife");
-        registerEntityProjecttile(EntityThrowTomahawk.class, "EntityThrowTomahawk");
-        registerEntityProjecttile(EntityArrowRPG.class, "EntityArrowRPG");
-        registerEntityProjecttile(EntitySniperArrow.class, "EntitySniperArrow");
+        registerEntityProjecttile(EntityThrowKnife.class);
+        registerEntityProjecttile(EntityThrowTomahawk.class);
+        registerEntityProjecttile(EntityArrowRPG.class);
+        registerEntityProjecttile(EntitySniperArrow.class);
+
+        registerEntityProjecttile(EntityMagicOrb.class);
+        registerEntityProjecttile(EntityPowerMagicOrb.class);
     }
 
-    private static void registerEntityProjecttile(Class<? extends Entity> entityClass, String name)
+    private static void registerEntityProjecttile(Class<? extends Entity> entityClass)
     {
-        EntityRegistry.registerModEntity(entityClass, name, count++, DangerRPG.instance, 64, 20, true);
+        EntityRegistry.registerModEntity(entityClass, entityClass.getName(), count++, DangerRPG.instance, 64, 20, true);
     }
 }

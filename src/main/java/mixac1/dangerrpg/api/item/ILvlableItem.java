@@ -12,8 +12,10 @@ import mixac1.dangerrpg.item.RPGItemComponent.RPGArmorComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGBowComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGGunComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGICWithoutTM;
+import mixac1.dangerrpg.item.RPGItemComponent.RPGStaffComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
 import mixac1.dangerrpg.item.RPGToolMaterial;
+import mixac1.dangerrpg.util.RPGCommonHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -60,6 +62,12 @@ public interface ILvlableItem
     {
         @Override
         public RPGGunComponent getItemComponent(Item item);
+    }
+
+    public interface ILvlableItemStaff extends ILvlableItemGun
+    {
+        @Override
+        public RPGStaffComponent getItemComponent(Item item);
     }
 
     public interface ILvlableItemBow extends ILvlableItemGun
@@ -114,13 +122,13 @@ public interface ILvlableItem
         @Override
         public RPGToolComponent getItemComponent(Item item)
         {
-            return RPGToolComponent.toolComponentHook(item, RPGItemComponent.SWORD);
+            return RPGToolComponent.itemComponentHook(item, RPGItemComponent.SWORD);
         }
 
         @Override
         public RPGToolMaterial getToolMaterial(Item item)
         {
-            return RPGToolMaterial.getRPGToolMaterial(((ItemSword) item).field_150933_b);
+            return RPGToolMaterial.toolMaterialHook(((ItemSword) item).field_150933_b);
         }
     };
 
@@ -136,28 +144,28 @@ public interface ILvlableItem
         public RPGToolComponent getItemComponent(Item item)
         {
             if (item instanceof ItemAxe) {
-                return RPGToolComponent.toolComponentHook(item, RPGItemComponent.AXE);
+                return RPGToolComponent.itemComponentHook(item, RPGItemComponent.AXE);
             }
             else if (item instanceof ItemHoe) {
-                return RPGToolComponent.toolComponentHook(item, RPGItemComponent.HOE);
+                return RPGToolComponent.itemComponentHook(item, RPGItemComponent.HOE);
             }
             else if (item instanceof ItemSpade) {
-                return RPGToolComponent.toolComponentHook(item, RPGItemComponent.SHOVEL);
+                return RPGToolComponent.itemComponentHook(item, RPGItemComponent.SHOVEL);
             }
             else if (item instanceof ItemPickaxe) {
-                return RPGToolComponent.toolComponentHook(item, RPGItemComponent.PICKAXE);
+                return RPGToolComponent.itemComponentHook(item, RPGItemComponent.PICKAXE);
             }
-            return null;
+            return RPGToolComponent.itemComponentHook(item, RPGItemComponent.AXE);
         }
 
         @Override
         public RPGToolMaterial getToolMaterial(Item item)
         {
             if (item instanceof ItemTool) {
-                return RPGToolMaterial.getRPGToolMaterial(((ItemTool) item).func_150913_i());
+                return RPGToolMaterial.toolMaterialHook(((ItemTool) item).func_150913_i());
             }
             else if (item instanceof ItemHoe) {
-                return RPGToolMaterial.getRPGToolMaterial(((ItemHoe) item).theToolMaterial);
+                return RPGToolMaterial.toolMaterialHook(((ItemHoe) item).theToolMaterial);
             }
             return null;
         }
@@ -174,13 +182,13 @@ public interface ILvlableItem
         @Override
         public RPGArmorComponent getItemComponent(Item item)
         {
-            return RPGToolComponent.toolComponentHook(item, RPGArmorComponent.ARMOR);
+            return RPGToolComponent.itemComponentHook(item, RPGArmorComponent.ARMOR);
         }
 
         @Override
         public RPGArmorMaterial getArmorMaterial(Item item)
         {
-            return RPGArmorMaterial.getRPGArmorMaterial(((ItemArmor) item).getArmorMaterial());
+            return RPGArmorMaterial.armorMaterialHook(((ItemArmor) item).getArmorMaterial());
         }
     };
 
@@ -195,7 +203,7 @@ public interface ILvlableItem
         @Override
         public RPGBowComponent getItemComponent(Item item)
         {
-            return RPGToolComponent.toolComponentHook(item, RPGItemComponent.BOW);
+            return RPGToolComponent.itemComponentHook(item, RPGItemComponent.BOW);
         }
 
         @Override
@@ -211,16 +219,8 @@ public interface ILvlableItem
                      || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, stack) > 0;
 
             if (flag || player.inventory.hasItem(Items.arrow)) {
-                float power = useDuration / (ItemAttributes.SHOT_SPEED.hasIt(stack) ?
-                                             ItemAttributes.SHOT_SPEED.get(stack, player) : 20F);
-                power = (power * power + power * 2.0F) / 3.0F;
-
-                DangerRPG.debugDump("bow:", power);
-                float minPower = ItemAttributes.MIN_SHOT_POWER.hasIt(stack) ? ItemAttributes.MIN_SHOT_POWER.get(stack, player) : 0.3f;
-                if (power > 1.0F) {
-                    power = 1.0F;
-                }
-                else if (power < minPower) {
+                float power = RPGCommonHelper.getUsePower(player, stack, useDuration, 20f, 0.3f);
+                if (power < 0) {
                     return;
                 }
 

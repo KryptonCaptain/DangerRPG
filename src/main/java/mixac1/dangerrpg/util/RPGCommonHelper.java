@@ -3,8 +3,13 @@ package mixac1.dangerrpg.util;
 import java.util.List;
 
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.capability.ea.PlayerAttributes;
+import mixac1.dangerrpg.api.item.ILvlableItem;
+import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemArmor;
+import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemTool;
+import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
+import mixac1.dangerrpg.init.RPGCapability;
+import mixac1.dangerrpg.item.IMaterialSpecial;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -12,12 +17,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -32,90 +37,6 @@ public abstract class RPGCommonHelper
         double z =  MathHelper.cos(attacker.rotationYaw / 180.0F * (float)Math.PI)   * 0.4;
         double y = -MathHelper.sin(attacker.rotationPitch / 180.0F * (float)Math.PI) * 0.1;
         entityliving.addVelocity(x * i, y * i, z * i);
-    }
-
-    public static float applyArmorCalculations(EntityLivingBase entity, DamageSource source, float damage)
-    {
-        if (!source.isUnblockable()) {
-            if (entity instanceof EntityPlayer) {
-                ((EntityPlayer) entity).inventory.damageArmor(damage);
-            }
-            damage *= (100F - RPGCommonHelper.calcTotalPhisicResistance(entity)) / 100;
-        }
-        else if (source == DamageSource.magic) {
-            if (entity instanceof EntityPlayer) {
-                ((EntityPlayer) entity).inventory.damageArmor(damage);
-            }
-            damage *= (100F - RPGCommonHelper.calcTotalMagicResistance(entity)) / 100;
-        }
-        return damage;
-    }
-
-    /**
-     * 40 armor == 100% resistance
-     * @return % of phisical resistance from one armor item
-     */
-    public static float calcPhisicResistance(float phisicArmor)
-    {
-        return phisicArmor * 2.5F;
-    }
-
-    /**
-     * 100 armor == 100% resistance
-     * @return % of magic resistance from one armor item
-     */
-    public static float calcMagicResistance(float magicArmor)
-    {
-        return magicArmor;
-    }
-
-    /**
-     * @return % of phisical resistance from full armors set
-     */
-    public static float calcTotalPhisicResistance(EntityLivingBase entity)
-    {
-        float value = 0;
-        ItemStack[] stacks = entity instanceof EntityPlayer ?
-                             ((EntityPlayer) entity).inventory.armorInventory :
-                             entity.getLastActiveItems();
-        for (ItemStack stack : stacks) {
-            if (stack != null && stack.getItem() instanceof ItemArmor) {
-                if (ItemAttributes.PHISIC_ARMOR.hasIt(stack)) {
-                    value += calcPhisicResistance(ItemAttributes.PHISIC_ARMOR.get(stack));
-                }
-                else {
-                    value += calcPhisicResistance(((ItemArmor) stack.getItem()).damageReduceAmount);
-                }
-            }
-        }
-
-        if (entity instanceof EntityPlayer) {
-            value += PlayerAttributes.STONESKIN.getValue(entity);
-        }
-
-        return value > 100F ? 100F : value;
-    }
-
-    /**
-     * @return % of magic resistance from full armors set
-     */
-    public static float calcTotalMagicResistance(EntityLivingBase entity)
-    {
-        float value = 0;
-        ItemStack[] stacks = entity instanceof EntityPlayer ?
-                             ((EntityPlayer) entity).inventory.armorInventory :
-                             entity.getLastActiveItems();
-        for (ItemStack stack : stacks) {
-            if (stack != null && stack.getItem() instanceof ItemArmor && ItemAttributes.MAGIC_ARMOR.hasIt(stack)) {
-                value += calcMagicResistance(ItemAttributes.MAGIC_ARMOR.get(stack));
-            }
-        }
-
-        if (entity instanceof EntityPlayer) {
-            value += PlayerAttributes.MAG_IMUN.getValue(entity);
-        }
-
-        return value > 100F ? 100F : value;
     }
 
     public static void rebuildPlayerExp(EntityPlayer player)
@@ -253,4 +174,97 @@ public abstract class RPGCommonHelper
         }
         return mop;
     }
+
+    public static float getUsePower(EntityPlayer player, ItemStack stack, int useDuration, float defMaxPow, float defMinPow)
+    {
+        float power = getUsePower(player, stack, useDuration, defMaxPow);
+
+        float minPower = ItemAttributes.MIN_CUST_TIME.hasIt(stack) ? ItemAttributes.MIN_CUST_TIME.get(stack, player) : defMinPow;
+        if (power < minPower) {
+            return -1f;
+        }
+        return power;
+    }
+
+    public static float getUsePower(EntityPlayer player, ItemStack stack, int useDuration, float defMaxPow)
+    {
+        float power = useDuration / (ItemAttributes.SHOT_SPEED.hasIt(stack) ? ItemAttributes.SHOT_SPEED.get(stack, player) : defMaxPow);
+        power = (power * power + power * 2.0F) / 3.0F;
+
+        if (power > 1.0F) {
+            return 1f;
+        }
+        return power;
+    }
+
+    public static IMaterialSpecial getMaterialSpecial(ItemStack stack)
+    {
+        if (stack != null && LvlableItem.isLvlable(stack)) {
+            ILvlableItem ilvl = RPGCapability.iaValues.get(stack.getItem()).lvlComponent;
+            if (ilvl instanceof ILvlableItemArmor) {
+                return ((ILvlableItemArmor) ilvl).getArmorMaterial(stack.getItem());
+            }
+            else if (ilvl instanceof ILvlableItemTool) {
+                return ((ILvlableItemTool) ilvl).getToolMaterial(stack.getItem());
+            }
+        }
+        return null;
+    }
+
+    public static int getSpecialColor(ItemStack stack, int defaultColor)
+    {
+        IMaterialSpecial mat = getMaterialSpecial(stack);
+        if (mat != null && mat.hasSpecialColor()) {
+            return mat.getSpecialColor();
+        }
+        return defaultColor;
+    }
+
+    public static Vec3 getFirePoint(EntityLivingBase thrower)
+    {
+        Vec3 tmp = thrower.getLookVec();
+
+        tmp.xCoord /= 2;
+        tmp.yCoord /= 2;
+        tmp.zCoord /= 2;
+
+        tmp.xCoord += thrower.posX;
+        tmp.yCoord += thrower.posY + thrower.getEyeHeight();
+        tmp.zCoord += thrower.posZ;
+
+        tmp.xCoord -= MathHelper.cos(thrower.rotationYaw / 180.0F * (float)Math.PI) * 0.22F;
+        tmp.yCoord -= 0.3;
+        tmp.zCoord -= MathHelper.sin(thrower.rotationYaw / 180.0F * (float)Math.PI) * 0.22F;
+
+        return tmp;
+    }
+
+    public static DamageSource causeRPGMagicDamage(Entity target, Entity entity)
+    {
+        return (new EntityDamageSourceIndirect("RPGMagic", target, entity)).setMagicDamage();
+    }
 }
+
+//if (worldObj.isRemote) {
+//    int color = getColor();
+//    double r = 0.3D;
+//    double frec = Math.PI / 6;
+//    double x, y, z, tmp;
+//
+//    for (double k = 0; k < Math.PI * 2; k += frec) {
+//        y = posY + r * Math.cos(k);
+//        tmp = Math.abs(r * Math.sin(k));
+//        for (double l = 0; l < Math.PI * 2; l += frec) {
+//            x = posX + tmp * Math.cos(l);
+//            z = posZ + tmp * Math.sin(l);
+//            DangerRPG.proxy.spawnEntityFX(RPGEntityFXManager.EntityAuraFXE, x, y, z, motionX, motionY, motionZ, color);
+//        }
+//    }
+//}
+
+//for (float l = 0F; l < 2 * Math.PI; l += Math.PI / 6) {
+//    double px = entity.posX + radius * Math.cos(l);
+//    double py = entity.posZ + radius * Math.sin(l);
+//    Minecraft.getMinecraft().effectRenderer.addEffect(new EntitySplashFX(Minecraft.getMinecraft().theWorld,
+//            px, entity.posY + 1.5D, py, 0F, 0.4F, 0F));
+//}

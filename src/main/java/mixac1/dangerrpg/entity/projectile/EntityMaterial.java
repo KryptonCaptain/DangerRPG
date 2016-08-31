@@ -4,21 +4,20 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.S0DPacketCollectItem;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
-public class EntityMaterial extends EntityProjectile
+public class EntityMaterial extends EntityWithStack
 {
     public static final int    PICKUP_NO = 0,
                                PICKUP_ALL = 1,
                                PICKUP_CREATIVE = 2,
                                PICKUP_OWNER = 3;
-    protected static final int DW_INDEX_STACK = 25;
 
     public int pickupMode;
     public float phisicDamage;
@@ -30,38 +29,33 @@ public class EntityMaterial extends EntityProjectile
 
     public EntityMaterial(World world, ItemStack stack)
     {
-        this(world);
-        setPickupItem(stack);
+        super(world, stack);
     }
 
     public EntityMaterial(World world, ItemStack stack, double x, double y, double z)
     {
-        super(world, x, y, z);
-        setPickupItem(stack);
+        super(world, stack, x, y, z);
     }
 
     public EntityMaterial(World world, EntityLivingBase thrower, ItemStack stack, float speed, float deviation)
     {
-        super(world, thrower, speed, deviation);
-        setPickupItem(stack);
+        super(world, thrower, stack, speed, deviation);
     }
 
     public EntityMaterial(World world, EntityLivingBase thrower, EntityLivingBase target, ItemStack stack, float speed, float deviation)
     {
-        super(world, thrower, target, speed, deviation);
-        setPickupItem(stack);
+        super(world, thrower, target, stack, speed, deviation);
     }
 
     @Override
     public void entityInit()
     {
         super.entityInit();
-        dataWatcher.addObject(DW_INDEX_STACK, new ItemStack(Items.apple, 0));
         pickupMode = PICKUP_ALL;
     }
 
     @Override
-    public void applyEntityHitEffects(EntityLivingBase entity)
+    public void applyEntityHitEffects(EntityLivingBase entity, float dmgMul)
     {
         DamageSource dmgSource =
             (thrower == null) ?
@@ -69,8 +63,17 @@ public class EntityMaterial extends EntityProjectile
                 (thrower instanceof EntityPlayer) ?
                     DamageSource.causePlayerDamage((EntityPlayer) thrower) :
                     DamageSource.causeMobDamage(thrower);
-        entity.attackEntityFrom(dmgSource, phisicDamage + getMeleeHitDamage(entity));
-        super.applyEntityHitEffects(entity);
+        entity.attackEntityFrom(dmgSource, (phisicDamage + getMeleeHitDamage(entity)) * dmgMul);
+
+        int knockback = EnchantmentHelper.getKnockbackModifier(thrower, entity);
+        if (knockback != 0) {
+            entity.addVelocity(-MathHelper.sin(rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F, 0.1D, MathHelper.cos(rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F);
+            motionX *= 0.6D;
+            motionZ *= 0.6D;
+            setSprinting(false);
+        }
+
+        super.applyEntityHitEffects(entity, dmgMul);
     }
 
     @Override
@@ -81,7 +84,7 @@ public class EntityMaterial extends EntityProjectile
             if (!worldObj.isRemote) {
                 if (canPickup(player)) {
                     if (!player.capabilities.isCreativeMode) {
-                        player.inventory.addItemStackToInventory(getPickupItem());
+                        player.inventory.addItemStackToInventory(getStack());
                     }
                     worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                     onItemPickup(player);
@@ -120,18 +123,6 @@ public class EntityMaterial extends EntityProjectile
         return 0F;
     }
 
-    public void setPickupItem(ItemStack stack)
-    {
-        if (stack != null) {
-            dataWatcher.updateObject(DW_INDEX_STACK, stack);
-        }
-    }
-
-    public ItemStack getPickupItem()
-    {
-        return dataWatcher.getWatchableObjectItemStack(DW_INDEX_STACK);
-    }
-
     @Override
     public float getAirResistance()
     {
@@ -168,11 +159,6 @@ public class EntityMaterial extends EntityProjectile
         super.writeEntityToNBT(nbt);
         nbt.setByte("pickupMode", (byte) pickupMode);
         nbt.setFloat("phisicDamage", phisicDamage);
-
-        ItemStack thrownItem = getPickupItem();
-        if (thrownItem != null) {
-            nbt.setTag("stack", thrownItem.writeToNBT(new NBTTagCompound()));
-        }
     }
 
     @Override
@@ -181,10 +167,5 @@ public class EntityMaterial extends EntityProjectile
         super.readEntityFromNBT(nbt);
         pickupMode = nbt.getByte("pickupMode") & 0xFF;
         phisicDamage = nbt.getFloat("phisicDamage");
-
-        NBTTagCompound tag = nbt.getCompoundTag("stack");
-        if (tag != null) {
-            setPickupItem(ItemStack.loadItemStackFromNBT(tag));
-        }
     }
 }

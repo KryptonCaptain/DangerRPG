@@ -61,7 +61,7 @@ public class DangerRPG
     {
         StringBuilder buf = new StringBuilder();
         for (Object obj : objs) {
-            buf.append(obj.toString()).append(" ");
+            buf.append(obj != null ? obj.toString() : "null").append(" ");
         }
         DangerRPG.logger.info(buf.toString());
     }

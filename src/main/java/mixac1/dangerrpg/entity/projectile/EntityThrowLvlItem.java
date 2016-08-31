@@ -1,8 +1,10 @@
 package mixac1.dangerrpg.entity.projectile;
 
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
+import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -42,9 +44,9 @@ public class EntityThrowLvlItem extends EntityMaterial
     }
 
     @Override
-    public void applyEntityHitEffects(EntityLivingBase entity)
+    public void applyEntityHitEffects(EntityLivingBase entity, float dmgMul)
     {
-        ItemStack stack = this.getPickupItem();
+        ItemStack stack = this.getStack();
         if (stack != null) {
             if (ItemAttributes.SHOT_DAMAGE.hasIt(stack)) {
                 phisicDamage = ItemAttributes.SHOT_DAMAGE.get(stack);
@@ -54,8 +56,16 @@ public class EntityThrowLvlItem extends EntityMaterial
             }
             HitEntityEvent event = new HitEntityEvent(stack, entity, thrower, phisicDamage, 0, true);
             MinecraftForge.EVENT_BUS.post(event);
-            phisicDamage += event.damage;
+            phisicDamage = event.damage;
         }
-        super.applyEntityHitEffects(entity);
+
+        float points = entity.getHealth();
+
+        super.applyEntityHitEffects(entity, dmgMul);
+
+        points -= entity.getHealth();
+        if (points > 0 && thrower instanceof EntityPlayer) {
+            LvlableItem.upEquipment((EntityPlayer) thrower, entity, getStack(), points);
+        }
     }
 }

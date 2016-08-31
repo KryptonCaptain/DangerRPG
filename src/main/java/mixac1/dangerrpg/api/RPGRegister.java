@@ -3,7 +3,7 @@ package mixac1.dangerrpg.api;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.api.item.ILvlableItem;
-import mixac1.dangerrpg.client.render.item.RPGItemRenderModel;
+import mixac1.dangerrpg.client.render.item.RenderRPGItemModel;
 import mixac1.dangerrpg.init.RPGRenderers;
 import mixac1.dangerrpg.item.RPGItemComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
@@ -17,10 +17,10 @@ public abstract class RPGRegister
     /**
      * Advanced method model registering.<br>
      * Also, it is registering {@link ResourceLocation} of texture for model.<br>
-     * This texture will be used, if you extends your model class from {@link RPGItemRenderModel}
+     * This texture will be used, if you extends your model class from {@link RenderRPGItemModel}
      */
     @SideOnly(Side.CLIENT)
-    public static void registerItemRendererModel(Item item, RPGItemRenderModel model, String resDomain, String resPath)
+    public static void registerItemRendererModel(Item item, RenderRPGItemModel model, String resDomain, String resPath)
     {
         MinecraftForgeClient.registerItemRenderer(item, model);
         RPGRenderers.modelTextures.put(item, new ResourceLocation(resDomain, Utils.toString(resPath, item.unlocalizedName, ".png")));
@@ -29,10 +29,10 @@ public abstract class RPGRegister
     /**
      * Advanced method model registering.<br>
      * Also, it is registering {@link ResourceLocation} of texture for model.<br>
-     * This texture will be used, if you extends your model class from {@link RPGItemRenderModel}
+     * This texture will be used, if you extends your model class from {@link RenderRPGItemModel}
      */
     @SideOnly(Side.CLIENT)
-    public static void registerItemRendererModel(Item item, RPGItemRenderModel model, String resFullPath)
+    public static void registerItemRendererModel(Item item, RenderRPGItemModel model, String resFullPath)
     {
         MinecraftForgeClient.registerItemRenderer(item, model);
         RPGRenderers.modelTextures.put(item, new ResourceLocation(Utils.toString(resFullPath, item.unlocalizedName, ".png")));

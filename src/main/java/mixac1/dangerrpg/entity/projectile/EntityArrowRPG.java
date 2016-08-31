@@ -7,7 +7,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityArrowRPG extends EntityMaterial
-{      
+{
     public EntityArrowRPG(World world)
     {
         super(world, new ItemStack(Items.arrow, 1));
@@ -17,7 +17,7 @@ public class EntityArrowRPG extends EntityMaterial
     {
         super(world, new ItemStack(Items.arrow, 1), x, y, z);
     }
-    
+
     public EntityArrowRPG(World world, EntityLivingBase thrower, float speed, float deviation)
     {
         super(world, thrower, new ItemStack(Items.arrow, 1), speed, deviation);
@@ -27,14 +27,13 @@ public class EntityArrowRPG extends EntityMaterial
     {
         super(world, thrower, target, new ItemStack(Items.arrow, 1), speed, deviation);
     }
-    
+
     @Override
-    public void applyEntityHitEffects(EntityLivingBase entity)
+    public float getDamageMul()
     {
-        phisicDamage *= MathHelper.sqrt_double(motionX * motionX + motionY * motionY + motionZ * motionZ);
-        super.applyEntityHitEffects(entity);
+        return MathHelper.sqrt_double(motionX * motionX + motionY * motionY + motionZ * motionZ);
     }
-    
+
     @Override
     public boolean dieAfterEntityHit()
     {

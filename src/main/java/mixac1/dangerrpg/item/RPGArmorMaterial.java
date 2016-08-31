@@ -5,7 +5,7 @@ import java.util.HashMap;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.common.util.EnumHelper;
 
-public class RPGArmorMaterial
+public class RPGArmorMaterial implements IMaterialSpecial
 {
     public static HashMap<ArmorMaterial, RPGArmorMaterial> map = new HashMap<ArmorMaterial, RPGArmorMaterial>();
 
@@ -16,8 +16,8 @@ public class RPGArmorMaterial
     public static final RPGArmorMaterial DIAMOND         = new RPGArmorMaterial("diamond",        ArmorMaterial.DIAMOND);
     public static final RPGArmorMaterial OBSIDIAN        = new RPGArmorMaterial("obsidian",       EnumHelper.addArmorMaterial("OBSIDIAN",     41,   new int[] {4,  8,  6,  4}, 12));
     public static final RPGArmorMaterial BEDROCK         = new RPGArmorMaterial("bedrock",        EnumHelper.addArmorMaterial("BEDROCK",      82,   new int[] {7,  9,  8,  6}, 14));
-    public static final RPGArmorMaterial BLACK_MATTER    = new RPGArmorMaterial("black_matter",   EnumHelper.addArmorMaterial("BLACK_MATTER", 164,  new int[] {8,  10, 10, 8}, 19));
-    public static final RPGArmorMaterial WHITE_MATTER    = new RPGArmorMaterial("white_matter",   EnumHelper.addArmorMaterial("WHITE_MATTER", 206,  new int[] {9,  10, 10, 9}, 22));
+    public static final RPGArmorMaterial BLACK_MATTER    = new RPGArmorMaterial("black_matter",   EnumHelper.addArmorMaterial("BLACK_MATTER", 164,  new int[] {8,  10, 10, 8}, 19), 0x111111);
+    public static final RPGArmorMaterial WHITE_MATTER    = new RPGArmorMaterial("white_matter",   EnumHelper.addArmorMaterial("WHITE_MATTER", 206,  new int[] {9,  10, 10, 9}, 22), 0xffffff);
 
     static
     {
@@ -36,6 +36,7 @@ public class RPGArmorMaterial
     public String name;
 
     public float magicRes;
+    public Integer color;
 
     public RPGArmorMaterial(String name, ArmorMaterial material)
     {
@@ -44,13 +45,34 @@ public class RPGArmorMaterial
         map.put(material, this);
     }
 
+    public RPGArmorMaterial(String name, ArmorMaterial material, Integer color)
+    {
+        this(name, material);
+        this.color = color;
+    }
+
     protected void init(float magicRes)
     {
         this.magicRes = magicRes;
     }
 
-    public static RPGArmorMaterial getRPGArmorMaterial(ArmorMaterial material)
+    public static RPGArmorMaterial armorMaterialHook(ArmorMaterial material)
     {
+        if (!map.containsKey(material)) {
+            map.put(material, new RPGArmorMaterial(material.name(), material));
+        }
         return map.get(material);
+    }
+
+    @Override
+    public boolean hasSpecialColor()
+    {
+        return color != null;
+    }
+
+    @Override
+    public int getSpecialColor()
+    {
+        return color;
     }
 }

@@ -2,7 +2,8 @@ package mixac1.dangerrpg.capability.ia;
 
 import mixac1.dangerrpg.api.item.IADynamic;
 import mixac1.dangerrpg.api.item.IAStatic;
-import mixac1.dangerrpg.util.RPGCommonHelper;
+import mixac1.dangerrpg.hook.HookArmorSystem;
+import mixac1.dangerrpg.init.RPGOther;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -44,15 +45,6 @@ public class ItemAttributes
 
     public static final IAStatic SHOT_POWER = new IAStatic("shot_power");
 
-    public static final IAStatic MIN_SHOT_POWER = new IAStatic("min_shot_power")
-    {
-        @Override
-        public boolean isVisibleInInfoBook(ItemStack stack)
-        {
-            return false;
-        }
-    };
-
     public static final IAStatic MELEE_SPEED = new IASpeed("melee_speed", 10F)
     {
         @Override
@@ -71,12 +63,12 @@ public class ItemAttributes
         }
     };
 
-    public static final IAStatic MAGIC = new IAMagic("magic")
+    public static final IAStatic MIN_CUST_TIME = new IAStatic("min_cust_time")
     {
         @Override
-        public String getDispayValue(ItemStack stack, EntityPlayer player)
+        public boolean isVisibleInInfoBook(ItemStack stack)
         {
-            return getStringPlus(get(stack, player));
+            return false;
         }
     };
 
@@ -98,12 +90,14 @@ public class ItemAttributes
         }
     };
 
+    public static final IAStatic MANA_COST = new IAStatic("mana_cost");
+
     public static final IAStatic PHISIC_ARMOR = new IAStatic("phisic_armor")
     {
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return String.format("+%d%c", (int) RPGCommonHelper.calcPhisicResistance(get(stack, player)), '%');
+            return String.format("+%d%c", (int) HookArmorSystem.getArmor(stack, RPGOther.phisic), '%');
         }
     };
 
@@ -112,7 +106,7 @@ public class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return String.format("+%d%c", (int) RPGCommonHelper.calcMagicResistance(get(stack, player)), '%');
+            return String.format("+%d%c", (int) HookArmorSystem.getArmor(stack, RPGOther.magic), '%');
         }
     };
 

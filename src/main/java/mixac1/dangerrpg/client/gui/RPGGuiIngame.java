@@ -6,6 +6,7 @@ import mixac1.dangerrpg.capability.EntityData;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
+import mixac1.dangerrpg.hook.HookArmorSystem;
 import mixac1.dangerrpg.util.RPGCommonHelper;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -170,7 +171,7 @@ public class RPGGuiIngame extends Gui
         {
             drawTexturedModalRect(offsetX + invert(barOffsetX), offsetY + barOffsetY + yFal, barOffsetU, barOffsetV + barHeight * 2, barWidth, barHeight, isInverted);
 
-            curr = RPGCommonHelper.calcTotalPhisicResistance(entity);
+            curr = HookArmorSystem.getTotalPhisicArmor();
             proc = getProcent(curr, 100F, healthBarWidth);
             if (proc > 0) {
                 drawTexturedModalRect(offsetX + invert(healthBarOffsetX), offsetY + healthBarOffsetY + yFal, healthBarOffsetU, healthBarOffsetV + healthBarHeight * 5, proc, healthBarHeight, isInverted);
@@ -183,7 +184,7 @@ public class RPGGuiIngame extends Gui
         if (entity instanceof EntityPlayer) {
             drawTexturedModalRect(offsetX + invert(barOffsetX), offsetY + barOffsetY + yFal, barOffsetU, barOffsetV + barHeight * 3, barWidth, barHeight, isInverted);
 
-            curr = RPGCommonHelper.calcTotalMagicResistance(entity);
+            curr = HookArmorSystem.getTotalMagicArmor();
             proc = getProcent(curr, 100F, healthBarWidth);
             if (proc > 0) {
                 drawTexturedModalRect(offsetX + invert(healthBarOffsetX), offsetY + healthBarOffsetY + yFal, healthBarOffsetU, healthBarOffsetV + healthBarHeight * 6, proc, healthBarHeight, isInverted);
@@ -275,8 +276,8 @@ public class RPGGuiIngame extends Gui
                 drawTexturedModalRect(offsetX, offsetY, chargeOffsetU, chargeOffsetV + chargeHeight, proc, chargeHeight);
             }
 
-            if (ItemAttributes.MIN_SHOT_POWER.hasIt(stack)) {
-                float tmp = ItemAttributes.MIN_SHOT_POWER.get(stack, mc.thePlayer);
+            if (ItemAttributes.MIN_CUST_TIME.hasIt(stack)) {
+                float tmp = ItemAttributes.MIN_CUST_TIME.get(stack, mc.thePlayer);
                 proc = getProcent(maxCharge * tmp, maxCharge, chargeWidth);
                 drawTexturedModalRect(offsetX + proc, offsetY, chargeOffsetU, chargeOffsetV + chargeHeight * 2, 1, chargeHeight);
             }

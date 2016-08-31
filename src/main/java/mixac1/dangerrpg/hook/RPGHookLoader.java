@@ -14,10 +14,14 @@ public class RPGHookLoader extends HookLoader
     @Override
     public void registerHooks()
     {
-        registerHookContainer(RPGItemHooks.class.getName());
+        registerHookContainer(HookItems.class.getName());
 
-        registerHookContainer(RPGEntityHooks.class.getName());
+        registerHookContainer(HookEntities.class.getName());
 
-        registerHookContainer(FixIncorrectMotionHooks.class.getName());
+        registerHookContainer(HookArmorSystem.class.getName());
+
+        registerHookContainer(HookItemBow.class.getName());
+
+        registerHookContainer(HookFixEntityMotion.class.getName());
     }
 }

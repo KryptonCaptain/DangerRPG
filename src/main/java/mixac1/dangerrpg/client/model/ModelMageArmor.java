@@ -1,6 +1,5 @@
 package mixac1.dangerrpg.client.model;
 
-import mixac1.dangerrpg.client.ModelBipedColor;
 import net.minecraft.client.model.ModelRenderer;
 
 public class ModelMageArmor extends ModelBipedColor
@@ -17,7 +16,7 @@ public class ModelMageArmor extends ModelBipedColor
         this.cape = new ModelRenderer(this, 0, 32);
         this.cape.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.cape.addBox(-5.0F, 11.0F, -2.1F, 10, 7, 5, scale);
-        
+
         this.bipedBody.addChild(this.cape);
     }
 }

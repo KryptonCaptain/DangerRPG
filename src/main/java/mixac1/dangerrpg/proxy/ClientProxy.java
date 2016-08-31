@@ -6,15 +6,18 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
+import mixac1.dangerrpg.client.RPGEntityFXManager;
+import mixac1.dangerrpg.client.RPGEntityFXManager.IEntityFXType;
 import mixac1.dangerrpg.init.RPGEvents;
 import mixac1.dangerrpg.init.RPGKeyBinds;
 import mixac1.dangerrpg.init.RPGRenderers;
+import mixac1.dangerrpg.util.RPGTicks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class ClientProxy extends CommonProxy
 {
-    protected int tickClient = 0;
+    private RPGTicks clientTicks = new RPGTicks();
 
     @Override
     public void preInit(FMLPreInitializationEvent e)
@@ -57,5 +60,29 @@ public class ClientProxy extends CommonProxy
     {
         return (ctx.side == Side.SERVER) ? super.getEntityByID(ctx, entityId) :
             getClientPlayer().worldObj.getEntityByID(entityId);
+    }
+
+    @Override
+    protected RPGTicks getRPGTicks(Side side)
+    {
+        return side == Side.SERVER ? serverTicks : clientTicks;
+    }
+
+    @Override
+    public void spawnEntityFX(IEntityFXType fx, double x, double y, double z, double motionX, double motionY, double motionZ)
+    {
+        RPGEntityFXManager.spawnEntityFX(fx, x, y, z, motionX, motionY, motionZ);
+    }
+
+    @Override
+    public void spawnEntityFX(IEntityFXType fx, double x, double y, double z, double motionX, double motionY, double motionZ, int color)
+    {
+        RPGEntityFXManager.spawnEntityFX(fx, x, y, z, motionX, motionY, motionZ, color);
+    }
+
+    @Override
+    public void spawnEntityFX(IEntityFXType fx, double x, double y, double z, double motionX, double motionY, double motionZ, int color, int maxAge)
+    {
+        RPGEntityFXManager.spawnEntityFX(fx, x, y, z, motionX, motionY, motionZ, color, maxAge);
     }
 }

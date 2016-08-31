@@ -8,19 +8,24 @@ import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.api.RPGRegister;
 import mixac1.dangerrpg.client.render.entity.RenderArrowRPG;
 import mixac1.dangerrpg.client.render.entity.RenderBit;
+import mixac1.dangerrpg.client.render.entity.RenderMagicOrb;
 import mixac1.dangerrpg.client.render.entity.RenderMaterial;
 import mixac1.dangerrpg.client.render.entity.RenderThrowKnife;
 import mixac1.dangerrpg.client.render.entity.RenderThrowTomahawk;
-import mixac1.dangerrpg.client.render.item.RPGItemRenderIcon;
-import mixac1.dangerrpg.client.render.item.RPGItemRenderModel;
-import mixac1.dangerrpg.client.render.item.RenderHammer;
+import mixac1.dangerrpg.client.render.item.RenderRPGItemIcon;
+import mixac1.dangerrpg.client.render.item.RenderRPGItemModel;
 import mixac1.dangerrpg.client.render.item.RenderKatana;
 import mixac1.dangerrpg.client.render.item.RenderKnife;
 import mixac1.dangerrpg.client.render.item.RenderLongItem;
+import mixac1.dangerrpg.client.render.item.RenderNormalModel.RenderHammer;
 import mixac1.dangerrpg.client.render.item.RenderShadowBow;
 import mixac1.dangerrpg.client.render.item.RenderSniperBow;
+import mixac1.dangerrpg.client.render.item.RenderStaff;
+import mixac1.dangerrpg.client.render.item.RenderStaff.RenderPowerStaff;
 import mixac1.dangerrpg.entity.projectile.EntityArrowRPG;
+import mixac1.dangerrpg.entity.projectile.EntityMagicOrb;
 import mixac1.dangerrpg.entity.projectile.EntityMaterial;
+import mixac1.dangerrpg.entity.projectile.EntityPowerMagicOrb;
 import mixac1.dangerrpg.entity.projectile.EntityProjectile;
 import mixac1.dangerrpg.entity.projectile.EntitySniperArrow;
 import mixac1.dangerrpg.entity.projectile.EntityThrowKnife;
@@ -93,10 +98,24 @@ public abstract class RPGRenderers
         registerItemRendererE(RPGItems.hammerBlackMatter, RenderHammer.INSTANCE);
         registerItemRendererE(RPGItems.hammerWhiteMatter, RenderHammer.INSTANCE);
 
+        registerItemRendererE(RPGItems.staffGold,        RenderStaff.INSTANCE);
+        registerItemRendererE(RPGItems.staffDiamond,     RenderStaff.INSTANCE);
+        registerItemRendererE(RPGItems.staffObsidian,    RenderStaff.INSTANCE);
+        registerItemRendererE(RPGItems.staffBedrock,     RenderStaff.INSTANCE);
+        registerItemRendererE(RPGItems.staffBlackMatter, RenderStaff.INSTANCE);
+        registerItemRendererE(RPGItems.staffWhiteMatter, RenderStaff.INSTANCE);
+
+        registerItemRendererE(RPGItems.powerStaffGold,        RenderPowerStaff.INSTANCE);
+        registerItemRendererE(RPGItems.powerStaffDiamond,     RenderPowerStaff.INSTANCE);
+        registerItemRendererE(RPGItems.powerStaffObsidian,    RenderPowerStaff.INSTANCE);
+        registerItemRendererE(RPGItems.powerStaffBedrock,     RenderPowerStaff.INSTANCE);
+        registerItemRendererE(RPGItems.powerStaffBlackMatter, RenderPowerStaff.INSTANCE);
+        registerItemRendererE(RPGItems.powerStaffWhiteMatter, RenderPowerStaff.INSTANCE);
+
         MinecraftForgeClient.registerItemRenderer(RPGItems.shadowBow, RenderShadowBow.INSTANCE);
         MinecraftForgeClient.registerItemRenderer(RPGItems.sniperBow, RenderSniperBow.INSTANCE);
 
-        MinecraftForgeClient.registerItemRenderer(RPGItems.testWand,  RPGItemRenderIcon.INSTANCE);
+        MinecraftForgeClient.registerItemRenderer(RPGItems.testWand,  RenderRPGItemIcon.INSTANCE);
     }
 
     private static void registerEntityRenderingHandler()
@@ -109,6 +128,9 @@ public abstract class RPGRenderers
 
         RenderingRegistry.registerEntityRenderingHandler(EntityThrowKnife.class, RenderThrowKnife.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityThrowTomahawk.class, RenderThrowTomahawk.INSTANCE);
+
+        RenderingRegistry.registerEntityRenderingHandler(EntityMagicOrb.class, RenderMagicOrb.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityPowerMagicOrb.class, RenderMagicOrb.INSTANCE);
     }
 
     private static void registerBlockRenderer()
@@ -116,7 +138,7 @@ public abstract class RPGRenderers
         //ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLvlupTable.class, RenderTestBlock.INSTANCE);
     }
 
-    public static void registerItemRendererE(Item item, RPGItemRenderModel model)
+    public static void registerItemRendererE(Item item, RenderRPGItemModel model)
     {
         RPGRegister.registerItemRendererModel(item, model, "DangerRPG:textures/models/items/");
     }

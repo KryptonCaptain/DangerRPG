@@ -93,7 +93,7 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
                 flag |= addAttribute(ItemAttributes.SHOT_POWER, itemAttributes);
                 flag |= addAttribute(ItemAttributes.MELEE_SPEED, itemAttributes);
                 flag |= addAttribute(ItemAttributes.SHOT_SPEED, itemAttributes);
-                flag |= addAttribute(ItemAttributes.MAGIC, itemAttributes);
+                flag |= addAttribute(ItemAttributes.MANA_COST, itemAttributes);
                 flag |= addAttribute(ItemAttributes.REACH, itemAttributes);
                 flag |= addAttribute(ItemAttributes.KNOCKBACK, itemAttributes);
 

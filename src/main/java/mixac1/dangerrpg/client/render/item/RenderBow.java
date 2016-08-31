@@ -9,7 +9,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-public class RenderBow extends RPGItemRenderIcon
+public class RenderBow extends RenderRPGItemIcon
 {
     public static final RenderBow INSTANCE = new RenderBow();
     

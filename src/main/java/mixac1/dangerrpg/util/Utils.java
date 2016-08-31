@@ -1,9 +1,12 @@
 package mixac1.dangerrpg.util;
 
 import java.util.Collections;
+import java.util.Random;
 
 public abstract class Utils
 {
+    public static Random rand = new Random();
+
     public static <T> Iterable<T> safe(Iterable<T> iterable)
     {
         return iterable == null ? Collections.<T>emptyList() : iterable;
@@ -47,5 +50,34 @@ public abstract class Utils
     public static double getDiagonal(double x, double y, double z)
     {
         return Math.sqrt(x * x + y * y + z * z);
+    }
+
+    public static int randInt(Random rand, int bound, boolean isAroundZero)
+    {
+        if (isAroundZero) {
+            return rand.nextInt(bound * 2) - bound;
+        }
+        else {
+            return rand.nextInt(bound);
+        }
+    }
+
+    public static int randInt(int bound, boolean isAroundZero)
+    {
+        return randInt(rand, bound, isAroundZero);
+    }
+
+    /**
+     * @param accuracy - count of zero after dot
+     */
+    public static double randDouble(Random rand, double bound, int accuracy, boolean isAroundZero)
+    {
+        accuracy = (int) Math.pow(10, accuracy);
+        return randInt(rand, (int) (accuracy * bound), isAroundZero) / accuracy;
+    }
+
+    public static double randDouble(double bound, int accuracy, boolean isAroundZero)
+    {
+        return randDouble(rand, bound, accuracy, isAroundZero);
     }
 }

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.common.util.EnumHelper;
 
-public class RPGToolMaterial
+public class RPGToolMaterial implements IMaterialSpecial
 {
     public static HashMap<ToolMaterial, RPGToolMaterial> map = new HashMap<ToolMaterial, RPGToolMaterial>();
 
@@ -16,8 +16,8 @@ public class RPGToolMaterial
     public static final RPGToolMaterial DIAMOND         = new RPGToolMaterial("diamond",        ToolMaterial.EMERALD);
     public static final RPGToolMaterial OBSIDIAN        = new RPGToolMaterial("obsidian",       EnumHelper.addToolMaterial("OBSIDIAN",     3, 2000,  8.0F,  5.0F,  12));
     public static final RPGToolMaterial BEDROCK         = new RPGToolMaterial("bedrock",        EnumHelper.addToolMaterial("BEDROCK",      3, 4000,  12.0F, 11.0F, 14));
-    public static final RPGToolMaterial BLACK_MATTER    = new RPGToolMaterial("black_matter",   EnumHelper.addToolMaterial("BLACK_MATTER", 3, 8000,  18.0F, 21.0F, 19));
-    public static final RPGToolMaterial WHITE_MATTER    = new RPGToolMaterial("white_matter",   EnumHelper.addToolMaterial("WHITE_MATTER", 3, 10000, 24.0F, 36.0F, 22));
+    public static final RPGToolMaterial BLACK_MATTER    = new RPGToolMaterial("black_matter",   EnumHelper.addToolMaterial("BLACK_MATTER", 3, 8000,  18.0F, 21.0F, 19), 0x000000);
+    public static final RPGToolMaterial WHITE_MATTER    = new RPGToolMaterial("white_matter",   EnumHelper.addToolMaterial("WHITE_MATTER", 3, 10000, 24.0F, 36.0F, 22), 0xffffff);
 
     static
     {
@@ -35,6 +35,8 @@ public class RPGToolMaterial
     public ToolMaterial material;
     public String name;
 
+    public Integer color;
+
     public RPGToolMaterial(String name, ToolMaterial material)
     {
         this.name = name;
@@ -42,13 +44,34 @@ public class RPGToolMaterial
         map.put(material, this);
     }
 
+    public RPGToolMaterial(String name, ToolMaterial material, Integer color)
+    {
+        this(name, material);
+        this.color = color;
+    }
+
     protected void init()
     {
 
     }
 
-    public static RPGToolMaterial getRPGToolMaterial(ToolMaterial material)
+    public static RPGToolMaterial toolMaterialHook(ToolMaterial material)
     {
+        if (!map.containsKey(material)) {
+            map.put(material, new RPGToolMaterial(material.name(), material));
+        }
         return map.get(material);
+    }
+
+    @Override
+    public boolean hasSpecialColor()
+    {
+        return color != null;
+    }
+
+    @Override
+    public int getSpecialColor()
+    {
+        return color;
     }
 }

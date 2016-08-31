@@ -16,7 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class ItemMageArmor extends RPGItemArmor
+public class ItemMageArmor extends ItemRPGArmor
 {
     protected int DEFAULT_COLOR = 0x3371e4;
 

@@ -8,6 +8,8 @@ item.sword_bedrock.name=Bedrock Sword
 item.sword_black_matter.name=Black Matter Sword
 item.sword_white_matter.name=White Matter Sword
 
+item.naginata_wood.name=Wood Naginata
+item.naginata_stone.name=Stone Naginata
 item.naginata_iron.name=Iron Naginata
 item.naginata_gold.name=Gold Naginata
 item.naginata_diamond.name=Diamond Naginata
@@ -16,6 +18,8 @@ item.naginata_bedrock.name=Bedrock Naginata
 item.naginata_black_matter.name=Black Matter Naginata
 item.naginata_white_matter.name=White Matter Naginata
 
+item.katana_wood.name=Wood Katana
+item.katana_stone.name=Stone Katana
 item.katana_iron.name=Iron Katana
 item.katana_gold.name=Gold Katana
 item.katana_diamond.name=Diamond Katana
@@ -24,6 +28,8 @@ item.katana_bedrock.name=Bedrock Katana
 item.katana_black_matter.name=Black Matter Katana
 item.katana_white_matter.name=White Matter Katana
 
+item.scythe_wood.name=Wood Scythe
+item.scythe_stone.name=Stone Scythe
 item.scythe_iron.name=Iron Scythe
 item.scythe_gold.name=Gold Scythe
 item.scythe_diamond.name=Diamond Scythe
@@ -32,6 +38,8 @@ item.scythe_bedrock.name=Bedrock Scythe
 item.scythe_black_matter.name=Black Matter Scythe
 item.scythe_white_matter.name=White Matter Scythe
 
+item.hammer_wood.name=Wood Hammer
+item.hammer_stone.name=Stone Hammer
 item.hammer_iron.name=Iron Hammer
 item.hammer_gold.name=Gold Hammer
 item.hammer_diamond.name=Diamond Hammer
@@ -40,6 +48,8 @@ item.hammer_bedrock.name=Bedrock Hammer
 item.hammer_black_matter.name=Black Matter Hammer
 item.hammer_white_matter.name=White Matter Hammer
 
+item.tomahawk_wood.name=Wood Tomahawk
+item.tomahawk_stone.name=Stone Tomahawk
 item.tomahawk_iron.name=Iron Tomahawk
 item.tomahawk_gold.name=Gold Tomahawk
 item.tomahawk_diamond.name=Diamond Tomahawk
@@ -48,6 +58,8 @@ item.tomahawk_bedrock.name=Bedrock Tomahawk
 item.tomahawk_black_matter.name=Black Matter Tomahawk
 item.tomahawk_white_matter.name=White Matter Tomahawk
 
+item.knife_wood.name=Wood Knife
+item.knife_stone.name=Stone Knife
 item.knife_iron.name=Iron Knife
 item.knife_gold.name=Gold Knife
 item.knife_diamond.name=Diamond Knife
@@ -76,6 +88,8 @@ item.shovel_bedrock.name=Bedrock Shovel
 item.shovel_black_matter.name=Black Matter Shovel
 item.shovel_white_matter.name=White Matter Shovel
 
+item.multitool_wood.name=Wood Multitool
+item.multitool_stone.name=Stone Multitool
 item.multitool_iron.name=Iron Multitool
 item.multitool_gold.name=Gold Multitool
 item.multitool_diamond.name=Diamond Multitool
@@ -83,6 +97,20 @@ item.multitool_obsidian.name=Obsidian Multitool
 item.multitool_bedrock.name=Bedrock Multitool
 item.multitool_black_matter.name=Black Matter Multitool
 item.multitool_white_matter.name=White Matter Multitool
+
+item.staff_gold.name=Gold Staff
+item.staff_diamond.name=Diamond Staff
+item.staff_obsidian.name=Obsidian Staff
+item.staff_bedrock.name=Bedrock Staff
+item.staff_black_matter.name=Black Matter Staff
+item.staff_white_matter.name=White Matter Staff
+
+item.power_staff_gold.name=Gold Power Staff
+item.power_staff_diamond.name=Diamond Power Staff
+item.power_staff_obsidian.name=Obsidian Power Staff
+item.power_staff_bedrock.name=Bedrock Power Staff
+item.power_staff_black_matter.name=Black Matter Power Staff
+item.power_staff_white_matter.name=White Matter Power Staff
 
 item.armor_obsidian_helmet.name=Obsidian Helmet
 item.armor_obsidian_chestplate.name=Obsidian Chestplate
@@ -166,9 +194,9 @@ ia.shot_damage=Shot Damage
 ia.shot_power=Shot Power
 ia.melee_speed=Attack Speed
 ia.shot_speed=Shot Speed
-ia.magic=Magic
 ia.knockback=Knockback
 ia.reach=Reach
+ia.mana_cost=Mana Cost
 
 ia.ench=Enchantability
 ia.durab=Durability

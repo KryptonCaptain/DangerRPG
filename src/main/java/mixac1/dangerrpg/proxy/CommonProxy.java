@@ -4,6 +4,8 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import cpw.mods.fml.relauncher.Side;
+import mixac1.dangerrpg.client.RPGEntityFXManager.IEntityFXType;
 import mixac1.dangerrpg.init.RPGBlocks;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGConfig;
@@ -12,12 +14,13 @@ import mixac1.dangerrpg.init.RPGEvents;
 import mixac1.dangerrpg.init.RPGGuiHandlers;
 import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGNetwork;
+import mixac1.dangerrpg.util.RPGTicks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class CommonProxy
 {
-    protected int tick;
+    protected RPGTicks serverTicks = new RPGTicks();
 
     public void preInit(FMLPreInitializationEvent e)
     {
@@ -59,15 +62,33 @@ public class CommonProxy
         return getPlayer(ctx).worldObj.getEntityByID(entityId);
     }
 
-    public void fireTick()
+    protected RPGTicks getRPGTicks(Side side)
     {
-        if (++tick > 20) {
-            tick = 0;
-        }
+        return serverTicks;
     }
 
-    public int getTick()
+    public void fireTick(Side side)
     {
-        return tick;
+        getRPGTicks(side).fireTick();
+    }
+
+    public int getTick(Side side)
+    {
+        return getRPGTicks(side).getTick();
+    }
+
+    public void spawnEntityFX(IEntityFXType fx, double x, double y, double z, double motionX, double motionY, double motionZ)
+    {
+
+    }
+
+    public void spawnEntityFX(IEntityFXType fx, double x, double y, double z, double motionX, double motionY, double motionZ, int color)
+    {
+
+    }
+
+    public void spawnEntityFX(IEntityFXType fx, double x, double y, double z, double motionX, double motionY, double motionZ, int color, int maxAge)
+    {
+
     }
 }

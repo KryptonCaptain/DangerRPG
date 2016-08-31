@@ -91,4 +91,26 @@ public class RegIAEvent extends Event
             super(item, map);
         }
     }
+
+    /**
+     * It is fires whenever a ItemGun (ItemStaff, etc) registering own default {@link ItemAttribute}
+     */
+    public static class ItemGunIAEvent extends RegIAEvent
+    {
+        public ItemGunIAEvent(Item item, ItemAttributesMap map)
+        {
+            super(item, map);
+        }
+    }
+
+    /**
+     * It is fires whenever a ItemGun (ItemStaff, etc) registering own default {@link ItemAttribute}
+     */
+    public static class ItemStaffIAEvent extends RegIAEvent
+    {
+        public ItemStaffIAEvent(Item item, ItemAttributesMap map)
+        {
+            super(item, map);
+        }
+    }
 }

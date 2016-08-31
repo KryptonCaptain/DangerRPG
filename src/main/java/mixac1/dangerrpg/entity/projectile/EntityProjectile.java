@@ -5,7 +5,7 @@ import java.util.List;
 import cpw.mods.fml.common.registry.IThrowableEntity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import mixac1.dangerrpg.capability.LvlableItem;
+import mixac1.dangerrpg.util.RPGCommonHelper;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -32,6 +32,7 @@ public class EntityProjectile extends EntityArrow implements IThrowableEntity
     protected String throwerName;
 
     {
+        damage = 0;
         arrowShake = getMaxUntouchability();
         ticksExisted = -1;
         renderDistanceWeight = 10.0D;
@@ -54,6 +55,7 @@ public class EntityProjectile extends EntityArrow implements IThrowableEntity
         this.thrower = thrower;
 
         setLocationAndAngles(thrower.posX, thrower.posY + thrower.getEyeHeight(), thrower.posZ, thrower.rotationYaw, thrower.rotationPitch);
+
         posX -= MathHelper.cos(rotationYaw / 180.0F * (float)Math.PI) * 0.16F;
         posY -= 0.1;
         posZ -= MathHelper.sin(rotationYaw / 180.0F * (float)Math.PI) * 0.16F;
@@ -151,6 +153,7 @@ public class EntityProjectile extends EntityArrow implements IThrowableEntity
 
         MovingObjectPosition mop = findMovingObjectPosition();
         if (mop != null) {
+            preInpact(mop);
             if (mop.entityHit != null) {
                 onEntityHit((EntityLivingBase) mop.entityHit);
                 if (dieAfterEntityHit()) {
@@ -164,6 +167,7 @@ public class EntityProjectile extends EntityArrow implements IThrowableEntity
                 }
             }
             arrowShake = getMaxUntouchability();
+            postInpact(mop);
         }
 
         posX += motionX;
@@ -258,22 +262,25 @@ public class EntityProjectile extends EntityArrow implements IThrowableEntity
         return mop;
     }
 
+    public void preInpact(MovingObjectPosition mop)
+    {
+
+    }
+
+    public void postInpact(MovingObjectPosition mop)
+    {
+
+    }
+
     public void onEntityHit(EntityLivingBase entity)
     {
         if (!worldObj.isRemote) {
-            float points = entity.getHealth();
-
-            applyEntityHitEffects(entity);
-
-            points -= entity.getHealth();
-            if (points > 0 && thrower instanceof EntityPlayer) {
-                LvlableItem.upEquipment((EntityPlayer) thrower, entity, null, points);
-            }
+            applyEntityHitEffects(entity, getDamageMul());
         }
         bounceBack();
     }
 
-    public void applyEntityHitEffects(EntityLivingBase entity)
+    public void applyEntityHitEffects(EntityLivingBase entity, float dmgMul)
     {
         if (isBurning() && !(entity instanceof EntityEnderman)) {
             entity.setFire(5);
@@ -287,21 +294,13 @@ public class EntityProjectile extends EntityArrow implements IThrowableEntity
                 ((EntityPlayerMP) thrower).playerNetServerHandler.sendPacket(new S2BPacketChangeGameState(6, 0));
             }
 
-            int knockback = EnchantmentHelper.getKnockbackModifier(thrower, entity);
-            if (knockback != 0) {
-                entity.addVelocity(-MathHelper.sin(rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F, 0.1D, MathHelper.cos(rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F);
-                motionX *= 0.6D;
-                motionZ *= 0.6D;
-                setSprinting(false);
-            }
-
             int fire = EnchantmentHelper.getFireAspectModifier(thrower);
             if (fire > 0 && !entity.isBurning()) {
                 entity.setFire(1);
             }
         }
-        DamageSource dmgSource = DamageSource.causeIndirectMagicDamage(this, thrower == null ? this : thrower);
-        entity.attackEntityFrom(dmgSource, (float) damage);
+        DamageSource dmgSource = RPGCommonHelper.causeRPGMagicDamage(this, thrower == null ? this : thrower);
+        entity.attackEntityFrom(dmgSource, (float) damage * dmgMul);
     }
 
     public void onGroundHit(MovingObjectPosition mop)
@@ -353,6 +352,11 @@ public class EntityProjectile extends EntityArrow implements IThrowableEntity
         motionZ *= -0.05D;
     }
 
+    public float getDamageMul()
+    {
+        return 1;
+    }
+
     @Override
     public Entity getThrower()
     {
@@ -363,7 +367,8 @@ public class EntityProjectile extends EntityArrow implements IThrowableEntity
     }
 
     @Override
-    public void setThrower(Entity entity) {
+    public void setThrower(Entity entity)
+    {
         if (entity instanceof EntityLivingBase) {
             thrower = (EntityLivingBase) entity;
         }
@@ -437,7 +442,10 @@ public class EntityProjectile extends EntityArrow implements IThrowableEntity
         return 6000;
     }
 
-    public void playHitSound() {}
+    public void playHitSound()
+    {
+
+    }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt)

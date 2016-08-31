@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
-public class RenderLongItem extends RPGItemRenderIcon
+public class RenderLongItem extends RenderRPGItemIcon
 {    
     public static final RenderLongItem INSTANCE = new RenderLongItem();
     
