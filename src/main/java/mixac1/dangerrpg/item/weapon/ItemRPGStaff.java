@@ -4,10 +4,11 @@ import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemStaff;
 import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.LvlableItem.ItemAttributesMap;
+import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.client.RPGEntityFXManager;
 import mixac1.dangerrpg.entity.projectile.EntityMagicOrb;
 import mixac1.dangerrpg.init.RPGItems;
-import mixac1.dangerrpg.init.RPGOther;
+import mixac1.dangerrpg.init.RPGOther.RPGCreativeTabs;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGStaffComponent;
 import mixac1.dangerrpg.item.RPGToolMaterial;
@@ -36,7 +37,7 @@ public class ItemRPGStaff extends ItemSword implements ILvlableItemStaff, IHasBo
         this.staffComponent = staffComponent;
         setUnlocalizedName(RPGItems.getRPGName(getItemComponent(this), getToolMaterial(this)));
         setTextureName(Utils.toString(DangerRPG.MODID, ":weapons/range/", unlocalizedName));
-        setCreativeTab(RPGOther.tabDangerRPG);
+        setCreativeTab(RPGCreativeTabs.tabRPGAmunitions);
         setMaxStackSize(1);
     }
 
@@ -86,7 +87,9 @@ public class ItemRPGStaff extends ItemSword implements ILvlableItemStaff, IHasBo
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
     {
-        player.setItemInUse(stack, getMaxItemUseDuration(stack));
+        if (RPGCommonHelper.spendMana(player, ItemAttributes.MANA_COST.get(stack, player))) {
+            player.setItemInUse(stack, getMaxItemUseDuration(stack));
+        }
         return stack;
     }
 

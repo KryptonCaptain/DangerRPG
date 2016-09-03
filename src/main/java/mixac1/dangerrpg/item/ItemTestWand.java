@@ -2,7 +2,7 @@ package mixac1.dangerrpg.item;
 
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
-import mixac1.dangerrpg.init.RPGOther;
+import mixac1.dangerrpg.init.RPGOther.RPGCreativeTabs;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,7 +17,7 @@ public class ItemTestWand extends Item
     {
         setUnlocalizedName(name);
         setTextureName(Utils.toString(DangerRPG.MODID, ":", unlocalizedName));
-        setCreativeTab(RPGOther.tabDangerRPG);
+        setCreativeTab(RPGCreativeTabs.tabRPGAmunitions);
         setMaxStackSize(1);
     }
 

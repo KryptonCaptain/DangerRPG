@@ -14,6 +14,7 @@ import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGConfig;
 import mixac1.dangerrpg.init.RPGNetwork;
+import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.network.MsgSyncEntityData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -108,7 +109,7 @@ public class EntityData implements IExtendedEntityProperties
         }
 
         for (int i = 0; i < count; ++i) {
-            int rand = DangerRPG.rand.nextInt(pas.size());
+            int rand = RPGOther.rand.nextInt(pas.size());
             pas.get(rand).up(entity, null, false);
             if (pas.get(rand).getLvl(entity) <= 1) {
                 pas.remove(rand);

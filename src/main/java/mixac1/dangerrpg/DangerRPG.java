@@ -1,7 +1,5 @@
 package mixac1.dangerrpg;
 
-import java.util.Random;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,8 +32,6 @@ public class DangerRPG
     @SidedProxy(clientSide = "mixac1.dangerrpg.proxy.ClientProxy",
                 serverSide = "mixac1.dangerrpg.proxy.CommonProxy")
     public static CommonProxy  proxy;
-
-    public static final Random rand = new Random();
 
     private static final Logger logger = LogManager.getLogger(DangerRPG.MODID);
 

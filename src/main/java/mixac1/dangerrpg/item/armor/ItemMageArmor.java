@@ -16,7 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class ItemMageArmor extends ItemRPGArmor
+public class ItemMageArmor extends ItemRPGArmor implements IColorArmor
 {
     protected int DEFAULT_COLOR = 0x3371e4;
 
@@ -80,6 +80,12 @@ public class ItemMageArmor extends ItemRPGArmor
     }
 
     @Override
+    public boolean hasColor(ItemStack stack)
+    {
+        return !stack.hasTagCompound() ? false : (!stack.getTagCompound().hasKey("display", 10) ? false : stack.getTagCompound().getCompoundTag("display").hasKey("color", 3));
+    }
+
+    @Override
     public int getColor(ItemStack stack)
     {
         NBTTagCompound nbt = stack.getTagCompound();
@@ -91,5 +97,38 @@ public class ItemMageArmor extends ItemRPGArmor
             NBTTagCompound nbtColor = nbt.getCompoundTag("display");
             return nbtColor == null ? DEFAULT_COLOR : (nbtColor.hasKey("color", 3) ? nbtColor.getInteger("color") : DEFAULT_COLOR);
         }
+    }
+
+    @Override
+    public void removeColor(ItemStack stack)
+    {
+        NBTTagCompound nbt = stack.getTagCompound();
+
+        if (nbt != null) {
+            NBTTagCompound nbtColor = nbt.getCompoundTag("display");
+
+            if (nbtColor.hasKey("color")) {
+                nbtColor.removeTag("color");
+            }
+        }
+    }
+
+    @Override
+    public void func_82813_b(ItemStack stack, int color)
+    {
+        NBTTagCompound nbt = stack.getTagCompound();
+
+        if (nbt == null) {
+            nbt = new NBTTagCompound();
+            stack.setTagCompound(nbt);
+        }
+
+        NBTTagCompound nbtColor = nbt.getCompoundTag("display");
+
+        if (!nbt.hasKey("display", 10)) {
+            nbt.setTag("display", nbtColor);
+        }
+
+        nbtColor.setInteger("color", color);
     }
 }

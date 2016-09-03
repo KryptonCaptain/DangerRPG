@@ -12,10 +12,14 @@ import mixac1.dangerrpg.capability.GemableItem;
 import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
+import mixac1.dangerrpg.init.RPGOther.RPGItemRarity;
+import mixac1.dangerrpg.item.IMaterialSpecial;
+import mixac1.dangerrpg.util.RPGCommonHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -78,6 +82,30 @@ public class HookItems
             return PlayerAttributes.SPEED_COUNTER.getValue(entity) != 0;
         }
         return false;
+    }
+
+    @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
+    public static EnumRarity getRarity(Item item, ItemStack stack, @ReturnValue EnumRarity returnValue)
+    {
+        if (LvlableItem.isLvlable(stack)
+                && (returnValue == EnumRarity.common
+                || stack.isItemEnchanted() && returnValue == EnumRarity.rare)) {
+            IMaterialSpecial mat = RPGCommonHelper.getMaterialSpecial(stack);
+            if (mat != null) {
+                return mat.getItemRarity();
+            }
+        }
+
+        if (returnValue == EnumRarity.uncommon) {
+            return RPGItemRarity.uncommon;
+        }
+        else if (returnValue == EnumRarity.rare) {
+            return RPGItemRarity.rare;
+        }
+        else if (returnValue == EnumRarity.epic) {
+            return RPGItemRarity.epic;
+        }
+        return returnValue;
     }
 }
 

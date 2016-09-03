@@ -120,112 +120,134 @@ public class RPGGuiIngame extends Gui
         float curr, max;
         String s;
 
-        // T0D0: health
-        {
-            drawTexturedModalRect(offsetX + invert(barOffsetX), offsetY + barOffsetY + yFal, barOffsetU, barOffsetV, barWidth, barHeight, isInverted);
+        if (!(entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isCreativeMode)) {
 
-            curr = entity.getHealth();
-            float absorbHealth = entity.getAbsorptionAmount();
-            max = entity.getMaxHealth() + absorbHealth;
-            if (max > 0) {
-                proc = getProcent(curr, max, healthBarWidth);
-                int procAbsorb = getProcent(absorbHealth, max, healthBarWidth);
-                if (entity.isPotionActive(Potion.wither)) {
-                    drawTexturedModalRect(offsetX + invert(healthBarOffsetX), offsetY + healthBarOffsetY + yFal, healthBarOffsetU, healthBarOffsetV + healthBarHeight * 3, healthBarWidth, healthBarHeight, isInverted);
+            // T0D0: health
+            {
+                drawTexturedModalRect(offsetX + invert(barOffsetX), offsetY + barOffsetY + yFal, barOffsetU, barOffsetV, barWidth, barHeight, isInverted);
+
+                curr = entity.getHealth();
+                float absorbHealth = entity.getAbsorptionAmount();
+                max = entity.getMaxHealth() + absorbHealth;
+                if (max > 0) {
+                    proc = getProcent(curr, max, healthBarWidth);
+                    int procAbsorb = getProcent(absorbHealth, max, healthBarWidth);
+                    if (entity.isPotionActive(Potion.wither)) {
+                        drawTexturedModalRect(offsetX + invert(healthBarOffsetX), offsetY + healthBarOffsetY + yFal, healthBarOffsetU, healthBarOffsetV + healthBarHeight * 3, healthBarWidth, healthBarHeight, isInverted);
+                    }
+                    else {
+                        if (proc > 0) {
+                            if (entity.isPotionActive(Potion.poison)) {
+                                drawTexturedModalRect(offsetX + invert(healthBarOffsetX), offsetY + healthBarOffsetY + yFal, healthBarOffsetU, healthBarOffsetV + healthBarHeight * 2, proc, healthBarHeight, isInverted);
+                            }
+                            else {
+                                drawTexturedModalRect(offsetX + invert(healthBarOffsetX), offsetY + healthBarOffsetY + yFal, healthBarOffsetU, healthBarOffsetV, proc, healthBarHeight, isInverted);
+                            }
+                        }
+                        if (procAbsorb > 0) {
+                            drawTexturedModalRect(offsetX + invert(healthBarOffsetX) + proc, offsetY + healthBarOffsetY + yFal, healthBarOffsetU + proc, healthBarOffsetV + healthBarHeight, procAbsorb, healthBarHeight, isInverted);
+                        }
+                    }
                 }
-                else {
+
+                yFal += barHeight;
+            }
+
+            // T0D0: mana
+            if (entity instanceof EntityPlayer) {
+                drawTexturedModalRect(offsetX + invert(barOffsetX), offsetY + barOffsetY + yFal, barOffsetU, barOffsetV + barHeight, barWidth, barHeight, isInverted);
+
+                curr = PlayerAttributes.CURR_MANA.getValue(entity);
+                max = PlayerAttributes.MANA.getValue(entity);
+                if (max > 0) {
+                    proc = getProcent(curr, max, healthBarWidth);
                     if (proc > 0) {
-                        if (entity.isPotionActive(Potion.poison)) {
-                            drawTexturedModalRect(offsetX + invert(healthBarOffsetX), offsetY + healthBarOffsetY + yFal, healthBarOffsetU, healthBarOffsetV + healthBarHeight * 2, proc, healthBarHeight, isInverted);
-                        }
-                        else {
-                            drawTexturedModalRect(offsetX + invert(healthBarOffsetX), offsetY + healthBarOffsetY + yFal, healthBarOffsetU, healthBarOffsetV, proc, healthBarHeight, isInverted);
-                        }
-                    }
-                    if (procAbsorb > 0) {
-                        drawTexturedModalRect(offsetX + invert(healthBarOffsetX) + proc, offsetY + healthBarOffsetY + yFal, healthBarOffsetU + proc, healthBarOffsetV + healthBarHeight, procAbsorb, healthBarHeight, isInverted);
+                        drawTexturedModalRect(offsetX + invert(healthBarOffsetX), offsetY + healthBarOffsetY + yFal, healthBarOffsetU, healthBarOffsetV + healthBarHeight * 4, proc, healthBarHeight, isInverted);
                     }
                 }
+
+                yFal += barHeight;
             }
 
-            yFal += barHeight;
-        }
+            // T0D0: phisicArmor
+            {
+                drawTexturedModalRect(offsetX + invert(barOffsetX), offsetY + barOffsetY + yFal, barOffsetU, barOffsetV + barHeight * 2, barWidth, barHeight, isInverted);
 
-        // T0D0: mana
-        if (entity instanceof EntityPlayer) {
-            drawTexturedModalRect(offsetX + invert(barOffsetX), offsetY + barOffsetY + yFal, barOffsetU, barOffsetV + barHeight, barWidth, barHeight, isInverted);
-
-            curr = PlayerAttributes.CURR_MANA.getValue(entity);
-            max = PlayerAttributes.MANA.getValue(entity);
-            if (max > 0) {
-                proc = getProcent(curr, max, healthBarWidth);
+                curr = HookArmorSystem.getTotalPhisicArmor();
+                proc = getProcent(curr, 100F, healthBarWidth);
                 if (proc > 0) {
-                    drawTexturedModalRect(offsetX + invert(healthBarOffsetX), offsetY + healthBarOffsetY + yFal, healthBarOffsetU, healthBarOffsetV + healthBarHeight * 4, proc, healthBarHeight, isInverted);
+                    drawTexturedModalRect(offsetX + invert(healthBarOffsetX), offsetY + healthBarOffsetY + yFal, healthBarOffsetU, healthBarOffsetV + healthBarHeight * 5, proc, healthBarHeight, isInverted);
+                }
+
+                yFal += barHeight;
+            }
+
+            // T0D0: magicArmor
+            if (entity instanceof EntityPlayer) {
+                drawTexturedModalRect(offsetX + invert(barOffsetX), offsetY + barOffsetY + yFal, barOffsetU, barOffsetV + barHeight * 3, barWidth, barHeight, isInverted);
+
+                curr = HookArmorSystem.getTotalMagicArmor();
+                proc = getProcent(curr, 100F, healthBarWidth);
+                if (proc > 0) {
+                    drawTexturedModalRect(offsetX + invert(healthBarOffsetX), offsetY + healthBarOffsetY + yFal, healthBarOffsetU, healthBarOffsetV + healthBarHeight * 6, proc, healthBarHeight, isInverted);
+                }
+
+                yFal += barHeight;
+            }
+
+            // T0D0: damage
+            if (entity instanceof EntityMob) {
+                drawTexturedModalRect(offsetX + invert(barOffsetX), offsetY + barOffsetY + yFal, barOffsetU, barOffsetV + barHeight * 4, barWidth, barHeight, isInverted);
+
+                yFal += barHeight;
+            }
+
+            // T0D0: food
+            if (entity == mc.thePlayer) {
+                curr = mc.thePlayer.getFoodStats().getFoodLevel();
+                proc = getProcent(curr, 20F, hungerBarHeight);
+                if (curr < 20) {
+                    drawTexturedModalRect(offsetX + invert(hungerBarOffsetX), offsetY + hungerBarOffsetY, hungerBarOffsetU, hungerBarOffsetV, hungerBarWidth, hungerBarHeight, isInverted);
+                    if (mc.thePlayer.isPotionActive(Potion.hunger)) {
+                        drawTexturedModalRect(offsetX + invert(hungerIconOffsetX), offsetY + hungerIconOffsetY, hungerIconOffsetU + hungerIconWidth, hungerIconOffsetV, hungerIconWidth, hungerIconHeight, isInverted);
+                        drawTexturedModalRect(offsetX + invert(hungerBarOffsetX), offsetY + hungerBarOffsetY, hungerBarOffsetU + hungerBarWidth * 2, hungerBarOffsetV, hungerBarWidth, proc, isInverted);
+                    }
+                    else {
+                        drawTexturedModalRect(offsetX + invert(hungerIconOffsetX), offsetY + hungerIconOffsetY, hungerIconOffsetU, hungerIconOffsetV, hungerIconWidth, hungerIconHeight, isInverted);
+                        drawTexturedModalRect(offsetX + invert(hungerBarOffsetX), offsetY + hungerBarOffsetY, hungerBarOffsetU + hungerBarWidth, hungerBarOffsetV, hungerBarWidth, proc, isInverted);
+                    }
                 }
             }
 
-            yFal += barHeight;
-        }
-
-        // T0D0: phisicArmor
-        {
-            drawTexturedModalRect(offsetX + invert(barOffsetX), offsetY + barOffsetY + yFal, barOffsetU, barOffsetV + barHeight * 2, barWidth, barHeight, isInverted);
-
-            curr = HookArmorSystem.getTotalPhisicArmor();
-            proc = getProcent(curr, 100F, healthBarWidth);
-            if (proc > 0) {
-                drawTexturedModalRect(offsetX + invert(healthBarOffsetX), offsetY + healthBarOffsetY + yFal, healthBarOffsetU, healthBarOffsetV + healthBarHeight * 5, proc, healthBarHeight, isInverted);
-            }
-
-            yFal += barHeight;
-        }
-
-        // T0D0: magicArmor
-        if (entity instanceof EntityPlayer) {
-            drawTexturedModalRect(offsetX + invert(barOffsetX), offsetY + barOffsetY + yFal, barOffsetU, barOffsetV + barHeight * 3, barWidth, barHeight, isInverted);
-
-            curr = HookArmorSystem.getTotalMagicArmor();
-            proc = getProcent(curr, 100F, healthBarWidth);
-            if (proc > 0) {
-                drawTexturedModalRect(offsetX + invert(healthBarOffsetX), offsetY + healthBarOffsetY + yFal, healthBarOffsetU, healthBarOffsetV + healthBarHeight * 6, proc, healthBarHeight, isInverted);
-            }
-
-            yFal += barHeight;
-        }
-
-        // T0D0: damage
-        if (entity instanceof EntityMob) {
-            drawTexturedModalRect(offsetX + invert(barOffsetX), offsetY + barOffsetY + yFal, barOffsetU, barOffsetV + barHeight * 4, barWidth, barHeight, isInverted);
-
-            yFal += barHeight;
-        }
-
-        // T0D0: food
-        if (entity == mc.thePlayer) {
-            curr = mc.thePlayer.getFoodStats().getFoodLevel();
-            proc = getProcent(curr, 20F, hungerBarHeight);
-            if (curr < 20) {
-                drawTexturedModalRect(offsetX + invert(hungerBarOffsetX), offsetY + hungerBarOffsetY, hungerBarOffsetU, hungerBarOffsetV, hungerBarWidth, hungerBarHeight, isInverted);
-                if (mc.thePlayer.isPotionActive(Potion.hunger)) {
-                    drawTexturedModalRect(offsetX + invert(hungerIconOffsetX), offsetY + hungerIconOffsetY, hungerIconOffsetU + hungerIconWidth, hungerIconOffsetV, hungerIconWidth, hungerIconHeight, isInverted);
-                    drawTexturedModalRect(offsetX + invert(hungerBarOffsetX), offsetY + hungerBarOffsetY, hungerBarOffsetU + hungerBarWidth * 2, hungerBarOffsetV, hungerBarWidth, proc, isInverted);
-                }
-                else {
-                    drawTexturedModalRect(offsetX + invert(hungerIconOffsetX), offsetY + hungerIconOffsetY, hungerIconOffsetU, hungerIconOffsetV, hungerIconWidth, hungerIconHeight, isInverted);
-                    drawTexturedModalRect(offsetX + invert(hungerBarOffsetX), offsetY + hungerBarOffsetY, hungerBarOffsetU + hungerBarWidth, hungerBarOffsetV, hungerBarWidth, proc, isInverted);
+            // T0D0: air
+            if (entity == mc.thePlayer) {
+                curr = mc.thePlayer.getAir();
+                proc = getProcent(curr, 300F, hungerBarHeight);
+                if (curr < 300) {
+                    drawTexturedModalRect(offsetX + invert(hungerIconOffsetX + hungerBarIndent), offsetY + hungerIconOffsetY, hungerIconOffsetU + hungerIconWidth * 2, hungerIconOffsetV, hungerIconWidth, hungerIconHeight, isInverted);
+                    drawTexturedModalRect(offsetX + invert(hungerBarOffsetX + hungerBarIndent), offsetY + hungerBarOffsetY, hungerBarOffsetU, hungerBarOffsetV, hungerBarWidth, hungerBarHeight, isInverted);
+                    drawTexturedModalRect(offsetX + invert(hungerBarOffsetX + hungerBarIndent), offsetY + hungerBarOffsetY, hungerBarOffsetU + hungerBarWidth * 3, hungerBarOffsetV, hungerBarWidth, proc, isInverted);
                 }
             }
-        }
 
-        // T0D0: air
-        if (entity == mc.thePlayer) {
-            curr = mc.thePlayer.getAir();
-            proc = getProcent(curr, 300F, hungerBarHeight);
-            if (curr < 300) {
-                drawTexturedModalRect(offsetX + invert(hungerIconOffsetX + hungerBarIndent), offsetY + hungerIconOffsetY, hungerIconOffsetU + hungerIconWidth * 2, hungerIconOffsetV, hungerIconWidth, hungerIconHeight, isInverted);
-                drawTexturedModalRect(offsetX + invert(hungerBarOffsetX + hungerBarIndent), offsetY + hungerBarOffsetY, hungerBarOffsetU, hungerBarOffsetV, hungerBarWidth, hungerBarHeight, isInverted);
-                drawTexturedModalRect(offsetX + invert(hungerBarOffsetX + hungerBarIndent), offsetY + hungerBarOffsetY, hungerBarOffsetU + hungerBarWidth * 3, hungerBarOffsetV, hungerBarWidth, proc, isInverted);
+            // T0D0: heath value
+            {
+                s = String.format("%.1f", entity.getHealth());
+                fr.drawStringWithShadow(s, offsetX + getOffsetX(s, healthBarOffsetX + healthBarWidth + 4, isInverted), offsetY + healthBarOffsetY + (healthBarHeight - fr.FONT_HEIGHT) / 2 + 1, 0xFFFFFF);
             }
+
+            // T0D0: mana value
+            if (entity instanceof EntityPlayer) {
+                s = PlayerAttributes.CURR_MANA.getDisplayValue(entity);
+                fr.drawStringWithShadow(s, offsetX + getOffsetX(s, healthBarOffsetX + healthBarWidth + 4, isInverted), offsetY + healthBarOffsetY + barHeight + (healthBarHeight - fr.FONT_HEIGHT) / 2 + 1, 0xFFFFFF);
+            }
+
+            // T0D0: damage value
+            if (entity instanceof EntityMob) {
+                s = EntityAttributes.DAMAGE.getDisplayValue(entity);
+                fr.drawStringWithShadow(s, offsetX + getOffsetX(s, healthBarOffsetX, isInverted), offsetY + healthBarOffsetY + barHeight * 2 + (healthBarHeight - fr.FONT_HEIGHT) / 2 + 1, 0xFFFFFF);
+            }
+
         }
 
         // T0D0: name
@@ -238,24 +260,6 @@ public class RPGGuiIngame extends Gui
         {
             s = String.valueOf((int) EntityAttributes.LVL.getValue(entity));
             fr.drawStringWithShadow(s, offsetX + getOffsetX(s, line2OffsetX, line2Width, isInverted), offsetY + line2OffsetY + (line2Height - fr.FONT_HEIGHT) / 2, 0xFFFFFF);
-        }
-
-        // T0D0: heath value
-        {
-            s = String.format("%.1f", entity.getHealth());
-            fr.drawStringWithShadow(s, offsetX + getOffsetX(s, healthBarOffsetX + healthBarWidth + 4, isInverted), offsetY + healthBarOffsetY + (healthBarHeight - fr.FONT_HEIGHT) / 2 + 1, 0xFFFFFF);
-        }
-
-        // T0D0: mana value
-        if (entity instanceof EntityPlayer) {
-            s = PlayerAttributes.CURR_MANA.getDisplayValue(entity);
-            fr.drawStringWithShadow(s, offsetX + getOffsetX(s, healthBarOffsetX + healthBarWidth + 4, isInverted), offsetY + healthBarOffsetY + barHeight + (healthBarHeight - fr.FONT_HEIGHT) / 2 + 1, 0xFFFFFF);
-        }
-
-        // T0D0: damage value
-        if (entity instanceof EntityMob) {
-            s = EntityAttributes.DAMAGE.getDisplayValue(entity);
-            fr.drawStringWithShadow(s, offsetX + getOffsetX(s, healthBarOffsetX, isInverted), offsetY + healthBarOffsetY + barHeight * 2 + (healthBarHeight - fr.FONT_HEIGHT) / 2 + 1, 0xFFFFFF);
         }
     }
 

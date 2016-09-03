@@ -8,6 +8,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import mixac1.dangerrpg.client.RPGEntityFXManager;
 import mixac1.dangerrpg.client.RPGEntityFXManager.IEntityFXType;
+import mixac1.dangerrpg.init.RPGAnotherMods;
 import mixac1.dangerrpg.init.RPGEvents;
 import mixac1.dangerrpg.init.RPGKeyBinds;
 import mixac1.dangerrpg.init.RPGRenderers;
@@ -35,6 +36,8 @@ public class ClientProxy extends CommonProxy
         RPGRenderers.load();
 
         RPGEvents.loadClient();
+
+        RPGAnotherMods.loadClient();
     }
 
     @Override

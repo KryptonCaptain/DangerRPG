@@ -4,7 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.capability.GemType;
-import mixac1.dangerrpg.init.RPGOther;
+import mixac1.dangerrpg.init.RPGOther.RPGCreativeTabs;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +19,7 @@ public abstract class Gem extends Item implements IHasBooksInfo
         this.setTextureName(Utils.toString(DangerRPG.MODID, ":gems/", name));
         this.setUnlocalizedName(name);
         this.setMaxStackSize(1);
-        this.setCreativeTab(RPGOther.tabDangerRPG);
+        this.setCreativeTab(RPGCreativeTabs.tabRPGAmunitions);
     }
 
     @SideOnly(Side.CLIENT)

@@ -7,7 +7,7 @@ import mixac1.dangerrpg.capability.GemType;
 import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.LvlableItem.ItemAttributesMap;
 import mixac1.dangerrpg.init.RPGItems;
-import mixac1.dangerrpg.init.RPGOther;
+import mixac1.dangerrpg.init.RPGOther.RPGCreativeTabs;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
 import mixac1.dangerrpg.item.RPGToolMaterial;
@@ -36,7 +36,7 @@ public class ItemRPGWeapon extends ItemSword implements ILvlableItemTool, IGemab
         this.toolComponent = toolComponent;
         setUnlocalizedName(RPGItems.getRPGName(getItemComponent(this), getToolMaterial(this)));
         setTextureName(Utils.toString(DangerRPG.MODID, ":weapons/melee/", unlocalizedName));
-        setCreativeTab(RPGOther.tabDangerRPG);
+        setCreativeTab(RPGCreativeTabs.tabRPGAmunitions);
         setMaxStackSize(1);
     }
 

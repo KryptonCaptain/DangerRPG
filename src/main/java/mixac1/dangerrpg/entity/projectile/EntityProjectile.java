@@ -5,7 +5,7 @@ import java.util.List;
 import cpw.mods.fml.common.registry.IThrowableEntity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import mixac1.dangerrpg.util.RPGCommonHelper;
+import mixac1.dangerrpg.init.RPGOther.RPGDamageSource;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -17,7 +17,6 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.S2BPacketChangeGameState;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -299,8 +298,8 @@ public class EntityProjectile extends EntityArrow implements IThrowableEntity
                 entity.setFire(1);
             }
         }
-        DamageSource dmgSource = RPGCommonHelper.causeRPGMagicDamage(this, thrower == null ? this : thrower);
-        entity.attackEntityFrom(dmgSource, (float) damage * dmgMul);
+
+        entity.attackEntityFrom(RPGDamageSource.magic, (float) damage * dmgMul);
     }
 
     public void onGroundHit(MovingObjectPosition mop)

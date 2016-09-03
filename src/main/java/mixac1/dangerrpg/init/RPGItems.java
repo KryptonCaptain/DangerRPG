@@ -164,14 +164,13 @@ public abstract class RPGItems
     public static void load()
     {
         registerItems();
-        addRecipes();
     }
 
     private static void registerItems()
     {
-        registerItem(testWand);
-
-        registerItem(swordTraining);
+//        registerItem(testWand);
+//
+//        registerItem(swordTraining);
 
         registerItem(knifeWood);
         registerItem(tomahawkWood);
@@ -294,12 +293,7 @@ public abstract class RPGItems
         registerItemArray(mageArmorBlackMatter);
         registerItemArray(mageArmorWhiteMatter);
 
-        registerItem(gemWitherSkull);
-    }
-
-    private static void addRecipes()
-    {
-
+//        registerItem(gemWitherSkull);
     }
 
     private static void registerItem(Item item)

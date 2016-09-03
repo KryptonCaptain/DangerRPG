@@ -177,10 +177,11 @@ item.sniper_bow.name=Sniper Bow
 
 item.gem_wither_skull.name=Wither Skull Gem
 
-
 tile.modify_table.name=Modify Table
 tile.lvlup_table.name=LevelUp Table
+tile.rpg_workbench.name=Advanced workbench
 
+recipe.common_shaped=Shaped Crafting 5x5
 
 rpgstr_key.special_use=Special use of item
 rpgstr_key.extra_use=Extra use of item

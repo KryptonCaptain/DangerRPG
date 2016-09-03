@@ -50,6 +50,7 @@ public class EventHandlerLvlableItem
     public void addInformation(ItemTooltipEvent e)
     {
         if (LvlableItem.isLvlable(e.itemStack)) {
+            e.toolTip.add("");
             e.toolTip.add(Utils.toString(EnumChatFormatting.GOLD,
                        ItemAttributes.LEVEL.getDispayName(), ": ", (int) ItemAttributes.LEVEL.get(e.itemStack)));
             e.toolTip.add(Utils.toString(EnumChatFormatting.GRAY,

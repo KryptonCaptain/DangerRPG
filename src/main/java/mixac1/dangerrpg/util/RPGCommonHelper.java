@@ -2,31 +2,23 @@ package mixac1.dangerrpg.util;
 
 import java.util.List;
 
-import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.item.ILvlableItem;
 import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemArmor;
 import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemTool;
 import mixac1.dangerrpg.capability.LvlableItem;
+import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.item.IMaterialSpecial;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
 
 public abstract class RPGCommonHelper
 {
@@ -85,44 +77,6 @@ public abstract class RPGCommonHelper
 //            i -= 9;
 //        }
 //    }
-
-    public static void breakBlock(World world, int x, int y, int z, Block block, int par)
-    {
-        TileEntity tileEntity = world.getTileEntity(x, y, z);
-
-        if (tileEntity != null && tileEntity instanceof IInventory) {
-            IInventory inventory = (IInventory) tileEntity;
-            for (int i = 0; i < inventory.getSizeInventory(); ++i) {
-                ItemStack stack = inventory.getStackInSlot(i);
-
-                if (stack != null) {
-                    float f = DangerRPG.rand.nextFloat() * 0.8F + 0.1F;
-                    float f1 = DangerRPG.rand.nextFloat() * 0.8F + 0.1F;
-                    EntityItem entityItem;
-
-                    for (float f2 = DangerRPG.rand.nextFloat() * 0.8F + 0.1F; stack.stackSize > 0; world.spawnEntityInWorld(entityItem)) {
-                        int j = DangerRPG.rand.nextInt(21) + 10;
-
-                        if (j > stack.stackSize) {
-                            j = stack.stackSize;
-                        }
-
-                        stack.stackSize -= j;
-                        entityItem = new EntityItem(world, x + f, y + f1, z + f2, new ItemStack(stack.getItem(), j, stack.getItemDamage()));
-                        float f3 = 0.05F;
-                        entityItem.motionX = (float)DangerRPG.rand.nextGaussian() * f3;
-                        entityItem.motionY = (float)DangerRPG.rand.nextGaussian() * f3 + 0.2F;
-                        entityItem.motionZ = (float)DangerRPG.rand.nextGaussian() * f3;
-
-                        if (stack.hasTagCompound()) {
-                            entityItem.getEntityItem().setTagCompound((NBTTagCompound) stack.getTagCompound().copy());
-                        }
-                    }
-                }
-            }
-            world.func_147453_f(x, y, z, block);
-        }
-    }
 
     public static MovingObjectPosition getMouseOver(float frame, float dist)
     {
@@ -239,9 +193,16 @@ public abstract class RPGCommonHelper
         return tmp;
     }
 
-    public static DamageSource causeRPGMagicDamage(Entity target, Entity entity)
+    public static boolean spendMana(EntityPlayer player, float mana)
     {
-        return (new EntityDamageSourceIndirect("RPGMagic", target, entity)).setMagicDamage();
+        if (!player.capabilities.isCreativeMode) {
+            if (PlayerAttributes.CURR_MANA.getValue(player) >= mana) {
+                PlayerAttributes.CURR_MANA.addValue(-mana, player);
+                return true;
+            }
+            return false;
+        }
+        return true;
     }
 }
 

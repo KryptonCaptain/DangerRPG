@@ -7,7 +7,7 @@ import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemArmor;
 import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.LvlableItem.ItemAttributesMap;
 import mixac1.dangerrpg.init.RPGItems;
-import mixac1.dangerrpg.init.RPGOther;
+import mixac1.dangerrpg.init.RPGOther.RPGCreativeTabs;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.RPGArmorMaterial;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGArmorComponent;
@@ -38,7 +38,7 @@ public class ItemRPGArmor extends ItemArmor implements ILvlableItemArmor, IHasBo
         modelTexture = Utils.toString("DangerRPG:textures/models/armors/", name, "_layer_");
         setUnlocalizedName(name.concat(ARMOR_TYPES[armorType]));
         setTextureName(Utils.toString(DangerRPG.MODID, ":armors/", unlocalizedName));
-        setCreativeTab(RPGOther.tabDangerRPG);
+        setCreativeTab(RPGCreativeTabs.tabRPGAmunitions);
     }
 
     public static ItemRPGArmor[] createFullSet(RPGArmorMaterial armorMaterial, RPGArmorComponent armorComponent)

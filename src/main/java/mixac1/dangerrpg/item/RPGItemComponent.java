@@ -56,8 +56,8 @@ public class RPGItemComponent
 
      /* STAFFS            mDmg    mSpeed   strMul  agiMul  intMul   knBack  knbMul    reach   rDmg    rSpeed  rMinCT mana*/
 
-        STAFF.init       (1.0F,   10.0F,   0.1F,   0.7F,   0.5F,    0.0F,   0.075F,   0.5F,   2.0F,   20.0F,  1.0f,   1f);
-        POWER_STAFF.init (1.0F,   10.0F,   0.1F,   0.7F,   0.5F,    0.0F,   0.075F,   0.5F,   2.0F,   20.0F,  1.0f,   1f);
+        STAFF.init       (1.0F,   10.0F,   0.1F,   0.7F,   0.5F,    0.0F,   0.075F,   0.5F,   1.0F,   10.0F,  1.0f,   5f);
+        POWER_STAFF.init (1.0F,   10.0F,   0.1F,   0.7F,   0.5F,    0.0F,   0.075F,   0.5F,   1.0F,   10.0F,  1.0f,   5f);
 
      /* BOWS              mDmg    mSpeed   strMul  agiMul  intMul   knBack  knbMul    reach   rDmg    rSpeed  rMinCT rPow   durab   ench */
 

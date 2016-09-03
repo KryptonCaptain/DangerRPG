@@ -6,6 +6,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import mixac1.dangerrpg.client.RPGEntityFXManager.IEntityFXType;
+import mixac1.dangerrpg.init.RPGAnotherMods;
 import mixac1.dangerrpg.init.RPGBlocks;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGConfig;
@@ -14,6 +15,7 @@ import mixac1.dangerrpg.init.RPGEvents;
 import mixac1.dangerrpg.init.RPGGuiHandlers;
 import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGNetwork;
+import mixac1.dangerrpg.init.RPGRecipes;
 import mixac1.dangerrpg.util.RPGTicks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,6 +26,8 @@ public class CommonProxy
 
     public void preInit(FMLPreInitializationEvent e)
     {
+        RPGAnotherMods.load();
+
         RPGConfig.load(e);
 
         RPGNetwork.load();
@@ -31,6 +35,8 @@ public class CommonProxy
         RPGItems.load();
 
         RPGBlocks.load();
+
+        RPGRecipes.load();
     }
 
     public void init(FMLInitializationEvent e)

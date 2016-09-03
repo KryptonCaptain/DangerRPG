@@ -98,7 +98,7 @@ public abstract class RPGConfig
         Property prop;
 
         itemAllItemsLvlable = getBoolean(cat.getName(), "itemAllItemsLvlable", true,
-                "Are all weapons, tools levelable and gemable?");
+                "Are all weapons, tools levelable?");
 
         itemCanUpInTable = getBoolean(cat.getName(), "itemCanUpInTable", true,
                 "Can items upgrade in lvlup table without creative mode?");

@@ -9,7 +9,7 @@ import gloomyfolken.hooklib.asm.Hook;
 import gloomyfolken.hooklib.asm.ReturnCondition;
 import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
-import mixac1.dangerrpg.init.RPGOther;
+import mixac1.dangerrpg.init.RPGOther.RPGDamageSource;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
@@ -67,13 +67,13 @@ public class HookArmorSystem
     @SideOnly(Side.CLIENT)
     public static float getTotalPhisicArmor()
     {
-        return getTotalArmor(RPGOther.phisic);
+        return getTotalArmor(RPGDamageSource.phisic);
     }
 
     @SideOnly(Side.CLIENT)
     public static float getTotalMagicArmor()
     {
-        return getTotalArmor(RPGOther.magic);
+        return getTotalArmor(RPGDamageSource.magic);
     }
 
     @SideOnly(Side.CLIENT)

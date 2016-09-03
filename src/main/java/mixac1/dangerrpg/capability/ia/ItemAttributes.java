@@ -4,6 +4,7 @@ import mixac1.dangerrpg.api.item.IADynamic;
 import mixac1.dangerrpg.api.item.IAStatic;
 import mixac1.dangerrpg.hook.HookArmorSystem;
 import mixac1.dangerrpg.init.RPGOther;
+import mixac1.dangerrpg.init.RPGOther.RPGDamageSource;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -97,7 +98,7 @@ public class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return String.format("+%d%c", (int) HookArmorSystem.getArmor(stack, RPGOther.phisic), '%');
+            return String.format("+%d%c", (int) HookArmorSystem.getArmor(stack, RPGDamageSource.phisic), '%');
         }
     };
 
@@ -106,7 +107,7 @@ public class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return String.format("+%d%c", (int) HookArmorSystem.getArmor(stack, RPGOther.magic), '%');
+            return String.format("+%d%c", (int) HookArmorSystem.getArmor(stack, RPGDamageSource.magic), '%');
         }
     };
 

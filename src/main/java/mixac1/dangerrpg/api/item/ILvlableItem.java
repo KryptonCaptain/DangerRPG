@@ -1,11 +1,11 @@
 package mixac1.dangerrpg.api.item;
 
-import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.LvlableItem.ItemAttributesMap;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.entity.projectile.EntityArrowRPG;
 import mixac1.dangerrpg.entity.projectile.EntityMaterial;
+import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.RPGArmorMaterial;
 import mixac1.dangerrpg.item.RPGItemComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGArmorComponent;
@@ -242,7 +242,7 @@ public interface ILvlableItem
 
                 stack.damageItem(1, player);
                 world.playSoundAtEntity(player, "random.bow", 1.0F,
-                                        1.0F / (DangerRPG.rand.nextFloat() * 0.4F + 1.2F) + power * 0.5F);
+                                        1.0F / (RPGOther.rand.nextFloat() * 0.4F + 1.2F) + power * 0.5F);
 
                 if (flag) {
                     entity.pickupMode = EntityMaterial.PICKUP_CREATIVE;

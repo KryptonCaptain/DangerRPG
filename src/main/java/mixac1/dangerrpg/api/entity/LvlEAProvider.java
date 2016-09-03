@@ -13,10 +13,10 @@ public class LvlEAProvider<Type>
 {
     public EntityAttribute<Type> attr;
 
-    protected IMultiplierE<Type> mulValue;
-    protected int maxLvl;
-    protected int startExpCost;
-    protected IMultiplier<Integer> mulExpCost;
+    public IMultiplierE<Type> mulValue;
+    public int maxLvl;
+    public int startExpCost;
+    public IMultiplier<Integer> mulExpCost;
 
     public LvlEAProvider(int startExpCost, int maxLvl, IMultiplierE<Type> mulValue, IMultiplier<Integer> mulExpCost)
     {

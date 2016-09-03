@@ -5,7 +5,7 @@ import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemTool;
 import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.LvlableItem.ItemAttributesMap;
 import mixac1.dangerrpg.init.RPGItems;
-import mixac1.dangerrpg.init.RPGOther;
+import mixac1.dangerrpg.init.RPGOther.RPGCreativeTabs;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.RPGItemComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
@@ -26,7 +26,7 @@ public class ItemRPGSpade extends ItemSpade implements ILvlableItemTool, IHasBoo
         this.toolMaterial = toolMaterial;
         setUnlocalizedName(RPGItems.getRPGName(getItemComponent(this), getToolMaterial(this)));
         setTextureName(Utils.toString(DangerRPG.MODID, ":tools/", unlocalizedName));
-        setCreativeTab(RPGOther.tabDangerRPG);
+        setCreativeTab(RPGCreativeTabs.tabRPGAmunitions);
         setMaxStackSize(1);
     }
 

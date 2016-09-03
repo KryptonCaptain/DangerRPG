@@ -79,6 +79,9 @@ public class GuiInfoBookContentEntity extends GuiInfoBookContent
 
             int k = 0;
             s = Utils.toString(DangerRPG.trans("ia.lvl"), ": ", lvlProv.getLvl(parent.target));
+            if (!lvlProv.isMaxLvl(parent.target)) {
+                s = Utils.toString(s, "   (", lvlProv.maxLvl, ")");
+            }
             mc.fontRenderer.drawStringWithShadow(s, offsetX + infoOffsetX, offsetY + infoOffsetY, 0xffffff);
             k += indent;
 

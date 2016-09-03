@@ -14,7 +14,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class EntityCommonMagic extends EntityWithStack
 {
-    public static final int DEFAULT_COLOR = 0x7000CC;
+    public static final int DEFAULT_COLOR = 0x37048E;
 
     public EntityCommonMagic(World world)
     {
