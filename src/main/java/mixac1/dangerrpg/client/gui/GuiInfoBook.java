@@ -67,9 +67,9 @@ public class GuiInfoBook extends GuiScreen
         this.player = player;
 
         MovingObjectPosition mop = RPGCommonHelper.getMouseOver(0, 10);
-        if (mop != null && mop.entityHit != null && mop.entityHit instanceof EntityLivingBase && EntityData.isRPGEntity((EntityLivingBase) mop.entityHit)) {
+        if (mop != null && mop.entityHit != null && mop.entityHit instanceof EntityPlayer && EntityData.isRPGEntity((EntityLivingBase) mop.entityHit)) {
             target = (EntityLivingBase) mop.entityHit;
-            isTargetPlayer = target instanceof EntityPlayer;
+            isTargetPlayer = true;
         }
         else {
             target = player;

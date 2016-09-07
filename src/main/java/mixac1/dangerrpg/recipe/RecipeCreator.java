@@ -7,7 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class RecipeCreator
+public abstract class RecipeCreator
 {
     public static void createRecipes(RecipeCustom recipe, Object[] result, Object[][] objs)
     {
@@ -248,7 +248,7 @@ public class RecipeCreator
         @Override
         protected String[] getPattern()
         {
-            return new String[] {"111 ", "  01", "  0 ", "  0 "};
+            return new String[] {"111 ", "  01", " 0  ", " 0  "};
         }
     };
 

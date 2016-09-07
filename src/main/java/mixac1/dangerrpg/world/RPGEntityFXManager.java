@@ -1,7 +1,8 @@
-package mixac1.dangerrpg.client;
+package mixac1.dangerrpg.world;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import mixac1.dangerrpg.client.RPGParticles;
 import mixac1.dangerrpg.client.RPGParticles.EntityAuraFXE;
 import mixac1.dangerrpg.client.RPGParticles.EntityReddustFXE;
 import mixac1.dangerrpg.client.RPGParticles.EntitySmokeFXE;

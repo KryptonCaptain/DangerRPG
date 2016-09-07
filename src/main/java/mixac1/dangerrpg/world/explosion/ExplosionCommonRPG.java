@@ -1,7 +1,9 @@
-package mixac1.dangerrpg.world;
+package mixac1.dangerrpg.world.explosion;
 
 import java.util.List;
 
+import mixac1.dangerrpg.init.RPGNetwork;
+import mixac1.dangerrpg.network.MsgExplosion;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -13,7 +15,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.Explosion;
 
-public class RPGExplosion extends Explosion
+public class ExplosionCommonRPG extends Explosion
 {
     public float powerMul = 1;
     public float damage = 1;
@@ -21,7 +23,7 @@ public class RPGExplosion extends Explosion
     public boolean isDependDist = true;
     public boolean isBlockDestroy = false;
 
-    public RPGExplosion(Entity entity, double x, double y, double z, float explosionSize)
+    public ExplosionCommonRPG(Entity entity, double x, double y, double z, float explosionSize)
     {
         super(entity.worldObj, entity, x, y, z, explosionSize);
     }
@@ -36,15 +38,28 @@ public class RPGExplosion extends Explosion
 
     public void doExplosion()
     {
-        if (net.minecraftforge.event.ForgeEventFactory.onExplosionStart(worldObj, this)) {
-            return;
+        if (!worldObj.isRemote) {
+            if (net.minecraftforge.event.ForgeEventFactory.onExplosionStart(worldObj, this)) {
+                return;
+            }
+            if (isBlockDestroy) {
+                explosionBlocksPre();
+                explosionBlocksPost();
+            }
+            explosionEntities();
+
+            RPGNetwork.net.sendToAll(new MsgExplosion(getExplosionEffect().getId(), explosionX, explosionY, explosionZ, explosionSize, getEffectMeta()));
         }
-        if (isBlockDestroy) {
-            explosionBlocksPre();
-            explosionBlocksPost();
-        }
-        explosionEntities();
-        explosionEffects();
+    }
+
+    public ExplosionEffect getExplosionEffect()
+    {
+        return ExplosionEffect.EMPTY;
+    }
+
+    public Object[] getEffectMeta()
+    {
+        return null;
     }
 
     public void explosionBlocksPre()
@@ -142,11 +157,6 @@ public class RPGExplosion extends Explosion
                 }
             }
         }
-    }
-
-    public void explosionEffects()
-    {
-        worldObj.playSoundEffect(explosionX, explosionY, explosionZ, "random.explode", 4.0F, (1.0F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
     }
 
     public void applyEntityHitEffects(EntityLivingBase entity, float power)

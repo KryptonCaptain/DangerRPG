@@ -307,7 +307,7 @@ public class RPGGuiIngame extends Gui
     private int getProcent(float curr, float max, int width)
     {
         int value = (int) (curr /  max * width);
-        return value == 0 && curr != 0 ? 1 : value > width ? width : value;
+        return value <= 1 && curr != 0 ? 1 : value > width ? width : value;
     }
 
     private boolean isInvert = true;

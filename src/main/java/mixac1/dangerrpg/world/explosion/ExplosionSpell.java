@@ -1,11 +1,11 @@
-package mixac1.dangerrpg.world;
+package mixac1.dangerrpg.world.explosion;
 
 import mixac1.dangerrpg.entity.projectile.EntityCommonMagic;
 import net.minecraft.entity.EntityLivingBase;
 
-public class SpellExplosion extends RPGExplosion
+public class ExplosionSpell extends ExplosionCommonRPG
 {
-    public SpellExplosion(EntityCommonMagic entity, double x, double y, double z, float explosionSize)
+    public ExplosionSpell(EntityCommonMagic entity, double x, double y, double z, float explosionSize)
     {
         super(entity, x, y, z, explosionSize);
     }

@@ -1,8 +1,7 @@
 package mixac1.dangerrpg.entity.projectile;
 
-import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.client.RPGEntityFXManager;
-import mixac1.dangerrpg.world.SpellExplosion;
+import mixac1.dangerrpg.world.explosion.ExplosionCommonRPG;
+import mixac1.dangerrpg.world.explosion.ExplosionPowerMagicOrb;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
@@ -38,25 +37,10 @@ public class EntityPowerMagicOrb extends EntityMagicOrb
     @Override
     public void preInpact(MovingObjectPosition mop)
     {
-        float r = 2;
-        SpellExplosion explosion = new SpellExplosion(this, mop.hitVec.xCoord, mop.hitVec.yCoord, mop.hitVec.zCoord, r);
-        explosion.init(false, 1, 0, false);
-        explosion.doExplosion();
-
-        if (worldObj.isRemote) {
-            int color = getColor();
-            double frec = Math.PI / (6 * r);
-            double x, y, z, tmp;
-
-            for (double k = 0; k < Math.PI * 2; k += frec) {
-                y = posY + r * Math.cos(k);
-                tmp = Math.abs(r * Math.sin(k));
-                for (double l = 0; l < Math.PI * 2; l += frec) {
-                    x = posX + tmp * Math.cos(l);
-                    z = posZ + tmp * Math.sin(l);
-                    DangerRPG.proxy.spawnEntityFX(RPGEntityFXManager.EntityReddustFXE, x, y, z, 0, 0, 0, color);
-                }
-            }
+        if (!worldObj.isRemote) {
+            ExplosionCommonRPG explosion = new ExplosionPowerMagicOrb(this, mop.hitVec.xCoord, mop.hitVec.yCoord, mop.hitVec.zCoord, 2);
+            explosion.init(false, 1, 0, false);
+            explosion.doExplosion();
         }
     }
 

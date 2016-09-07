@@ -8,11 +8,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gloomyfolken.hooklib.asm.Hook;
 import gloomyfolken.hooklib.asm.ReturnCondition;
 import mixac1.dangerrpg.capability.LvlableItem;
+import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.init.RPGOther.RPGDamageSource;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -22,9 +24,6 @@ import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 public class HookArmorSystem
 {
     public static final float MAX_PHISICAL_ARMOR = 40;
-
-    @SideOnly(Side.CLIENT)
-    public static Minecraft mc = Minecraft.getMinecraft();
 
     public static float convertPhisicArmor(float armor)
     {
@@ -58,10 +57,12 @@ public class HookArmorSystem
     public static float getTotalArmor(DamageSource source)
     {
         float value = 0;
+        Minecraft mc = Minecraft.getMinecraft();
         for (ArmorProperties prop : getArrayArmorProperties(mc.thePlayer, mc.thePlayer.inventory.armorInventory, source, 5)) {
             value += prop.AbsorbRatio;
         }
-        return value * 100;
+        value += getPassiveArmor(mc.thePlayer, source) / 100;
+        return Utils.alignment(value, 0, 1) * 100;
     }
 
     @SideOnly(Side.CLIENT)
@@ -79,7 +80,21 @@ public class HookArmorSystem
     @SideOnly(Side.CLIENT)
     public static float getArmor(ItemStack stack, DamageSource source)
     {
-        return (float) (getArmorProperties(mc.thePlayer, stack, 0, source, 5).AbsorbRatio * 100);
+        return (float) (getArmorProperties(Minecraft.getMinecraft().thePlayer, stack, 0, source, 5).AbsorbRatio * 100);
+    }
+
+    public static float getPassiveArmor(EntityLivingBase entity, DamageSource source)
+    {
+        float specArmor = 0;
+        if (entity instanceof EntityPlayer) {
+            if (source.isMagicDamage()) {
+                specArmor = PlayerAttributes.MAG_IMUN.getValue(entity);
+            }
+            else {
+                specArmor = PlayerAttributes.STONESKIN.getValue(entity);
+            }
+        }
+        return specArmor;
     }
 
     private static ArmorProperties getArmorProperties(EntityLivingBase entity, ItemStack stack, int slot, DamageSource source, double damage)
@@ -173,7 +188,8 @@ public class HookArmorSystem
                     }
                 }
             }
-            damage -= (damage * ratio);
+            ratio += getPassiveArmor(entity, source) / 100;
+            damage -= (damage * Utils.alignment((float) ratio, 0, 1f));
         }
         return (float)(damage / MAX_PHISICAL_ARMOR);
     }
