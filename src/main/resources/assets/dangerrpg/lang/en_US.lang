@@ -1,5 +1,15 @@
 itemGroup.tabDangerRPG=Danger RPG
 
+item.magic_leather.name=Magic Leather
+item.compressed_obsidian.name=Compressed Obsidian
+item.compressed_bedrock.name=Compressed Bedrock
+item.black_matter.name=Black Matter
+item.white_matter.name=White Matter
+item.stick_diamond.name=Diamond Stick
+item.stick_obsidian.name=Obsidian Stick
+item.stick_black_matter.name=Black Matter Stick
+item.stick_white_matter.name=White Matter Stick
+
 item.sword_training.name=Training Sword
 item.test_wand.name=Test Wand
 
@@ -179,9 +189,11 @@ item.gem_wither_skull.name=Wither Skull Gem
 
 tile.modify_table.name=Modify Table
 tile.lvlup_table.name=LevelUp Table
-tile.rpg_workbench.name=Advanced workbench
+tile.rpg_workbench.name=Advanced Workbench
+tile.synthetic_bedrock.name=Synthetic Bedrock
 
-recipe.common_shaped=Shaped Crafting 5x5
+recipe.large_shaped=Shaped Crafting
+recipe.large_shapeless=Shapeless Crafting
 
 rpgstr_key.special_use=Special use of item
 rpgstr_key.extra_use=Extra use of item
@@ -271,6 +283,7 @@ rpgstr.type=Type
 rpgstr.value=Value
 rpgstr.max=Max
 
-rpgstr.no_item=There is no item
-rpgstr.no_info=There is no information
-rpgstr.no_info_yet=There is no information yet
+rpgstr.no_item=There is no item.
+rpgstr.no_info=There is no information.
+rpgstr.no_info_yet=There is no information yet.
+rpgstr.item_not_supported=This item is not supported from its mod. Attributes can not work or do not correspond to reality.

@@ -3,8 +3,10 @@ package mixac1.dangerrpg.init;
 import java.util.HashMap;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.RPGRegister;
 import mixac1.dangerrpg.client.render.entity.RenderArrowRPG;
 import mixac1.dangerrpg.client.render.entity.RenderBit;
@@ -12,12 +14,12 @@ import mixac1.dangerrpg.client.render.entity.RenderMagicOrb;
 import mixac1.dangerrpg.client.render.entity.RenderMaterial;
 import mixac1.dangerrpg.client.render.entity.RenderThrowKnife;
 import mixac1.dangerrpg.client.render.entity.RenderThrowTomahawk;
-import mixac1.dangerrpg.client.render.item.RenderRPGItemIcon;
-import mixac1.dangerrpg.client.render.item.RenderRPGItemModel;
 import mixac1.dangerrpg.client.render.item.RenderKatana;
 import mixac1.dangerrpg.client.render.item.RenderKnife;
 import mixac1.dangerrpg.client.render.item.RenderLongItem;
 import mixac1.dangerrpg.client.render.item.RenderNormalModel.RenderHammer;
+import mixac1.dangerrpg.client.render.item.RenderRPGItemIcon;
+import mixac1.dangerrpg.client.render.item.RenderRPGItemModel;
 import mixac1.dangerrpg.client.render.item.RenderShadowBow;
 import mixac1.dangerrpg.client.render.item.RenderSniperBow;
 import mixac1.dangerrpg.client.render.item.RenderStaff;
@@ -39,7 +41,7 @@ public abstract class RPGRenderers
 {
     public static HashMap<Item, ResourceLocation> modelTextures = new HashMap<Item, ResourceLocation>();
 
-    public static void load()
+    public static void load(FMLInitializationEvent e)
     {
         registerBlockRenderer();
         registerItemRenderer();
@@ -140,6 +142,6 @@ public abstract class RPGRenderers
 
     public static void registerItemRendererE(Item item, RenderRPGItemModel model)
     {
-        RPGRegister.registerItemRendererModel(item, model, "DangerRPG:textures/models/items/");
+        RPGRegister.registerItemRendererModel(item, model, DangerRPG.MODID, "textures/models/items/");
     }
 }

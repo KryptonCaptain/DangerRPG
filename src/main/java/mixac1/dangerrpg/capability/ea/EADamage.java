@@ -25,7 +25,7 @@ public class EADamage extends EAFloat
     }
 
     @Override
-    public void apply(EntityLivingBase entity)
+    public void apply(EntityLivingBase entity, Float value)
     {
         if (!entity.worldObj.isRemote) {
             IAttributeInstance attr= entity.getEntityAttribute(SharedMonsterAttributes.attackDamage);

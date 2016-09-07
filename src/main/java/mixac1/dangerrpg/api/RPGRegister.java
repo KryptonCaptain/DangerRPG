@@ -3,10 +3,10 @@ package mixac1.dangerrpg.api;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.api.item.ILvlableItem;
+import mixac1.dangerrpg.capability.LvlableItem.ItemAttributesMap;
 import mixac1.dangerrpg.client.render.item.RenderRPGItemModel;
+import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGRenderers;
-import mixac1.dangerrpg.item.RPGItemComponent;
-import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -39,11 +39,12 @@ public abstract class RPGRegister
     }
 
     /**
-     * Register own {@link RPGToolComponent} for {@link Item}<br>
-     * It will be use, if {@link Item} not instance of {@link ILvlableItem}
+     * Register supported Lvlable Item<br>
+     * It may be used, if {@link Item} not instance of {@link ILvlableItem}
+     * Must be fired before postInit
      */
-    public static void registerRPGItemComponentForItem(Item item, RPGItemComponent itemComponent)
+    public static void registerLvlableItem(Item item, ILvlableItem ilvl)
     {
-        RPGItemComponent.map.put(item, itemComponent);
+        RPGCapability.lvlItemRegistr.data.put(item, new ItemAttributesMap(ilvl, true));
     }
 }

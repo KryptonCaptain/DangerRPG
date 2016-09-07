@@ -11,6 +11,7 @@ import mixac1.dangerrpg.capability.GemType;
 import mixac1.dangerrpg.capability.GemableItem;
 import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
+import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.gem.Gem;
 import mixac1.dangerrpg.util.Utils;
@@ -51,10 +52,9 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
         addCenteredString(stack.getDisplayName().toUpperCase());
         addString("");
 
-        addCenteredString(DangerRPG.trans("rpgstr.item_description").toUpperCase());
-        addString("");
+        boolean isLvlable = LvlableItem.isLvlable(stack);
+        if (isLvlable) {
 
-        if (LvlableItem.isLvlable(stack)) {
             addString(String.format("%s: %d\n", ItemAttributes.LEVEL.getDispayName(),
                                                 (int) ItemAttributes.LEVEL.get(stack)));
             addString(String.format("%s: %d/%d", ItemAttributes.CURR_EXP.getDispayName(),
@@ -69,6 +69,9 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
         }
 
         if (stack.getItem() instanceof IHasBooksInfo) {
+            addCenteredString(DangerRPG.trans("rpgstr.item_description").toUpperCase());
+            addString("");
+
             String s = ((IHasBooksInfo) stack.getItem()).getInformationToInfoBook(stack, player);
             if (s != null) {
                 addString(s);
@@ -76,7 +79,12 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
             }
         }
 
-        if (LvlableItem.isLvlable(stack)) {
+        if (isLvlable) {
+            if (!RPGCapability.lvlItemRegistr.data.get(stack.getItem()).isSupported) {
+                addString(DangerRPG.trans("rpgstr.item_not_supported"));
+                addString("");
+            }
+
             Set<ItemAttribute> itemAttributes = new LinkedHashSet<ItemAttribute>(LvlableItem.getAttributeValues(stack));
             itemAttributes.remove(ItemAttributes.MAX_EXP);
             itemAttributes.remove(ItemAttributes.DURABILITY);

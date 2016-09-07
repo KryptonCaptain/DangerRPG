@@ -4,6 +4,7 @@ import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.entity.projectile.EntityMaterial;
 import mixac1.dangerrpg.entity.projectile.EntitySniperArrow;
 import mixac1.dangerrpg.init.RPGOther;
+import mixac1.dangerrpg.init.RPGOther.RPGItemRarity;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGBowComponent;
 import mixac1.dangerrpg.util.RPGCommonHelper;
 import net.minecraft.enchantment.Enchantment;
@@ -17,7 +18,7 @@ public class ItemSniperBow extends ItemRPGBow
 {
     public ItemSniperBow(RPGBowComponent bowComponent)
     {
-        super(bowComponent);
+        super(bowComponent, RPGItemRarity.legendary);
     }
 
     @Override

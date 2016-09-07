@@ -1,5 +1,6 @@
 package mixac1.dangerrpg.client.model;
 
+import mixac1.dangerrpg.DangerRPG;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -7,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 public class ModelOrb extends ModelProjectile
 {
     public static final ModelOrb INSTANCE = new ModelOrb();
-    public static final ResourceLocation TEXTURE = new ResourceLocation("DangerRPG:textures/models/entities/orb.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(DangerRPG.MODID, "textures/models/entities/orb.png");
 
     public ModelRenderer shape1;
     public ModelRenderer shape2;

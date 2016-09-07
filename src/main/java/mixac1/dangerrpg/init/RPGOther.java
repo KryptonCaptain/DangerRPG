@@ -3,7 +3,6 @@ package mixac1.dangerrpg.init;
 import java.util.Random;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
@@ -28,7 +27,7 @@ public abstract class RPGOther
         {
             @Override
             public Item getTabIconItem() {
-                return Item.getItemFromBlock(RPGBlocks.rpgWorkbench);
+                return Item.getItemFromBlock(RPGBlocks.syntheticBedrock);
             }
         });
 
@@ -36,7 +35,7 @@ public abstract class RPGOther
         {
             @Override
             public Item getTabIconItem() {
-                return Items.arrow;
+                return RPGItems.magicLeather;
             }
         });
     }

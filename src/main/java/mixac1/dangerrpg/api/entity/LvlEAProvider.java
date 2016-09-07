@@ -9,6 +9,9 @@ import mixac1.dangerrpg.util.IMultiplier.IMultiplierE;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 
+/**
+ * Class provides lvl for {@link EntityAttribute}
+ */
 public class LvlEAProvider<Type>
 {
     public EntityAttribute<Type> attr;

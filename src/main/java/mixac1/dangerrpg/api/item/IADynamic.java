@@ -5,7 +5,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 /**
- * Extends this class for creating Dynamic {@link ItemAttribute}
+ * Extends this class for creating Dynamic {@link ItemAttribute}<br>
+ * Value saving to NBT
  */
 public class IADynamic extends ItemAttribute
 {
@@ -17,7 +18,8 @@ public class IADynamic extends ItemAttribute
     @Override
     public boolean hasIt(ItemStack stack)
     {
-        return stack.stackTagCompound != null && stack.stackTagCompound.hasKey(name);
+        return RPGCapability.lvlItemRegistr.registr.contains(stack.getItem())
+               && stack.stackTagCompound.hasKey(name);
     }
 
     @Override
@@ -54,12 +56,12 @@ public class IADynamic extends ItemAttribute
     @Override
     public void init(ItemStack stack)
     {
-        set(stack, RPGCapability.iaValues.get(stack.getItem()).map.get(this).value);
+        set(stack, RPGCapability.lvlItemRegistr.data.get(stack.getItem()).map.get(this).value);
     }
 
     @Override
     public void lvlUp(ItemStack stack)
     {
-        set(stack, RPGCapability.iaValues.get(stack.getItem()).map.get(this).up(get(stack)));
+        set(stack, RPGCapability.lvlItemRegistr.data.get(stack.getItem()).map.get(this).up(get(stack)));
     }
 }

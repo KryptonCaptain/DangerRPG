@@ -23,7 +23,7 @@ public class EACurrMana extends EAFloat
     {
         if (!value.equals(getValueRaw(entity))) {
             getEntityData(entity).attributeMap.get(hash).value = Utils.alignment(value, 0f, PlayerAttributes.MANA.getValueRaw(entity));
-            apply(entity);
+            apply(entity, value);
             return true;
         }
         return false;

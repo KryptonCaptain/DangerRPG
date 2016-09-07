@@ -1,6 +1,9 @@
 package mixac1.dangerrpg.init;
 
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import mixac1.dangerrpg.init.RPGOther.RPGItemRarity;
+import mixac1.dangerrpg.item.ItemE;
 import mixac1.dangerrpg.item.ItemTestWand;
 import mixac1.dangerrpg.item.RPGArmorMaterial;
 import mixac1.dangerrpg.item.RPGItemComponent;
@@ -28,6 +31,16 @@ import net.minecraft.item.Item;
 
 public abstract class RPGItems
 {
+    public static Item magicLeather         = new ItemE("magic_leather");
+    public static Item compressedObsidian   = new ItemE("compressed_obsidian");
+    public static Item compressedBedrock    = new ItemE("compressed_bedrock");
+    public static Item blackMatter          = new ItemE("black_matter");
+    public static Item whiteMatter          = new ItemE("white_matter");
+    public static Item stickDiamond         = new ItemE("stick_diamond");
+    public static Item stickObsidian        = new ItemE("stick_obsidian");
+    public static Item stickBlackMatter     = new ItemE("stick_black_matter");
+    public static Item stickWhiteMatter     = new ItemE("stick_white_matter");
+
     public static Item swordTraining = new ItemRPGWeapon(RPGToolMaterial.WOOD, RPGItemComponent.TRAINING, "sword_training");
 
     public static Item swordObsidian     = new ItemRPGWeapon(RPGToolMaterial.OBSIDIAN,     RPGItemComponent.SWORD);
@@ -153,15 +166,14 @@ public abstract class RPGItems
     public static Item[] mageArmorBlackMatter = ItemMageArmor.createFullSet(RPGArmorMaterial.BLACK_MATTER, RPGArmorComponent.MAGE_ARMOR);
     public static Item[] mageArmorWhiteMatter = ItemMageArmor.createFullSet(RPGArmorMaterial.WHITE_MATTER, RPGArmorComponent.MAGE_ARMOR);
 
-    public static Item shadowBow = new ItemRPGBow   (RPGItemComponent.SHADOW_BOW);
+    public static Item shadowBow = new ItemRPGBow   (RPGItemComponent.SHADOW_BOW, RPGItemRarity.mythic);
     public static Item sniperBow = new ItemSniperBow(RPGItemComponent.SNIPER_BOW);
 
     public static Item gemWitherSkull = new GemWeaponWitherSkull("gem_wither_skull");
 
     public static Item testWand = new ItemTestWand("test_wand");
 
-
-    public static void load()
+    public static void load(FMLPreInitializationEvent e)
     {
         registerItems();
     }
@@ -298,7 +310,7 @@ public abstract class RPGItems
 
     private static void registerItem(Item item)
     {
-        GameRegistry.registerItem(item, item.getUnlocalizedName());
+        GameRegistry.registerItem(item, item.unlocalizedName);
     }
 
     private static void registerItemArray(Item[] array)

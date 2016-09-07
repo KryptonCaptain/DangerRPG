@@ -36,7 +36,7 @@ public class InventoryRPGCrafting extends InventoryCrafting
     {
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 3; ++j) {
-                crafting.setInventorySlotContents(j * 3 + i, getStackInRowAndColumn(row + j, column + i));
+                crafting.setInventorySlotContents(j + i * 3, getStackInRowAndColumn(row + j, column + i));
             }
         }
         return crafting;

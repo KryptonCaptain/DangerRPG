@@ -11,6 +11,7 @@ import mixac1.dangerrpg.item.RPGItemComponent.RPGBowComponent;
 import mixac1.dangerrpg.item.RPGToolMaterial;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
@@ -19,13 +20,15 @@ import net.minecraft.world.World;
 public class ItemRPGBow extends ItemBow implements ILvlableItemBow, IHasBooksInfo
 {
     public RPGBowComponent bowComponent;
+    protected EnumRarity rarity;
 
-    public ItemRPGBow(RPGBowComponent bowComponent)
+    public ItemRPGBow(RPGBowComponent bowComponent, EnumRarity rarity)
     {
         setUnlocalizedName(bowComponent.name);
         setTextureName(Utils.toString(DangerRPG.MODID, ":weapons/range/", unlocalizedName));
         setCreativeTab(RPGCreativeTabs.tabRPGAmunitions);
         this.bowComponent = bowComponent;
+        this.rarity = rarity;
     }
 
     @Override
@@ -56,5 +59,11 @@ public class ItemRPGBow extends ItemBow implements ILvlableItemBow, IHasBooksInf
     public void onStoppedUsing(ItemStack stack, World world, EntityPlayer player, int useDuration)
     {
         ILvlableItem.DEFAULT_BOW.onStoppedUsing(stack, world, player, useDuration);
+    }
+
+    @Override
+    public EnumRarity getRarity(ItemStack stack)
+    {
+        return rarity;
     }
 }

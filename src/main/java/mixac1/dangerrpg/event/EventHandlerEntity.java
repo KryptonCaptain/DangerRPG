@@ -1,6 +1,7 @@
 package mixac1.dangerrpg.event;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.event.InitRPGEntityEvent;
@@ -8,10 +9,12 @@ import mixac1.dangerrpg.capability.EntityData;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.init.RPGNetwork;
+import mixac1.dangerrpg.network.MsgSyncConfig;
 import mixac1.dangerrpg.network.MsgSyncEntityData;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
@@ -25,7 +28,7 @@ public class EventHandlerEntity
     @SubscribeEvent
     public void onEntityConstructing(EntityConstructing e)
     {
-        if (e.entity instanceof EntityLivingBase && EntityData.hasIt((EntityLivingBase) e.entity)) {
+        if (e.entity instanceof EntityLivingBase && EntityData.isRPGEntity((EntityLivingBase) e.entity)) {
             EntityData.register((EntityLivingBase) e.entity);
         }
     }
@@ -33,7 +36,7 @@ public class EventHandlerEntity
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent e)
     {
-        if (e.entity instanceof EntityLivingBase && EntityData.hasIt((EntityLivingBase) e.entity)) {
+        if (e.entity instanceof EntityLivingBase && EntityData.isRPGEntity((EntityLivingBase) e.entity)) {
             if (e.entity.worldObj.isRemote) {
                 RPGNetwork.net.sendToServer(new MsgSyncEntityData((EntityLivingBase) e.entity));
             }
@@ -114,5 +117,11 @@ public class EventHandlerEntity
 
             }
         }
+    }
+
+    @SubscribeEvent
+    public void onPlayerLoggedInEvent(PlayerLoggedInEvent e)
+    {
+        RPGNetwork.net.sendTo(new MsgSyncConfig(), (EntityPlayerMP) e.player);
     }
 }

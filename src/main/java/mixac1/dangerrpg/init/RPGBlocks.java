@@ -1,22 +1,24 @@
 package mixac1.dangerrpg.init;
 
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import mixac1.dangerrpg.block.LvlupTable;
-import mixac1.dangerrpg.block.ModifyTable;
-import mixac1.dangerrpg.block.RPGWorkbench;
+import mixac1.dangerrpg.block.BlockRPGWorkbench;
+import mixac1.dangerrpg.block.BlockSyntheticBedrock;
 import net.minecraft.block.Block;
 
 public abstract class RPGBlocks
 {
-    public static Block modifyTable = new ModifyTable();
-    public static Block lvlupTable = new LvlupTable();
-    public static Block rpgWorkbench = new RPGWorkbench();
+    public static Block modifyTable;
+    public static Block lvlupTable;
+    public static Block rpgWorkbench;
+    public static Block syntheticBedrock;
 
-    public static void load()
+    public static void load(FMLPreInitializationEvent e)
     {
-//        registerBlock(modifyTable);
-//        registerBlock(lvlupTable);
-        registerBlock(rpgWorkbench);
+        // registerBlock(modifyTable       = new BlockModifyTable());
+        // registerBlock(lvlupTable        = new BlockLvlupTable());
+        registerBlock(rpgWorkbench      = new BlockRPGWorkbench());
+        registerBlock(syntheticBedrock  = new BlockSyntheticBedrock());
     }
 
     private static void registerBlock(Block block)

@@ -10,9 +10,13 @@ public class NEIConfig implements IConfigureNEI
     @Override
     public void loadConfig()
     {
-        API.registerRecipeHandler(new CommonShapedRecipeHandler());
-        API.registerUsageHandler(new CommonShapedRecipeHandler());
-        API.registerGuiOverlay(GuiRPGWorkbench.class, "Tpjmaking");
+        API.registerRecipeHandler(new LargeShapedRecipeHandler());
+        API.registerUsageHandler(new LargeShapedRecipeHandler());
+
+        API.registerRecipeHandler(new LargeShapelessRecipeHandler());
+        API.registerUsageHandler(new LargeShapelessRecipeHandler());
+
+        API.registerGuiOverlay(GuiRPGWorkbench.class, "RPGWorkbench");
     }
 
     @Override

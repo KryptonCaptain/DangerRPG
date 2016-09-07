@@ -17,7 +17,7 @@ public class EAMana extends EAFloat
         if (isValid(value, entity)) {
             float max = getValue(entity);
             setValueRaw(value, entity);
-            apply(entity);
+            apply(entity, value);
             sync(entity);
             PlayerAttributes.CURR_MANA.setValue(value * PlayerAttributes.CURR_MANA.getValue(entity) / max, entity);
         }

@@ -60,7 +60,7 @@ public class ContainerRPGWorkbench extends Container
     @Override
     public void onCraftMatrixChanged(IInventory inv)
     {
-        ItemStack stack = RPGRecipes.findMatchingRecipe(craftMatrix, worldObj);
+        ItemStack stack = RPGRecipes.ownFindMatchingRecipe(craftMatrix, worldObj, craftSize, craftSize);
         craftResult.setInventorySlotContents(0, stack);
 
         if (stack != null) {

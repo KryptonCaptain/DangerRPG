@@ -1,6 +1,9 @@
 package mixac1.dangerrpg.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import mixac1.dangerrpg.api.item.ILvlableItem;
 import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemArmor;
@@ -12,8 +15,10 @@ import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.item.IMaterialSpecial;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
@@ -154,7 +159,7 @@ public abstract class RPGCommonHelper
     public static IMaterialSpecial getMaterialSpecial(ItemStack stack)
     {
         if (stack != null && LvlableItem.isLvlable(stack)) {
-            ILvlableItem ilvl = RPGCapability.iaValues.get(stack.getItem()).lvlComponent;
+            ILvlableItem ilvl = RPGCapability.lvlItemRegistr.data.get(stack.getItem()).lvlComponent;
             if (ilvl instanceof ILvlableItemArmor) {
                 return ((ILvlableItemArmor) ilvl).getArmorMaterial(stack.getItem());
             }
@@ -203,6 +208,32 @@ public abstract class RPGCommonHelper
             return false;
         }
         return true;
+    }
+
+    public static ArrayList<String> getItemNames(Set<Item> items, boolean needSort)
+    {
+        ArrayList<String> names = new ArrayList<String>();
+        for (Item item : items) {
+            names.add(item.unlocalizedName);
+        }
+        if (needSort) {
+            Collections.sort(names);
+        }
+        return names;
+    }
+
+    public static ArrayList<String> getEntityNames(Set<Class<? extends EntityLivingBase>> set, boolean needSort)
+    {
+        ArrayList<String> names = new ArrayList<String>();
+        for (Class item : set) {
+            if (EntityList.classToStringMapping.containsKey(item)) {
+                names.add((String) EntityList.classToStringMapping.get(item));
+            }
+        }
+        if (needSort) {
+            Collections.sort(names);
+        }
+        return names;
     }
 }
 

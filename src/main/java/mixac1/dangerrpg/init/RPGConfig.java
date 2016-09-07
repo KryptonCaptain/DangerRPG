@@ -1,10 +1,18 @@
 package mixac1.dangerrpg.init;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.relauncher.FMLInjectionData;
 import mixac1.dangerrpg.DangerRPG;
+import mixac1.dangerrpg.util.RPGCommonHelper;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
@@ -12,10 +20,12 @@ import net.minecraftforge.common.config.Property;
 public abstract class RPGConfig
 {
     public static Configuration config;
+    public static File dir;
 
     /* MAIN */
     public static boolean   mainEnableModGui;
     public static boolean   mainEnableInfoLog;
+    public static boolean   mainShowShapedRecipe;
 
     /* PLAYER */
     public static int       playerLoseLvlCount;
@@ -39,6 +49,16 @@ public abstract class RPGConfig
         config = new Configuration(e.getSuggestedConfigurationFile(), DangerRPG.VERSION, true);
         config.load();
 
+        dir = new File((File) FMLInjectionData.data()[6], "config/".concat(DangerRPG.MODID));
+        if (dir.exists()) {
+            if (!dir.isDirectory()) {
+                dir.delete();
+            }
+        }
+        else {
+            dir.mkdir();
+        }
+
         initMainCategory();
         initPlayerCategory();
         initEntityCategory();
@@ -47,6 +67,65 @@ public abstract class RPGConfig
         if (config.hasChanged()) {
             config.save();
         }
+    }
+
+    public static void preLoadCapability(FMLPostInitializationEvent e)
+    {
+        Property prop;
+
+        ArrayList<String> names = RPGCommonHelper.getItemNames(RPGCapability.lvlItemRegistr.data.keySet(), true);
+        prop = getPropertyStrings("Supported Lvl items", "itemSupportedLvlItems", names.toArray(new String[names.size()]),
+                "Set supported lvlable items (activated if 'itemAllItemsLvlable' is false)", false);
+        if (!itemAllItemsLvlable) {
+            itemSupportedLvlItems = new HashSet<String>(Arrays.asList(prop.getStringList()));
+        }
+
+
+        prop = getPropertyStrings("Supported RPG entities", "entitySupportedRPGEntities", new String[] {},
+                "Set supported RPGable entities (activated if 'entityAllEntityRPG' is false)", false);
+        if (!entityAllEntityRPG) {
+            entitySupportedRPGEntities = new HashSet<String>(Arrays.asList(prop.getStringList()));
+        }
+
+
+        if (config.hasChanged()) {
+            config.save();
+        }
+    }
+
+    public static void postLoadCapability(FMLPostInitializationEvent e)
+    {
+        Property prop;
+
+        ArrayList<String> names = RPGCommonHelper.getItemNames(RPGCapability.lvlItemRegistr.registr, true);
+        RPGConfig.getPropertyStrings("Supported Lvl items", "itemSupportedLvlItems",
+                names.toArray(new String[names.size()]), null, true);
+
+
+        names = RPGCommonHelper.getEntityNames(RPGCapability.rpgEntityRegistr.registr, true);
+        RPGConfig.getPropertyStrings("Supported RPG entities", "entitySupportedRPGEntities",
+                names.toArray(new String[names.size()]), null, true);
+
+
+        if (config.hasChanged()) {
+            config.save();
+        }
+
+        PrintWriter file = createPrintWriter("AllEntityNames.txt");
+        names = RPGCommonHelper.getEntityNames(RPGCapability.rpgEntityRegistr.data.keySet(), true);
+        for (String str : names) {
+            file.write(str.concat("\n"));
+        }
+        file.flush();
+        file.close();
+
+        file = createPrintWriter("AllItemNames.txt");
+        names = RPGCommonHelper.getItemNames(RPGCapability.lvlItemRegistr.data.keySet(), true);
+        for (String str : names) {
+            file.write(str.concat("\n"));
+        }
+        file.flush();
+        file.close();
     }
 
     private static void initMainCategory()
@@ -60,6 +139,9 @@ public abstract class RPGConfig
 
         mainEnableInfoLog = getBoolean(cat.getName(), "mainEnableInfoLog", true,
                 "Enable writing info message to log");
+
+        mainShowShapedRecipe = getBoolean(cat.getName(), "mainShowShapedRecipe", false,
+                "Show default shape recipes in Shaped and Shapeless Crafting(need NEI)");
     }
 
     private static void initPlayerCategory()
@@ -82,12 +164,6 @@ public abstract class RPGConfig
 
         entityAllEntityRPG = getBoolean(cat.getName(), "entityAllEntityRPG", true,
                 "Are all entity RPGable?");
-
-        prop = getPropertyStrings("Supported RPG entities", "entitySupportedRPGEntities", new String[] {},
-                "Set supported RPGable entities (activated if 'entityAllEntityRPG' is false)", false);
-        if (!entityAllEntityRPG) {
-            entitySupportedRPGEntities = new HashSet<String>(Arrays.asList(prop.getStringList()));
-        }
     }
 
     private static void initItemCategory()
@@ -97,7 +173,7 @@ public abstract class RPGConfig
         cat.setShowInGui(true);
         Property prop;
 
-        itemAllItemsLvlable = getBoolean(cat.getName(), "itemAllItemsLvlable", true,
+        itemAllItemsLvlable = getBoolean(cat.getName(), "itemAllItemsLvlable", false,
                 "Are all weapons, tools levelable?");
 
         itemCanUpInTable = getBoolean(cat.getName(), "itemCanUpInTable", true,
@@ -111,12 +187,6 @@ public abstract class RPGConfig
 
         itemExpMul = (float) getDouble(cat.getName(), "itemExpMul", 1.15D,
                 "Set items expirience multiplier");
-
-        prop = getPropertyStrings("Supported Lvl items", "itemSupportedLvlItems", new String[] {},
-                "Set supported lvlable items (activated if 'itemAllItemsLvlable' is false)", false);
-        if (!itemAllItemsLvlable) {
-            itemSupportedLvlItems = new HashSet<String>(Arrays.asList(prop.getStringList()));
-        }
     }
 
     public static Property getPropertyStrings(String category, String field, String[] defValue, String comment, boolean needClear)
@@ -157,6 +227,31 @@ public abstract class RPGConfig
             prop.comment = comment;
         }
         return prop.getBoolean(defValue);
+    }
+
+    private static File createFile(String path)
+    {
+        File file = new File(dir, path);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return file;
+    }
+
+    private static PrintWriter createPrintWriter(String path)
+    {
+        try {
+            return new PrintWriter(createFile(path));
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
 

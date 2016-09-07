@@ -1,6 +1,7 @@
 package mixac1.dangerrpg.init;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.event.EventHandlerClient;
@@ -11,7 +12,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 public abstract class RPGEvents
 {
-    public static void load()
+    public static void load(FMLInitializationEvent e)
     {
         registerEvent(new EventHandlerCommon());
         registerEvent(new EventHandlerEntity());
@@ -19,7 +20,7 @@ public abstract class RPGEvents
     }
 
     @SideOnly(Side.CLIENT)
-    public static void loadClient()
+    public static void loadClient(FMLInitializationEvent e)
     {
         registerEvent(new EventHandlerClient());
     }

@@ -35,8 +35,14 @@ public abstract class ItemAttribute
      */
     public abstract float get(ItemStack stack, EntityPlayer player);
 
+    /**
+     * Warning: Check {@link #hasIt(ItemStack)} before use this method
+     */
     public abstract void set(ItemStack stack, float value);
 
+    /**
+     * Warning: Check {@link #hasIt(ItemStack)} before use this method
+     */
     public abstract void add(ItemStack stack, float value);
 
     public abstract void init(ItemStack stack);

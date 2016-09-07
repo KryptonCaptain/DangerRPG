@@ -10,10 +10,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import mixac1.dangerrpg.capability.EntityData;
-import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.client.gui.GuiInfoBookContentEntity.LevelUpButton;
 import mixac1.dangerrpg.init.RPGKeyBinds;
-import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.util.RPGCommonHelper;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -29,7 +27,7 @@ import net.minecraft.util.ResourceLocation;
 @SideOnly(Side.CLIENT)
 public class GuiInfoBook extends GuiScreen
 {
-    public static final ResourceLocation TEXTURE = new ResourceLocation("DangerRPG:textures/gui/info_book.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(DangerRPG.MODID, "textures/gui/info_book.png");
 
     public EntityPlayer player;
     public EntityLivingBase target;
@@ -69,7 +67,7 @@ public class GuiInfoBook extends GuiScreen
         this.player = player;
 
         MovingObjectPosition mop = RPGCommonHelper.getMouseOver(0, 10);
-        if (mop != null && mop.entityHit != null && mop.entityHit instanceof EntityLivingBase) {
+        if (mop != null && mop.entityHit != null && mop.entityHit instanceof EntityLivingBase && EntityData.isRPGEntity((EntityLivingBase) mop.entityHit)) {
             target = (EntityLivingBase) mop.entityHit;
             isTargetPlayer = target instanceof EntityPlayer;
         }
@@ -100,11 +98,6 @@ public class GuiInfoBook extends GuiScreen
         }
         else {
             stacks = new ItemStack[5];
-        }
-
-
-        if (stacks[0] != null && !(LvlableItem.isLvlable(stacks[0]) || stacks[0].getItem() instanceof IHasBooksInfo)) {
-            stacks[0] = null;
         }
 
         offsetX = (width  - bookImageWidth)  / 2;

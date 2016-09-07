@@ -81,9 +81,9 @@ public interface ILvlableItem
         public RPGBowComponent getItemComponent(Item item);
     }
 
-    /**
-     * Start DEFAULT Lvlable items
-     */
+
+
+
     public static final ILvlableItem DEFAULT_ITEM = new ILvlableItem()
     {
         @Override
@@ -122,7 +122,7 @@ public interface ILvlableItem
         @Override
         public RPGToolComponent getItemComponent(Item item)
         {
-            return RPGToolComponent.itemComponentHook(item, RPGItemComponent.SWORD);
+            return RPGItemComponent.SWORD;
         }
 
         @Override
@@ -144,18 +144,18 @@ public interface ILvlableItem
         public RPGToolComponent getItemComponent(Item item)
         {
             if (item instanceof ItemAxe) {
-                return RPGToolComponent.itemComponentHook(item, RPGItemComponent.AXE);
+                return RPGItemComponent.AXE;
             }
             else if (item instanceof ItemHoe) {
-                return RPGToolComponent.itemComponentHook(item, RPGItemComponent.HOE);
+                return RPGItemComponent.HOE;
             }
             else if (item instanceof ItemSpade) {
-                return RPGToolComponent.itemComponentHook(item, RPGItemComponent.SHOVEL);
+                return RPGItemComponent.SHOVEL;
             }
             else if (item instanceof ItemPickaxe) {
-                return RPGToolComponent.itemComponentHook(item, RPGItemComponent.PICKAXE);
+                return RPGItemComponent.PICKAXE;
             }
-            return RPGToolComponent.itemComponentHook(item, RPGItemComponent.AXE);
+            return RPGItemComponent.AXE;
         }
 
         @Override
@@ -182,7 +182,7 @@ public interface ILvlableItem
         @Override
         public RPGArmorComponent getItemComponent(Item item)
         {
-            return RPGToolComponent.itemComponentHook(item, RPGArmorComponent.ARMOR);
+            return RPGArmorComponent.ARMOR;
         }
 
         @Override
@@ -203,7 +203,7 @@ public interface ILvlableItem
         @Override
         public RPGBowComponent getItemComponent(Item item)
         {
-            return RPGToolComponent.itemComponentHook(item, RPGItemComponent.BOW);
+            return RPGItemComponent.BOW;
         }
 
         @Override

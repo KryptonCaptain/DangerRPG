@@ -1,9 +1,5 @@
 package mixac1.dangerrpg.item;
 
-import java.util.HashMap;
-
-import net.minecraft.item.Item;
-
 public class RPGItemComponent
 {
     public static final RPGItemComponent  NULL        = new RPGItemComponent();
@@ -224,17 +220,5 @@ public class RPGItemComponent
         public float getMaxDurability();
 
         public float getEnchantability();
-    }
-
-    /****************************************************************************/
-
-    public static HashMap<Item, RPGItemComponent> map = new HashMap<Item, RPGItemComponent>();
-
-    public static <Type extends RPGItemComponent> Type itemComponentHook(Item item, Type itemComponent)
-    {
-        if (map.containsKey(item)) {
-            return (Type) map.get(item);
-        }
-        return itemComponent;
     }
 }

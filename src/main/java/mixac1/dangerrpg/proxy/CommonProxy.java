@@ -26,31 +26,37 @@ public class CommonProxy
 
     public void preInit(FMLPreInitializationEvent e)
     {
-        RPGAnotherMods.load();
+        RPGAnotherMods.load(e);
 
         RPGConfig.load(e);
 
-        RPGNetwork.load();
+        RPGNetwork.load(e);
 
-        RPGItems.load();
+        RPGItems.load(e);
 
-        RPGBlocks.load();
+        RPGBlocks.load(e);
 
-        RPGRecipes.load();
+        RPGRecipes.load(e);
     }
 
     public void init(FMLInitializationEvent e)
     {
-        RPGEntities.load();
+        RPGEntities.load(e);
 
-        RPGGuiHandlers.load();
+        RPGGuiHandlers.load(e);
 
-        RPGEvents.load();
+        RPGEvents.load(e);
     }
 
     public void postInit(FMLPostInitializationEvent e)
     {
-        RPGCapability.load();
+        RPGCapability.preLoad(e);
+
+        RPGConfig.preLoadCapability(e);
+
+        RPGCapability.load(e);
+
+        RPGConfig.postLoadCapability(e);
     }
 
     public EntityPlayer getClientPlayer()

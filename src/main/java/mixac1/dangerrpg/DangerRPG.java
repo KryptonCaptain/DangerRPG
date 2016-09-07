@@ -14,15 +14,15 @@ import mixac1.dangerrpg.init.RPGConfig;
 import mixac1.dangerrpg.proxy.CommonProxy;
 import net.minecraft.util.StatCollector;
 
-@Mod(modid = DangerRPG.MODID,
-     name = DangerRPG.MODNAME,
-     version = DangerRPG.VERSION,
+@Mod(modid                     = DangerRPG.MODID,
+     name                      = DangerRPG.MODNAME,
+     version                   = DangerRPG.VERSION,
      acceptedMinecraftVersions = DangerRPG.ACCEPTED_VERSION,
      dependencies = "required-after:Forge")
 public class DangerRPG
 {
     public static final String MODNAME          = "Danger RPG";
-    public static final String MODID            = "DangerRPG";
+    public static final String MODID            = "dangerrpg";
     public static final String VERSION          = "1.0.0";
     public static final String ACCEPTED_VERSION = "[1.7.10]";
 
@@ -53,7 +53,7 @@ public class DangerRPG
         proxy.postInit(event);
     }
 
-    public static void debugDump(Object... objs)
+    public static void log(Object... objs)
     {
         StringBuilder buf = new StringBuilder();
         for (Object obj : objs) {

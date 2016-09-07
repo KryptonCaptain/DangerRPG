@@ -1,15 +1,19 @@
 package mixac1.dangerrpg.recipe;
 
+import java.util.HashMap;
+
 import mixac1.dangerrpg.inventory.ContainerRPGWorkbench;
+import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public class CommonShapedRecipe implements IRecipe
+public class LargeShapedRecipe implements IRecipe
 {
-    public static String NAME = "recipe.common_shaped";
+    public static String NAME = "large_shaped";
 
     public final int recipeWidth;
     public final int recipeHeight;
@@ -18,7 +22,7 @@ public class CommonShapedRecipe implements IRecipe
 
     private ItemStack recipeOutput;
 
-    public CommonShapedRecipe(int recipeWidth, int recipeHeight, ItemStack[] recipeItems, ItemStack recipeOutput)
+    public LargeShapedRecipe(int recipeWidth, int recipeHeight, ItemStack[] recipeItems, ItemStack recipeOutput)
     {
         this.recipeWidth = recipeWidth;
         this.recipeHeight = recipeHeight;
@@ -108,5 +112,65 @@ public class CommonShapedRecipe implements IRecipe
     public int getRecipeSize()
     {
         return recipeWidth * recipeHeight;
+    }
+
+    public static LargeShapedRecipe create(ItemStack stack, Object ... objs)
+    {
+        String s = "";
+        int i = 0;
+        int j = 0;
+        int k = 0;
+
+        if (objs[i] instanceof String[]) {
+            String[] astring = ((String[])objs[i++]);
+
+            for (String s1 : astring) {
+                ++k;
+                j = s1.length();
+                s = s + s1;
+            }
+        }
+        else {
+            while (objs[i] instanceof String) {
+                String s2 = (String)objs[i++];
+                ++k;
+                j = s2.length();
+                s = s + s2;
+            }
+        }
+
+        HashMap hashmap;
+
+        for (hashmap = new HashMap(); i < objs.length; i += 2) {
+            Character character = (Character)objs[i];
+            ItemStack itemstack1 = null;
+
+            if (objs[i + 1] instanceof Item) {
+                itemstack1 = new ItemStack((Item)objs[i + 1]);
+            }
+            else if (objs[i + 1] instanceof Block) {
+                itemstack1 = new ItemStack((Block)objs[i + 1], 1, 32767);
+            }
+            else if (objs[i + 1] instanceof ItemStack) {
+                itemstack1 = (ItemStack)objs[i + 1];
+            }
+
+            hashmap.put(character, itemstack1);
+        }
+
+        ItemStack[] aitemstack = new ItemStack[j * k];
+
+        for (int i1 = 0; i1 < j * k; ++i1) {
+            char c0 = s.charAt(i1);
+
+            if (hashmap.containsKey(Character.valueOf(c0))) {
+                aitemstack[i1] = ((ItemStack)hashmap.get(Character.valueOf(c0))).copy();
+            }
+            else {
+                aitemstack[i1] = null;
+            }
+        }
+
+        return new LargeShapedRecipe(j, k, aitemstack, stack);
     }
 }

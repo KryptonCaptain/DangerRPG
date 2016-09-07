@@ -52,7 +52,8 @@ public class EntityAttribute<Type>
 
     public boolean hasIt(EntityLivingBase entity)
     {
-        return RPGCapability.getEntityAttributesSet(entity).attributes.contains(this);
+        return RPGCapability.rpgEntityRegistr.isRegistered(entity)
+                && RPGCapability.rpgEntityRegistr.getAttributesSet(entity).attributes.contains(this);
     }
 
     public boolean isValid(Type value)
@@ -70,23 +71,34 @@ public class EntityAttribute<Type>
         return EntityData.get(entity);
     }
 
+    /**
+     * Get value without check<br>
+     * Warning: Check {@link EntityAttribute#hasIt(EntityLivingBase)} before use this method
+     */
     @Deprecated
     public Type getValueRaw(EntityLivingBase entity)
     {
         return (Type) getEntityData(entity).attributeMap.get(hash).value;
     }
 
+    /**
+     * Set value without check<br>
+     * Warning: Check {@link EntityAttribute#hasIt(EntityLivingBase)} before use this method
+     */
     @Deprecated
     public boolean setValueRaw(Type value, EntityLivingBase entity)
     {
         if (!value.equals(getValueRaw(entity))) {
             getEntityData(entity).attributeMap.get(hash).value = value;
-            apply(entity);
+            apply(entity, value);
             return true;
         }
         return false;
     }
 
+    /**
+     * Warning: Check {@link EntityAttribute#hasIt(EntityLivingBase)} before use this method
+     */
     public Type getValue(EntityLivingBase entity)
     {
         Type value = getValueRaw(entity);
@@ -97,6 +109,9 @@ public class EntityAttribute<Type>
         return value;
     }
 
+    /**
+     * Warning: Check {@link EntityAttribute#hasIt(EntityLivingBase)} before use this method
+     */
     public void setValue(Type value, EntityLivingBase entity)
     {
         if (isValid(value, entity)) {
@@ -106,6 +121,9 @@ public class EntityAttribute<Type>
         }
     }
 
+    /**
+     * Warning: Check {@link EntityAttribute#hasIt(EntityLivingBase)} before use this method
+     */
     public void addValue(Type value, EntityLivingBase entity)
     {
         setValue((Type) typeProvider.concat(getValue(entity), value), entity);
@@ -118,7 +136,10 @@ public class EntityAttribute<Type>
         }
     }
 
-    public void apply(EntityLivingBase entity)
+    /**
+     * Used when was set value
+     */
+    public void apply(EntityLivingBase entity, Type addedValue)
     {
 
     }
@@ -158,7 +179,7 @@ public class EntityAttribute<Type>
     }
 
     @Override
-    public int hashCode()
+    public final int hashCode()
     {
         return hash;
     }

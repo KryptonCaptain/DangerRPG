@@ -1,5 +1,6 @@
 package mixac1.dangerrpg.init;
 
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import mixac1.dangerrpg.DangerRPG;
@@ -20,7 +21,7 @@ public abstract class RPGGuiHandlers implements IGuiHandler
     public static final int GUI_INFO_BOOK     = 2;
     public static final int GUI_RPG_WORKBENCH = 3;
 
-    public static void load()
+    public static void load(FMLInitializationEvent e)
     {
         NetworkRegistry.INSTANCE.registerGuiHandler(DangerRPG.instance, new RPGGuiHandlers() {});
     }

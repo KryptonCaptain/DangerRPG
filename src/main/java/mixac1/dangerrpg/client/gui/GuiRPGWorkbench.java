@@ -2,6 +2,7 @@ package mixac1.dangerrpg.client.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.init.RPGBlocks;
 import mixac1.dangerrpg.inventory.ContainerRPGWorkbench;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -13,7 +14,7 @@ import net.minecraft.world.World;
 @SideOnly(Side.CLIENT)
 public class GuiRPGWorkbench extends GuiContainer
 {
-    public static final ResourceLocation TEXTURE = new ResourceLocation("DangerRPG:textures/gui/container/gui_rpg_workbench.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(DangerRPG.MODID, "textures/gui/container/gui_rpg_workbench.png");
 
     public static int textureWidth = 176;
     public static int textureHeight = 227;

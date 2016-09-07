@@ -5,7 +5,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 /**
- * Extends this class for creating Static {@link ItemAttribute}
+ * Extends this class for creating Static {@link ItemAttribute}<br>
+ * Value saving to {@link RPGCapability.LvlItemRegistr}
  */
 public class IAStatic extends ItemAttribute
 {
@@ -17,17 +18,17 @@ public class IAStatic extends ItemAttribute
     @Override
     public boolean hasIt(ItemStack stack)
     {
-        return RPGCapability.iaValues.get(stack.getItem()) != null
-            && RPGCapability.iaValues.get(stack.getItem()).map.containsKey(this);
+        return RPGCapability.lvlItemRegistr.registr.contains(stack.getItem())
+            && RPGCapability.lvlItemRegistr.data.get(stack.getItem()).map.containsKey(this);
     }
 
     @Override
     public float get(ItemStack stack)
     {
-        float value = RPGCapability.iaValues.get(stack.getItem()).map.get(this).value;
+        float value = RPGCapability.lvlItemRegistr.data.get(stack.getItem()).map.get(this).value;
         if (!isValid(value)) {
             init(stack);
-            value = RPGCapability.iaValues.get(stack.getItem()).map.get(this).value;
+            value = RPGCapability.lvlItemRegistr.data.get(stack.getItem()).map.get(this).value;
         }
         return value;
     }

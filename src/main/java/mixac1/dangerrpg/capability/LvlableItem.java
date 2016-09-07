@@ -1,10 +1,10 @@
 package mixac1.dangerrpg.capability;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.event.RegIAEvent;
 import mixac1.dangerrpg.api.event.UpEquipmentEvent;
 import mixac1.dangerrpg.api.item.IADynamic;
@@ -69,31 +69,26 @@ public abstract class LvlableItem
     public static boolean registerLvlableItem(Item item)
     {
         if (item != null && !(item instanceof ItemBlock)) {
-            ItemAttributesMap map = new ItemAttributesMap();
+            if (RPGCapability.lvlItemRegistr.data.containsKey(item)) {
+                return true;
+            }
 
-            if (RPGConfig.itemAllItemsLvlable || RPGConfig.itemSupportedLvlItems.contains(item.getUnlocalizedName())) {
-                ILvlableItem iLvl = item instanceof ILvlableItem ? (ILvlableItem) item :
-                                    item instanceof ItemSword ? ILvlableItem.DEFAULT_SWORD :
-                                    item instanceof ItemTool  ? ILvlableItem.DEFAULT_TOOL  :
-                                    item instanceof ItemHoe   ? ILvlableItem.DEFAULT_TOOL  :
-                                    item instanceof ItemArmor ? ILvlableItem.DEFAULT_ARMOR :
-                                    item instanceof ItemBow   ? ILvlableItem.DEFAULT_BOW   :
-                                    null;
-                if (iLvl != null) {
-                    map.lvlComponent = iLvl;
-                    registerParamsDefault(item, map);
-                    iLvl.registerAttributes(item, map);
-                    RPGCapability.iaValues.put(item, map);
-                    DangerRPG.infoLog("Register lvlable item: ".concat(item.getUnlocalizedName()));
+            ILvlableItem iLvl = item instanceof ItemSword ? ILvlableItem.DEFAULT_SWORD :
+                                item instanceof ItemTool  ? ILvlableItem.DEFAULT_TOOL  :
+                                item instanceof ItemHoe   ? ILvlableItem.DEFAULT_TOOL  :
+                                item instanceof ItemArmor ? ILvlableItem.DEFAULT_ARMOR :
+                                item instanceof ItemBow   ? ILvlableItem.DEFAULT_BOW   :
+                                null;
 
-                    return true;
-                }
+            if (iLvl != null) {
+                RPGCapability.lvlItemRegistr.data.put(item, new ItemAttributesMap(iLvl, false));
+                return true;
             }
         }
         return false;
     }
 
-    private static void registerParamsDefault(Item item, ItemAttributesMap map)
+    public static void registerParamsDefault(Item item, ItemAttributesMap map)
     {
         map.addDynamicItemAttribute(ItemAttributes.MAX_EXP, RPGConfig.itemStartMaxExp, EXP_MUL);
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.DefaultIAEvent(item, map));
@@ -231,12 +226,12 @@ public abstract class LvlableItem
 
     public static boolean isLvlable(ItemStack stack)
     {
-        return RPGCapability.iaValues.containsKey(stack.getItem());
+        return RPGCapability.lvlItemRegistr.registr.contains(stack.getItem());
     }
 
     public static Set<ItemAttribute> getAttributeValues(ItemStack stack)
     {
-        return RPGCapability.iaValues.get(stack.getItem()).map.keySet();
+        return RPGCapability.lvlItemRegistr.data.get(stack.getItem()).map.keySet();
     }
 
     public static void createLvlableItem(ItemStack stack)
@@ -336,6 +331,13 @@ public abstract class LvlableItem
     {
         public HashMap<ItemAttribute, ItemAttrParams> map = new HashMap<ItemAttribute, ItemAttrParams>();
         public ILvlableItem lvlComponent;
+        public boolean isSupported;
+
+        public ItemAttributesMap(ILvlableItem lvlComponent, boolean isSupported)
+        {
+            this.lvlComponent = lvlComponent;
+            this.isSupported = isSupported;
+        }
 
         public void addStaticItemAttribute(IAStatic attr, float value)
         {
@@ -347,7 +349,7 @@ public abstract class LvlableItem
             map.put(attr, new ItemAttrParams(value, mul));
         }
 
-        public static class ItemAttrParams
+        public static class ItemAttrParams implements Serializable, Cloneable
         {
             public float value;
             public IMultiplier<Float> mul;

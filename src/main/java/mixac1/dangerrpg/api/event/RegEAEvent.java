@@ -13,7 +13,7 @@ public class RegEAEvent extends Event
     public Class<? extends EntityLivingBase> entityClass;
     public EntityAttributesSet set;
 
-    public RegEAEvent(Class<? extends EntityLivingBase> entityClass, EntityAttributesSet set)
+    protected RegEAEvent(Class<? extends EntityLivingBase> entityClass, EntityAttributesSet set)
     {
         this.entityClass = entityClass;
         this.set = set;

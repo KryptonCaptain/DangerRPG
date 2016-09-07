@@ -1,5 +1,6 @@
 package mixac1.dangerrpg.init;
 
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import mixac1.dangerrpg.DangerRPG;
@@ -19,7 +20,7 @@ public abstract class RPGEntities
 {
     static int count = 0;
 
-    public static void load()
+    public static void load(FMLInitializationEvent e)
     {
         loadTileEntities();
         loadProjectileEntities();

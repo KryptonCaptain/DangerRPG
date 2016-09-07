@@ -14,7 +14,7 @@ public class RegIAEvent extends Event
     public Item item;
     public ItemAttributesMap map;
 
-    public RegIAEvent(Item item, ItemAttributesMap map)
+    protected RegIAEvent(Item item, ItemAttributesMap map)
     {
         this.item = item;
         this.map = map;

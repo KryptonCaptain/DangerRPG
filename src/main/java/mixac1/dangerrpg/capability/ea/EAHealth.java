@@ -25,7 +25,7 @@ public class EAHealth extends EAFloat
     }
 
     @Override
-    public void apply(EntityLivingBase entity)
+    public void apply(EntityLivingBase entity, Float value)
     {
         if (!entity.worldObj.isRemote) {
             float tmp = entity.getHealth() / entity.getMaxHealth();

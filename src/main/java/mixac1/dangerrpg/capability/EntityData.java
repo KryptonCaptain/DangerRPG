@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.EntityAttribute;
 import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import mixac1.dangerrpg.api.event.InitRPGEntityEvent;
@@ -155,12 +154,12 @@ public class EntityData implements IExtendedEntityProperties
 
     public ArrayList<EntityAttribute> getEntityAttributes()
     {
-        return RPGCapability.getEntityAttributesSet(entity).attributes;
+        return RPGCapability.rpgEntityRegistr.getAttributesSet(entity).attributes;
     }
 
     public ArrayList<LvlEAProvider> getLvlProviders()
     {
-        return RPGCapability.getEntityAttributesSet(entity).lvlProviders;
+        return RPGCapability.rpgEntityRegistr.getAttributesSet(entity).lvlProviders;
     }
 
     /*************************************************************************************/
@@ -175,15 +174,14 @@ public class EntityData implements IExtendedEntityProperties
         }
     }
 
-    public static boolean hasIt(EntityLivingBase entity)
+    public static boolean isRPGEntity(EntityLivingBase entity)
     {
-        return RPGCapability.getEntityAttributesSet(entity) != null;
+        return RPGCapability.rpgEntityRegistr.isRegistered(entity);
     }
 
     public static boolean registerEntity(Class entityClass)
     {
-        if (EntityLivingBase.class.isAssignableFrom(entityClass) &&
-           (RPGConfig.entityAllEntityRPG || RPGConfig.entitySupportedRPGEntities.contains(entityClass.getName()))) {
+        if (EntityLivingBase.class.isAssignableFrom(entityClass)) {
             EntityAttributesSet set = new EntityAttributesSet();
             registerEntityDefault(entityClass, set);
             if (EntityPlayer.class.isAssignableFrom(entityClass)) {
@@ -195,10 +193,7 @@ public class EntityData implements IExtendedEntityProperties
                     registerEntityMob(entityClass, set);
                 }
             }
-            RPGCapability.eaMap.put(entityClass, set);
-
-            DangerRPG.infoLog("Register RPG entity: ".concat(entityClass.getName()));
-
+            RPGCapability.rpgEntityRegistr.data.put(entityClass, set);
             return true;
         }
         return false;

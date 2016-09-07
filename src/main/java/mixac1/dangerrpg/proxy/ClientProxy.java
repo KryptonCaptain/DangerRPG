@@ -25,7 +25,7 @@ public class ClientProxy extends CommonProxy
     {
         super.preInit(e);
 
-        RPGKeyBinds.load();
+        RPGKeyBinds.load(e);
     }
 
     @Override
@@ -33,11 +33,11 @@ public class ClientProxy extends CommonProxy
     {
         super.init(e);
 
-        RPGRenderers.load();
+        RPGRenderers.load(e);
 
-        RPGEvents.loadClient();
+        RPGEvents.loadClient(e);
 
-        RPGAnotherMods.loadClient();
+        RPGAnotherMods.loadClient(e);
     }
 
     @Override

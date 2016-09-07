@@ -2,6 +2,7 @@ package mixac1.dangerrpg.client.gui;
 
 import org.lwjgl.opengl.GL11;
 
+import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.capability.EntityData;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
@@ -16,7 +17,6 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
@@ -30,7 +30,7 @@ public class RPGGuiIngame extends Gui
     public static FontRenderer fr = mc.fontRenderer;
     public ScaledResolution res;
 
-    public static final ResourceLocation TEXTURE = new ResourceLocation("DangerRPG:textures/gui/gui_in_game.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(DangerRPG.MODID, "textures/gui/gui_in_game.png");
 
     private static int textureWidth = 139;
     private static int textureHeight = 59;
@@ -120,6 +120,14 @@ public class RPGGuiIngame extends Gui
         float curr, max;
         String s;
 
+        boolean isRPGEntity = false;
+        if (EntityData.isRPGEntity(entity)) {
+            EntityData data = EntityData.get(entity);
+            if (data != null && data.checkValid()) {
+                isRPGEntity = true;
+            }
+        }
+
         if (!(entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isCreativeMode)) {
 
             // T0D0: health
@@ -170,7 +178,7 @@ public class RPGGuiIngame extends Gui
             }
 
             // T0D0: phisicArmor
-            {
+            if (entity instanceof EntityPlayer) {
                 drawTexturedModalRect(offsetX + invert(barOffsetX), offsetY + barOffsetY + yFal, barOffsetU, barOffsetV + barHeight * 2, barWidth, barHeight, isInverted);
 
                 curr = HookArmorSystem.getTotalPhisicArmor();
@@ -196,7 +204,7 @@ public class RPGGuiIngame extends Gui
             }
 
             // T0D0: damage
-            if (entity instanceof EntityMob) {
+            if (isRPGEntity && EntityAttributes.DAMAGE.hasIt(entity)) {
                 drawTexturedModalRect(offsetX + invert(barOffsetX), offsetY + barOffsetY + yFal, barOffsetU, barOffsetV + barHeight * 4, barWidth, barHeight, isInverted);
 
                 yFal += barHeight;
@@ -243,7 +251,7 @@ public class RPGGuiIngame extends Gui
             }
 
             // T0D0: damage value
-            if (entity instanceof EntityMob) {
+            if (isRPGEntity && EntityAttributes.DAMAGE.hasIt(entity)) {
                 s = EntityAttributes.DAMAGE.getDisplayValue(entity);
                 fr.drawStringWithShadow(s, offsetX + getOffsetX(s, healthBarOffsetX, isInverted), offsetY + healthBarOffsetY + barHeight * 2 + (healthBarHeight - fr.FONT_HEIGHT) / 2 + 1, 0xFFFFFF);
             }
@@ -257,7 +265,7 @@ public class RPGGuiIngame extends Gui
         }
 
         // T0D0: lvl
-        {
+        if (isRPGEntity) {
             s = String.valueOf((int) EntityAttributes.LVL.getValue(entity));
             fr.drawStringWithShadow(s, offsetX + getOffsetX(s, line2OffsetX, line2Width, isInverted), offsetY + line2OffsetY + (line2Height - fr.FONT_HEIGHT) / 2, 0xFFFFFF);
         }
@@ -292,13 +300,7 @@ public class RPGGuiIngame extends Gui
     {
         MovingObjectPosition mop = RPGCommonHelper.getMouseOver(0, 10);
         if (mop != null && mop.entityHit != null && mop.entityHit instanceof EntityLivingBase) {
-            EntityLivingBase targetEntity = (EntityLivingBase) mop.entityHit;
-            if (EntityData.hasIt(targetEntity)) {
-                EntityData data = EntityData.get(targetEntity);
-                if (data != null && data.checkValid()) {
-                    renderEntityBar(targetEntity, offsetX, offsetY, true, res);
-                }
-            }
+            renderEntityBar((EntityLivingBase) mop.entityHit, offsetX, offsetY, true, res);
         }
     }
 

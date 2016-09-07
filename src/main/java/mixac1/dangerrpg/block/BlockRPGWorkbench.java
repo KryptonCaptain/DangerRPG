@@ -3,6 +3,7 @@ package mixac1.dangerrpg.block;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.init.RPGGuiHandlers;
 import mixac1.dangerrpg.init.RPGOther.RPGCreativeTabs;
+import mixac1.dangerrpg.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -11,17 +12,17 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-public class RPGWorkbench extends Block
+public class BlockRPGWorkbench extends Block
 {
     public static final String NAME  = "rpg_workbench";
 
     public IIcon[]             icons = new IIcon[3];
 
-    public RPGWorkbench()
+    public BlockRPGWorkbench()
     {
         super(Material.iron);
         setBlockName(NAME);
-        setBlockTextureName(DangerRPG.MODID + ":" + NAME);
+        setBlockTextureName(Utils.toString(DangerRPG.MODID, ":", NAME));
         setHardness(2.0f);
         setResistance(6.0f);
         setHarvestLevel("pickaxe", 2);
