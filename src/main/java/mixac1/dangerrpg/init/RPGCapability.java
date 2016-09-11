@@ -10,14 +10,23 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.registry.GameData;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.RPGRegister;
+import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
+import mixac1.dangerrpg.api.entity.IRPGEntity.RPGCommonEntityMob;
+import mixac1.dangerrpg.api.entity.IRPGEntity.RPGEntityRangeMob;
 import mixac1.dangerrpg.api.item.ILvlableItem;
-import mixac1.dangerrpg.capability.EntityData;
-import mixac1.dangerrpg.capability.EntityData.EntityAttributesSet;
 import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.LvlableItem.ItemAttributesMap;
+import mixac1.dangerrpg.capability.RPGEntityData;
+import mixac1.dangerrpg.capability.RPGEntityData.EntityAttributesSet;
+import mixac1.dangerrpg.capability.ea.EASlimeDamage;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityBlaze;
+import net.minecraft.entity.monster.EntityGhast;
+import net.minecraft.entity.monster.EntityMagmaCube;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -31,6 +40,8 @@ public abstract class RPGCapability
     public static void preLoad(FMLPostInitializationEvent e)
     {
         registerDefaultLvlableItems();
+
+        registerDefaultRPGEntities();
     }
 
     public static void load(FMLPostInitializationEvent e)
@@ -41,23 +52,6 @@ public abstract class RPGCapability
 
         lvlItemRegistr.createCloneSet();
         rpgEntityRegistr.createCloneSet();
-    }
-
-    private static void loadEntities()
-    {
-        for (Object obj : EntityList.classToStringMapping.keySet()) {
-            EntityData.registerEntity((Class) obj);
-        }
-
-        EntityData.registerEntity(EntityPlayer.class);
-
-        for (Entry<Class<? extends EntityLivingBase>, EntityAttributesSet> data : rpgEntityRegistr.data.entrySet()) {
-            if (RPGConfig.entityAllEntityRPG || RPGConfig.entitySupportedRPGEntities.contains(EntityList.classToStringMapping.get(data.getKey()))) {
-                rpgEntityRegistr.registr.add(data.getKey());
-                DangerRPG.infoLog(Utils.toString("Register rpg entity: ", data.getKey().getName()));
-            }
-        }
-        rpgEntityRegistr.registr.add(EntityPlayer.class);
     }
 
     private static void registerDefaultLvlableItems()
@@ -126,6 +120,36 @@ public abstract class RPGCapability
         RPGRegister.registerLvlableItem(Items.diamond_leggings, ILvlableItem.DEFAULT_ARMOR);
 
         RPGRegister.registerLvlableItem(Items.bow, ILvlableItem.DEFAULT_BOW);
+    }
+
+    private static void registerDefaultRPGEntities()
+    {
+        RPGRegister.registerRPGEntity(EntityBlaze.class, new RPGEntityRangeMob(5f));
+        RPGRegister.registerRPGEntity(EntitySkeleton.class, new RPGEntityRangeMob(2f));
+        RPGRegister.registerRPGEntity(EntityGhast.class, new RPGEntityRangeMob(6f));
+
+        EAFloat slime = new EASlimeDamage("melee_damage");
+        RPGRegister.registerRPGEntity(EntitySlime.class, new RPGCommonEntityMob(slime, 0f));
+        RPGRegister.registerRPGEntity(EntityMagmaCube.class, new RPGCommonEntityMob(slime, 2f));
+    }
+
+    private static void loadEntities()
+    {
+        for (Object obj : EntityList.classToStringMapping.keySet()) {
+            RPGEntityData.registerEntity((Class) obj);
+        }
+
+        RPGEntityData.registerEntity(EntityPlayer.class);
+
+        for (Entry<Class<? extends EntityLivingBase>, EntityAttributesSet> data : rpgEntityRegistr.data.entrySet()) {
+            RPGEntityData.registerEntityDefault(data.getKey(), data.getValue());
+            data.getValue().rpgComponent.registerAttributes(data.getKey(), data.getValue());
+            if (RPGConfig.entityAllEntityRPG || RPGConfig.entitySupportedRPGEntities.contains(EntityList.classToStringMapping.get(data.getKey()))) {
+                rpgEntityRegistr.registr.add(data.getKey());
+                DangerRPG.infoLog(Utils.toString("Register rpg entity: ", EntityList.classToStringMapping.get(data.getKey())));
+            }
+        }
+        rpgEntityRegistr.registr.add(EntityPlayer.class);
     }
 
     private static void loadItems()

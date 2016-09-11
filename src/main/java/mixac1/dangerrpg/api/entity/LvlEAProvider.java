@@ -1,6 +1,6 @@
 package mixac1.dangerrpg.api.entity;
 
-import mixac1.dangerrpg.capability.EntityData;
+import mixac1.dangerrpg.capability.RPGEntityData;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgReqUpEA;
@@ -70,7 +70,7 @@ public class LvlEAProvider<Type>
             else {
                 int exp = getExpUp(target);
                 if (exp <= upper.experienceLevel) {
-                    if (EntityData.isServerSide(target)) {
+                    if (RPGEntityData.isServerSide(target)) {
                         upper.addExperienceLevel(-exp);
                     }
                     return up(target, upper, true);
@@ -86,20 +86,20 @@ public class LvlEAProvider<Type>
     @Deprecated
     public boolean up(EntityLivingBase target, EntityPlayer upper, boolean flag)
     {
-        if (EntityData.isServerSide(target)) {
-            int lvl= getLvl(target);
+        if (RPGEntityData.isServerSide(target)) {
+            int lvl = getLvl(target);
             if (flag) {
                 if (lvl < maxLvl) {
                     setLvl(lvl + 1, target);
                     EntityAttributes.LVL.addValue(1, target);
-                    attr.setValue(mulValue.up(attr.getValue(target)), target);
+                    attr.setValue(mulValue.up(attr.getValue(target), target), target);
                     return true;
                 }
             }
             else if (lvl > 1) {
                 setLvl(lvl - 1, target);
                 EntityAttributes.LVL.addValue(-1, target);
-                attr.setValue(mulValue.down(attr.getValue(target)), target);
+                attr.setValue(mulValue.down(attr.getValue(target), target), target);
                 return true;
             }
             return false;
@@ -108,7 +108,13 @@ public class LvlEAProvider<Type>
             if (flag) {
                 RPGNetwork.net.sendToServer(new MsgReqUpEA(attr.hash, target.getEntityId(), upper.getEntityId()));
             }
-            return flag;
+            return true;
         }
+    }
+
+    @Override
+    public final int hashCode()
+    {
+        return attr.hash;
     }
 }

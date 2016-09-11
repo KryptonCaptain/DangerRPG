@@ -1,14 +1,13 @@
 package mixac1.dangerrpg.capability.ea;
 
 import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
-import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import net.minecraft.entity.EntityLivingBase;
 
 public class EAMotion extends EAFloat
 {
-    public EAMotion(String name, LvlEAProvider<Float> lvlProvider)
+    public EAMotion(String name)
     {
-        super(name, 0f, lvlProvider);
+        super(name);
     }
 
     @Override

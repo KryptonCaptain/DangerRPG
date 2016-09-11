@@ -1,6 +1,6 @@
 package mixac1.dangerrpg.client.gui;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -9,7 +9,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.LvlEAProvider;
-import mixac1.dangerrpg.capability.EntityData;
+import mixac1.dangerrpg.capability.RPGEntityData;
 import mixac1.dangerrpg.client.gui.GuiInfoBookContentEntity.LevelUpButton;
 import mixac1.dangerrpg.init.RPGKeyBinds;
 import mixac1.dangerrpg.util.RPGCommonHelper;
@@ -32,7 +32,7 @@ public class GuiInfoBook extends GuiScreen
     public EntityPlayer player;
     public EntityLivingBase target;
     public boolean isTargetPlayer;
-    public ArrayList<LvlEAProvider> attributes;
+    public List<LvlEAProvider> attributes;
     private ItemStack[] stacks;
     public int currContent;
 
@@ -67,7 +67,7 @@ public class GuiInfoBook extends GuiScreen
         this.player = player;
 
         MovingObjectPosition mop = RPGCommonHelper.getMouseOver(0, 10);
-        if (mop != null && mop.entityHit != null && mop.entityHit instanceof EntityPlayer && EntityData.isRPGEntity((EntityLivingBase) mop.entityHit)) {
+        if (mop != null && mop.entityHit != null && mop.entityHit instanceof EntityPlayer && RPGEntityData.isRPGEntity((EntityLivingBase) mop.entityHit)) {
             target = (EntityLivingBase) mop.entityHit;
             isTargetPlayer = true;
         }
@@ -76,7 +76,7 @@ public class GuiInfoBook extends GuiScreen
             isTargetPlayer = true;
         }
 
-        attributes = EntityData.get(target).getLvlProviders();
+        attributes = RPGEntityData.get(target).getLvlProviders();
     }
 
     @Override

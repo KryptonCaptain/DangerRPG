@@ -9,6 +9,7 @@ import mixac1.dangerrpg.api.item.ILvlableItem;
 import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemArmor;
 import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemTool;
 import mixac1.dangerrpg.capability.LvlableItem;
+import mixac1.dangerrpg.capability.RPGEntityData;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.init.RPGCapability;
@@ -234,6 +235,22 @@ public abstract class RPGCommonHelper
             Collections.sort(names);
         }
         return names;
+    }
+
+    public static float getMeleeDamageHook(EntityLivingBase entity, float defaultDamage)
+    {
+        if (RPGEntityData.isRPGEntity(entity)) {
+            return RPGCapability.rpgEntityRegistr.getAttributesSet(entity).rpgComponent.getEAMeleeDamage(entity).getValue(entity);
+        }
+        return defaultDamage;
+    }
+
+    public static float getRangeDamageHook(EntityLivingBase entity, float defaultDamage)
+    {
+        if (RPGEntityData.isRPGEntity(entity)) {
+            return RPGCapability.rpgEntityRegistr.getAttributesSet(entity).rpgComponent.getEARangeDamage(entity).getValue(entity);
+        }
+        return defaultDamage;
     }
 }
 

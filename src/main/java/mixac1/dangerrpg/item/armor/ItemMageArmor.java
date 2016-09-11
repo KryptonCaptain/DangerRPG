@@ -62,11 +62,9 @@ public class ItemMageArmor extends ItemRPGArmor implements IColorArmor
     {
         ModelMageArmor model = slot == 2 ? ModelMageArmor.INSTANCE_LEGGINGS : ModelMageArmor.INSTANCE_ARMOR;
         if (type != null) {
-            model.setColor(0xffffff);
             return Utils.toString(modelTexture, slot == 2 ? 2 : 1, "_", type, ".png");
         }
         else {
-            model.setColor(getColor(stack));
             return Utils.toString("DangerRPG:textures/models/armors/", armorComponent.name, "_layer_", slot == 2 ? 2 : 1, ".png");
         }
     }

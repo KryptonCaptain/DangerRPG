@@ -3,11 +3,13 @@ package mixac1.dangerrpg.client.gui;
 import org.lwjgl.opengl.GL11;
 
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.capability.EntityData;
+import mixac1.dangerrpg.api.entity.IRPGEntity;
+import mixac1.dangerrpg.capability.RPGEntityData;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.hook.HookArmorSystem;
+import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.util.RPGCommonHelper;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -120,11 +122,11 @@ public class RPGGuiIngame extends Gui
         float curr, max;
         String s;
 
-        boolean isRPGEntity = false;
-        if (EntityData.isRPGEntity(entity)) {
-            EntityData data = EntityData.get(entity);
+        IRPGEntity iRPG = null;
+        if (RPGEntityData.isRPGEntity(entity)) {
+            RPGEntityData data = RPGEntityData.get(entity);
             if (data != null && data.checkValid()) {
-                isRPGEntity = true;
+                iRPG = RPGCapability.rpgEntityRegistr.getAttributesSet(entity).rpgComponent;
             }
         }
 
@@ -203,9 +205,16 @@ public class RPGGuiIngame extends Gui
                 yFal += barHeight;
             }
 
-            // T0D0: damage
-            if (isRPGEntity && EntityAttributes.DAMAGE.hasIt(entity)) {
+            // T0D0: melee damage
+            if (iRPG != null && iRPG.getEAMeleeDamage(entity) != null) {
                 drawTexturedModalRect(offsetX + invert(barOffsetX), offsetY + barOffsetY + yFal, barOffsetU, barOffsetV + barHeight * 4, barWidth, barHeight, isInverted);
+
+                yFal += barHeight;
+            }
+
+            // T0D0: range damage
+            if (iRPG != null && iRPG.getEARangeDamage(entity) != null) {
+                drawTexturedModalRect(offsetX + invert(barOffsetX), offsetY + barOffsetY + yFal, barOffsetU, barOffsetV + barHeight * 5, barWidth, barHeight, isInverted);
 
                 yFal += barHeight;
             }
@@ -250,9 +259,15 @@ public class RPGGuiIngame extends Gui
                 fr.drawStringWithShadow(s, offsetX + getOffsetX(s, healthBarOffsetX + healthBarWidth + 4, isInverted), offsetY + healthBarOffsetY + barHeight + (healthBarHeight - fr.FONT_HEIGHT) / 2 + 1, 0xFFFFFF);
             }
 
-            // T0D0: damage value
-            if (isRPGEntity && EntityAttributes.DAMAGE.hasIt(entity)) {
-                s = EntityAttributes.DAMAGE.getDisplayValue(entity);
+            // T0D0: melee damage value
+            if (iRPG != null && iRPG.getEAMeleeDamage(entity) != null) {
+                s = iRPG.getEAMeleeDamage(entity).getDisplayValue(entity);
+                fr.drawStringWithShadow(s, offsetX + getOffsetX(s, healthBarOffsetX, isInverted), offsetY + healthBarOffsetY + barHeight * 1 + (healthBarHeight - fr.FONT_HEIGHT) / 2 + 1, 0xFFFFFF);
+            }
+
+            // T0D0: range damage value
+            if (iRPG != null && iRPG.getEARangeDamage(entity) != null) {
+                s = iRPG.getEARangeDamage(entity).getDisplayValue(entity);
                 fr.drawStringWithShadow(s, offsetX + getOffsetX(s, healthBarOffsetX, isInverted), offsetY + healthBarOffsetY + barHeight * 2 + (healthBarHeight - fr.FONT_HEIGHT) / 2 + 1, 0xFFFFFF);
             }
 
@@ -265,7 +280,7 @@ public class RPGGuiIngame extends Gui
         }
 
         // T0D0: lvl
-        if (isRPGEntity) {
+        if (iRPG != null) {
             s = String.valueOf((int) EntityAttributes.LVL.getValue(entity));
             fr.drawStringWithShadow(s, offsetX + getOffsetX(s, line2OffsetX, line2Width, isInverted), offsetY + line2OffsetY + (line2Height - fr.FONT_HEIGHT) / 2, 0xFFFFFF);
         }

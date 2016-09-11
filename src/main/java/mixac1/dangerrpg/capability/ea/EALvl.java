@@ -7,7 +7,7 @@ public class EALvl extends EAInteger
 {
     public EALvl(String name)
     {
-        super(name, 1, null);
+        super(name);
     }
 
     public boolean isInitedEntity(EntityLivingBase entity)

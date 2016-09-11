@@ -1,8 +1,9 @@
 package mixac1.dangerrpg.client.model;
 
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 
-public class ModelMageArmor extends ModelBipedColor
+public class ModelMageArmor extends ModelBiped
 {
     public static final ModelMageArmor INSTANCE_ARMOR = new ModelMageArmor(0.6F);
     public static final ModelMageArmor INSTANCE_LEGGINGS = new ModelMageArmor(0.3F);

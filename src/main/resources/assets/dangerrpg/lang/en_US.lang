@@ -1,4 +1,6 @@
-itemGroup.tabDangerRPG=Danger RPG
+itemGroup.tabRPGAmunitions=RPG Amunitions
+itemGroup.tabRPGBlocks=RPG Blocks
+itemGroup.tabRPGItems=RPG Items
 
 item.magic_leather.name=Magic Leather
 item.compressed_obsidian.name=Compressed Obsidian
@@ -9,9 +11,6 @@ item.stick_diamond.name=Diamond Stick
 item.stick_obsidian.name=Obsidian Stick
 item.stick_black_matter.name=Black Matter Stick
 item.stick_white_matter.name=White Matter Stick
-
-item.sword_training.name=Training Sword
-item.test_wand.name=Test Wand
 
 item.sword_obsidian.name=Obsidian Sword
 item.sword_bedrock.name=Bedrock Sword
@@ -282,6 +281,7 @@ rpgstr.name=Name
 rpgstr.type=Type
 rpgstr.value=Value
 rpgstr.max=Max
+rpgstr.unbreakable=Unbreakable
 
 rpgstr.no_item=There is no item.
 rpgstr.no_info=There is no information.

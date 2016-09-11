@@ -1,8 +1,8 @@
 package mixac1.dangerrpg.api.entity;
 
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.capability.EntityData;
-import mixac1.dangerrpg.capability.EntityData.TypeStub;
+import mixac1.dangerrpg.capability.RPGEntityData;
+import mixac1.dangerrpg.capability.RPGEntityData.TypeStub;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgSyncEA;
@@ -21,25 +21,18 @@ public class EntityAttribute<Type>
     public final String name;
     public final int    hash;
     public final ITypeProvider<? super Type> typeProvider;
-    public final LvlEAProvider<Type> lvlProvider;
 
-    protected Type startValue;
-
-    public EntityAttribute(ITypeProvider<? super Type> typeProvider, String name, Type startValue, LvlEAProvider<Type> lvlProvider)
+    public EntityAttribute(ITypeProvider<? super Type> typeProvider, String name)
     {
         this.name = name;
-        hash = name.hashCode();
+        this.hash = name.hashCode();
         this.typeProvider = typeProvider;
-        this.startValue = startValue;
-        this.lvlProvider = lvlProvider;
-        if (lvlProvider != null) {
-            lvlProvider.attr = this;
-        }
     }
 
     public void init(EntityLivingBase entity)
     {
         getEntityData(entity).attributeMap.put(hash, new TypeStub<Type>((Type) typeProvider.getEmpty()));
+        LvlEAProvider lvlProvider = getLvlProvider(entity);
         if (lvlProvider != null) {
             lvlProvider.init(entity);
         }
@@ -47,13 +40,19 @@ public class EntityAttribute<Type>
 
     public void serverInit(EntityLivingBase entity)
     {
-        setValueRaw(startValue, entity);
+        Type v = (Type) RPGCapability.rpgEntityRegistr.getAttributesSet(entity).attributes.get(this).startValue;
+        setValueRaw(v, entity);
+    }
+
+    public LvlEAProvider getLvlProvider(EntityLivingBase entity)
+    {
+        return RPGCapability.rpgEntityRegistr.getAttributesSet(entity).attributes.get(this).lvlProvider;
     }
 
     public boolean hasIt(EntityLivingBase entity)
     {
         return RPGCapability.rpgEntityRegistr.isRegistered(entity)
-                && RPGCapability.rpgEntityRegistr.getAttributesSet(entity).attributes.contains(this);
+                && RPGCapability.rpgEntityRegistr.getAttributesSet(entity).attributes.containsKey(this);
     }
 
     public boolean isValid(Type value)
@@ -66,9 +65,9 @@ public class EntityAttribute<Type>
         return isValid(value);
     }
 
-    public EntityData getEntityData(EntityLivingBase entity)
+    public RPGEntityData getEntityData(EntityLivingBase entity)
     {
-        return EntityData.get(entity);
+        return RPGEntityData.get(entity);
     }
 
     /**
@@ -131,7 +130,7 @@ public class EntityAttribute<Type>
 
     public void sync(EntityLivingBase entity)
     {
-        if (EntityData.isServerSide(entity)) {
+        if (RPGEntityData.isServerSide(entity)) {
             RPGNetwork.net.sendToAll(new MsgSyncEA(this, entity));
         }
     }
@@ -148,6 +147,7 @@ public class EntityAttribute<Type>
     {
         NBTTagCompound tmp = new NBTTagCompound();
         typeProvider.toNBT(getValue(entity), "value", tmp);
+        LvlEAProvider lvlProvider = getLvlProvider(entity);
         if (lvlProvider != null) {
             tmp.setInteger("lvl", lvlProvider.getLvl(entity));
         }
@@ -157,9 +157,15 @@ public class EntityAttribute<Type>
     public void fromNBT(NBTTagCompound nbt, EntityLivingBase entity)
     {
         NBTTagCompound tmp = (NBTTagCompound) nbt.getTag(name);
-        setValueRaw((Type) typeProvider.fromNBT("value", tmp), entity);
-        if (lvlProvider != null) {
-            lvlProvider.setLvl(tmp.getInteger("lvl"), entity);
+        if (tmp != null) {
+            setValueRaw((Type) typeProvider.fromNBT("value", tmp), entity);
+            LvlEAProvider lvlProvider = getLvlProvider(entity);
+            if (lvlProvider != null) {
+                lvlProvider.setLvl(tmp.getInteger("lvl"), entity);
+            }
+        }
+        else {
+            serverInit(entity);
         }
     }
 
@@ -189,49 +195,49 @@ public class EntityAttribute<Type>
 
     public static class EABoolean extends EntityAttribute<Boolean>
     {
-        public EABoolean(String name, boolean startValue, LvlEAProvider<Boolean> lvlProvider)
+        public EABoolean(String name)
         {
-            super(ITypeProvider.BOOLEAN, name, startValue, lvlProvider);
+            super(ITypeProvider.BOOLEAN, name);
         }
     }
 
     public static class EAInteger extends EntityAttribute<Integer>
     {
-        public EAInteger(String name, int startValue, LvlEAProvider<Integer> lvlProvider)
+        public EAInteger(String name)
         {
-            super(ITypeProvider.INTEGER, name, startValue, lvlProvider);
+            super(ITypeProvider.INTEGER, name);
         }
     }
 
     public static class EAFloat extends EntityAttribute<Float>
     {
-        public EAFloat(String name, float startValue, LvlEAProvider<Float> lvlProvider)
+        public EAFloat(String name)
         {
-            super(ITypeProvider.FLOAT, name, startValue, lvlProvider);
+            super(ITypeProvider.FLOAT, name);
         }
     }
 
     public static class EAString extends EntityAttribute<String>
     {
-        public EAString(String name, String startValue, LvlEAProvider<String> lvlProvider)
+        public EAString(String name)
         {
-            super(ITypeProvider.STRING, name, startValue, lvlProvider);
+            super(ITypeProvider.STRING, name);
         }
     }
 
     public static class EANBT extends EntityAttribute<NBTTagCompound>
     {
-        public EANBT(String name, NBTTagCompound startValue, LvlEAProvider<NBTTagCompound> lvlProvider)
+        public EANBT(String name)
         {
-            super(ITypeProvider.NBT_TAG, name, startValue, lvlProvider);
+            super(ITypeProvider.NBT_TAG, name);
         }
     }
 
     public static class EAItemStack extends EntityAttribute<ItemStack>
     {
-        public EAItemStack(String name, ItemStack startValue, LvlEAProvider<ItemStack> lvlProvider)
+        public EAItemStack(String name)
         {
-            super(ITypeProvider.ITEM_STACK, name, startValue, lvlProvider);
+            super(ITypeProvider.ITEM_STACK, name);
         }
     }
 }

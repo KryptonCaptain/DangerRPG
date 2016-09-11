@@ -154,6 +154,12 @@ public class EntityMaterial extends EntityWithStack
     }
 
     @Override
+    public void playHitSound()
+    {
+        this.playSound("random.bowhit", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+    }
+
+    @Override
     public void writeEntityToNBT(NBTTagCompound nbt)
     {
         super.writeEntityToNBT(nbt);

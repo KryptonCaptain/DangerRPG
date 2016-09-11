@@ -205,6 +205,8 @@ public class EntityProjectile extends EntityArrow implements IThrowableEntity
             onCollideWithWater();
         }
 
+        playOnUpdateSound();
+
         setPosition(posX, posY, posZ);
         func_145775_I();
     }
@@ -300,6 +302,8 @@ public class EntityProjectile extends EntityArrow implements IThrowableEntity
         }
 
         entity.attackEntityFrom(RPGDamageSource.magic, (float) damage * dmgMul);
+
+        playHitSound();
     }
 
     public void onGroundHit(MovingObjectPosition mop)
@@ -442,6 +446,11 @@ public class EntityProjectile extends EntityArrow implements IThrowableEntity
     }
 
     public void playHitSound()
+    {
+
+    }
+
+    public void playOnUpdateSound()
     {
 
     }

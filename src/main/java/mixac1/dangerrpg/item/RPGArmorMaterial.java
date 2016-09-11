@@ -25,13 +25,13 @@ public class RPGArmorMaterial implements IMaterialSpecial
     {
         CLOTH.init(0f);
         CHAIN.init(0f);
-        IRON.init(0f);
+        IRON.init(4f);
         GOLD.init(10f);
-        DIAMOND.init(4f);
-        OBSIDIAN.init(0f);
-        BEDROCK.init(5f);
-        BLACK_MATTER.init(7.5f);
-        WHITE_MATTER.init(10f);
+        DIAMOND.init(8f);
+        OBSIDIAN.init(6f);
+        BEDROCK.init(12f);
+        BLACK_MATTER.init(16f);
+        WHITE_MATTER.init(20f);
     }
 
     public ArmorMaterial material;

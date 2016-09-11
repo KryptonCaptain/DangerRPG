@@ -9,13 +9,13 @@ public class IADurability extends IAStatic
     {
         super(name);
     }
-    
+
     @Override
     public boolean hasIt(ItemStack stack)
     {
         return ItemAttributes.MAX_DURABILITY.hasIt(stack);
     }
-    
+
     @Override
     public float get(ItemStack stack)
     {

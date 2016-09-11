@@ -32,17 +32,17 @@ public class RPGItemComponent
 
     static
     {
-     /* TOOLS             mDmg    mSpeed  strMul  agiMul  intMul   knBack  knbMul    reach */
+     /* TOOLS             mDmg    mSpeed   strMul  agiMul  intMul   knBack  knbMul    reach */
 
         TRAINING.init    (0.0F,   10.0F,   0.5F,   1.0F,   0.25F,   10.0F,  0.00F,    2.5F);
 
         SWORD.init       (4.0F,   10.0F,   0.5F,   1.0F,   0.25F,   0.0F,   0.05F,    0.0F);
         NAGINATA.init    (4.0F,   12.0F,   0.5F,   0.8F,   0.25F,   0.5F,   0.075F,   1.5F);
         KATANA.init      (3.5F,   9.0F,    0.5F,   1.1F,   0.25F,   0.0F,   0.025F,   0.0F);
-        SCYTHE.init      (5.0F,   13.0F,   0.65F,  0.7F,   0.25F,   0.5F,   0.075F,   1.0F);
-        HAMMER.init      (6.0F,   17.0F,   0.8F,   0.3F,   0.25F,   1.0F,   0.12F,    0.0F);
-        TOMAHAWK.init    (3.5F,   9.5F,    0.4F,   1.1F,   0.25F,   0.0F,   0.00F,    0.0F);
-        KNIFE.init       (1.0F,   7.5F,    0.25F,  1.25F,  0.25F,   0.0F,   0.00F,    0.0F);
+        SCYTHE.init      (5.0F,   15.0F,   0.65F,  0.7F,   0.25F,   0.5F,   0.075F,   1.0F);
+        HAMMER.init      (6.0F,   20.0F,   0.8F,   0.3F,   0.25F,   1.0F,   0.12F,    0.0F);
+        TOMAHAWK.init    (3.5F,   9.5F,    0.30F,  1.1F,   0.25F,   0.0F,   0.00F,    0.0F);
+        KNIFE.init       (1.0F,   7.5F,    0.20F,  1.25F,  0.25F,   0.0F,   0.00F,    0.0F);
 
         AXE.init         (3.0F,   11.0F,   0.55F,  0.8F,   0.25F,   0.0F,   0.05F,    0.0F);
         PICKAXE.init     (2.0F,   10.0F,   0.3F,   0.8F,   0.25F,   0.0F,   0.05F,    0.0F);
@@ -50,16 +50,16 @@ public class RPGItemComponent
         HOE.init         (1.0F,   10.0F,   0.4F,   0.8F,   0.25F,   0.0F,   0.05F,    0.0F);
         MULTITOOL.init   (1.0F,   10.0F,   0.4F,   0.8F,   0.25F,   0.0F,   0.05F,    0.0F);
 
-     /* STAFFS            mDmg    mSpeed   strMul  agiMul  intMul   knBack  knbMul    reach   rDmg    rSpeed  rMinCT mana*/
+     /* STAFFS            mDmg    mSpeed   strMul  agiMul  intMul   knBack  knbMul    reach   rDmg    rSpeed  rMinCT  mana*/
 
-        STAFF.init       (1.0F,   10.0F,   0.1F,   0.7F,   0.5F,    0.0F,   0.075F,   0.5F,   1.0F,   10.0F,  1.0f,   5f);
-        POWER_STAFF.init (1.0F,   10.0F,   0.1F,   0.7F,   0.5F,    0.0F,   0.075F,   0.5F,   1.0F,   10.0F,  1.0f,   5f);
+        STAFF.init       (1.0F,   13.0F,   0.1F,   0.7F,   0.5F,    0.0F,   0.075F,   0.5F,   2.0F,   10.0F,  1.0f,   2f);
+        POWER_STAFF.init (1.0F,   13.0F,   0.1F,   0.7F,   0.5F,    0.0F,   0.075F,   0.5F,   2.0F,   10.0F,  1.0f,   3f);
 
      /* BOWS              mDmg    mSpeed   strMul  agiMul  intMul   knBack  knbMul    reach   rDmg    rSpeed  rMinCT rPow   durab   ench */
 
         BOW.init         (1.0F,   10.0F,   0.16F,  1.0F,   0.25F,   0.0F,   0.05F,    0.0F,   2.0F,   20.0F,  0.4f,  3.0F,   -0F,    3F);
-        SHADOW_BOW.init  (4.0F,   10.0F,   0.16F,  1.0F,   0.25F,   0.0F,   0.05F,    0.0F,   2.5F,   16.0F,  0.2f,  3.5F,   500F,   5F);
-        SNIPER_BOW.init  (1.0F,   10.0F,   0.16F,  1.0F,   0.25F,   1.0F,   0.10F,    0.0F,   4.0F,   40.0F,  0.8f,  5.5F,   1000F,  10F);
+        SHADOW_BOW.init  (4.0F,   10.0F,   0.16F,  1.0F,   0.25F,   0.0F,   0.05F,    0.0F,   4.0F,   16.0F,  0.2f,  4.0F,   4000F,  14F);
+        SNIPER_BOW.init  (1.0F,   10.0F,   0.16F,  1.0F,   0.25F,   1.0F,   0.10F,    0.0F,   10.0F,  40.0F,  0.8f,  9.0F,   10000F, 22F);
 
      /* ARMORS            mRes */
 

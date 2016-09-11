@@ -4,10 +4,12 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import mixac1.dangerrpg.DangerRPG;
+import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
 import mixac1.dangerrpg.api.event.InitRPGEntityEvent;
-import mixac1.dangerrpg.capability.EntityData;
+import mixac1.dangerrpg.capability.RPGEntityData;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
+import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgSyncConfig;
 import mixac1.dangerrpg.network.MsgSyncEntityData;
@@ -28,20 +30,20 @@ public class EventHandlerEntity
     @SubscribeEvent
     public void onEntityConstructing(EntityConstructing e)
     {
-        if (e.entity instanceof EntityLivingBase && EntityData.isRPGEntity((EntityLivingBase) e.entity)) {
-            EntityData.register((EntityLivingBase) e.entity);
+        if (e.entity instanceof EntityLivingBase && RPGEntityData.isRPGEntity((EntityLivingBase) e.entity)) {
+            RPGEntityData.register((EntityLivingBase) e.entity);
         }
     }
 
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent e)
     {
-        if (e.entity instanceof EntityLivingBase && EntityData.isRPGEntity((EntityLivingBase) e.entity)) {
+        if (e.entity instanceof EntityLivingBase && RPGEntityData.isRPGEntity((EntityLivingBase) e.entity)) {
             if (e.entity.worldObj.isRemote) {
                 RPGNetwork.net.sendToServer(new MsgSyncEntityData((EntityLivingBase) e.entity));
             }
             else {
-                EntityData.get((EntityLivingBase) e.entity).serverInit();
+                RPGEntityData.get((EntityLivingBase) e.entity).serverInit();
             }
         }
     }
@@ -50,11 +52,11 @@ public class EventHandlerEntity
     public void onPlayerCloned(PlayerEvent.Clone e)
     {
         if (e.wasDeath) {
-            EntityData.get(e.original).rebuildOnDeath();
+            RPGEntityData.get(e.original).rebuildOnDeath();
         }
         NBTTagCompound nbt = new NBTTagCompound();
-        EntityData.get(e.original).saveNBTData(nbt);
-        EntityData.get(e.entityPlayer).loadNBTData(nbt);
+        RPGEntityData.get(e.original).saveNBTData(nbt);
+        RPGEntityData.get(e.entityPlayer).loadNBTData(nbt);
     }
 
     @SubscribeEvent
@@ -70,10 +72,17 @@ public class EventHandlerEntity
 
         if (EntityAttributes.HEALTH.hasIt(e.entity)) {
             float health = e.entity.getHealth() / 5;
-            EntityAttributes.HEALTH.setValue(health * lvl, e.entity);
+            EntityAttributes.HEALTH.addValue(health * lvl, e.entity);
         }
-        if (EntityAttributes.DAMAGE.hasIt(e.entity)) {
-            EntityAttributes.DAMAGE.setValue(0.5f * lvl, e.entity);
+
+        EAFloat attr = RPGCapability.rpgEntityRegistr.getAttributesSet(e.entity).rpgComponent.getEAMeleeDamage(e.entity);
+        if (attr != null) {
+            attr.addValue(attr.getValue(e.entity) / 5 * lvl, e.entity);
+        }
+
+        attr = RPGCapability.rpgEntityRegistr.getAttributesSet(e.entity).rpgComponent.getEARangeDamage(e.entity);
+        if (attr != null) {
+            attr.addValue(attr.getValue(e.entity) / 5 * lvl, e.entity);
         }
     }
 
@@ -110,6 +119,9 @@ public class EventHandlerEntity
                         (tmp2 = PlayerAttributes.MANA_REGEN.getValue(e.player)) != 0) {
                         PlayerAttributes.CURR_MANA.setValue(tmp1 + tmp2, e.player);
                     }
+                }
+
+                if (DangerRPG.proxy.getTick(e.side) % 100 == 0) {
                     e.player.heal(PlayerAttributes.HEALTH_REGEN.getValue(e.player));
                 }
             }

@@ -2,7 +2,7 @@ package mixac1.dangerrpg.api.event;
 
 import cpw.mods.fml.common.eventhandler.Event;
 import mixac1.dangerrpg.api.entity.EntityAttribute;
-import mixac1.dangerrpg.capability.EntityData.EntityAttributesSet;
+import mixac1.dangerrpg.capability.RPGEntityData.EntityAttributesSet;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;

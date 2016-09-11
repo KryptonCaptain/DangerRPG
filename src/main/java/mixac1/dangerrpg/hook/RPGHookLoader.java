@@ -23,5 +23,7 @@ public class RPGHookLoader extends HookLoader
         registerHookContainer(HookItemBow.class.getName());
 
         registerHookContainer(HookFixEntityMotion.class.getName());
+
+        registerHookContainer(HookFixEntityAttributes.class.getName());
     }
 }

@@ -100,12 +100,18 @@ public class ItemRPGStaff extends ItemSword implements ILvlableItemStaff, IHasBo
             && RPGCommonHelper.getUsePower(player, stack, stack.getMaxItemUseDuration() - useRemain, 20F, 20F) > 0) {
             EntityMagicOrb entity = getEntityMagicOrb(stack, world, player);
             world.spawnEntityInWorld(entity);
+            playShotSound(world, player);
         }
     }
 
     public EntityMagicOrb getEntityMagicOrb(ItemStack stack, World world, EntityPlayer player)
     {
         return new EntityMagicOrb(world, player, stack, 1f, 0F);
+    }
+
+    public void playShotSound(World world, EntityPlayer player)
+    {
+        world.playAuxSFXAtEntity(null, 1016, (int)player.posX, (int)player.posY, (int)player.posZ, 0);
     }
 
     @Override

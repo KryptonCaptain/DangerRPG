@@ -37,7 +37,7 @@ public abstract class Utils
     {
         StringBuilder buf = new StringBuilder();
         for (Object obj : objs) {
-            buf.append(obj.toString());
+            buf.append(obj != null ? obj.toString() : "null");
         }
         return buf.toString();
     }

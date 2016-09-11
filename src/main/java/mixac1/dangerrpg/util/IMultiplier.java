@@ -2,11 +2,11 @@ package mixac1.dangerrpg.util;
 
 public interface IMultiplier<Type>
 {
-    public Type up(Type value);
+    public Type up(Type value, Object... objs);
 
     public interface IMultiplierE<Type> extends IMultiplier<Type>
     {
-        public Type down(Type value);
+        public Type down(Type value, Object... meta);
     }
 
     public static class MultiplierAdd implements IMultiplierE<Float>
@@ -19,13 +19,13 @@ public interface IMultiplier<Type>
         }
 
         @Override
-        public Float up(Float value)
+        public Float up(Float value, Object... meta)
         {
             return value + add;
         }
 
         @Override
-        public Float down(Float value)
+        public Float down(Float value, Object... meta)
         {
             return value - add;
         }
@@ -36,13 +36,13 @@ public interface IMultiplier<Type>
     public static IMultiplierE MUL_1 = new IMultiplierE()
     {
         @Override
-        public Object up(Object value)
+        public Object up(Object value, Object... meta)
         {
             return value;
         }
 
         @Override
-        public Object down(Object value)
+        public Object down(Object value, Object... meta)
         {
             return value;
         }

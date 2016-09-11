@@ -1,14 +1,13 @@
 package mixac1.dangerrpg.capability.ea;
 
 import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
-import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import net.minecraft.entity.EntityLivingBase;
 
 public class EAMana extends EAFloat
 {
-    public EAMana(String name, Float startValue, LvlEAProvider<Float> lvlProvider)
+    public EAMana(String name)
     {
-        super(name, startValue, lvlProvider);
+        super(name);
     }
 
     @Override

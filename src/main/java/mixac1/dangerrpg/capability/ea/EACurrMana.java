@@ -8,7 +8,7 @@ public class EACurrMana extends EAFloat
 {
     public EACurrMana(String name)
     {
-        super(name, 0f, null);
+        super(name);
     }
 
     @Override

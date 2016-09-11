@@ -1,8 +1,8 @@
 package mixac1.dangerrpg.capability;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 import mixac1.dangerrpg.api.event.RegIAEvent;
@@ -51,7 +51,7 @@ public abstract class LvlableItem
     public static final IMultiplier<Float> EXP_MUL = new IMultiplier<Float>()
     {
         @Override
-        public Float up(Float value)
+        public Float up(Float value, Object... meta)
         {
             return value * RPGConfig.itemExpMul;
         }
@@ -60,9 +60,17 @@ public abstract class LvlableItem
     public static final IMultiplier<Float> DUR_MUL = new IMultiplier<Float>()
     {
         @Override
-        public Float up(Float value)
+        public Float up(Float value, Object... meta)
         {
-            return value + 50;
+            ItemStack stack = (ItemStack) meta[0];
+            int lvl = (int) ItemAttributes.LEVEL.get(stack);
+            if (lvl >= 15) {
+                stack.getTagCompound().setBoolean("Unbreakable", true);
+                return value;
+            }
+            else {
+                return value + 25 * (lvl - 1);
+            }
         }
     };
 
@@ -329,7 +337,7 @@ public abstract class LvlableItem
 
     public static class ItemAttributesMap
     {
-        public HashMap<ItemAttribute, ItemAttrParams> map = new HashMap<ItemAttribute, ItemAttrParams>();
+        public Map<ItemAttribute, ItemAttrParams> map = new LinkedHashMap<ItemAttribute, ItemAttrParams>();
         public ILvlableItem lvlComponent;
         public boolean isSupported;
 
@@ -349,7 +357,7 @@ public abstract class LvlableItem
             map.put(attr, new ItemAttrParams(value, mul));
         }
 
-        public static class ItemAttrParams implements Serializable, Cloneable
+        public static class ItemAttrParams
         {
             public float value;
             public IMultiplier<Float> mul;
@@ -360,9 +368,9 @@ public abstract class LvlableItem
                 this.mul = mul;
             }
 
-            public float up(float value)
+            public float up(float value, ItemStack stack)
             {
-                return mul.up(value);
+                return mul.up(value, stack);
             }
         }
     }

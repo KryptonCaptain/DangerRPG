@@ -7,7 +7,7 @@ public class EASpeedCounter extends EAFloat
 {
     public EASpeedCounter(String name)
     {
-        super(name, 0f, null);
+        super(name);
     }
 
     @Override

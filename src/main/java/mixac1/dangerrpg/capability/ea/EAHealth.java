@@ -3,7 +3,6 @@ package mixac1.dangerrpg.capability.ea;
 import java.util.UUID;
 
 import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
-import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -13,9 +12,9 @@ public class EAHealth extends EAFloat
 {
     private final UUID ID = UUID.fromString("fd6315bf-9f57-46cb-bb38-4aacb5d2967a");
 
-    public EAHealth(String name, LvlEAProvider<Float> lvlProvider)
+    public EAHealth(String name)
     {
-        super(name, 0f, lvlProvider);
+        super(name);
     }
 
     @Override
