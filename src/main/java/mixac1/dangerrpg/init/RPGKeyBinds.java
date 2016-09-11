@@ -12,9 +12,9 @@ import net.minecraft.client.settings.KeyBinding;
 @SideOnly(Side.CLIENT)
 public abstract class RPGKeyBinds
 {
-    public static KeyBinding specialItemKey = new KeyBinding(DangerRPG.trans("rpgstr.key.special_use"), Keyboard.KEY_F, DangerRPG.MODNAME);
-    public static KeyBinding extraItemKey = new KeyBinding(DangerRPG.trans("rpgstr.key.extra_use"), Keyboard.KEY_C, DangerRPG.MODNAME);
-    public static KeyBinding infoBookKey = new KeyBinding(DangerRPG.trans("rpgstr.key.info_book"), Keyboard.KEY_I, DangerRPG.MODNAME);
+    public static KeyBinding specialItemKey = new KeyBinding(DangerRPG.trans("rpgkey.special_use"), Keyboard.KEY_F, DangerRPG.MODNAME);
+    public static KeyBinding extraItemKey = new KeyBinding(DangerRPG.trans("rpgkey.extra_use"), Keyboard.KEY_C, DangerRPG.MODNAME);
+    public static KeyBinding infoBookKey = new KeyBinding(DangerRPG.trans("rpgkey.info_book"), Keyboard.KEY_I, DangerRPG.MODNAME);
 
     public static void load(FMLPreInitializationEvent e)
     {

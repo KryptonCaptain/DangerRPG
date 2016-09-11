@@ -48,7 +48,7 @@ public class HookEntities
         if (entity.canAttackWithItem() && !entity.hitByEntity(player)) {
             if (stack != null && LvlableItem.isLvlable(stack)) {
                 if (entity instanceof EntityLivingBase) {
-                    if (PlayerAttributes.SPEED_COUNTER.getValue(player) != 0) {
+                    if (player.worldObj.isRemote && PlayerAttributes.SPEED_COUNTER.getValue(player) != 0) {
                         return;
                     }
                 }

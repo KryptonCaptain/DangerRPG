@@ -4,6 +4,7 @@ import static net.minecraftforge.oredict.RecipeSorter.Category.SHAPED;
 import static net.minecraftforge.oredict.RecipeSorter.Category.SHAPELESS;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -26,7 +27,6 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import scala.actors.threadpool.Arrays;
 
 public abstract class RPGRecipes
 {
@@ -89,8 +89,8 @@ public abstract class RPGRecipes
             {RPGItems.stickBlackMatter,     RPGItems.blackMatter,           RPGItems.blackMatter},
             {RPGItems.stickWhiteMatter,     RPGItems.whiteMatter,           RPGItems.whiteMatter},
         };
-        Object[][] materials2 =  (Object[][]) Arrays.copyOfRange(materials1, 3, materials1.length);
-        Object[][] materials3 =  (Object[][]) Arrays.copyOfRange(materials1, 5, materials1.length);
+        Object[][] materials2 =  Arrays.copyOfRange(materials1, 3, materials1.length);
+        Object[][] materials3 =  Arrays.copyOfRange(materials1, 5, materials1.length);
 
         RecipeCreator.createRecipes(RecipeCreator.RECIPE_AXE,
                 new Item[] {RPGItems.axeObsidian,

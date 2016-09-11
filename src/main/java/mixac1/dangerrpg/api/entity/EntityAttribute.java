@@ -40,8 +40,7 @@ public class EntityAttribute<Type>
 
     public void serverInit(EntityLivingBase entity)
     {
-        Type v = (Type) RPGCapability.rpgEntityRegistr.getAttributesSet(entity).attributes.get(this).startValue;
-        setValueRaw(v, entity);
+        setValueRaw((Type) RPGCapability.rpgEntityRegistr.getAttributesSet(entity).attributes.get(this).startValue, entity);
     }
 
     public LvlEAProvider getLvlProvider(EntityLivingBase entity)
@@ -89,7 +88,6 @@ public class EntityAttribute<Type>
     {
         if (!value.equals(getValueRaw(entity))) {
             getEntityData(entity).attributeMap.get(hash).value = value;
-            apply(entity, value);
             return true;
         }
         return false;
@@ -133,14 +131,6 @@ public class EntityAttribute<Type>
         if (RPGEntityData.isServerSide(entity)) {
             RPGNetwork.net.sendToAll(new MsgSyncEA(this, entity));
         }
-    }
-
-    /**
-     * Used when was set value
-     */
-    public void apply(EntityLivingBase entity, Type addedValue)
-    {
-
     }
 
     public void toNBT(NBTTagCompound nbt, EntityLivingBase entity)

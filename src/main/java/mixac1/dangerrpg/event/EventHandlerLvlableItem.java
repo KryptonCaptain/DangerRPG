@@ -28,8 +28,8 @@ public class EventHandlerLvlableItem
         if (e.attacker instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) e.attacker;
 
-            if (!e.isRangeed && ItemAttributes.MELEE_SPEED.hasIt(e.stack)) {
-                float speed = ItemAttributes.MELEE_SPEED.get(e.stack, player);
+            if (!e.isRangeed) {
+                float speed = ItemAttributes.MELEE_SPEED.hasIt(e.stack) ? ItemAttributes.MELEE_SPEED.get(e.stack, player) : 10f;
                 PlayerAttributes.SPEED_COUNTER.setValue(speed < 0 ? 0 : speed, player);
             }
 

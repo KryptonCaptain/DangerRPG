@@ -1,5 +1,7 @@
 package mixac1.dangerrpg.hook;
 
+import java.util.List;
+
 import gloomyfolken.hooklib.asm.Hook;
 import gloomyfolken.hooklib.asm.ReturnCondition;
 import mixac1.dangerrpg.entity.projectile.EntityArrowRPG;
@@ -9,15 +11,23 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityGhast;
+import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.projectile.EntityLargeFireball;
 import net.minecraft.entity.projectile.EntitySmallFireball;
+import net.minecraft.entity.projectile.EntityWitherSkull;
 import net.minecraft.init.Blocks;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.EnumDifficulty;
 
 public class HookFixEntityAttributes
 {
@@ -126,5 +136,89 @@ public class HookFixEntityAttributes
     public static int getAttackStrength(EntitySlime that)
     {
         return (int) RPGCommonHelper.getMeleeDamageHook(that, that.getSlimeSize());
+    }
+
+    /**
+     * Hook for {@link EntityWolf}
+     */
+    @Hook(returnCondition = ReturnCondition.ALWAYS)
+    public static boolean attackEntityAsMob(EntityWolf that, Entity entity)
+    {
+        int damage = (int) RPGCommonHelper.getMeleeDamageHook(that, that.isTamed() ? 4 : 2);
+        return that.attackEntityFrom(DamageSource.causeMobDamage(that), damage);
+    }
+
+    /**
+     * Hook for {@link EntityIronGolem}
+     */
+    @Hook(returnCondition = ReturnCondition.ALWAYS)
+    public static boolean attackEntityAsMob(EntityIronGolem that, Entity entity)
+    {
+        that.attackTimer = 10;
+        that.worldObj.setEntityState(that, (byte) 4);
+        int damage = (int) RPGCommonHelper.getMeleeDamageHook(that, 7 + that.rand.nextInt(15));
+        boolean flag = entity.attackEntityFrom(DamageSource.causeMobDamage(that), damage);
+
+        if (flag) {
+            entity.motionY += 0.4000000059604645D;
+        }
+
+        that.playSound("mob.irongolem.throw", 1.0F, 1.0F);
+        return flag;
+    }
+
+    /**
+     * Hook for {@link EntityWither}
+     */
+    @Hook(returnCondition = ReturnCondition.ALWAYS)
+    public static void onImpact(EntityWitherSkull that, MovingObjectPosition mop)
+    {
+        if (!that.worldObj.isRemote) {
+            if (mop.entityHit != null) {
+                float value = RPGCommonHelper.getRangeDamageHook(that.shootingEntity, 8f);
+                if (that.shootingEntity != null) {
+                    if (mop.entityHit.attackEntityFrom(DamageSource.causeMobDamage(that.shootingEntity), value) && !mop.entityHit.isEntityAlive()) {
+                        that.shootingEntity.heal(value);
+                    }
+                }
+                else {
+                    mop.entityHit.attackEntityFrom(DamageSource.magic, value);
+                }
+
+                if (mop.entityHit instanceof EntityLivingBase) {
+                    byte b0 = 0;
+
+                    if (that.worldObj.difficultySetting == EnumDifficulty.NORMAL) {
+                        b0 = 10;
+                    }
+                    else if (that.worldObj.difficultySetting == EnumDifficulty.HARD) {
+                        b0 = 40;
+                    }
+
+                    if (b0 > 0) {
+                        ((EntityLivingBase)mop.entityHit).addPotionEffect(new PotionEffect(Potion.wither.id, 20 * b0, 1));
+                    }
+                }
+            }
+
+            that.worldObj.newExplosion(that, that.posX, that.posY, that.posZ, 1.0F, false, that.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"));
+            that.setDead();
+        }
+    }
+
+    /**
+     * Hook for {@link EntityDragon}
+     */
+    @Hook(returnCondition = ReturnCondition.ALWAYS)
+    public static void attackEntitiesInList(EntityDragon that, List list)
+    {
+        float damage = RPGCommonHelper.getMeleeDamageHook(that, 10f);
+        for (int i = 0; i < list.size(); ++i) {
+            Entity entity = (Entity)list.get(i);
+
+            if (entity instanceof EntityLivingBase) {
+                entity.attackEntityFrom(DamageSource.causeMobDamage(that), damage);
+            }
+        }
     }
 }

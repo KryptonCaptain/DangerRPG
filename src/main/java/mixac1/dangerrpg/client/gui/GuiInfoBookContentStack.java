@@ -61,7 +61,7 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
                                                  (int) ItemAttributes.CURR_EXP.get(stack),
                                                  (int) ItemAttributes.MAX_EXP.get(stack)));
             if (ItemAttributes.MAX_DURABILITY.hasIt(stack)) {
-                if (stack.getTagCompound().getBoolean("Unbreakable")) {
+                if (!stack.isItemStackDamageable()) {
                     addString(String.format("%s: %s", ItemAttributes.DURABILITY.getDispayName(),
                               DangerRPG.trans("rpgstr.unbreakable")));
                 }

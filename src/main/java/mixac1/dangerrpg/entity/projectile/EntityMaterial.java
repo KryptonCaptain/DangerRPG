@@ -65,12 +65,14 @@ public class EntityMaterial extends EntityWithStack
                     DamageSource.causeMobDamage(thrower);
         entity.attackEntityFrom(dmgSource, (phisicDamage + getMeleeHitDamage(entity)) * dmgMul);
 
-        int knockback = EnchantmentHelper.getKnockbackModifier(thrower, entity);
-        if (knockback != 0) {
-            entity.addVelocity(-MathHelper.sin(rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F, 0.1D, MathHelper.cos(rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F);
-            motionX *= 0.6D;
-            motionZ *= 0.6D;
-            setSprinting(false);
+        if (thrower != null) {
+            int knockback = EnchantmentHelper.getKnockbackModifier(thrower, entity);
+            if (knockback != 0) {
+                entity.addVelocity(-MathHelper.sin(rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F, 0.1D, MathHelper.cos(rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F);
+                motionX *= 0.6D;
+                motionZ *= 0.6D;
+                setSprinting(false);
+            }
         }
 
         super.applyEntityHitEffects(entity, dmgMul);

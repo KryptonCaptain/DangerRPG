@@ -19,6 +19,8 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
@@ -314,8 +316,15 @@ public class RPGGuiIngame extends Gui
     private void renderEnemyBar(int offsetX, int offsetY, ScaledResolution res)
     {
         MovingObjectPosition mop = RPGCommonHelper.getMouseOver(0, 10);
-        if (mop != null && mop.entityHit != null && mop.entityHit instanceof EntityLivingBase) {
-            renderEntityBar((EntityLivingBase) mop.entityHit, offsetX, offsetY, true, res);
+        if (mop != null && mop.entityHit != null) {
+            if (mop.entityHit instanceof EntityDragonPart) {
+                if (((EntityDragonPart) mop.entityHit).entityDragonObj instanceof EntityDragon) {
+                    renderEntityBar((EntityDragon) ((EntityDragonPart) mop.entityHit).entityDragonObj, offsetX, offsetY, true, res);
+                }
+            }
+            else if (mop.entityHit instanceof EntityLivingBase) {
+                renderEntityBar((EntityLivingBase) mop.entityHit, offsetX, offsetY, true, res);
+            }
         }
     }
 

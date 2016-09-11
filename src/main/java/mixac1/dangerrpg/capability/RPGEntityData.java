@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import cpw.mods.fml.relauncher.Side;
+import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.EntityAttribute;
 import mixac1.dangerrpg.api.entity.IRPGEntity;
 import mixac1.dangerrpg.api.entity.LvlEAProvider;
@@ -89,7 +91,7 @@ public class RPGEntityData implements IExtendedEntityProperties
                 init(entity, entity.worldObj);
                 RPGNetwork.net.sendToAll(new MsgSyncEntityData(entity, this));
             }
-            else {
+            else if (DangerRPG.proxy.getTick(Side.CLIENT) % 100 == 0) {
                 RPGNetwork.net.sendToServer(new MsgSyncEntityData(entity));
             }
         }
@@ -209,7 +211,7 @@ public class RPGEntityData implements IExtendedEntityProperties
 
     public static void registerEntityDefault(Class<? extends EntityLivingBase> entityClass, EntityAttributesSet set)
     {
-        set.addEntityAttribute(EntityAttributes.LVL, 0);
+        set.addEntityAttribute(EntityAttributes.LVL, 1);
         MinecraftForge.EVENT_BUS.post(new RegEAEvent.DefaultEAEvent(entityClass, set));
     }
 

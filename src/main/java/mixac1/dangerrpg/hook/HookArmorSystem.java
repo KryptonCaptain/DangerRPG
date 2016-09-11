@@ -10,6 +10,7 @@ import gloomyfolken.hooklib.asm.ReturnCondition;
 import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
+import mixac1.dangerrpg.init.RPGConfig;
 import mixac1.dangerrpg.init.RPGOther.RPGDamageSource;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -58,9 +59,18 @@ public class HookArmorSystem
     {
         float value = 0;
         Minecraft mc = Minecraft.getMinecraft();
-        for (ArmorProperties prop : getArrayArmorProperties(mc.thePlayer, mc.thePlayer.inventory.armorInventory, source, 5)) {
-            value += prop.AbsorbRatio;
+        float damage = RPGConfig.mainDamageForArmorBar * MAX_PHISICAL_ARMOR;
+
+        ArrayList<ArmorProperties> list = getArrayArmorProperties(mc.thePlayer, mc.thePlayer.inventory.armorInventory, source, damage);
+        if (list.size() > 0) {
+            ArmorProperties[] props = list.toArray(new ArmorProperties[list.size()]);
+            standardizeList(props, damage);
+
+            for (ArmorProperties prop : props) {
+                value += prop.AbsorbRatio;
+            }
         }
+
         value += getPassiveArmor(mc.thePlayer, source) / 100;
         return Utils.alignment(value, 0, 1) * 100;
     }

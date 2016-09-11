@@ -24,6 +24,7 @@ public abstract class RPGConfig
 
     /* MAIN */
     public static boolean   mainEnableModGui;
+    public static int       mainDamageForArmorBar;
     public static boolean   mainEnableInfoLog;
     public static boolean   mainShowShapedRecipe;
 
@@ -142,6 +143,9 @@ public abstract class RPGConfig
 
         mainShowShapedRecipe = getBoolean(cat.getName(), "mainShowShapedRecipe", false,
                 "Show default shape recipes in Shaped and Shapeless Crafting(need NEI)");
+
+        mainDamageForArmorBar = getInteger(cat.getName(), "mainDamageForArmorBar", 25,
+                "Damage count for calculate resistance in armor bar");
     }
 
     private static void initPlayerCategory()

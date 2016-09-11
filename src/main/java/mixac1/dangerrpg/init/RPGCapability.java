@@ -10,7 +10,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.registry.GameData;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.RPGRegister;
-import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
 import mixac1.dangerrpg.api.entity.IRPGEntity.RPGCommonEntityMob;
 import mixac1.dangerrpg.api.entity.IRPGEntity.RPGEntityRangeMob;
 import mixac1.dangerrpg.api.item.ILvlableItem;
@@ -18,15 +17,19 @@ import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.LvlableItem.ItemAttributesMap;
 import mixac1.dangerrpg.capability.RPGEntityData;
 import mixac1.dangerrpg.capability.RPGEntityData.EntityAttributesSet;
-import mixac1.dangerrpg.capability.ea.EASlimeDamage;
+import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityGhast;
+import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.EntityMagmaCube;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -127,10 +130,14 @@ public abstract class RPGCapability
         RPGRegister.registerRPGEntity(EntityBlaze.class, new RPGEntityRangeMob(5f));
         RPGRegister.registerRPGEntity(EntitySkeleton.class, new RPGEntityRangeMob(2f));
         RPGRegister.registerRPGEntity(EntityGhast.class, new RPGEntityRangeMob(6f));
+        RPGRegister.registerRPGEntity(EntityWither.class, new RPGEntityRangeMob(8f));
 
-        EAFloat slime = new EASlimeDamage("melee_damage");
-        RPGRegister.registerRPGEntity(EntitySlime.class, new RPGCommonEntityMob(slime, 0f));
-        RPGRegister.registerRPGEntity(EntityMagmaCube.class, new RPGCommonEntityMob(slime, 2f));
+        RPGRegister.registerRPGEntity(EntitySlime.class, new RPGCommonEntityMob(EntityAttributes.MELEE_DAMAGE_SLIME, 0f));
+        RPGRegister.registerRPGEntity(EntityMagmaCube.class, new RPGCommonEntityMob(EntityAttributes.MELEE_DAMAGE_SLIME, 2f));
+
+        RPGRegister.registerRPGEntity(EntityWolf.class, new RPGCommonEntityMob(EntityAttributes.MELEE_DAMAGE_STAB, 3f));
+        RPGRegister.registerRPGEntity(EntityIronGolem.class, new RPGCommonEntityMob(EntityAttributes.MELEE_DAMAGE_STAB, 14f));
+        RPGRegister.registerRPGEntity(EntityDragon.class, new RPGCommonEntityMob(EntityAttributes.MELEE_DAMAGE_STAB, 10f));
     }
 
     private static void loadEntities()

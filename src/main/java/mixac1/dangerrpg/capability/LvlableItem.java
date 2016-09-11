@@ -113,11 +113,14 @@ public abstract class LvlableItem
         }
         else {
             ench  = item.getItemEnchantability();
-            durab = item.getMaxDamage();
+            durab = item.isDamageable() ? item.getMaxDamage() : -1;
         }
 
         map.addDynamicItemAttribute(ItemAttributes.ENCHANTABILITY, ench, IMultiplier.ADD_1);
-        map.addDynamicItemAttribute(ItemAttributes.MAX_DURABILITY, durab, DUR_MUL);
+        if (durab != -1) {
+            map.addDynamicItemAttribute(ItemAttributes.MAX_DURABILITY, durab, DUR_MUL);
+        }
+
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemModIAEvent(item, map));
     }
 

@@ -79,7 +79,12 @@ public class HookItems
     public static boolean onEntitySwing(Item item, EntityLivingBase entity, ItemStack stack)
     {
         if (entity instanceof EntityPlayer) {
-            return PlayerAttributes.SPEED_COUNTER.getValue(entity) != 0;
+            boolean ret = PlayerAttributes.SPEED_COUNTER.getValue(entity) == 0;
+            if (ret) {
+                float speed = ItemAttributes.MELEE_SPEED.hasIt(stack) ? ItemAttributes.MELEE_SPEED.get(stack, (EntityPlayer) entity) : 10f;
+                PlayerAttributes.SPEED_COUNTER.setValue(speed < 0 ? 0 : speed, entity);
+            }
+            return !ret;
         }
         return false;
     }
