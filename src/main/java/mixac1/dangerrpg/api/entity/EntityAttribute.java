@@ -40,7 +40,8 @@ public class EntityAttribute<Type>
 
     public void serverInit(EntityLivingBase entity)
     {
-        setValueRaw((Type) RPGCapability.rpgEntityRegistr.getAttributesSet(entity).attributes.get(this).startValue, entity);
+        setValueRaw((Type) RPGCapability.rpgEntityRegistr.getAttributesSet(entity).attributes.get(this).startValue,
+                    entity);
     }
 
     public LvlEAProvider getLvlProvider(EntityLivingBase entity)
@@ -51,7 +52,7 @@ public class EntityAttribute<Type>
     public boolean hasIt(EntityLivingBase entity)
     {
         return RPGCapability.rpgEntityRegistr.isRegistered(entity)
-                && RPGCapability.rpgEntityRegistr.getAttributesSet(entity).attributes.containsKey(this);
+               && RPGCapability.rpgEntityRegistr.getAttributesSet(entity).attributes.containsKey(this);
     }
 
     public boolean isValid(Type value)

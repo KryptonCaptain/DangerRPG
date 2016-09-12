@@ -50,7 +50,7 @@ public abstract class RPGRecipes
                 '2', Items.diamond,
                 '3', Blocks.diamond_block);
 
-        addLargeShapedRecipe(RPGItems.blackMatter, "0000", "0110", "0110", "0000",
+        addLargeShapedRecipe(RPGItems.compressedBedrock, "0000", "0110", "0110", "0000",
                 '0', RPGBlocks.syntheticBedrock,
                 '1', Items.emerald);
 

@@ -35,7 +35,8 @@ public class ItemStackEvent extends Event
         public float knockback;
         public boolean isRangeed;
 
-        public HitEntityEvent(ItemStack stack, EntityLivingBase entity, EntityLivingBase attacker, float damage, float knockback, boolean isRangeed)
+        public HitEntityEvent(ItemStack stack, EntityLivingBase entity, EntityLivingBase attacker,
+                              float damage, float knockback, boolean isRangeed)
         {
             super(stack);
             this.entity = entity;

@@ -76,18 +76,18 @@ public class EventHandlerEntity
         }
 
         if (EntityAttributes.HEALTH.hasIt(e.entity)) {
-            float health = e.entity.getHealth() / 5;
+            float health = e.entity.getHealth() / 10;
             EntityAttributes.HEALTH.addValue(health * lvl, e.entity);
         }
 
         EAFloat attr = RPGCapability.rpgEntityRegistr.getAttributesSet(e.entity).rpgComponent.getEAMeleeDamage(e.entity);
         if (attr != null) {
-            attr.addValue(attr.getValue(e.entity) / 5 * lvl, e.entity);
+            attr.addValue(attr.getValue(e.entity) / 10 * lvl, e.entity);
         }
 
         attr = RPGCapability.rpgEntityRegistr.getAttributesSet(e.entity).rpgComponent.getEARangeDamage(e.entity);
         if (attr != null) {
-            attr.addValue(attr.getValue(e.entity) / 5 * lvl, e.entity);
+            attr.addValue(attr.getValue(e.entity) / 10 * lvl, e.entity);
         }
     }
 
