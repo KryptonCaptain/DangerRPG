@@ -2,14 +2,14 @@
 {
   "modid": "dangerrpg",
   "name": "DangerRPG",
-  "description": "DangerRPG for 1.7.10",
+  "description": "This mod will add an element of RPG in your Minecraft.",
   "version": "1.0.0",
   "mcversion": "1.7.10",
   "url": "",
   "updateUrl": "",
   "authorList": ["Mixac1"],
   "credits": "",
-  "logoFile": "/dangerrpg_logo.png",
+  "logoFile": "dangerrpg_logo.png",
   "screenshots": [],
   "dependencies": []
 }

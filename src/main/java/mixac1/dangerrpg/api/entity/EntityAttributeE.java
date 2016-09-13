@@ -50,11 +50,11 @@ public class EntityAttributeE extends EAFloat
     {
         if (!value.equals(getValueRaw(entity)) && !entity.worldObj.isRemote) {
             IAttributeInstance attr = entity.getEntityAttribute(attribute);
-            value -= (float) attr.getAttributeValue();
             AttributeModifier mod = attr.getModifier(ID);
             if (mod != null) {
                 attr.removeModifier(mod);
             }
+            value -= (float) attr.getAttributeValue();
             AttributeModifier newMod = new AttributeModifier(ID, name, value, 0).setSaved(true);
             attr.applyModifier(newMod);
             return true;

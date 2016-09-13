@@ -23,11 +23,11 @@ public class EAHealth extends EntityAttributeE
             float tmp = entity.getHealth() / entity.getMaxHealth();
 
             IAttributeInstance attr = entity.getEntityAttribute(attribute);
-            value -= (float) attr.getAttributeValue();
             AttributeModifier mod = attr.getModifier(ID);
             if (mod != null) {
                 attr.removeModifier(mod);
             }
+            value -= (float) attr.getAttributeValue();
             AttributeModifier newMod = new AttributeModifier(ID, name, value, 0).setSaved(true);
             attr.applyModifier(newMod);
 
