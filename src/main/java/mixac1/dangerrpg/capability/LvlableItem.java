@@ -46,8 +46,6 @@ import net.minecraftforge.common.MinecraftForge;
 
 public abstract class LvlableItem
 {
-    public static final String IS_LVLABLE = "rpg_lvlable";
-
     public static final IMultiplier<Float> EXP_MUL = new IMultiplier<Float>()
     {
         @Override

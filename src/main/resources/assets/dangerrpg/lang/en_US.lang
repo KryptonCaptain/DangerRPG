@@ -196,7 +196,7 @@ recipe.large_shapeless=Shapeless Crafting
 
 rpgkey.special_use=Special use of item
 rpgkey.extra_use=Extra use of item
-rpgkey.info_book=Item's Info book
+rpgkey.info_book=Player's Menu
 
 ia.lvl=Level
 ia.curr_exp=Exp

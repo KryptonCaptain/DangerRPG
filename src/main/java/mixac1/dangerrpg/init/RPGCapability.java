@@ -142,8 +142,11 @@ public abstract class RPGCapability
 
     private static void loadEntities()
     {
-        for (Object obj : EntityList.classToStringMapping.keySet()) {
-            RPGEntityData.registerEntity((Class) obj);
+        for (Object obj : EntityList.classToStringMapping.entrySet()) {
+            Entry<Class, String> entry = (Entry<Class, String>) obj;
+            if (entry.getKey() != null && entry.getValue() != null) {
+                RPGEntityData.registerEntity(entry.getKey());
+            }
         }
 
         RPGEntityData.registerEntity(EntityPlayer.class);

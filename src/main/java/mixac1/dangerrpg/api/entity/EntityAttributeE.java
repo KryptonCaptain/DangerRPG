@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class EntityAttributeE extends EAFloat
 {
@@ -63,8 +64,28 @@ public class EntityAttributeE extends EAFloat
     }
 
     @Override
-    public void sync(EntityLivingBase entity)
+    public void toNBT(NBTTagCompound nbt, EntityLivingBase entity)
     {
+        NBTTagCompound tmp = new NBTTagCompound();
+        LvlEAProvider lvlProvider = getLvlProvider(entity);
+        if (lvlProvider != null) {
+            tmp.setInteger("lvl", lvlProvider.getLvl(entity));
+        }
+        nbt.setTag(name, tmp);
+    }
 
+    @Override
+    public void fromNBT(NBTTagCompound nbt, EntityLivingBase entity)
+    {
+        NBTTagCompound tmp = (NBTTagCompound) nbt.getTag(name);
+        if (tmp != null) {
+            LvlEAProvider lvlProvider = getLvlProvider(entity);
+            if (lvlProvider != null) {
+                lvlProvider.setLvl(tmp.getInteger("lvl"), entity);
+            }
+        }
+        else {
+            serverInit(entity);
+        }
     }
 }

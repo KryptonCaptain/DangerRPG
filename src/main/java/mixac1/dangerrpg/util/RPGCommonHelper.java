@@ -225,10 +225,12 @@ public abstract class RPGCommonHelper
 
     public static ArrayList<String> getEntityNames(Set<Class<? extends EntityLivingBase>> set, boolean needSort)
     {
+        String tmp;
         ArrayList<String> names = new ArrayList<String>();
         for (Class item : set) {
-            if (EntityList.classToStringMapping.containsKey(item)) {
-                names.add((String) EntityList.classToStringMapping.get(item));
+            if (EntityList.classToStringMapping.containsKey(item)
+                && (tmp = (String) EntityList.classToStringMapping.get(item)) != null) {
+                names.add(tmp);
             }
         }
         if (needSort) {
