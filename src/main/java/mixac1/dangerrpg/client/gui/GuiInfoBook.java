@@ -12,7 +12,7 @@ import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import mixac1.dangerrpg.capability.RPGEntityData;
 import mixac1.dangerrpg.client.gui.GuiInfoBookContentEntity.LevelUpButton;
 import mixac1.dangerrpg.init.RPGKeyBinds;
-import mixac1.dangerrpg.util.RPGCommonHelper;
+import mixac1.dangerrpg.util.RPGHelper;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -66,7 +66,7 @@ public class GuiInfoBook extends GuiScreen
     {
         this.player = player;
 
-        MovingObjectPosition mop = RPGCommonHelper.getMouseOver(0, 10);
+        MovingObjectPosition mop = RPGHelper.getMouseOver(0, 10);
         if (mop != null && mop.entityHit != null && mop.entityHit instanceof EntityPlayer && RPGEntityData.isRPGEntity((EntityLivingBase) mop.entityHit)) {
             target = (EntityLivingBase) mop.entityHit;
             isTargetPlayer = true;

@@ -74,7 +74,7 @@ public abstract class LvlableItem
 
     public static boolean registerLvlableItem(Item item)
     {
-        if (item != null && !(item instanceof ItemBlock)) {
+        if (item != null && !(item instanceof ItemBlock) && item.unlocalizedName != null) {
             if (RPGCapability.lvlItemRegistr.data.containsKey(item)) {
                 return true;
             }

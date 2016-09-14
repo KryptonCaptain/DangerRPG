@@ -10,7 +10,7 @@ import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.hook.HookArmorSystem;
 import mixac1.dangerrpg.init.RPGCapability;
-import mixac1.dangerrpg.util.RPGCommonHelper;
+import mixac1.dangerrpg.util.RPGHelper;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -315,7 +315,7 @@ public class RPGGuiIngame extends Gui
 
     private void renderEnemyBar(int offsetX, int offsetY, ScaledResolution res)
     {
-        MovingObjectPosition mop = RPGCommonHelper.getMouseOver(0, 10);
+        MovingObjectPosition mop = RPGHelper.getMouseOver(0, 10);
         if (mop != null && mop.entityHit != null) {
             if (mop.entityHit instanceof EntityDragonPart) {
                 if (((EntityDragonPart) mop.entityHit).entityDragonObj instanceof EntityDragon) {

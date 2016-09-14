@@ -6,7 +6,7 @@ import gloomyfolken.hooklib.asm.Hook;
 import gloomyfolken.hooklib.asm.ReturnCondition;
 import mixac1.dangerrpg.entity.projectile.EntityArrowRPG;
 import mixac1.dangerrpg.init.RPGOther;
-import mixac1.dangerrpg.util.RPGCommonHelper;
+import mixac1.dangerrpg.util.RPGHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -39,7 +39,7 @@ public class HookFixEntityAttributes
     {
         if (!that.worldObj.isRemote) {
             if (mop.entityHit != null) {
-                float damage = RPGCommonHelper.getRangeDamageHook(that.shootingEntity, 5f);
+                float damage = RPGHelper.getRangeDamageHook(that.shootingEntity, 5f);
                 if (!mop.entityHit.isImmuneToFire() && mop.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(that, that.shootingEntity), damage)) {
                     mop.entityHit.setFire(5);
                 }
@@ -88,7 +88,7 @@ public class HookFixEntityAttributes
         int j = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, that.getHeldItem());
 
 
-        float tmp = RPGCommonHelper.getRangeDamageHook(that, -1);
+        float tmp = RPGHelper.getRangeDamageHook(that, -1);
         if (tmp == -1) {
             entityarrow.phisicDamage = (float) (value * 2.0F + RPGOther.rand.nextGaussian() * 0.25D + that.worldObj.difficultySetting.getDifficultyId() * 0.11F);
             int i = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, that.getHeldItem());
@@ -120,7 +120,7 @@ public class HookFixEntityAttributes
     {
         if (!that.worldObj.isRemote) {
             if (mop.entityHit != null) {
-                float damage = RPGCommonHelper.getRangeDamageHook(that.shootingEntity, 6f);
+                float damage = RPGHelper.getRangeDamageHook(that.shootingEntity, 6f);
                 mop.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(that, that.shootingEntity), damage);
             }
 
@@ -135,7 +135,7 @@ public class HookFixEntityAttributes
     @Hook(returnCondition = ReturnCondition.ALWAYS)
     public static int getAttackStrength(EntitySlime that)
     {
-        return (int) RPGCommonHelper.getMeleeDamageHook(that, that.getSlimeSize());
+        return (int) RPGHelper.getMeleeDamageHook(that, that.getSlimeSize());
     }
 
     /**
@@ -144,7 +144,7 @@ public class HookFixEntityAttributes
     @Hook(returnCondition = ReturnCondition.ALWAYS)
     public static boolean attackEntityAsMob(EntityWolf that, Entity entity)
     {
-        int damage = (int) RPGCommonHelper.getMeleeDamageHook(that, that.isTamed() ? 4 : 2);
+        int damage = (int) RPGHelper.getMeleeDamageHook(that, that.isTamed() ? 4 : 2);
         return that.attackEntityFrom(DamageSource.causeMobDamage(that), damage);
     }
 
@@ -156,7 +156,7 @@ public class HookFixEntityAttributes
     {
         that.attackTimer = 10;
         that.worldObj.setEntityState(that, (byte) 4);
-        int damage = (int) RPGCommonHelper.getMeleeDamageHook(that, 7 + that.rand.nextInt(15));
+        int damage = (int) RPGHelper.getMeleeDamageHook(that, 7 + that.rand.nextInt(15));
         boolean flag = entity.attackEntityFrom(DamageSource.causeMobDamage(that), damage);
 
         if (flag) {
@@ -175,7 +175,7 @@ public class HookFixEntityAttributes
     {
         if (!that.worldObj.isRemote) {
             if (mop.entityHit != null) {
-                float value = RPGCommonHelper.getRangeDamageHook(that.shootingEntity, 8f);
+                float value = RPGHelper.getRangeDamageHook(that.shootingEntity, 8f);
                 if (that.shootingEntity != null) {
                     if (mop.entityHit.attackEntityFrom(DamageSource.causeMobDamage(that.shootingEntity), value) && !mop.entityHit.isEntityAlive()) {
                         that.shootingEntity.heal(value);
@@ -212,7 +212,7 @@ public class HookFixEntityAttributes
     @Hook(returnCondition = ReturnCondition.ALWAYS)
     public static void attackEntitiesInList(EntityDragon that, List list)
     {
-        float damage = RPGCommonHelper.getMeleeDamageHook(that, 10f);
+        float damage = RPGHelper.getMeleeDamageHook(that, 10f);
         for (int i = 0; i < list.size(); ++i) {
             Entity entity = (Entity)list.get(i);
 

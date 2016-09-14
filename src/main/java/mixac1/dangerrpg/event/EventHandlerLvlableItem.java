@@ -9,7 +9,7 @@ import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
 import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
-import mixac1.dangerrpg.util.RPGCommonHelper;
+import mixac1.dangerrpg.util.RPGHelper;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -68,7 +68,7 @@ public class EventHandlerLvlableItem
             if (e.player.swingProgressInt == 1) {
                 ItemStack stack = e.player.getCurrentEquippedItem();
                 if (stack != null && ItemAttributes.REACH.hasIt(stack)) {
-                    MovingObjectPosition object = RPGCommonHelper.getMouseOver(0, ItemAttributes.REACH.get(stack) + 4);
+                    MovingObjectPosition object = RPGHelper.getMouseOver(0, ItemAttributes.REACH.get(stack) + 4);
 
                     if (object != null && object.entityHit != null && object.entityHit != e.player && object.entityHit.hurtResistantTime == 0) {
                         FMLClientHandler.instance().getClient().playerController.attackEntity(e.player, object.entityHit);

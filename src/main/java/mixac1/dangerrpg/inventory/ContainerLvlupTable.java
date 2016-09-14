@@ -5,7 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.init.RPGConfig;
-import mixac1.dangerrpg.util.RPGCommonHelper;
+import mixac1.dangerrpg.util.RPGHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
@@ -132,7 +132,7 @@ public class ContainerLvlupTable extends Container
     public boolean canInteractWith(EntityPlayer player)
     {
         if (firstUse) {
-            RPGCommonHelper.rebuildPlayerExp(player);
+            RPGHelper.rebuildPlayerExp(player);
             firstUse = false;
         }
         return player.getDistance(posX + 0.5D, posY + 0.5D, posZ + 0.5D) <= 64.0D;
@@ -248,7 +248,7 @@ public class ContainerLvlupTable extends Container
                     if (!worldPointer.isRemote) {
                         LvlableItem.addExp(stack, expToUp);
                         player.addExperience(-expToUp);
-                        RPGCommonHelper.rebuildPlayerLvl(player);
+                        RPGHelper.rebuildPlayerLvl(player);
                         onCraftMatrixChanged(tableInventory);
                     }
                     return true;
@@ -270,7 +270,7 @@ public class ContainerLvlupTable extends Container
                                 player.experienceTotal = 0;
                             }
                         }
-                        RPGCommonHelper.rebuildPlayerLvl(player);
+                        RPGHelper.rebuildPlayerLvl(player);
                         onCraftMatrixChanged(tableInventory);
                     }
                     return true;

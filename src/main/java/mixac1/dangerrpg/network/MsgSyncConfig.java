@@ -8,7 +8,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import mixac1.dangerrpg.init.RPGCapability;
-import mixac1.dangerrpg.util.RPGCommonHelper;
+import mixac1.dangerrpg.util.RPGHelper;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -50,7 +50,7 @@ public class MsgSyncConfig implements IMessage
             buf.writeInt(item.getIdFromItem(item));
         }
 
-        ArrayList<String> entityNames = RPGCommonHelper.getEntityNames(RPGCapability.rpgEntityRegistr.getCloneSet(), false);
+        ArrayList<String> entityNames = RPGHelper.getEntityNames(RPGCapability.rpgEntityRegistr.getCloneSet(), false);
         buf.writeInt(entityNames.size());
         for (String str : entityNames) {
             ByteBufUtils.writeUTF8String(buf, str);

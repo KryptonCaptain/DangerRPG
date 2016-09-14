@@ -14,7 +14,7 @@ import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.init.RPGOther.RPGItemRarity;
 import mixac1.dangerrpg.item.IMaterialSpecial;
-import mixac1.dangerrpg.util.RPGCommonHelper;
+import mixac1.dangerrpg.util.RPGHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -95,7 +95,7 @@ public class HookItems
         if (LvlableItem.isLvlable(stack)
                 && (returnValue == EnumRarity.common
                 || stack.isItemEnchanted() && returnValue == EnumRarity.rare)) {
-            IMaterialSpecial mat = RPGCommonHelper.getMaterialSpecial(stack);
+            IMaterialSpecial mat = RPGHelper.getMaterialSpecial(stack);
             if (mat != null) {
                 return mat.getItemRarity();
             }

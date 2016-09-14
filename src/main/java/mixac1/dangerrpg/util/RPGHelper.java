@@ -26,7 +26,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 
-public abstract class RPGCommonHelper
+public abstract class RPGHelper
 {
     public static void knockBack(EntityLivingBase entityliving, EntityLivingBase attacker, float knockback)
     {
@@ -215,7 +215,9 @@ public abstract class RPGCommonHelper
     {
         ArrayList<String> names = new ArrayList<String>();
         for (Item item : items) {
-            names.add(item.unlocalizedName);
+            if (item.unlocalizedName != null) {
+                names.add(item.unlocalizedName);
+            }
         }
         if (needSort) {
             Collections.sort(names);

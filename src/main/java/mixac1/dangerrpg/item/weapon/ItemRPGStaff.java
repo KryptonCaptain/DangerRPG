@@ -11,7 +11,7 @@ import mixac1.dangerrpg.init.RPGOther.RPGCreativeTabs;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGStaffComponent;
 import mixac1.dangerrpg.item.RPGToolMaterial;
-import mixac1.dangerrpg.util.RPGCommonHelper;
+import mixac1.dangerrpg.util.RPGHelper;
 import mixac1.dangerrpg.util.Utils;
 import mixac1.dangerrpg.world.RPGEntityFXManager;
 import net.minecraft.block.Block;
@@ -87,7 +87,7 @@ public class ItemRPGStaff extends ItemSword implements ILvlableItemStaff, IHasBo
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
     {
-        if (RPGCommonHelper.spendMana(player, ItemAttributes.MANA_COST.get(stack, player))) {
+        if (RPGHelper.spendMana(player, ItemAttributes.MANA_COST.get(stack, player))) {
             player.setItemInUse(stack, getMaxItemUseDuration(stack));
         }
         return stack;
@@ -97,7 +97,7 @@ public class ItemRPGStaff extends ItemSword implements ILvlableItemStaff, IHasBo
     public void onPlayerStoppedUsing(ItemStack stack, World world, EntityPlayer player, int useRemain)
     {
         if (!world.isRemote
-            && RPGCommonHelper.getUsePower(player, stack, stack.getMaxItemUseDuration() - useRemain, 20F, 20F) > 0) {
+            && RPGHelper.getUsePower(player, stack, stack.getMaxItemUseDuration() - useRemain, 20F, 20F) > 0) {
             EntityMagicOrb entity = getEntityMagicOrb(stack, world, player);
             world.spawnEntityInWorld(entity);
             playShotSound(world, player);
@@ -120,9 +120,9 @@ public class ItemRPGStaff extends ItemSword implements ILvlableItemStaff, IHasBo
         if (world.isRemote && isActive && entity instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entity;
             if (player.isUsingItem()) {
-                double power = RPGCommonHelper.getUsePower(player, stack, stack.getMaxItemUseDuration() - player.getItemInUseCount(), 20F);
-                int color = RPGCommonHelper.getSpecialColor(stack, EntityMagicOrb.DEFAULT_COLOR);
-                Vec3 vec = RPGCommonHelper.getFirePoint(player);
+                double power = RPGHelper.getUsePower(player, stack, stack.getMaxItemUseDuration() - player.getItemInUseCount(), 20F);
+                int color = RPGHelper.getSpecialColor(stack, EntityMagicOrb.DEFAULT_COLOR);
+                Vec3 vec = RPGHelper.getFirePoint(player);
                 DangerRPG.proxy.spawnEntityFX(RPGEntityFXManager.EntityReddustFXE,
                                               vec.xCoord, vec.yCoord + 1 - 1 * power,vec.zCoord, 0f, 0f, 0f, color);
             }

@@ -15,7 +15,7 @@ import mixac1.dangerrpg.item.RPGItemComponent.RPGICWithoutTM;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGStaffComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
 import mixac1.dangerrpg.item.RPGToolMaterial;
-import mixac1.dangerrpg.util.RPGCommonHelper;
+import mixac1.dangerrpg.util.RPGHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -219,7 +219,7 @@ public interface ILvlableItem
                      || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, stack) > 0;
 
             if (flag || player.inventory.hasItem(Items.arrow)) {
-                float power = RPGCommonHelper.getUsePower(player, stack, useDuration, 20f, 0.3f);
+                float power = RPGHelper.getUsePower(player, stack, useDuration, 20f, 0.3f);
                 if (power < 0) {
                     return;
                 }

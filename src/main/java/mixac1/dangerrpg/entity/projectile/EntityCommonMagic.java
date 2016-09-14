@@ -5,7 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
 import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
-import mixac1.dangerrpg.util.RPGCommonHelper;
+import mixac1.dangerrpg.util.RPGHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -72,7 +72,7 @@ public class EntityCommonMagic extends EntityWithStack
 
     public int getColor()
     {
-        return RPGCommonHelper.getSpecialColor(getStack(), DEFAULT_COLOR);
+        return RPGHelper.getSpecialColor(getStack(), DEFAULT_COLOR);
     }
 
     @Override

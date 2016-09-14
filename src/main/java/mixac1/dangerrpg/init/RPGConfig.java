@@ -12,7 +12,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.FMLInjectionData;
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.util.RPGCommonHelper;
+import mixac1.dangerrpg.util.RPGHelper;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
@@ -74,7 +74,7 @@ public abstract class RPGConfig
     {
         Property prop;
 
-        ArrayList<String> names = RPGCommonHelper.getItemNames(RPGCapability.lvlItemRegistr.data.keySet(), true);
+        ArrayList<String> names = RPGHelper.getItemNames(RPGCapability.lvlItemRegistr.data.keySet(), true);
         prop = getPropertyStrings("Supported Lvl items", "itemSupportedLvlItems", names.toArray(new String[names.size()]),
                 "Set supported lvlable items (activated if 'itemAllItemsLvlable' is false)", false);
         if (!itemAllItemsLvlable) {
@@ -98,12 +98,12 @@ public abstract class RPGConfig
     {
         Property prop;
 
-        ArrayList<String> names = RPGCommonHelper.getItemNames(RPGCapability.lvlItemRegistr.registr, true);
+        ArrayList<String> names = RPGHelper.getItemNames(RPGCapability.lvlItemRegistr.registr, true);
         RPGConfig.getPropertyStrings("Supported Lvl items", "itemSupportedLvlItems",
                 names.toArray(new String[names.size()]), null, true);
 
 
-        names = RPGCommonHelper.getEntityNames(RPGCapability.rpgEntityRegistr.registr, true);
+        names = RPGHelper.getEntityNames(RPGCapability.rpgEntityRegistr.registr, true);
         RPGConfig.getPropertyStrings("Supported RPG entities", "entitySupportedRPGEntities",
                 names.toArray(new String[names.size()]), null, true);
 
@@ -113,7 +113,7 @@ public abstract class RPGConfig
         }
 
         PrintWriter file = createPrintWriter("AllEntityNames.txt");
-        names = RPGCommonHelper.getEntityNames(RPGCapability.rpgEntityRegistr.data.keySet(), true);
+        names = RPGHelper.getEntityNames(RPGCapability.rpgEntityRegistr.data.keySet(), true);
         for (String str : names) {
             file.write(str.concat("\n"));
         }
@@ -121,7 +121,7 @@ public abstract class RPGConfig
         file.close();
 
         file = createPrintWriter("AllItemNames.txt");
-        names = RPGCommonHelper.getItemNames(RPGCapability.lvlItemRegistr.data.keySet(), true);
+        names = RPGHelper.getItemNames(RPGCapability.lvlItemRegistr.data.keySet(), true);
         for (String str : names) {
             file.write(str.concat("\n"));
         }

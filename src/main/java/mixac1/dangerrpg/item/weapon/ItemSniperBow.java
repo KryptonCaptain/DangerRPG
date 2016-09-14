@@ -6,7 +6,7 @@ import mixac1.dangerrpg.entity.projectile.EntitySniperArrow;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.init.RPGOther.RPGItemRarity;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGBowComponent;
-import mixac1.dangerrpg.util.RPGCommonHelper;
+import mixac1.dangerrpg.util.RPGHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,7 +27,7 @@ public class ItemSniperBow extends ItemRPGBow
         boolean flag = player.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, stack) > 0;
         if (flag || player.inventory.hasItem(Items.arrow)) {
 
-            float power = RPGCommonHelper.getUsePower(player, stack, useDuration, 20f, 0.8f);
+            float power = RPGHelper.getUsePower(player, stack, useDuration, 20f, 0.8f);
             if (power < 0) {
                 return;
             }
