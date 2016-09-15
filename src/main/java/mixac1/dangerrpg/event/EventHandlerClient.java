@@ -27,10 +27,10 @@ public class EventHandlerClient
     private static RPGGuiIngame guiIngame = new RPGGuiIngame();
 
     @SubscribeEvent
-    public void renderRPGGuiIngame(RenderGameOverlayEvent event)
+    public void renderRPGGuiIngame(RenderGameOverlayEvent.Pre event)
     {
         if (!event.isCancelable() &&
-             event.type == ElementType.EXPERIENCE &&
+             event.type == ElementType.ALL &&
              RPGConfig.mainEnableModGui) {
             guiIngame.renderGameOverlay();
         }

@@ -24,18 +24,6 @@ public class GuiRPGWorkbench extends GuiContainer
     public static int invStrX = 8;
     public static int invStrY = 133;
 
-    public static int playerInvX = 8;
-    public static int playerInvY = 145;
-
-    public static int fastInvX = 8;
-    public static int fastInvY = 203;
-
-    public static int craftX = 13;
-    public static int craftY = 17;
-
-    public static int craftResX = 143;
-    public static int craftResY = 53;
-
     public GuiRPGWorkbench(InventoryPlayer inventory, World world, int x, int y, int z)
     {
         super(new ContainerRPGWorkbench(inventory, world, x, y, z));

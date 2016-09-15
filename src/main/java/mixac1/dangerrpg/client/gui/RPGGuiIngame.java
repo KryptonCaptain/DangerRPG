@@ -85,24 +85,23 @@ public class RPGGuiIngame extends Gui
 
     public void renderGameOverlay()
     {
-        if (mc.playerController.gameIsSurvivalOrAdventure() || true) {
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glEnable(GL11.GL_ALPHA_TEST);
+        mc.mcProfiler.startSection("rpgBar");
+        GL11.glPushMatrix();
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-            res = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
-            int width = res.getScaledWidth();
-            int height = res.getScaledHeight();
+        res = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+        int width = res.getScaledWidth();
+        int height = res.getScaledHeight();
 
-            renderEntityBar(mc.thePlayer, 10, 10, false, res);
-            renderChargeBar((width - chargeWidth) / 2, height - 40 - chargeHeight);
-            renderEnemyBar(10, 10, res);
+        renderEntityBar(mc.thePlayer, 10, 10, false, res);
+        renderChargeBar((width - chargeWidth) / 2, height - 40 - chargeHeight);
+        renderEnemyBar(10, 10, res);
 
-            renderTestString(250, 10,
-                    "");
-
-            GL11.glDisable(GL11.GL_ALPHA_TEST);
-            GL11.glEnable(GL11.GL_BLEND);
-        }
+        GL11.glDisable(GL11.GL_ALPHA_TEST);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glPopMatrix();
+        mc.mcProfiler.endSection();
     }
 
     private void renderEntityBar(EntityLivingBase entity, int offsetX, int offsetY, boolean isInverted, ScaledResolution res)

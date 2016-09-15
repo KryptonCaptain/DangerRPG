@@ -15,7 +15,6 @@ import mixac1.dangerrpg.network.MsgSyncConfig;
 import mixac1.dangerrpg.network.MsgSyncEntityData;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -65,10 +64,6 @@ public class EventHandlerEntity
     {
         ChunkCoordinates spawn = e.entity.worldObj.getSpawnPoint();
         double distance = Utils.getDiagonal(e.entity.posX - spawn.posX, e.entity.posZ - spawn.posZ);
-
-        if (e.entity instanceof EntityPigZombie) {
-            DangerRPG.log(1);
-        }
 
         int lvl = (int) (distance / 50);
         if (EntityAttributes.LVL.hasIt(e.entity)) {

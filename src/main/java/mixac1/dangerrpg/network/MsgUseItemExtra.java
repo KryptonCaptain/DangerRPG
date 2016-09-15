@@ -27,14 +27,16 @@ public class MsgUseItemExtra implements IMessage
         public IMessage onMessage(MsgUseItemExtra message, MessageContext ctx)
         {
             EntityPlayer player = DangerRPG.proxy.getPlayer(ctx);
-            ItemStack stack = player.getCurrentEquippedItem();
-            if (stack != null && stack.getItem() instanceof IUseItemExtra) {
-                ItemStack resStack = ((IUseItemExtra) stack.getItem()).onItemUseExtra(stack, player.worldObj, player);
-                if (resStack != stack || resStack.stackSize != stack.stackSize) {
-                    player.inventory.mainInventory[player.inventory.currentItem] = resStack;
-                    if (resStack == null || resStack.stackSize <= 0) {
-                        player.inventory.mainInventory[player.inventory.currentItem] = null;
-                        MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, resStack));
+            if (player.inventory.currentItem >= 0 && player.inventory.currentItem <= 8) {
+                ItemStack stack = player.getCurrentEquippedItem();
+                if (stack != null && stack.getItem() instanceof IUseItemExtra) {
+                    ItemStack resStack = ((IUseItemExtra) stack.getItem()).onItemUseExtra(stack, player.worldObj, player);
+                    if (resStack != stack || resStack.stackSize != stack.stackSize) {
+                        player.inventory.mainInventory[player.inventory.currentItem] = resStack;
+                        if (resStack == null || resStack.stackSize <= 0) {
+                            player.inventory.mainInventory[player.inventory.currentItem] = null;
+                            MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, resStack));
+                        }
                     }
                 }
             }

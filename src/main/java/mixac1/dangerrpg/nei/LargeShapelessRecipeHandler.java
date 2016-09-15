@@ -7,8 +7,8 @@ import java.util.List;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.client.gui.GuiRPGWorkbench;
 import mixac1.dangerrpg.init.RPGConfig;
+import mixac1.dangerrpg.inventory.ContainerRPGWorkbench;
 import mixac1.dangerrpg.recipe.LargeShapelessRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -175,7 +175,7 @@ public class LargeShapelessRecipeHandler extends LargeShapedRecipeHandler
             ingredients.clear();
             for (int ingred = 0; ingred < items.size(); ingred++) {
                 PositionedStack stack = new PositionedStack(items.get(ingred),
-                        GuiRPGWorkbench.craftX + stackorder[ingred][0] * 18 - offsetX, GuiRPGWorkbench.craftY + stackorder[ingred][1] * 18 - offsetY);
+                        ContainerRPGWorkbench.craftX + stackorder[ingred][0] * 18 - offsetX, ContainerRPGWorkbench.craftY + stackorder[ingred][1] * 18 - offsetY);
                 stack.setMaxSize(1);
                 ingredients.add(stack);
             }
@@ -183,7 +183,7 @@ public class LargeShapelessRecipeHandler extends LargeShapedRecipeHandler
 
         public void setResult(ItemStack output)
         {
-            result = new PositionedStack(output, GuiRPGWorkbench.craftResX - offsetX, GuiRPGWorkbench.craftResY - offsetY);
+            result = new PositionedStack(output, ContainerRPGWorkbench.craftResX - offsetX, ContainerRPGWorkbench.craftResY - offsetY);
         }
 
         @Override

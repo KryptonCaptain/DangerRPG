@@ -143,6 +143,8 @@ public class GuiInfoBook extends GuiScreen
     @Override
     public void drawScreen(int mouseX, int mouseY, float par3)
     {
+        GL11.glPushMatrix();
+
         offsetX = (width  - bookImageWidth)  / 2;
         offsetY = (height - bookImageHeight) / 2;
 
@@ -156,6 +158,8 @@ public class GuiInfoBook extends GuiScreen
         content[currContent].drawScreen(mouseX, mouseY, par3);
 
         super.drawScreen(mouseX, mouseY, par3);
+
+        GL11.glPopMatrix();
     }
 
     class SelectContentButton extends GuiButton

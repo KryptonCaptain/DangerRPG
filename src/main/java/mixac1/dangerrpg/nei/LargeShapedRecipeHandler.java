@@ -16,6 +16,7 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.client.gui.GuiRPGWorkbench;
 import mixac1.dangerrpg.init.RPGConfig;
+import mixac1.dangerrpg.inventory.ContainerRPGWorkbench;
 import mixac1.dangerrpg.recipe.LargeShapedRecipe;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -180,7 +181,7 @@ public class LargeShapedRecipeHandler extends TemplateRecipeHandler
 
         public CachedLargeShapedRecipe(int width, int height, Object[] items, ItemStack out)
         {
-            result = new PositionedStack(out, GuiRPGWorkbench.craftResX - offsetX, GuiRPGWorkbench.craftResY - offsetY);
+            result = new PositionedStack(out, ContainerRPGWorkbench.craftResX - offsetX, ContainerRPGWorkbench.craftResY - offsetY);
             ingredients = new ArrayList<PositionedStack>();
             setIngredients(width, height, items);
         }
@@ -204,7 +205,7 @@ public class LargeShapedRecipeHandler extends TemplateRecipeHandler
                     }
 
                     PositionedStack stack = new PositionedStack(items[y * width + x],
-                            GuiRPGWorkbench.craftX + x * 18 - offsetX, GuiRPGWorkbench.craftY + y * 18 - offsetY, false);
+                            ContainerRPGWorkbench.craftX + x * 18 - offsetX, ContainerRPGWorkbench.craftY + y * 18 - offsetY, false);
                     stack.setMaxSize(1);
                     ingredients.add(stack);
                 }

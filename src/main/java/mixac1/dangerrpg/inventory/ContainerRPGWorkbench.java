@@ -1,6 +1,5 @@
 package mixac1.dangerrpg.inventory;
 
-import mixac1.dangerrpg.client.gui.GuiRPGWorkbench;
 import mixac1.dangerrpg.init.RPGRecipes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -16,6 +15,18 @@ import net.minecraft.world.World;
 public class ContainerRPGWorkbench extends Container
 {
     public static int craftSize = 5;
+
+    public static int playerInvX = 8;
+    public static int playerInvY = 145;
+
+    public static int fastInvX = 8;
+    public static int fastInvY = 203;
+
+    public static int craftX = 13;
+    public static int craftY = 17;
+
+    public static int craftResX = 143;
+    public static int craftResY = 53;
 
     public InventoryRPGCrafting craftMatrix = new InventoryRPGCrafting(this, craftSize, craftSize);
     public IInventory craftResult           = new InventoryCraftResult();
@@ -35,24 +46,24 @@ public class ContainerRPGWorkbench extends Container
         /* 0 - 26 */
         for (int m = 0; m < 3; ++m) {
             for (int n = 0; n < 9; ++n) {
-                addSlotToContainer(new Slot(inv, m * 9 + n + 9, GuiRPGWorkbench.playerInvX + n * 18, GuiRPGWorkbench.playerInvY + m * 18));
+                addSlotToContainer(new Slot(inv, m * 9 + n + 9, playerInvX + n * 18, playerInvY + m * 18));
             }
         }
 
         /* 27 - 35 */
         for (int m = 0; m < 9; ++m) {
-            addSlotToContainer(new Slot(inv, m, GuiRPGWorkbench.fastInvX + m * 18, GuiRPGWorkbench.fastInvY));
+            addSlotToContainer(new Slot(inv, m, fastInvX + m * 18, fastInvY));
         }
 
         /* 36 - 60 */
         for (int m = 0; m < craftSize; ++m) {
             for (int n = 0; n < craftSize; ++n) {
-                addSlotToContainer(new Slot(craftMatrix, craftSize * m + n, GuiRPGWorkbench.craftX + n * 18, GuiRPGWorkbench.craftY + m * 18));
+                addSlotToContainer(new Slot(craftMatrix, craftSize * m + n, craftX + n * 18, craftY + m * 18));
             }
         }
 
         /* 61 */
-        addSlotToContainer(new SlotCrafting(inv.player, craftMatrix, craftResult, 0, GuiRPGWorkbench.craftResX, GuiRPGWorkbench.craftResY));
+        addSlotToContainer(new SlotCrafting(inv.player, craftMatrix, craftResult, 0, craftResX, craftResY));
 
         onCraftMatrixChanged(craftMatrix);
     }

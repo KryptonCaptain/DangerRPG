@@ -38,7 +38,9 @@ public abstract class RPGRecipes
 
         GameRegistry.addRecipe(new RecipeColorArmorDyes());
 
-        addShapedRecipe(new ItemStack(RPGItems.magicLeather), "QWQ", 'W', Items.leather, 'Q', new ItemStack(Items.dye, 1, 4));
+        addShapedRecipe(RPGBlocks.rpgWorkbench, "000", "010", "000", '0', Items.iron_ingot, '1', Blocks.crafting_table);
+
+        addShapedRecipe(RPGItems.magicLeather, "010", '1', Items.leather, '0', new ItemStack(Items.dye, 1, 4));
 
         RecipeCreator.RECIPE_FULL_2X2.addRecipe(RPGItems.compressedObsidian, Blocks.obsidian);
 
