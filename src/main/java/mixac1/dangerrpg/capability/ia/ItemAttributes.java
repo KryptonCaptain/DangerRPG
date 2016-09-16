@@ -206,7 +206,7 @@ public class ItemAttributes
 
     private static String getStringProcentage(float value)
     {
-        return String.format("%d%c", (int) (value * 100), '%');
+        return String.format("%d%c", Math.round(value * 100), '%');
     }
 
     private static String getStringSpeed(float value, float normalValue)

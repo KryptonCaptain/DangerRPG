@@ -13,6 +13,6 @@ public class EAPercent extends EAFloat
     @Override
     public String getDisplayValue(EntityLivingBase entity)
     {
-        return String.format("%d%c", getValue(entity).intValue(), '%');
+        return String.format("%d%c", Math.round(getValue(entity) * 100), '%');
     }
 }

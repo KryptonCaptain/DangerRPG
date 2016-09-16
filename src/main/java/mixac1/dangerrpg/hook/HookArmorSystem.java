@@ -7,7 +7,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gloomyfolken.hooklib.asm.Hook;
 import gloomyfolken.hooklib.asm.ReturnCondition;
-import mixac1.dangerrpg.capability.LvlableItem;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.init.RPGConfig;
@@ -31,25 +30,16 @@ public class HookArmorSystem
         return Utils.alignment(armor * 100 / MAX_PHISICAL_ARMOR, 0, 100);
     }
 
-    private static float getPhisicArmor(ItemStack stack)
+    private static float getArmorValue(ItemStack stack, DamageSource source)
     {
-        if (stack != null && stack.getItem() instanceof ItemArmor) {
-            if (ItemAttributes.PHISIC_ARMOR.hasIt(stack)) {
-                return ItemAttributes.PHISIC_ARMOR.get(stack);
+        if (stack != null) {
+            if (source.isMagicDamage()) {
+                return ItemAttributes.MAGIC_ARMOR.hasIt(stack) ? ItemAttributes.MAGIC_ARMOR.get(stack) : 0;
             }
             else {
-                return convertPhisicArmor(((ItemArmor) stack.getItem()).damageReduceAmount);
+                return ItemAttributes.PHISIC_ARMOR.hasIt(stack) ? ItemAttributes.PHISIC_ARMOR.get(stack) :
+                    stack.getItem() instanceof ItemArmor ? convertPhisicArmor(((ItemArmor) stack.getItem()).damageReduceAmount) : 0;
             }
-        }
-        return 0;
-    }
-
-    private static float getMagicArmor(ItemStack stack)
-    {
-        if (stack != null
-                && stack.getItem() instanceof ItemArmor
-                && ItemAttributes.MAGIC_ARMOR.hasIt(stack)) {
-            return ItemAttributes.MAGIC_ARMOR.get(stack);
         }
         return 0;
     }
@@ -71,7 +61,7 @@ public class HookArmorSystem
             }
         }
 
-        value += getPassiveArmor(mc.thePlayer, source) / 100;
+        value += getPassiveResist(mc.thePlayer, source);
         return Utils.alignment(value, 0, 1) * 100;
     }
 
@@ -93,54 +83,35 @@ public class HookArmorSystem
         return (float) (getArmorProperties(Minecraft.getMinecraft().thePlayer, stack, 0, source, 5).AbsorbRatio * 100);
     }
 
-    public static float getPassiveArmor(EntityLivingBase entity, DamageSource source)
+    public static float getPassiveResist(EntityLivingBase entity, DamageSource source)
     {
-        float specArmor = 0;
         if (entity instanceof EntityPlayer) {
-            if (source.isMagicDamage()) {
-                specArmor = PlayerAttributes.MAG_IMUN.getValue(entity);
+            if (source == DamageSource.lava) {
+                return PlayerAttributes.LAVA_RESIST.hasIt(entity) ? PlayerAttributes.LAVA_RESIST.getValue(entity) : 0;
             }
-            else {
-                specArmor = PlayerAttributes.STONESKIN.getValue(entity);
+            else if (source == DamageSource.inFire || source == DamageSource.onFire) {
+                return PlayerAttributes.FIRE_RESIST.hasIt(entity) ? PlayerAttributes.FIRE_RESIST.getValue(entity) : 0;
+            }
+            else if (source.isMagicDamage()) {
+                return PlayerAttributes.MAGIC_RESIST.hasIt(entity) ? PlayerAttributes.MAGIC_RESIST.getValue(entity) : 0;
+            }
+            else if (!source.isUnblockable()) {
+                return PlayerAttributes.PHISIC_RESIST.hasIt(entity) ? PlayerAttributes.PHISIC_RESIST.getValue(entity) : 0;
             }
         }
-        return specArmor;
+        return 0;
     }
 
     private static ArmorProperties getArmorProperties(EntityLivingBase entity, ItemStack stack, int slot, DamageSource source, double damage)
     {
-        ArmorProperties prop = null;
-
         if (stack.getItem() instanceof ISpecialArmor) {
-            ISpecialArmor armor = (ISpecialArmor)stack.getItem();
-            prop = armor.getProperties(entity, stack, source, damage, slot).copy();
+            return ((ISpecialArmor) stack.getItem()).getProperties(entity, stack, source, damage, slot).copy();
         }
-        else if (LvlableItem.isLvlable(stack)) {
-            if (stack.getItem() instanceof ItemArmor && !source.isUnblockable()) {
-                float armorValue;
-                if (source.isMagicDamage()) {
-                    armorValue = getMagicArmor(stack);
-                }
-                else {
-                    armorValue = getPhisicArmor(stack);
-                }
-                prop = new ArmorProperties(0, armorValue / 100, ((ItemArmor) stack.getItem()).getMaxDamage() + 1 - stack.getItemDamage());
-            }
+        else if (stack.getItem() instanceof ItemArmor) {
+            return new ArmorProperties(0, getArmorValue(stack, source) / 100,
+                    ((ItemArmor) stack.getItem()).getMaxDamage() + 1 - stack.getItemDamage());
         }
-        else {
-            if (stack.getItem() instanceof ItemArmor && !source.isUnblockable()) {
-                float armorValue;
-                if (source.isMagicDamage()) {
-                    armorValue = 0;
-                }
-                else {
-                    armorValue = ((ItemArmor) stack.getItem()).damageReduceAmount / MAX_PHISICAL_ARMOR;
-                }
-                prop = new ArmorProperties(0, armorValue, ((ItemArmor) stack.getItem()).getMaxDamage() + 1 - stack.getItemDamage());
-            }
-        }
-
-        return prop;
+        return null;
     }
 
     private static ArrayList<ArmorProperties> getArrayArmorProperties(EntityLivingBase entity, ItemStack[] inventory, DamageSource source, double damage)
@@ -169,8 +140,9 @@ public class HookArmorSystem
     {
         ArrayList<ArmorProperties> dmgVals = getArrayArmorProperties(entity, inventory, source, damage);
         damage *= MAX_PHISICAL_ARMOR;
+        damage *= 1 - getPassiveResist(entity, source);
 
-        if (dmgVals.size() > 0) {
+        if (dmgVals.size() > 0 && damage > 0) {
             ArmorProperties[] props = dmgVals.toArray(new ArmorProperties[dmgVals.size()]);
             standardizeList(props, damage);
             int level = props[0].Priority;
@@ -198,10 +170,8 @@ public class HookArmorSystem
                     }
                 }
             }
-            ratio += getPassiveArmor(entity, source) / 100;
-            damage -= (damage * Utils.alignment((float) ratio, 0, 1f));
         }
-        return (float)(damage / MAX_PHISICAL_ARMOR);
+        return (float) (damage / MAX_PHISICAL_ARMOR);
     }
 
     private static void standardizeList(ArmorProperties[] armor, double damage)

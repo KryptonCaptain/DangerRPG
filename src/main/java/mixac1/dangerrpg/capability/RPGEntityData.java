@@ -14,6 +14,7 @@ import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.EntityAttribute;
 import mixac1.dangerrpg.api.entity.IRPGEntity;
 import mixac1.dangerrpg.api.entity.LvlEAProvider;
+import mixac1.dangerrpg.api.entity.LvlEAProvider.DafailtLvlEAProvider;
 import mixac1.dangerrpg.api.event.InitRPGEntityEvent;
 import mixac1.dangerrpg.api.event.RegEAEvent;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
@@ -23,6 +24,9 @@ import mixac1.dangerrpg.init.RPGConfig;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.network.MsgSyncEntityData;
+import mixac1.dangerrpg.util.IMultiplier;
+import mixac1.dangerrpg.util.IMultiplier.IMultiplierE;
+import mixac1.dangerrpg.util.IMultiplier.MultiplierAdd;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -229,25 +233,35 @@ public class RPGEntityData implements IExtendedEntityProperties
 
     public static void registerEntityPlayer(Class<? extends EntityPlayer> entityClass, EntityAttributesSet set)
     {
-        set.addLvlableEntityAttribute(PlayerAttributes.HEALTH,       0f,  new LvlEAProvider<Float>(2, 1000, PlayerAttributes.ADD_2,     PlayerAttributes.MUL_1));
-        set.addLvlableEntityAttribute(PlayerAttributes.MANA,         10f, new LvlEAProvider<Float>(2, 1000, PlayerAttributes.ADD_2,     PlayerAttributes.MUL_1));
-        set.addLvlableEntityAttribute(PlayerAttributes.STRENGTH,     0f,  new LvlEAProvider<Float>(2, 1000, PlayerAttributes.ADD_1,     PlayerAttributes.MUL_1));
-        set.addLvlableEntityAttribute(PlayerAttributes.AGILITY,      0f,  new LvlEAProvider<Float>(2, 1000, PlayerAttributes.ADD_1,     PlayerAttributes.MUL_1));
-        set.addLvlableEntityAttribute(PlayerAttributes.INTELLIGENCE, 0f,  new LvlEAProvider<Float>(2, 1000, PlayerAttributes.ADD_1,     PlayerAttributes.MUL_1));
-        set.addLvlableEntityAttribute(PlayerAttributes.EFFICIENCY,   0f,  new LvlEAProvider<Float>(2, 1000, PlayerAttributes.ADD_2,     PlayerAttributes.MUL_1));
-        set.addLvlableEntityAttribute(PlayerAttributes.MANA_REGEN,   1f,  new LvlEAProvider<Float>(2, 1000, PlayerAttributes.ADD_0d2,   PlayerAttributes.MUL_1));
-        set.addLvlableEntityAttribute(PlayerAttributes.HEALTH_REGEN, 0f,  new LvlEAProvider<Float>(2, 1000, PlayerAttributes.ADD_0d2,   PlayerAttributes.MUL_1));
+        IMultiplierE<Float> ADD_1     = IMultiplier.ADD_1;
+        IMultiplierE<Float> ADD_2     = new MultiplierAdd(2F);
+        IMultiplierE<Float> ADD_0d001 = new MultiplierAdd(0.001F);
+        IMultiplierE<Float> ADD_0d01  = new MultiplierAdd(0.01F);
+        IMultiplierE<Float> ADD_0d014 = new MultiplierAdd(0.014F);
+        IMultiplierE<Float> ADD_0d025 = new MultiplierAdd(0.025F);
+        IMultiplierE<Float> ADD_0d2   = new MultiplierAdd(0.2F);
 
-        set.addLvlableEntityAttribute(PlayerAttributes.MOVE_SPEED,  0f,   new LvlEAProvider<Float>(2, 20,   PlayerAttributes.ADD_0d001, PlayerAttributes.MUL_1));
-        set.addLvlableEntityAttribute(PlayerAttributes.SNEAK_SPEED, 0f,   new LvlEAProvider<Float>(2, 20,   PlayerAttributes.ADD_0d001, PlayerAttributes.MUL_1));
-        set.addLvlableEntityAttribute(PlayerAttributes.FLY_SPEED,   0f,   new LvlEAProvider<Float>(2, 20,   PlayerAttributes.ADD_0d001, PlayerAttributes.MUL_1));
-        set.addLvlableEntityAttribute(PlayerAttributes.SWIM_SPEED,  0f,   new LvlEAProvider<Float>(2, 20,   PlayerAttributes.ADD_0d001, PlayerAttributes.MUL_1));
-        set.addLvlableEntityAttribute(PlayerAttributes.JUMP_HEIGHT, 0f,   new LvlEAProvider<Float>(2, 20,   PlayerAttributes.ADD_0d014, PlayerAttributes.MUL_1));
-        set.addLvlableEntityAttribute(PlayerAttributes.JUMP_RANGE,  0f,   new LvlEAProvider<Float>(2, 20,   PlayerAttributes.ADD_0d001, PlayerAttributes.MUL_1));
+        set.addLvlableEntityAttribute(PlayerAttributes.HEALTH,        0f,  new DafailtLvlEAProvider(2, 1000, ADD_2));
+        set.addLvlableEntityAttribute(PlayerAttributes.MANA,          10f, new DafailtLvlEAProvider(2, 1000, ADD_2));
+        set.addLvlableEntityAttribute(PlayerAttributes.STRENGTH,      0f,  new DafailtLvlEAProvider(2, 1000, ADD_1));
+        set.addLvlableEntityAttribute(PlayerAttributes.AGILITY,       0f,  new DafailtLvlEAProvider(2, 1000, ADD_1));
+        set.addLvlableEntityAttribute(PlayerAttributes.INTELLIGENCE,  0f,  new DafailtLvlEAProvider(2, 1000, ADD_1));
+        set.addLvlableEntityAttribute(PlayerAttributes.EFFICIENCY,    0f,  new DafailtLvlEAProvider(2, 1000, ADD_2));
+        set.addLvlableEntityAttribute(PlayerAttributes.MANA_REGEN,    1f,  new DafailtLvlEAProvider(2, 1000, ADD_0d2));
+        set.addLvlableEntityAttribute(PlayerAttributes.HEALTH_REGEN,  0f,  new DafailtLvlEAProvider(2, 1000, ADD_0d2));
 
-        set.addLvlableEntityAttribute(PlayerAttributes.STEEL_MUSC,  0f,   new LvlEAProvider<Float>(2, 20,   PlayerAttributes.ADD_0d5,   PlayerAttributes.MUL_1));
-        set.addLvlableEntityAttribute(PlayerAttributes.STONESKIN,   0f,   new LvlEAProvider<Float>(2, 20,   PlayerAttributes.ADD_1,     PlayerAttributes.MUL_1));
-        set.addLvlableEntityAttribute(PlayerAttributes.MAG_IMUN,    0f,   new LvlEAProvider<Float>(2, 20,   PlayerAttributes.ADD_1,     PlayerAttributes.MUL_1));
+        set.addLvlableEntityAttribute(PlayerAttributes.MOVE_SPEED,    0f,  new DafailtLvlEAProvider(2, 20,   ADD_0d001));
+        set.addLvlableEntityAttribute(PlayerAttributes.SNEAK_SPEED,   0f,  new DafailtLvlEAProvider(2, 20,   ADD_0d001));
+        set.addLvlableEntityAttribute(PlayerAttributes.FLY_SPEED,     0f,  new DafailtLvlEAProvider(2, 20,   ADD_0d001));
+        set.addLvlableEntityAttribute(PlayerAttributes.SWIM_SPEED,    0f,  new DafailtLvlEAProvider(2, 20,   ADD_0d001));
+        set.addLvlableEntityAttribute(PlayerAttributes.JUMP_HEIGHT,   0f,  new DafailtLvlEAProvider(2, 20,   ADD_0d014));
+        set.addLvlableEntityAttribute(PlayerAttributes.JUMP_RANGE,    0f,  new DafailtLvlEAProvider(2, 20,   ADD_0d001));
+
+        set.addLvlableEntityAttribute(PlayerAttributes.PHISIC_RESIST, 0f,  new DafailtLvlEAProvider(2, 20,   ADD_0d01));
+        set.addLvlableEntityAttribute(PlayerAttributes.MAGIC_RESIST,  0f,  new DafailtLvlEAProvider(2, 20,   ADD_0d01));
+        set.addLvlableEntityAttribute(PlayerAttributes.FALL_RESIST,   0f,  new DafailtLvlEAProvider(2, 20,   ADD_0d025));
+        set.addLvlableEntityAttribute(PlayerAttributes.FIRE_RESIST,   0f,  new DafailtLvlEAProvider(2, 20,   ADD_0d025));
+        set.addLvlableEntityAttribute(PlayerAttributes.LAVA_RESIST,   0f,  new DafailtLvlEAProvider(2, 20,   ADD_0d025));
 
         set.addEntityAttribute(PlayerAttributes.CURR_MANA, 0f);
         set.addEntityAttribute(PlayerAttributes.SPEED_COUNTER, 0f);

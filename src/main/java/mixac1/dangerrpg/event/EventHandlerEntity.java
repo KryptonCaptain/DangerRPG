@@ -98,7 +98,7 @@ public class EventHandlerEntity
     public void onLivingFall(LivingFallEvent e)
     {
         if (e.entityLiving instanceof EntityPlayer) {
-            e.distance -= PlayerAttributes.STEEL_MUSC.getValue(e.entityLiving);
+            e.distance -= PlayerAttributes.FALL_RESIST.getValue(e.entityLiving) * 10;
         }
     }
 

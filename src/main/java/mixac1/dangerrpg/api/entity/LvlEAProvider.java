@@ -118,4 +118,12 @@ public class LvlEAProvider<Type>
     {
         return attr.hash;
     }
+
+    public static class DafailtLvlEAProvider extends LvlEAProvider<Float>
+    {
+        public DafailtLvlEAProvider(int startExpCost, int maxLvl, IMultiplierE<Float> mulValue)
+        {
+            super(startExpCost, maxLvl, mulValue, IMultiplier.MUL_1);
+        }
+    }
 }

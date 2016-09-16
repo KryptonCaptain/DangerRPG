@@ -4,17 +4,10 @@ import java.util.UUID;
 
 import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
 import mixac1.dangerrpg.api.entity.EntityAttributeE;
-import mixac1.dangerrpg.util.IMultiplier;
-import mixac1.dangerrpg.util.IMultiplier.IMultiplierE;
-import mixac1.dangerrpg.util.IMultiplier.MultiplierAdd;
 import net.minecraft.entity.SharedMonsterAttributes;
 
 public class EntityAttributes
 {
-    public static final IMultiplierE<Float> ADD_1   = IMultiplier.ADD_1;
-    public static final IMultiplierE<Float> ADD_2   = new MultiplierAdd(2F);
-    public static final IMultiplierE        MUL_1   = IMultiplier.MUL_1;
-
     public static final EALvl           LVL                = new EALvl           ("lvl");
     public static final EAFloat         HEALTH             = new EAHealth        ("health",       UUID.fromString("fd6315bf-9f57-46cb-bb38-4aacb5d2967a"), SharedMonsterAttributes.maxHealth);
     public static final EAFloat         MELEE_DAMAGE       = new EntityAttributeE("melee_damage", UUID.fromString("04a931c2-b0bf-44de-bbed-1a8f0d56c584"), SharedMonsterAttributes.attackDamage);

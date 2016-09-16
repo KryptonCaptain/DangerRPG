@@ -250,12 +250,16 @@ ea.jump_height=Jump height
 ea.jump_height.info=Increases jump height
 ea.jump_range=Jump range
 ea.jump_range.info=Increases jump range
-ea.steel_musc=Steel muscles
-ea.steel_musc.info=Decreases falling damage
-ea.stoneskin=Stoneskin
-ea.stoneskin.info=Increases phisical damage resistance
-ea.mag_imun=Magic resistance
-ea.mag_imun.info=Increases magic damage resistance
+ea.fall_resist=Steel muscles
+ea.fall_resist.info=Decreases falling damage
+ea.phisic_resist=Phisic resist
+ea.phisic_resist.info=Increases phisical damage resistance
+ea.magic_resist=Magic resist
+ea.magic_resist.info=Increases magic damage resistance
+ea.fire_resist=Fire resist
+ea.fire_resist.info=Increases fire resistance
+ea.lava_resist=Lava resist
+ea.lava_resist.info=Increases lava resistance
 
 gem_type.wpn_gem_sa=Special Attack Gem
 gem_type.wpn_gem_ma1=Modify Attack Gem
@@ -268,7 +272,7 @@ gem_type.boots_gem=Boots Gem
 
 rpgstr.lvlup_table.1button=Level Up
 rpgstr.lvlup_table.2button=Put all exp
-rpgstr.info_book.lvlup_but=Up
+rpgstr.info_book.lvlup_but=Level Up
 
 rpgstr.info_about=Info about
 rpgstr.stats=Stats
