@@ -97,6 +97,12 @@ public abstract class RPGCapability
         RPGRegister.registerLvlableItem(Items.golden_hoe, ILvlableItem.DEFAULT_TOOL);
         RPGRegister.registerLvlableItem(Items.diamond_hoe, ILvlableItem.DEFAULT_TOOL);
 
+        RPGRegister.registerLvlableItem(Items.wooden_sword, ILvlableItem.DEFAULT_SWORD);
+        RPGRegister.registerLvlableItem(Items.stone_sword, ILvlableItem.DEFAULT_SWORD);
+        RPGRegister.registerLvlableItem(Items.iron_sword, ILvlableItem.DEFAULT_SWORD);
+        RPGRegister.registerLvlableItem(Items.golden_sword, ILvlableItem.DEFAULT_SWORD);
+        RPGRegister.registerLvlableItem(Items.diamond_sword, ILvlableItem.DEFAULT_SWORD);
+
         RPGRegister.registerLvlableItem(Items.leather_boots, ILvlableItem.DEFAULT_ARMOR);
         RPGRegister.registerLvlableItem(Items.leather_chestplate, ILvlableItem.DEFAULT_ARMOR);
         RPGRegister.registerLvlableItem(Items.leather_helmet, ILvlableItem.DEFAULT_ARMOR);

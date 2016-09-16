@@ -25,7 +25,7 @@ public class EventHandlerLvlableItem
     @SubscribeEvent
     public void hitEntity(HitEntityEvent e)
     {
-        if (e.attacker instanceof EntityPlayer) {
+        if (e.attacker instanceof EntityPlayer && LvlableItem.isLvlable(e.stack)) {
             EntityPlayer player = (EntityPlayer) e.attacker;
 
             if (!e.isRangeed) {

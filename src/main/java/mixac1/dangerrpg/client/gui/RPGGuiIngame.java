@@ -32,7 +32,6 @@ public class RPGGuiIngame extends Gui
 {
     public static Minecraft mc = Minecraft.getMinecraft();
     public static FontRenderer fr = mc.fontRenderer;
-    public ScaledResolution res;
 
     public static final ResourceLocation TEXTURE = new ResourceLocation(DangerRPG.MODID, "textures/gui/gui_in_game.png");
 
@@ -83,14 +82,13 @@ public class RPGGuiIngame extends Gui
     private static int chargeOffsetU = 0;
     private static int chargeOffsetV = 68;
 
-    public void renderGameOverlay()
+    public void renderGameOverlay(ScaledResolution res)
     {
         mc.mcProfiler.startSection("rpgBar");
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-        res = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
         int width = res.getScaledWidth();
         int height = res.getScaledHeight();
 

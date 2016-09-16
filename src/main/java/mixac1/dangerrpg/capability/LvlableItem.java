@@ -317,7 +317,6 @@ public abstract class LvlableItem
         if (e.points > 0) {
             ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
 
-            stack = player.getCurrentEquippedItem();
             if (e.needUp[0] && stack != null && isLvlable(stack)) {
                 stacks.add(stack);
             }

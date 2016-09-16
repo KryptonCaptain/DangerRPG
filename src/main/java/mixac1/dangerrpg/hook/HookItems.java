@@ -78,7 +78,7 @@ public class HookItems
     @Hook(returnCondition = ReturnCondition.ALWAYS)
     public static boolean onEntitySwing(Item item, EntityLivingBase entity, ItemStack stack)
     {
-        if (entity instanceof EntityPlayer) {
+        if (entity instanceof EntityPlayer && LvlableItem.isLvlable(stack)) {
             return PlayerAttributes.SPEED_COUNTER.getValue(entity) != 0;
         }
         return false;

@@ -1,6 +1,8 @@
 package mixac1.dangerrpg.entity.projectile;
 
+import mixac1.dangerrpg.capability.LvlableItem;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
@@ -26,6 +28,19 @@ public class EntityArrowRPG extends EntityMaterial
     public EntityArrowRPG(World world, EntityLivingBase thrower, EntityLivingBase target, float speed, float deviation)
     {
         super(world, thrower, target, new ItemStack(Items.arrow, 1), speed, deviation);
+    }
+
+    @Override
+    public void applyEntityHitEffects(EntityLivingBase entity, float dmgMul)
+    {
+        float points = entity.getHealth();
+
+        super.applyEntityHitEffects(entity, dmgMul);
+
+        points -= entity.getHealth();
+        if (points > 0 && thrower instanceof EntityPlayer) {
+            LvlableItem.upEquipment((EntityPlayer) thrower, entity, getStack(), points);
+        }
     }
 
     @Override

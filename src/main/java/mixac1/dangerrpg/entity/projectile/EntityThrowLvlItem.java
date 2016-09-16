@@ -46,6 +46,10 @@ public class EntityThrowLvlItem extends EntityMaterial
     @Override
     public void applyEntityHitEffects(EntityLivingBase entity, float dmgMul)
     {
+        if (beenInGround) {
+            return;
+        }
+
         ItemStack stack = this.getStack();
         if (stack != null) {
             if (ItemAttributes.SHOT_DAMAGE.hasIt(stack)) {
