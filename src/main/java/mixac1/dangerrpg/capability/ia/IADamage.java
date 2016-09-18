@@ -11,7 +11,7 @@ public class IADamage extends IAStatic
     {
         super(name);
     }
-    
+
     @Override
     public float get(ItemStack stack, EntityPlayer player)
     {

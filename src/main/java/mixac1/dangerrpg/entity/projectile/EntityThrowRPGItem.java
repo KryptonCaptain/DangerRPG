@@ -1,7 +1,7 @@
 package mixac1.dangerrpg.entity.projectile;
 
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
-import mixac1.dangerrpg.capability.LvlableItem;
+import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,29 +9,29 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class EntityThrowLvlItem extends EntityMaterial
+public class EntityThrowRPGItem extends EntityMaterial
 {
-    public EntityThrowLvlItem(World world)
+    public EntityThrowRPGItem(World world)
     {
         super(world);
     }
 
-    public EntityThrowLvlItem(World world, ItemStack stack)
+    public EntityThrowRPGItem(World world, ItemStack stack)
     {
         super(world, stack);
     }
 
-    public EntityThrowLvlItem(World world, ItemStack stack, double x, double y, double z)
+    public EntityThrowRPGItem(World world, ItemStack stack, double x, double y, double z)
     {
         super(world, stack, x, y, z);
     }
 
-    public EntityThrowLvlItem(World world, EntityLivingBase thrower, ItemStack stack, float speed, float deviation)
+    public EntityThrowRPGItem(World world, EntityLivingBase thrower, ItemStack stack, float speed, float deviation)
     {
         super(world, thrower, stack, speed, deviation);
     }
 
-    public EntityThrowLvlItem(World world, EntityLivingBase thrower, EntityLivingBase target, ItemStack stack, float speed, float deviation)
+    public EntityThrowRPGItem(World world, EntityLivingBase thrower, EntityLivingBase target, ItemStack stack, float speed, float deviation)
     {
         super(world, thrower, target, stack, speed, deviation);
     }
@@ -69,7 +69,7 @@ public class EntityThrowLvlItem extends EntityMaterial
 
         points -= entity.getHealth();
         if (points > 0 && thrower instanceof EntityPlayer) {
-            LvlableItem.upEquipment((EntityPlayer) thrower, entity, getStack(), points);
+            RPGableItem.upEquipment((EntityPlayer) thrower, entity, getStack(), points);
         }
     }
 }

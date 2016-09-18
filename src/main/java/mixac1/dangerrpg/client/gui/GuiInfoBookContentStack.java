@@ -9,7 +9,7 @@ import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.item.ItemAttribute;
 import mixac1.dangerrpg.capability.GemType;
 import mixac1.dangerrpg.capability.GemableItem;
-import mixac1.dangerrpg.capability.LvlableItem;
+import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.item.IHasBooksInfo;
@@ -18,6 +18,8 @@ import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 @SideOnly(Side.CLIENT)
@@ -49,10 +51,12 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
             return;
         }
 
+        Item item = stack.getItem();
+
         addCenteredString(stack.getDisplayName().toUpperCase());
         addString("");
 
-        boolean isLvlable = LvlableItem.isLvlable(stack);
+        boolean isLvlable = RPGableItem.isRPGable(stack);
         if (isLvlable) {
 
             addString(String.format("%s: %d\n", ItemAttributes.LEVEL.getDispayName(),
@@ -81,8 +85,11 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
             String s = ((IHasBooksInfo) stack.getItem()).getInformationToInfoBook(stack, player);
             if (s != null) {
                 addString(s);
-                addString("");
             }
+            else {
+                addString(DangerRPG.trans("rpgstr.no_info_yet"));
+            }
+            addString("");
         }
 
         if (isLvlable) {
@@ -91,7 +98,7 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
                 addString("");
             }
 
-            Set<ItemAttribute> itemAttributes = new LinkedHashSet<ItemAttribute>(LvlableItem.getAttributeValues(stack));
+            Set<ItemAttribute> itemAttributes = new LinkedHashSet<ItemAttribute>(RPGableItem.getAttributeValues(stack));
             itemAttributes.remove(ItemAttributes.MAX_EXP);
             itemAttributes.remove(ItemAttributes.DURABILITY);
             itemAttributes.remove(ItemAttributes.MAX_DURABILITY);
@@ -135,6 +142,18 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
                 }
                 addString("");
             }
+        }
+        else if (!(item instanceof ItemBlock)) {
+            if (stack.isItemStackDamageable()) {
+                 addString(String.format("%s: %d/%d", ItemAttributes.DURABILITY.getDispayName(),
+                         stack.getItemDamage(),
+                         stack.getMaxDamage()));
+            }
+            else {
+                 addString(String.format("%s: %s", ItemAttributes.DURABILITY.getDispayName(),
+                         DangerRPG.trans("rpgstr.unbreakable")));
+            }
+            addString("");
         }
 
         if (GemableItem.isGemable(stack)) {

@@ -9,13 +9,13 @@ import mixac1.dangerrpg.api.event.RegIAEvent;
 import mixac1.dangerrpg.api.event.UpEquipmentEvent;
 import mixac1.dangerrpg.api.item.IADynamic;
 import mixac1.dangerrpg.api.item.IAStatic;
-import mixac1.dangerrpg.api.item.ILvlableItem;
-import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemArmor;
-import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemBow;
-import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemGun;
-import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemMod;
-import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemStaff;
-import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemTool;
+import mixac1.dangerrpg.api.item.IRPGItem;
+import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemArmor;
+import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemBow;
+import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemGun;
+import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemMod;
+import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemStaff;
+import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemTool;
 import mixac1.dangerrpg.api.item.ItemAttribute;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.hook.HookArmorSystem;
@@ -44,7 +44,7 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 
-public abstract class LvlableItem
+public abstract class RPGableItem
 {
     public static final IMultiplier<Float> EXP_MUL = new IMultiplier<Float>()
     {
@@ -72,22 +72,22 @@ public abstract class LvlableItem
         }
     };
 
-    public static boolean registerLvlableItem(Item item)
+    public static boolean registerRPGItem(Item item)
     {
         if (item != null && !(item instanceof ItemBlock) && item.unlocalizedName != null) {
             if (RPGCapability.lvlItemRegistr.data.containsKey(item)) {
                 return true;
             }
 
-            ILvlableItem iLvl = item instanceof ItemSword ? ILvlableItem.DEFAULT_SWORD :
-                                item instanceof ItemTool  ? ILvlableItem.DEFAULT_TOOL  :
-                                item instanceof ItemHoe   ? ILvlableItem.DEFAULT_TOOL  :
-                                item instanceof ItemArmor ? ILvlableItem.DEFAULT_ARMOR :
-                                item instanceof ItemBow   ? ILvlableItem.DEFAULT_BOW   :
+            IRPGItem iRPG = item instanceof ItemSword ? IRPGItem.DEFAULT_SWORD :
+                                item instanceof ItemTool  ? IRPGItem.DEFAULT_TOOL  :
+                                item instanceof ItemHoe   ? IRPGItem.DEFAULT_TOOL  :
+                                item instanceof ItemArmor ? IRPGItem.DEFAULT_ARMOR :
+                                item instanceof ItemBow   ? IRPGItem.DEFAULT_BOW   :
                                 null;
 
-            if (iLvl != null) {
-                RPGCapability.lvlItemRegistr.data.put(item, new ItemAttributesMap(iLvl, false));
+            if (iRPG != null) {
+                RPGCapability.lvlItemRegistr.data.put(item, new ItemAttributesMap(iRPG, false));
                 return true;
             }
         }
@@ -104,8 +104,8 @@ public abstract class LvlableItem
     {
         float durab, ench;
         RPGItemComponent comp;
-        if (item instanceof ILvlableItemMod &&
-           (comp = ((ILvlableItemMod) item).getItemComponent(item)) instanceof IWithoutToolMaterial) {
+        if (item instanceof IRPGItemMod &&
+           (comp = ((IRPGItemMod) item).getItemComponent(item)) instanceof IWithoutToolMaterial) {
             ench  = ((IWithoutToolMaterial) comp).getEnchantability();
             durab = ((IWithoutToolMaterial) comp).getMaxDurability();
         }
@@ -125,9 +125,9 @@ public abstract class LvlableItem
     public static void registerParamsItemSword(Item item, ItemAttributesMap map)
     {
         registerParamsItemMod(item, map);
-        ILvlableItemTool iLvl = (ILvlableItemTool) (item instanceof ILvlableItemTool ? item : ILvlableItem.DEFAULT_SWORD);
-        RPGToolComponent comp = iLvl.getItemComponent(item);
-        RPGToolMaterial mat = iLvl.getToolMaterial(item);
+        IRPGItemTool iRPG = (IRPGItemTool) (item instanceof IRPGItemTool ? item : IRPGItem.DEFAULT_SWORD);
+        RPGToolComponent comp = iRPG.getItemComponent(item);
+        RPGToolMaterial mat = iRPG.getToolMaterial(item);
 
         map.addStaticItemAttribute(ItemAttributes.MELEE_DAMAGE, comp.meleeDamage + mat.material.getDamageVsEntity() * comp.strMul * 2);
         map.addStaticItemAttribute(ItemAttributes.MELEE_SPEED,  comp.meleeSpeed);
@@ -144,9 +144,9 @@ public abstract class LvlableItem
     public static void registerParamsItemTool(Item item, ItemAttributesMap map)
     {
         registerParamsItemMod(item, map);
-        ILvlableItemTool iLvl = (ILvlableItemTool) (item instanceof ILvlableItemTool ? item : ILvlableItem.DEFAULT_TOOL);
-        RPGToolComponent comp = iLvl.getItemComponent(item);
-        RPGToolMaterial mat = iLvl.getToolMaterial(item);
+        IRPGItemTool iRPG = (IRPGItemTool) (item instanceof IRPGItemTool ? item : IRPGItem.DEFAULT_TOOL);
+        RPGToolComponent comp = iRPG.getItemComponent(item);
+        RPGToolMaterial mat = iRPG.getToolMaterial(item);
 
         map.addStaticItemAttribute(ItemAttributes.MELEE_DAMAGE, comp.meleeDamage + mat.material.getDamageVsEntity() * comp.strMul * 2);
         map.addStaticItemAttribute(ItemAttributes.MELEE_SPEED,  comp.meleeSpeed);
@@ -165,9 +165,9 @@ public abstract class LvlableItem
     public static void registerParamsItemArmor(Item item, ItemAttributesMap map)
     {
         registerParamsItemMod(item, map);
-        ILvlableItemArmor iLvl = (ILvlableItemArmor) (item instanceof ILvlableItemArmor ? item : ILvlableItem.DEFAULT_ARMOR);
-        RPGArmorMaterial mat = iLvl.getArmorMaterial(item);
-        RPGArmorComponent com = iLvl.getItemComponent(item);
+        IRPGItemArmor iRPG = (IRPGItemArmor) (item instanceof IRPGItemArmor ? item : IRPGItem.DEFAULT_ARMOR);
+        RPGArmorMaterial mat = iRPG.getArmorMaterial(item);
+        RPGArmorComponent com = iRPG.getItemComponent(item);
 
         float armor = mat.material.getDamageReductionAmount(((ItemArmor) item).armorType) * com.phisicalResMul;
         map.addStaticItemAttribute(ItemAttributes.PHISIC_ARMOR, HookArmorSystem.convertPhisicArmor(armor));
@@ -179,8 +179,8 @@ public abstract class LvlableItem
     public static void registerParamsItemBow(Item item, ItemAttributesMap map)
     {
         registerParamsItemMod(item, map);
-        ILvlableItemBow iLvl = (ILvlableItemBow) (item instanceof ILvlableItemBow ? item : ILvlableItem.DEFAULT_BOW);
-        RPGBowComponent comp = iLvl.getItemComponent(item);
+        IRPGItemBow iRPG = (IRPGItemBow) (item instanceof IRPGItemBow ? item : IRPGItem.DEFAULT_BOW);
+        RPGBowComponent comp = iRPG.getItemComponent(item);
 
         map.addStaticItemAttribute(ItemAttributes.MELEE_DAMAGE,   comp.meleeDamage);
         map.addStaticItemAttribute(ItemAttributes.MELEE_SPEED,    comp.meleeSpeed);
@@ -201,9 +201,9 @@ public abstract class LvlableItem
     public static void registerParamsItemGun(Item item, ItemAttributesMap map)
     {
         registerParamsItemMod(item, map);
-        ILvlableItemGun iLvl = (ILvlableItemGun) item;
-        RPGGunComponent comp = iLvl.getItemComponent(item);
-        RPGToolMaterial mat = iLvl.getToolMaterial(item);
+        IRPGItemGun iRPG = (IRPGItemGun) item;
+        RPGGunComponent comp = iRPG.getItemComponent(item);
+        RPGToolMaterial mat = iRPG.getToolMaterial(item);
 
         map.addStaticItemAttribute(ItemAttributes.MELEE_DAMAGE, comp.meleeDamage + mat.material.getDamageVsEntity() * comp.strMul * 2);
         map.addStaticItemAttribute(ItemAttributes.MELEE_SPEED,  comp.meleeSpeed);
@@ -224,16 +224,16 @@ public abstract class LvlableItem
     public static void registerParamsItemStaff(Item item, ItemAttributesMap map)
     {
         registerParamsItemGun(item, map);
-        ILvlableItemStaff iLvl = (ILvlableItemStaff) item;
-        RPGStaffComponent comp = iLvl.getItemComponent(item);
-        RPGToolMaterial mat = iLvl.getToolMaterial(item);
+        IRPGItemStaff iRPG = (IRPGItemStaff) item;
+        RPGStaffComponent comp = iRPG.getItemComponent(item);
+        RPGToolMaterial mat = iRPG.getToolMaterial(item);
 
         map.addStaticItemAttribute(ItemAttributes.MANA_COST, comp.needMana);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemStaffIAEvent(item, map));
     }
 
-    public static boolean isLvlable(ItemStack stack)
+    public static boolean isRPGable(ItemStack stack)
     {
         return RPGCapability.lvlItemRegistr.registr.contains(stack.getItem());
     }
@@ -243,9 +243,9 @@ public abstract class LvlableItem
         return RPGCapability.lvlItemRegistr.data.get(stack.getItem()).map.keySet();
     }
 
-    public static void createLvlableItem(ItemStack stack)
+    public static void createRPGItem(ItemStack stack)
     {
-        if (isLvlable(stack)) {
+        if (isRPGable(stack)) {
             if (stack.stackTagCompound == null) {
                 stack.stackTagCompound = new NBTTagCompound();
             }
@@ -255,7 +255,7 @@ public abstract class LvlableItem
 
     public static void setStartParams(ItemStack stack)
     {
-        if (isLvlable(stack)) {
+        if (isRPGable(stack)) {
             ItemAttributes.LEVEL.set(stack, 1);
             ItemAttributes.CURR_EXP.set(stack, 0);
             ItemAttributes.MAX_EXP.init(stack);
@@ -269,7 +269,7 @@ public abstract class LvlableItem
 
     public static void instantLvlUp(ItemStack stack)
     {
-        if (isLvlable(stack)) {
+        if (isRPGable(stack)) {
             ItemAttributes.LEVEL.add(stack, 1);
             ItemAttributes.MAX_EXP.lvlUp(stack);
             ItemAttributes.CURR_EXP.set(stack, 0F);
@@ -283,7 +283,7 @@ public abstract class LvlableItem
 
     public static void addExp(ItemStack stack, int value)
     {
-        if (isLvlable(stack)) {
+        if (isRPGable(stack)) {
             if (value <= 0) {
                 return;
             }
@@ -317,13 +317,13 @@ public abstract class LvlableItem
         if (e.points > 0) {
             ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
 
-            if (e.needUp[0] && stack != null && isLvlable(stack)) {
+            if (e.needUp[0] && stack != null && isRPGable(stack)) {
                 stacks.add(stack);
             }
 
             ItemStack[] armors = player.inventory.armorInventory;
             for (int i = 0; i < armors.length; ++i) {
-                if (e.needUp[i + 1] && armors[i] != null && isLvlable(armors[i])) {
+                if (e.needUp[i + 1] && armors[i] != null && isRPGable(armors[i])) {
                     stacks.add(armors[i]);
                 }
             }
@@ -338,12 +338,12 @@ public abstract class LvlableItem
     public static class ItemAttributesMap
     {
         public Map<ItemAttribute, ItemAttrParams> map = new LinkedHashMap<ItemAttribute, ItemAttrParams>();
-        public ILvlableItem lvlComponent;
+        public IRPGItem rpgComponent;
         public boolean isSupported;
 
-        public ItemAttributesMap(ILvlableItem lvlComponent, boolean isSupported)
+        public ItemAttributesMap(IRPGItem lvlComponent, boolean isSupported)
         {
-            this.lvlComponent = lvlComponent;
+            this.rpgComponent = lvlComponent;
             this.isSupported = isSupported;
         }
 

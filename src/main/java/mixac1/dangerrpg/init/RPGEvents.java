@@ -7,7 +7,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.event.EventHandlerClient;
 import mixac1.dangerrpg.event.EventHandlerCommon;
 import mixac1.dangerrpg.event.EventHandlerEntity;
-import mixac1.dangerrpg.event.EventHandlerLvlableItem;
+import mixac1.dangerrpg.event.EventHandlerItem;
 import net.minecraftforge.common.MinecraftForge;
 
 public abstract class RPGEvents
@@ -16,7 +16,7 @@ public abstract class RPGEvents
     {
         registerEvent(new EventHandlerCommon());
         registerEvent(new EventHandlerEntity());
-        registerEvent(new EventHandlerLvlableItem());
+        registerEvent(new EventHandlerItem());
     }
 
     @SideOnly(Side.CLIENT)

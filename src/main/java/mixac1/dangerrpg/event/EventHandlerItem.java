@@ -6,7 +6,7 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
-import mixac1.dangerrpg.capability.LvlableItem;
+import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.util.RPGHelper;
@@ -20,27 +20,23 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 
-public class EventHandlerLvlableItem
+public class EventHandlerItem
 {
     @SubscribeEvent
     public void hitEntity(HitEntityEvent e)
     {
-        if (e.attacker instanceof EntityPlayer && LvlableItem.isLvlable(e.stack)) {
+        if (e.attacker instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) e.attacker;
 
-            if (!e.isRangeed) {
-                float speed = ItemAttributes.MELEE_SPEED.hasIt(e.stack) ? ItemAttributes.MELEE_SPEED.get(e.stack, player) : 10f;
-                PlayerAttributes.SPEED_COUNTER.setValue(speed < 0 ? 0 : speed, player);
-            }
+            if (RPGableItem.isRPGable(e.stack)) {
+                if (!e.isRangeed) {
+                    float speed = ItemAttributes.MELEE_SPEED.getSafe(e.stack, player, 10f);
+                    PlayerAttributes.SPEED_COUNTER.setValue(speed < 0 ? 0 : speed, player);
+                }
 
-            e.entity.hurtResistantTime = 0;
-
-            if (ItemAttributes.KNOCKBACK.hasIt(e.stack)) {
-                e.knockback += ItemAttributes.KNOCKBACK.get(e.stack, player);
-            }
-
-            if (ItemAttributes.STR_MUL.hasIt(e.stack)) {
-                e.damage += PlayerAttributes.STRENGTH.getValue(player) * ItemAttributes.STR_MUL.get(e.stack);
+                e.entity.hurtResistantTime = 0;
+                e.knockback += ItemAttributes.KNOCKBACK.getSafe(e.stack, player, 0);
+                e.damage += PlayerAttributes.STRENGTH.getValue(player) * ItemAttributes.STR_MUL.getSafe(e.stack, player, 0);
             }
         }
     }
@@ -49,7 +45,7 @@ public class EventHandlerLvlableItem
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemTooltipEvent e)
     {
-        if (LvlableItem.isLvlable(e.itemStack)) {
+        if (RPGableItem.isRPGable(e.itemStack)) {
             e.toolTip.add("");
             e.toolTip.add(Utils.toString(EnumChatFormatting.GOLD,
                        ItemAttributes.LEVEL.getDispayName(), ": ", (int) ItemAttributes.LEVEL.get(e.itemStack)));

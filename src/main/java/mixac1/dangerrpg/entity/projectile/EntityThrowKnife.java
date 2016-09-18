@@ -4,7 +4,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class EntityThrowKnife extends EntityThrowLvlItem
+public class EntityThrowKnife extends EntityThrowRPGItem
 {
     public EntityThrowKnife(World world)
     {

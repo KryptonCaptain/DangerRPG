@@ -18,13 +18,13 @@ import mixac1.dangerrpg.client.render.item.RenderKatana;
 import mixac1.dangerrpg.client.render.item.RenderKnife;
 import mixac1.dangerrpg.client.render.item.RenderLongItem;
 import mixac1.dangerrpg.client.render.item.RenderNormalModel.RenderHammer;
-import mixac1.dangerrpg.client.render.item.RenderRPGItemIcon;
-import mixac1.dangerrpg.client.render.item.RenderRPGItemModel;
+import mixac1.dangerrpg.client.render.item.RenderItemIcon;
+import mixac1.dangerrpg.client.render.item.RenderItemModel;
 import mixac1.dangerrpg.client.render.item.RenderShadowBow;
 import mixac1.dangerrpg.client.render.item.RenderSniperBow;
 import mixac1.dangerrpg.client.render.item.RenderStaff;
 import mixac1.dangerrpg.client.render.item.RenderStaff.RenderPowerStaff;
-import mixac1.dangerrpg.entity.projectile.EntityArrowRPG;
+import mixac1.dangerrpg.entity.projectile.EntityRPGArrow;
 import mixac1.dangerrpg.entity.projectile.EntityMagicOrb;
 import mixac1.dangerrpg.entity.projectile.EntityMaterial;
 import mixac1.dangerrpg.entity.projectile.EntityPowerMagicOrb;
@@ -117,7 +117,7 @@ public abstract class RPGRenderers
         MinecraftForgeClient.registerItemRenderer(RPGItems.shadowBow, RenderShadowBow.INSTANCE);
         MinecraftForgeClient.registerItemRenderer(RPGItems.sniperBow, RenderSniperBow.INSTANCE);
 
-        MinecraftForgeClient.registerItemRenderer(RPGItems.testWand,  RenderRPGItemIcon.INSTANCE);
+        MinecraftForgeClient.registerItemRenderer(RPGItems.testWand,  RenderItemIcon.INSTANCE);
     }
 
     private static void registerEntityRenderingHandler()
@@ -125,7 +125,7 @@ public abstract class RPGRenderers
         RenderingRegistry.registerEntityRenderingHandler(EntityProjectile.class, RenderBit.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityMaterial.class, RenderMaterial.INSTANCE);
 
-        RenderingRegistry.registerEntityRenderingHandler(EntityArrowRPG.class, RenderArrowRPG.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityRPGArrow.class, RenderArrowRPG.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntitySniperArrow.class, RenderArrowRPG.INSTANCE);
 
         RenderingRegistry.registerEntityRenderingHandler(EntityThrowKnife.class, RenderThrowKnife.INSTANCE);
@@ -140,7 +140,7 @@ public abstract class RPGRenderers
         //ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLvlupTable.class, RenderTestBlock.INSTANCE);
     }
 
-    public static void registerItemRendererE(Item item, RenderRPGItemModel model)
+    public static void registerItemRendererE(Item item, RenderItemModel model)
     {
         RPGRegister.registerItemRendererModel(item, model, DangerRPG.MODID, "textures/models/items/");
     }

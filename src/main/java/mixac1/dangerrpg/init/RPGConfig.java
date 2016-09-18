@@ -38,6 +38,9 @@ public abstract class RPGConfig
         public static int       guiEnemyHUDOffsetX;
         public static int       guiEnemyHUDOffsetY;
         public static boolean   guiEnemyHUDIsInvert;
+        public static int       guiChargeOffsetX;
+        public static int       guiChargeOffsetY;
+        public static boolean   guiChargeIsCentered;
         public static boolean   guiTwiceHealthManaBar;
         public static int       guiDamageForTestArmor;
 
@@ -103,6 +106,10 @@ public abstract class RPGConfig
         RPGClientConfig.guiEnemyHUDOffsetX = getInteger(cat.getName(), "guiEnemyHUDOffsetX", 10, "");
         RPGClientConfig.guiEnemyHUDOffsetY = getInteger(cat.getName(), "guiEnemyHUDOffsetY", 10, "");
         RPGClientConfig.guiEnemyHUDIsInvert = getBoolean(cat.getName(), "guiEnemyHUDIsInvert", true, "");
+
+        RPGClientConfig.guiChargeOffsetX = getInteger(cat.getName(), "guiChargeOffsetX", 0, "");
+        RPGClientConfig.guiChargeOffsetY = getInteger(cat.getName(), "guiChargeOffsetY", 45, "");
+        RPGClientConfig.guiChargeIsCentered = getBoolean(cat.getName(), "guiChargeIsCentered", true, "");
 
         RPGClientConfig.guiTwiceHealthManaBar = getBoolean(cat.getName(), "guiTwiceHealthManaBar", true, "");
 

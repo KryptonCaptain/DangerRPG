@@ -3,7 +3,7 @@ package mixac1.dangerrpg.entity.projectile;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
-import mixac1.dangerrpg.capability.LvlableItem;
+import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.util.RPGHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -60,7 +60,7 @@ public class EntityCommonMagic extends EntityWithStack
 
         points -= entity.getHealth();
         if (points > 0 && thrower instanceof EntityPlayer) {
-            LvlableItem.upEquipment((EntityPlayer) thrower, entity, getStack(), points);
+            RPGableItem.upEquipment((EntityPlayer) thrower, entity, getStack(), points);
         }
     }
 

@@ -11,7 +11,7 @@ public class IAEfficiency extends IADynamic
     {
         super(name);
     }
-    
+
     @Override
     public float get(ItemStack stack, EntityPlayer player)
     {

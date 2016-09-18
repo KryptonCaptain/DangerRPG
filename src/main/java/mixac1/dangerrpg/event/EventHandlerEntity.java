@@ -6,7 +6,8 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
 import mixac1.dangerrpg.api.event.InitRPGEntityEvent;
-import mixac1.dangerrpg.capability.RPGEntityData;
+import mixac1.dangerrpg.capability.EntityData;
+import mixac1.dangerrpg.capability.RPGableEntity;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.init.RPGCapability;
@@ -30,20 +31,20 @@ public class EventHandlerEntity
     @SubscribeEvent
     public void onEntityConstructing(EntityConstructing e)
     {
-        if (e.entity instanceof EntityLivingBase && RPGEntityData.isRPGEntity((EntityLivingBase) e.entity)) {
-            RPGEntityData.register((EntityLivingBase) e.entity);
+        if (e.entity instanceof EntityLivingBase && RPGableEntity.isRPGable((EntityLivingBase) e.entity)) {
+            EntityData.register((EntityLivingBase) e.entity);
         }
     }
 
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent e)
     {
-        if (e.entity instanceof EntityLivingBase && RPGEntityData.isRPGEntity((EntityLivingBase) e.entity)) {
+        if (e.entity instanceof EntityLivingBase && RPGableEntity.isRPGable((EntityLivingBase) e.entity)) {
             if (e.entity.worldObj.isRemote) {
                 RPGNetwork.net.sendToServer(new MsgSyncEntityData((EntityLivingBase) e.entity));
             }
             else {
-                RPGEntityData.get((EntityLivingBase) e.entity).serverInit();
+                EntityData.get((EntityLivingBase) e.entity).serverInit();
             }
         }
     }
@@ -52,11 +53,11 @@ public class EventHandlerEntity
     public void onPlayerCloned(PlayerEvent.Clone e)
     {
         if (e.wasDeath) {
-            RPGEntityData.get(e.original).rebuildOnDeath();
+            EntityData.get(e.original).rebuildOnDeath();
         }
         NBTTagCompound nbt = new NBTTagCompound();
-        RPGEntityData.get(e.original).saveNBTData(nbt);
-        RPGEntityData.get(e.entityPlayer).loadNBTData(nbt);
+        EntityData.get(e.original).saveNBTData(nbt);
+        EntityData.get(e.entityPlayer).loadNBTData(nbt);
     }
 
     @SubscribeEvent

@@ -1,7 +1,6 @@
 package mixac1.dangerrpg.api.item;
 
 import mixac1.dangerrpg.init.RPGCapability;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -31,12 +30,6 @@ public class IADynamic extends ItemAttribute
             value = stack.stackTagCompound.getFloat(name);
         }
         return value;
-    }
-
-    @Override
-    public float get(ItemStack stack, EntityPlayer player)
-    {
-        return get(stack);
     }
 
     @Override

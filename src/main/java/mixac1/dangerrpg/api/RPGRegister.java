@@ -3,10 +3,10 @@ package mixac1.dangerrpg.api;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.api.entity.IRPGEntity;
-import mixac1.dangerrpg.api.item.ILvlableItem;
-import mixac1.dangerrpg.capability.LvlableItem.ItemAttributesMap;
-import mixac1.dangerrpg.capability.RPGEntityData.EntityAttributesSet;
-import mixac1.dangerrpg.client.render.item.RenderRPGItemModel;
+import mixac1.dangerrpg.api.item.IRPGItem;
+import mixac1.dangerrpg.capability.RPGableEntity.EntityAttributesMap;
+import mixac1.dangerrpg.capability.RPGableItem.ItemAttributesMap;
+import mixac1.dangerrpg.client.render.item.RenderItemModel;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGRenderers;
 import mixac1.dangerrpg.util.Utils;
@@ -20,10 +20,10 @@ public abstract class RPGRegister
     /**
      * Advanced method model registering.<br>
      * Also, it is registering {@link ResourceLocation} of texture for model.<br>
-     * This texture will be used, if you extends your model class from {@link RenderRPGItemModel}
+     * This texture will be used, if you extends your model class from {@link RenderItemModel}
      */
     @SideOnly(Side.CLIENT)
-    public static void registerItemRendererModel(Item item, RenderRPGItemModel model, String resDomain, String resPath)
+    public static void registerItemRendererModel(Item item, RenderItemModel model, String resDomain, String resPath)
     {
         MinecraftForgeClient.registerItemRenderer(item, model);
         RPGRenderers.modelTextures.put(item,
@@ -33,10 +33,10 @@ public abstract class RPGRegister
     /**
      * Advanced method model registering.<br>
      * Also, it is registering {@link ResourceLocation} of texture for model.<br>
-     * This texture will be used, if you extends your model class from {@link RenderRPGItemModel}
+     * This texture will be used, if you extends your model class from {@link RenderItemModel}
      */
     @SideOnly(Side.CLIENT)
-    public static void registerItemRendererModel(Item item, RenderRPGItemModel model, String resFullPath)
+    public static void registerItemRendererModel(Item item, RenderItemModel model, String resFullPath)
     {
         MinecraftForgeClient.registerItemRenderer(item, model);
         RPGRenderers.modelTextures.put(item,
@@ -44,22 +44,22 @@ public abstract class RPGRegister
     }
 
     /**
-     * Register supported Lvlable Item<br>
-     * It may be used, if {@link Item} not instance of {@link ILvlableItem}
+     * Register supported RPGable Item<br>
+     * It may be used, if {@link Item} not instance of {@link IRPGItem}
      * Must be fired before postInit
      */
-    public static void registerLvlableItem(Item item, ILvlableItem ilvl)
+    public static void registerRPGItem(Item item, IRPGItem iRPG)
     {
-        RPGCapability.lvlItemRegistr.data.put(item, new ItemAttributesMap(ilvl, true));
+        RPGCapability.lvlItemRegistr.data.put(item, new ItemAttributesMap(iRPG, true));
     }
 
     /**
-     * Register supported RPG Entity<br>
+     * Register supported RPGable Entity<br>
      * It may be used, if entityClass not instance of {@link IRPGEntity}
      * Must be fired before postInit
      */
     public static void registerRPGEntity(Class<? extends EntityLivingBase> entityClass, IRPGEntity iRPG)
     {
-        RPGCapability.rpgEntityRegistr.data.put(entityClass, new EntityAttributesSet(iRPG, true));
+        RPGCapability.rpgEntityRegistr.data.put(entityClass, new EntityAttributesMap(iRPG, true));
     }
 }

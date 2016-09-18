@@ -4,14 +4,14 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.entity.projectile.EntityArrowRPG;
+import mixac1.dangerrpg.entity.projectile.EntityRPGArrow;
 import mixac1.dangerrpg.entity.projectile.EntityMagicOrb;
 import mixac1.dangerrpg.entity.projectile.EntityMaterial;
 import mixac1.dangerrpg.entity.projectile.EntityPowerMagicOrb;
 import mixac1.dangerrpg.entity.projectile.EntityProjectile;
 import mixac1.dangerrpg.entity.projectile.EntitySniperArrow;
 import mixac1.dangerrpg.entity.projectile.EntityThrowKnife;
-import mixac1.dangerrpg.entity.projectile.EntityThrowLvlItem;
+import mixac1.dangerrpg.entity.projectile.EntityThrowRPGItem;
 import mixac1.dangerrpg.entity.projectile.EntityThrowTomahawk;
 import mixac1.dangerrpg.tileentity.TileEntityModifyTable;
 import net.minecraft.entity.Entity;
@@ -35,11 +35,11 @@ public abstract class RPGEntities
     {
         registerEntityProjecttile(EntityProjectile.class);
         registerEntityProjecttile(EntityMaterial.class);
-        registerEntityProjecttile(EntityThrowLvlItem.class);
+        registerEntityProjecttile(EntityThrowRPGItem.class);
 
         registerEntityProjecttile(EntityThrowKnife.class);
         registerEntityProjecttile(EntityThrowTomahawk.class);
-        registerEntityProjecttile(EntityArrowRPG.class);
+        registerEntityProjecttile(EntityRPGArrow.class);
         registerEntityProjecttile(EntitySniperArrow.class);
 
         registerEntityProjecttile(EntityMagicOrb.class);

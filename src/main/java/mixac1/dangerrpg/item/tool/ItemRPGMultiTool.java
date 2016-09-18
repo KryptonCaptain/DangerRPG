@@ -5,9 +5,9 @@ import java.util.Set;
 import com.google.common.collect.Sets;
 
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemTool;
-import mixac1.dangerrpg.capability.LvlableItem;
-import mixac1.dangerrpg.capability.LvlableItem.ItemAttributesMap;
+import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemTool;
+import mixac1.dangerrpg.capability.RPGableItem;
+import mixac1.dangerrpg.capability.RPGableItem.ItemAttributesMap;
 import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGOther.RPGCreativeTabs;
 import mixac1.dangerrpg.item.IHasBooksInfo;
@@ -24,7 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.world.World;
 
-public class ItemRPGMultiTool extends ItemTool implements ILvlableItemTool, IHasBooksInfo
+public class ItemRPGMultiTool extends ItemTool implements IRPGItemTool, IHasBooksInfo
 {
     private static final Set multitoolBlocks = Sets.newHashSet(
         Sets.newHashSet(new Block[] {Blocks.grass, Blocks.dirt, Blocks.sand, Blocks.gravel, Blocks.snow_layer, Blocks.snow, Blocks.clay, Blocks.farmland, Blocks.soul_sand, Blocks.mycelium}),
@@ -89,6 +89,6 @@ public class ItemRPGMultiTool extends ItemTool implements ILvlableItemTool, IHas
     @Override
     public void registerAttributes(Item item, ItemAttributesMap map)
     {
-        LvlableItem.registerParamsItemTool(item, map);
+        RPGableItem.registerParamsItemTool(item, map);
     }
 }

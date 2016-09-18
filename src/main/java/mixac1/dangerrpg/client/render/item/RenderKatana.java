@@ -6,7 +6,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 
-public class RenderKatana extends RenderRPGItemIcon
+public class RenderKatana extends RenderItemIcon
 {    
     public static final RenderKatana INSTANCE = new RenderKatana();
     

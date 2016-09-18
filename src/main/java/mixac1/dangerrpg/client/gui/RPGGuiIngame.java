@@ -4,7 +4,8 @@ import org.lwjgl.opengl.GL11;
 
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.IRPGEntity;
-import mixac1.dangerrpg.capability.RPGEntityData;
+import mixac1.dangerrpg.capability.EntityData;
+import mixac1.dangerrpg.capability.RPGableEntity;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
@@ -158,7 +159,7 @@ public class RPGGuiIngame extends Gui
         int height = res.getScaledHeight();
 
         renderEntityBar(mc.thePlayer, RPGClientConfig.guiPlayerHUDOffsetX, RPGClientConfig.guiPlayerHUDOffsetY, RPGClientConfig.guiPlayerHUDIsInvert, res);
-        renderChargeBar((width - chargeWidth) / 2, height - 40 - chargeHeight);
+        renderChargeBar(RPGClientConfig.guiChargeIsCentered ? (width - chargeWidth) / 2 : RPGClientConfig.guiChargeOffsetX, height - RPGClientConfig.guiChargeOffsetY);
         renderEnemyBar(RPGClientConfig.guiEnemyHUDOffsetX, RPGClientConfig.guiEnemyHUDOffsetY, RPGClientConfig.guiEnemyHUDIsInvert, res);
 
         GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -199,8 +200,8 @@ public class RPGGuiIngame extends Gui
         String s;
 
         IRPGEntity iRPG = null;
-        if (RPGEntityData.isRPGEntity(entity)) {
-            RPGEntityData data = RPGEntityData.get(entity);
+        if (RPGableEntity.isRPGable(entity)) {
+            EntityData data = EntityData.get(entity);
             if (data != null && data.checkValid()) {
                 iRPG = RPGCapability.rpgEntityRegistr.getAttributesSet(entity).rpgComponent;
             }

@@ -2,7 +2,7 @@ package mixac1.dangerrpg.api.event;
 
 import cpw.mods.fml.common.eventhandler.Event;
 import mixac1.dangerrpg.api.entity.EntityAttribute;
-import mixac1.dangerrpg.capability.RPGEntityData.EntityAttributesSet;
+import mixac1.dangerrpg.capability.RPGableEntity.EntityAttributesMap;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
@@ -11,9 +11,9 @@ import net.minecraft.entity.player.EntityPlayer;
 public class RegEAEvent extends Event
 {
     public Class<? extends EntityLivingBase> entityClass;
-    public EntityAttributesSet set;
+    public EntityAttributesMap set;
 
-    protected RegEAEvent(Class<? extends EntityLivingBase> entityClass, EntityAttributesSet set)
+    protected RegEAEvent(Class<? extends EntityLivingBase> entityClass, EntityAttributesMap set)
     {
         this.entityClass = entityClass;
         this.set = set;
@@ -25,9 +25,9 @@ public class RegEAEvent extends Event
      */
     public static class DefaultEAEvent extends RegEAEvent
     {
-        public DefaultEAEvent(Class<? extends EntityLivingBase> entityClass, EntityAttributesSet set)
+        public DefaultEAEvent(Class<? extends EntityLivingBase> entityClass, EntityAttributesMap map)
         {
-            super(entityClass, set);
+            super(entityClass, map);
         }
     }
 
@@ -37,9 +37,9 @@ public class RegEAEvent extends Event
      */
     public static class EntytyLivingEAEvent extends RegEAEvent
     {
-        public EntytyLivingEAEvent(Class<? extends EntityLiving> entityClass, EntityAttributesSet set)
+        public EntytyLivingEAEvent(Class<? extends EntityLiving> entityClass, EntityAttributesMap map)
         {
-            super(entityClass, set);
+            super(entityClass, map);
         }
     }
 
@@ -49,9 +49,9 @@ public class RegEAEvent extends Event
      */
     public static class EntytyMobEAEvent extends RegEAEvent
     {
-        public EntytyMobEAEvent(Class<? extends EntityMob> entityClass, EntityAttributesSet set)
+        public EntytyMobEAEvent(Class<? extends EntityMob> entityClass, EntityAttributesMap map)
         {
-            super(entityClass, set);
+            super(entityClass, map);
         }
     }
 
@@ -61,9 +61,9 @@ public class RegEAEvent extends Event
      */
     public static class PlayerEAEvent extends RegEAEvent
     {
-        public PlayerEAEvent(Class<? extends EntityPlayer> entityClass, EntityAttributesSet set)
+        public PlayerEAEvent(Class<? extends EntityPlayer> entityClass, EntityAttributesMap map)
         {
-            super(entityClass, set);
+            super(entityClass, map);
         }
     }
 }

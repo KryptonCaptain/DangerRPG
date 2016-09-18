@@ -2,7 +2,7 @@ package mixac1.dangerrpg.api.event;
 
 import cpw.mods.fml.common.eventhandler.Event;
 import mixac1.dangerrpg.api.item.ItemAttribute;
-import mixac1.dangerrpg.capability.LvlableItem.ItemAttributesMap;
+import mixac1.dangerrpg.capability.RPGableItem.ItemAttributesMap;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBow;

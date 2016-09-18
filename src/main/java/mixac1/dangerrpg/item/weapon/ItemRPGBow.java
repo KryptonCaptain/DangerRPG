@@ -1,10 +1,10 @@
 package mixac1.dangerrpg.item.weapon;
 
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.api.item.ILvlableItem;
-import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemBow;
-import mixac1.dangerrpg.capability.LvlableItem;
-import mixac1.dangerrpg.capability.LvlableItem.ItemAttributesMap;
+import mixac1.dangerrpg.api.item.IRPGItem;
+import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemBow;
+import mixac1.dangerrpg.capability.RPGableItem;
+import mixac1.dangerrpg.capability.RPGableItem.ItemAttributesMap;
 import mixac1.dangerrpg.init.RPGOther.RPGCreativeTabs;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGBowComponent;
@@ -17,7 +17,7 @@ import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class ItemRPGBow extends ItemBow implements ILvlableItemBow, IHasBooksInfo
+public class ItemRPGBow extends ItemBow implements IRPGItemBow, IHasBooksInfo
 {
     public RPGBowComponent bowComponent;
     protected EnumRarity rarity;
@@ -34,7 +34,7 @@ public class ItemRPGBow extends ItemBow implements ILvlableItemBow, IHasBooksInf
     @Override
     public void registerAttributes(Item item, ItemAttributesMap map)
     {
-        LvlableItem.registerParamsItemBow(item, map);
+        RPGableItem.registerParamsItemBow(item, map);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class ItemRPGBow extends ItemBow implements ILvlableItemBow, IHasBooksInf
     @Override
     public void onStoppedUsing(ItemStack stack, World world, EntityPlayer player, int useDuration)
     {
-        ILvlableItem.DEFAULT_BOW.onStoppedUsing(stack, world, player, useDuration);
+        IRPGItem.DEFAULT_BOW.onStoppedUsing(stack, world, player, useDuration);
     }
 
     @Override

@@ -7,7 +7,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.EntityAttribute;
-import mixac1.dangerrpg.capability.RPGEntityData;
+import mixac1.dangerrpg.capability.EntityData;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -45,7 +45,7 @@ public class MsgSyncEA implements IMessage
         {
             EntityLivingBase entity = (EntityLivingBase) DangerRPG.proxy.getEntityByID(ctx, msg.nbt.getInteger("id"));
             if (entity != null) {
-                EntityAttribute attr = RPGEntityData.get(entity).getEntityAttribute(msg.nbt.getInteger("hash"));
+                EntityAttribute attr = EntityData.get(entity).getEntityAttribute(msg.nbt.getInteger("hash"));
                 if (attr != null) {
                     attr.fromNBT(msg.nbt, entity);
                 }

@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
-public class RenderKnife extends RenderRPGItemIcon
+public class RenderKnife extends RenderItemIcon
 {
     public static final RenderKnife INSTANCE = new RenderKnife();
     

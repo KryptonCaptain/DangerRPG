@@ -3,7 +3,7 @@ package mixac1.dangerrpg.entity.projectile;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
 
-public class EntitySniperArrow extends EntityArrowRPG
+public class EntitySniperArrow extends EntityRPGArrow
 {
     public EntitySniperArrow(World world)
     {

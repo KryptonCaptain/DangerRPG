@@ -2,7 +2,7 @@ package mixac1.dangerrpg.inventory;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import mixac1.dangerrpg.capability.LvlableItem;
+import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.init.RPGConfig;
 import mixac1.dangerrpg.util.RPGHelper;
@@ -43,7 +43,7 @@ public class ContainerLvlupTable extends Container
         @Override
         public boolean isItemValidForSlot(int index, ItemStack stack)
         {
-            return LvlableItem.isLvlable(stack);
+            return RPGableItem.isRPGable(stack);
         }
     };
     
@@ -148,7 +148,7 @@ public class ContainerLvlupTable extends Container
             ItemStack stack1 = slot.getStack();
             stack = stack1.copy();
      
-            if (LvlableItem.isLvlable(stack) && !((Slot)inventorySlots.get(0)).getHasStack()) {
+            if (RPGableItem.isRPGable(stack) && !((Slot)inventorySlots.get(0)).getHasStack()) {
                 if (!mergeItemStack(stack1, 0, 1, false)) {
                     return null;
                 }
@@ -217,7 +217,7 @@ public class ContainerLvlupTable extends Container
     {
         if (inventory == tableInventory) {
             ItemStack stack = inventory.getStackInSlot(0);
-            if (stack != null && LvlableItem.isLvlable(stack)) {
+            if (stack != null && RPGableItem.isRPGable(stack)) {
                 if (!worldPointer.isRemote) {
                     int currExp = (int) ItemAttributes.CURR_EXP.get(stack);
                     int maxExp  = (int) ItemAttributes.MAX_EXP.get(stack);
@@ -239,14 +239,14 @@ public class ContainerLvlupTable extends Container
             if (flag == 0) {
                 if (player.capabilities.isCreativeMode) {
                     if (!worldPointer.isRemote) {
-                        LvlableItem.addExp(stack, expToUp);
+                        RPGableItem.addExp(stack, expToUp);
                         onCraftMatrixChanged(tableInventory);
                     }
                     return true;
                 }
                 else if (RPGConfig.itemCanUpInTable && expToUp <= player.experienceTotal) {
                     if (!worldPointer.isRemote) {
-                        LvlableItem.addExp(stack, expToUp);
+                        RPGableItem.addExp(stack, expToUp);
                         player.addExperience(-expToUp);
                         RPGHelper.rebuildPlayerLvl(player);
                         onCraftMatrixChanged(tableInventory);
@@ -262,11 +262,11 @@ public class ContainerLvlupTable extends Container
                             float temp = ItemAttributes.MAX_EXP.get(stack) - ItemAttributes.CURR_EXP.get(stack);
                             int needToUp = (int) ((temp > (int) temp) ? temp + 1 : temp);
                             if (player.experienceTotal > needToUp) {
-                                LvlableItem.addExp(stack, needToUp);
+                                RPGableItem.addExp(stack, needToUp);
                                 player.experienceTotal -= needToUp;
                             }
                             else {
-                                LvlableItem.addExp(stack, player.experienceTotal);
+                                RPGableItem.addExp(stack, player.experienceTotal);
                                 player.experienceTotal = 0;
                             }
                         }

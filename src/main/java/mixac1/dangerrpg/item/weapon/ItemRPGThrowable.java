@@ -1,7 +1,7 @@
 package mixac1.dangerrpg.item.weapon;
 
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.entity.projectile.EntityThrowLvlItem;
+import mixac1.dangerrpg.entity.projectile.EntityThrowRPGItem;
 import mixac1.dangerrpg.item.IUseItemExtra;
 import mixac1.dangerrpg.item.RPGToolMaterial;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
@@ -35,5 +35,5 @@ public abstract class ItemRPGThrowable extends ItemRPGWeapon implements IUseItem
         return stack;
     }
 
-    protected abstract EntityThrowLvlItem getThrowEntity(World world, EntityLivingBase entityliving, ItemStack itemstack);
+    protected abstract EntityThrowRPGItem getThrowEntity(World world, EntityLivingBase entityliving, ItemStack itemstack);
 }

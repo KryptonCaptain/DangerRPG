@@ -4,7 +4,7 @@ import gloomyfolken.hooklib.asm.Hook;
 import gloomyfolken.hooklib.asm.Hook.ReturnValue;
 import gloomyfolken.hooklib.asm.ReturnCondition;
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
-import mixac1.dangerrpg.capability.LvlableItem;
+import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -46,7 +46,7 @@ public class HookEntities
         }
 
         if (entity.canAttackWithItem() && !entity.hitByEntity(player)) {
-            if (entity instanceof EntityLivingBase && stack != null && LvlableItem.isLvlable(stack)) {
+            if (entity instanceof EntityLivingBase && stack != null && RPGableItem.isRPGable(stack)) {
                 if (PlayerAttributes.SPEED_COUNTER.getValue(player) != 0) {
                     return;
                 }
@@ -103,7 +103,7 @@ public class HookEntities
                     if (entity instanceof EntityLivingBase) {
                         points -= ((EntityLivingBase) entity).getHealth();
                         if (points > 0) {
-                            LvlableItem.upEquipment(player, (EntityLivingBase) entity, stack, points);
+                            RPGableItem.upEquipment(player, (EntityLivingBase) entity, stack, points);
                         }
                     }
 
@@ -175,22 +175,22 @@ public class HookEntities
     public static float getAIMoveSpeed(EntityPlayer player, @ReturnValue float returnValue)
     {
         if (player.isSneaking()) {
-            return returnValue + PlayerAttributes.SNEAK_SPEED.getValue(player) * 3;
+            return returnValue + PlayerAttributes.SNEAK_SPEED.getSafe(player, 0f) * 3;
         }
-        return returnValue + PlayerAttributes.MOVE_SPEED.getValue(player);
+        return returnValue + PlayerAttributes.MOVE_SPEED.getSafe(player, 0f);
     }
 
     @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
     public static void onLivingUpdate(EntityPlayer player)
     {
-        player.jumpMovementFactor += PlayerAttributes.JUMP_RANGE.getValue(player);
+        player.jumpMovementFactor += PlayerAttributes.JUMP_RANGE.getSafe(player, 0f);
     }
 
     @Hook
     public static void moveEntityWithHeading(EntityLivingBase entity, float par1, float par2)
     {
         if (entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isFlying && entity.ridingEntity == null) {
-            entity.jumpMovementFactor += PlayerAttributes.FLY_SPEED.getValue(entity);
+            entity.jumpMovementFactor += PlayerAttributes.FLY_SPEED.getSafe(entity, 0f);
         }
     }
 
@@ -203,10 +203,10 @@ public class HookEntities
             if (entity instanceof EntityPlayer) {
                 if (!((EntityPlayer) entity).capabilities.isFlying) {
                     if (entity.isInWater()) {
-                        speed += PlayerAttributes.SWIM_SPEED.getValue((EntityPlayer) entity);
+                        speed += PlayerAttributes.SWIM_SPEED.getSafe((EntityLivingBase) entity, 0f);
                     }
                     else if (entity.handleLavaMovement()) {
-                        speed += PlayerAttributes.SWIM_SPEED.getValue((EntityPlayer) entity) / 2;
+                        speed += PlayerAttributes.SWIM_SPEED.getSafe((EntityLivingBase) entity, 0f) / 2;
                     }
                 }
             }

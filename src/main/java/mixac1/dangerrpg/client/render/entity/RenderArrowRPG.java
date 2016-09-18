@@ -3,7 +3,7 @@ package mixac1.dangerrpg.client.render.entity;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import mixac1.dangerrpg.entity.projectile.EntityArrowRPG;
+import mixac1.dangerrpg.entity.projectile.EntityRPGArrow;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -25,8 +25,8 @@ public class RenderArrowRPG extends Render
     @Override
     public void doRender(Entity entity, double x, double y, double z, float yaw, float pitch)
     {
-        if (entity instanceof EntityArrowRPG) {
-            EntityArrowRPG entityArrow = (EntityArrowRPG) entity;
+        if (entity instanceof EntityRPGArrow) {
+            EntityRPGArrow entityArrow = (EntityRPGArrow) entity;
 
             bindEntityTexture(entityArrow);
             GL11.glPushMatrix();

@@ -1,9 +1,9 @@
 package mixac1.dangerrpg.api.item;
 
-import mixac1.dangerrpg.capability.LvlableItem;
-import mixac1.dangerrpg.capability.LvlableItem.ItemAttributesMap;
+import mixac1.dangerrpg.capability.RPGableItem;
+import mixac1.dangerrpg.capability.RPGableItem.ItemAttributesMap;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
-import mixac1.dangerrpg.entity.projectile.EntityArrowRPG;
+import mixac1.dangerrpg.entity.projectile.EntityRPGArrow;
 import mixac1.dangerrpg.entity.projectile.EntityMaterial;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.RPGArmorMaterial;
@@ -34,15 +34,15 @@ import net.minecraft.world.World;
 /**
  * Implements this interface for creating LvlableItem
  */
-public interface ILvlableItem
+public interface IRPGItem
 {
     public void registerAttributes(Item item, ItemAttributesMap map);
 
     public RPGItemComponent getItemComponent(Item item);
 
-    public interface ILvlableItemMod extends ILvlableItem {}
+    public interface IRPGItemMod extends IRPGItem {}
 
-    public interface ILvlableItemTool extends ILvlableItemMod
+    public interface IRPGItemTool extends IRPGItemMod
     {
         @Override
         public RPGToolComponent getItemComponent(Item item);
@@ -50,7 +50,7 @@ public interface ILvlableItem
         public RPGToolMaterial getToolMaterial(Item item);
     }
 
-    public interface ILvlableItemArmor extends ILvlableItem
+    public interface IRPGItemArmor extends IRPGItem
     {
         @Override
         public RPGArmorComponent getItemComponent(Item item);
@@ -58,19 +58,19 @@ public interface ILvlableItem
         public RPGArmorMaterial getArmorMaterial(Item item);
     }
 
-    public interface ILvlableItemGun extends ILvlableItemTool
+    public interface IRPGItemGun extends IRPGItemTool
     {
         @Override
         public RPGGunComponent getItemComponent(Item item);
     }
 
-    public interface ILvlableItemStaff extends ILvlableItemGun
+    public interface IRPGItemStaff extends IRPGItemGun
     {
         @Override
         public RPGStaffComponent getItemComponent(Item item);
     }
 
-    public interface ILvlableItemBow extends ILvlableItemGun
+    public interface IRPGItemBow extends IRPGItemGun
     {
         /**
          * Don't use onPlayerStoppedUsing method.
@@ -84,7 +84,7 @@ public interface ILvlableItem
 
 
 
-    public static final ILvlableItem DEFAULT_ITEM = new ILvlableItem()
+    public static final IRPGItem DEFAULT_ITEM = new IRPGItem()
     {
         @Override
         public void registerAttributes(Item item, ItemAttributesMap map) {}
@@ -96,12 +96,12 @@ public interface ILvlableItem
         }
     };
 
-    public static final ILvlableItem DEFAULT_ITEM_MOD = new ILvlableItemMod()
+    public static final IRPGItem DEFAULT_ITEM_MOD = new IRPGItemMod()
     {
         @Override
         public void registerAttributes(Item item, ItemAttributesMap map)
         {
-            LvlableItem.registerParamsItemMod(item, map);
+            RPGableItem.registerParamsItemMod(item, map);
         }
 
         @Override
@@ -111,12 +111,12 @@ public interface ILvlableItem
         }
     };
 
-    public static final ILvlableItemTool DEFAULT_SWORD = new ILvlableItemTool()
+    public static final IRPGItemTool DEFAULT_SWORD = new IRPGItemTool()
     {
         @Override
         public void registerAttributes(Item item, ItemAttributesMap map)
         {
-            LvlableItem.registerParamsItemSword(item, map);
+            RPGableItem.registerParamsItemSword(item, map);
         }
 
         @Override
@@ -132,12 +132,12 @@ public interface ILvlableItem
         }
     };
 
-    public static final ILvlableItemTool DEFAULT_TOOL = new ILvlableItemTool()
+    public static final IRPGItemTool DEFAULT_TOOL = new IRPGItemTool()
     {
         @Override
         public void registerAttributes(Item item, ItemAttributesMap map)
         {
-            LvlableItem.registerParamsItemTool(item, map);
+            RPGableItem.registerParamsItemTool(item, map);
         }
 
         @Override
@@ -171,12 +171,12 @@ public interface ILvlableItem
         }
     };
 
-    public static final ILvlableItemArmor DEFAULT_ARMOR = new ILvlableItemArmor()
+    public static final IRPGItemArmor DEFAULT_ARMOR = new IRPGItemArmor()
     {
         @Override
         public void registerAttributes(Item item, ItemAttributesMap map)
         {
-            LvlableItem.registerParamsItemArmor(item, map);
+            RPGableItem.registerParamsItemArmor(item, map);
         }
 
         @Override
@@ -192,12 +192,12 @@ public interface ILvlableItem
         }
     };
 
-    public static final ILvlableItemBow DEFAULT_BOW = new ILvlableItemBow()
+    public static final IRPGItemBow DEFAULT_BOW = new IRPGItemBow()
     {
         @Override
         public void registerAttributes(Item item, ItemAttributesMap map)
         {
-            LvlableItem.registerParamsItemBow(item, map);
+            RPGableItem.registerParamsItemBow(item, map);
         }
 
         @Override
@@ -224,12 +224,10 @@ public interface ILvlableItem
                     return;
                 }
 
-                float powerMul = ItemAttributes.SHOT_POWER.hasIt(stack) ?
-                                 ItemAttributes.SHOT_POWER.get(stack, player) : 1F;
-                EntityArrowRPG entity = new EntityArrowRPG(world, player, power * powerMul, 1F);
+                float powerMul = ItemAttributes.SHOT_POWER.getSafe(stack, player, 1F);
+                EntityRPGArrow entity = new EntityRPGArrow(world, player, power * powerMul, 1F);
 
-                entity.phisicDamage = ItemAttributes.SHOT_DAMAGE.hasIt(stack) ?
-                                      ItemAttributes.SHOT_DAMAGE.get(stack, player) : 2F;
+                entity.phisicDamage = ItemAttributes.SHOT_DAMAGE.getSafe(stack, player, 2F);
 
                 int k = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, stack);
                 if (k > 0) {

@@ -12,11 +12,11 @@ import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.RPGRegister;
 import mixac1.dangerrpg.api.entity.IRPGEntity.RPGCommonEntityMob;
 import mixac1.dangerrpg.api.entity.IRPGEntity.RPGEntityRangeMob;
-import mixac1.dangerrpg.api.item.ILvlableItem;
-import mixac1.dangerrpg.capability.LvlableItem;
-import mixac1.dangerrpg.capability.LvlableItem.ItemAttributesMap;
-import mixac1.dangerrpg.capability.RPGEntityData;
-import mixac1.dangerrpg.capability.RPGEntityData.EntityAttributesSet;
+import mixac1.dangerrpg.api.item.IRPGItem;
+import mixac1.dangerrpg.capability.RPGableEntity;
+import mixac1.dangerrpg.capability.RPGableEntity.EntityAttributesMap;
+import mixac1.dangerrpg.capability.RPGableItem;
+import mixac1.dangerrpg.capability.RPGableItem.ItemAttributesMap;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.EntityList;
@@ -62,73 +62,73 @@ public abstract class RPGCapability
         Iterator iterator = GameData.getItemRegistry().iterator();
         while(iterator.hasNext()) {
             Item item = (Item) iterator.next();
-            if (item instanceof ILvlableItem) {
-                RPGRegister.registerLvlableItem(item, (ILvlableItem) item);
+            if (item instanceof IRPGItem) {
+                RPGRegister.registerRPGItem(item, (IRPGItem) item);
             }
         }
 
-        RPGRegister.registerLvlableItem(Items.wooden_hoe, ILvlableItem.DEFAULT_SWORD);
-        RPGRegister.registerLvlableItem(Items.stone_hoe, ILvlableItem.DEFAULT_SWORD);
-        RPGRegister.registerLvlableItem(Items.iron_hoe, ILvlableItem.DEFAULT_SWORD);
-        RPGRegister.registerLvlableItem(Items.golden_hoe, ILvlableItem.DEFAULT_SWORD);
-        RPGRegister.registerLvlableItem(Items.diamond_hoe, ILvlableItem.DEFAULT_SWORD);
+        RPGRegister.registerRPGItem(Items.wooden_hoe, IRPGItem.DEFAULT_SWORD);
+        RPGRegister.registerRPGItem(Items.stone_hoe, IRPGItem.DEFAULT_SWORD);
+        RPGRegister.registerRPGItem(Items.iron_hoe, IRPGItem.DEFAULT_SWORD);
+        RPGRegister.registerRPGItem(Items.golden_hoe, IRPGItem.DEFAULT_SWORD);
+        RPGRegister.registerRPGItem(Items.diamond_hoe, IRPGItem.DEFAULT_SWORD);
 
-        RPGRegister.registerLvlableItem(Items.wooden_axe, ILvlableItem.DEFAULT_TOOL);
-        RPGRegister.registerLvlableItem(Items.stone_axe, ILvlableItem.DEFAULT_TOOL);
-        RPGRegister.registerLvlableItem(Items.iron_axe, ILvlableItem.DEFAULT_TOOL);
-        RPGRegister.registerLvlableItem(Items.golden_axe, ILvlableItem.DEFAULT_TOOL);
-        RPGRegister.registerLvlableItem(Items.diamond_axe, ILvlableItem.DEFAULT_TOOL);
+        RPGRegister.registerRPGItem(Items.wooden_axe, IRPGItem.DEFAULT_TOOL);
+        RPGRegister.registerRPGItem(Items.stone_axe, IRPGItem.DEFAULT_TOOL);
+        RPGRegister.registerRPGItem(Items.iron_axe, IRPGItem.DEFAULT_TOOL);
+        RPGRegister.registerRPGItem(Items.golden_axe, IRPGItem.DEFAULT_TOOL);
+        RPGRegister.registerRPGItem(Items.diamond_axe, IRPGItem.DEFAULT_TOOL);
 
-        RPGRegister.registerLvlableItem(Items.wooden_pickaxe, ILvlableItem.DEFAULT_TOOL);
-        RPGRegister.registerLvlableItem(Items.stone_pickaxe, ILvlableItem.DEFAULT_TOOL);
-        RPGRegister.registerLvlableItem(Items.iron_pickaxe, ILvlableItem.DEFAULT_TOOL);
-        RPGRegister.registerLvlableItem(Items.golden_pickaxe, ILvlableItem.DEFAULT_TOOL);
-        RPGRegister.registerLvlableItem(Items.diamond_pickaxe, ILvlableItem.DEFAULT_TOOL);
+        RPGRegister.registerRPGItem(Items.wooden_pickaxe, IRPGItem.DEFAULT_TOOL);
+        RPGRegister.registerRPGItem(Items.stone_pickaxe, IRPGItem.DEFAULT_TOOL);
+        RPGRegister.registerRPGItem(Items.iron_pickaxe, IRPGItem.DEFAULT_TOOL);
+        RPGRegister.registerRPGItem(Items.golden_pickaxe, IRPGItem.DEFAULT_TOOL);
+        RPGRegister.registerRPGItem(Items.diamond_pickaxe, IRPGItem.DEFAULT_TOOL);
 
-        RPGRegister.registerLvlableItem(Items.wooden_shovel, ILvlableItem.DEFAULT_TOOL);
-        RPGRegister.registerLvlableItem(Items.stone_shovel, ILvlableItem.DEFAULT_TOOL);
-        RPGRegister.registerLvlableItem(Items.iron_shovel, ILvlableItem.DEFAULT_TOOL);
-        RPGRegister.registerLvlableItem(Items.golden_shovel, ILvlableItem.DEFAULT_TOOL);
-        RPGRegister.registerLvlableItem(Items.diamond_shovel, ILvlableItem.DEFAULT_TOOL);
+        RPGRegister.registerRPGItem(Items.wooden_shovel, IRPGItem.DEFAULT_TOOL);
+        RPGRegister.registerRPGItem(Items.stone_shovel, IRPGItem.DEFAULT_TOOL);
+        RPGRegister.registerRPGItem(Items.iron_shovel, IRPGItem.DEFAULT_TOOL);
+        RPGRegister.registerRPGItem(Items.golden_shovel, IRPGItem.DEFAULT_TOOL);
+        RPGRegister.registerRPGItem(Items.diamond_shovel, IRPGItem.DEFAULT_TOOL);
 
-        RPGRegister.registerLvlableItem(Items.wooden_hoe, ILvlableItem.DEFAULT_TOOL);
-        RPGRegister.registerLvlableItem(Items.stone_hoe, ILvlableItem.DEFAULT_TOOL);
-        RPGRegister.registerLvlableItem(Items.iron_hoe, ILvlableItem.DEFAULT_TOOL);
-        RPGRegister.registerLvlableItem(Items.golden_hoe, ILvlableItem.DEFAULT_TOOL);
-        RPGRegister.registerLvlableItem(Items.diamond_hoe, ILvlableItem.DEFAULT_TOOL);
+        RPGRegister.registerRPGItem(Items.wooden_hoe, IRPGItem.DEFAULT_TOOL);
+        RPGRegister.registerRPGItem(Items.stone_hoe, IRPGItem.DEFAULT_TOOL);
+        RPGRegister.registerRPGItem(Items.iron_hoe, IRPGItem.DEFAULT_TOOL);
+        RPGRegister.registerRPGItem(Items.golden_hoe, IRPGItem.DEFAULT_TOOL);
+        RPGRegister.registerRPGItem(Items.diamond_hoe, IRPGItem.DEFAULT_TOOL);
 
-        RPGRegister.registerLvlableItem(Items.wooden_sword, ILvlableItem.DEFAULT_SWORD);
-        RPGRegister.registerLvlableItem(Items.stone_sword, ILvlableItem.DEFAULT_SWORD);
-        RPGRegister.registerLvlableItem(Items.iron_sword, ILvlableItem.DEFAULT_SWORD);
-        RPGRegister.registerLvlableItem(Items.golden_sword, ILvlableItem.DEFAULT_SWORD);
-        RPGRegister.registerLvlableItem(Items.diamond_sword, ILvlableItem.DEFAULT_SWORD);
+        RPGRegister.registerRPGItem(Items.wooden_sword, IRPGItem.DEFAULT_SWORD);
+        RPGRegister.registerRPGItem(Items.stone_sword, IRPGItem.DEFAULT_SWORD);
+        RPGRegister.registerRPGItem(Items.iron_sword, IRPGItem.DEFAULT_SWORD);
+        RPGRegister.registerRPGItem(Items.golden_sword, IRPGItem.DEFAULT_SWORD);
+        RPGRegister.registerRPGItem(Items.diamond_sword, IRPGItem.DEFAULT_SWORD);
 
-        RPGRegister.registerLvlableItem(Items.leather_boots, ILvlableItem.DEFAULT_ARMOR);
-        RPGRegister.registerLvlableItem(Items.leather_chestplate, ILvlableItem.DEFAULT_ARMOR);
-        RPGRegister.registerLvlableItem(Items.leather_helmet, ILvlableItem.DEFAULT_ARMOR);
-        RPGRegister.registerLvlableItem(Items.leather_leggings, ILvlableItem.DEFAULT_ARMOR);
+        RPGRegister.registerRPGItem(Items.leather_boots, IRPGItem.DEFAULT_ARMOR);
+        RPGRegister.registerRPGItem(Items.leather_chestplate, IRPGItem.DEFAULT_ARMOR);
+        RPGRegister.registerRPGItem(Items.leather_helmet, IRPGItem.DEFAULT_ARMOR);
+        RPGRegister.registerRPGItem(Items.leather_leggings, IRPGItem.DEFAULT_ARMOR);
 
-        RPGRegister.registerLvlableItem(Items.chainmail_boots, ILvlableItem.DEFAULT_ARMOR);
-        RPGRegister.registerLvlableItem(Items.chainmail_chestplate, ILvlableItem.DEFAULT_ARMOR);
-        RPGRegister.registerLvlableItem(Items.chainmail_helmet, ILvlableItem.DEFAULT_ARMOR);
-        RPGRegister.registerLvlableItem(Items.chainmail_leggings, ILvlableItem.DEFAULT_ARMOR);
+        RPGRegister.registerRPGItem(Items.chainmail_boots, IRPGItem.DEFAULT_ARMOR);
+        RPGRegister.registerRPGItem(Items.chainmail_chestplate, IRPGItem.DEFAULT_ARMOR);
+        RPGRegister.registerRPGItem(Items.chainmail_helmet, IRPGItem.DEFAULT_ARMOR);
+        RPGRegister.registerRPGItem(Items.chainmail_leggings, IRPGItem.DEFAULT_ARMOR);
 
-        RPGRegister.registerLvlableItem(Items.iron_boots, ILvlableItem.DEFAULT_ARMOR);
-        RPGRegister.registerLvlableItem(Items.iron_chestplate, ILvlableItem.DEFAULT_ARMOR);
-        RPGRegister.registerLvlableItem(Items.iron_helmet, ILvlableItem.DEFAULT_ARMOR);
-        RPGRegister.registerLvlableItem(Items.iron_leggings, ILvlableItem.DEFAULT_ARMOR);
+        RPGRegister.registerRPGItem(Items.iron_boots, IRPGItem.DEFAULT_ARMOR);
+        RPGRegister.registerRPGItem(Items.iron_chestplate, IRPGItem.DEFAULT_ARMOR);
+        RPGRegister.registerRPGItem(Items.iron_helmet, IRPGItem.DEFAULT_ARMOR);
+        RPGRegister.registerRPGItem(Items.iron_leggings, IRPGItem.DEFAULT_ARMOR);
 
-        RPGRegister.registerLvlableItem(Items.golden_boots, ILvlableItem.DEFAULT_ARMOR);
-        RPGRegister.registerLvlableItem(Items.golden_chestplate, ILvlableItem.DEFAULT_ARMOR);
-        RPGRegister.registerLvlableItem(Items.golden_helmet, ILvlableItem.DEFAULT_ARMOR);
-        RPGRegister.registerLvlableItem(Items.golden_leggings, ILvlableItem.DEFAULT_ARMOR);
+        RPGRegister.registerRPGItem(Items.golden_boots, IRPGItem.DEFAULT_ARMOR);
+        RPGRegister.registerRPGItem(Items.golden_chestplate, IRPGItem.DEFAULT_ARMOR);
+        RPGRegister.registerRPGItem(Items.golden_helmet, IRPGItem.DEFAULT_ARMOR);
+        RPGRegister.registerRPGItem(Items.golden_leggings, IRPGItem.DEFAULT_ARMOR);
 
-        RPGRegister.registerLvlableItem(Items.diamond_boots, ILvlableItem.DEFAULT_ARMOR);
-        RPGRegister.registerLvlableItem(Items.diamond_chestplate, ILvlableItem.DEFAULT_ARMOR);
-        RPGRegister.registerLvlableItem(Items.diamond_helmet, ILvlableItem.DEFAULT_ARMOR);
-        RPGRegister.registerLvlableItem(Items.diamond_leggings, ILvlableItem.DEFAULT_ARMOR);
+        RPGRegister.registerRPGItem(Items.diamond_boots, IRPGItem.DEFAULT_ARMOR);
+        RPGRegister.registerRPGItem(Items.diamond_chestplate, IRPGItem.DEFAULT_ARMOR);
+        RPGRegister.registerRPGItem(Items.diamond_helmet, IRPGItem.DEFAULT_ARMOR);
+        RPGRegister.registerRPGItem(Items.diamond_leggings, IRPGItem.DEFAULT_ARMOR);
 
-        RPGRegister.registerLvlableItem(Items.bow, ILvlableItem.DEFAULT_BOW);
+        RPGRegister.registerRPGItem(Items.bow, IRPGItem.DEFAULT_BOW);
     }
 
     private static void registerDefaultRPGEntities()
@@ -151,14 +151,14 @@ public abstract class RPGCapability
         for (Object obj : EntityList.classToStringMapping.entrySet()) {
             Entry<Class, String> entry = (Entry<Class, String>) obj;
             if (entry.getKey() != null && entry.getValue() != null) {
-                RPGEntityData.registerEntity(entry.getKey());
+                RPGableEntity.registerEntity(entry.getKey());
             }
         }
 
-        RPGEntityData.registerEntity(EntityPlayer.class);
+        RPGableEntity.registerEntity(EntityPlayer.class);
 
-        for (Entry<Class<? extends EntityLivingBase>, EntityAttributesSet> data : rpgEntityRegistr.data.entrySet()) {
-            RPGEntityData.registerEntityDefault(data.getKey(), data.getValue());
+        for (Entry<Class<? extends EntityLivingBase>, EntityAttributesMap> data : rpgEntityRegistr.data.entrySet()) {
+            RPGableEntity.registerEntityDefault(data.getKey(), data.getValue());
             data.getValue().rpgComponent.registerAttributes(data.getKey(), data.getValue());
             if (RPGConfig.entityAllEntityRPG || RPGConfig.entitySupportedRPGEntities.contains(EntityList.classToStringMapping.get(data.getKey()))) {
                 rpgEntityRegistr.registr.add(data.getKey());
@@ -172,12 +172,12 @@ public abstract class RPGCapability
     {
         Iterator iterator = GameData.getItemRegistry().iterator();
         while(iterator.hasNext()) {
-            LvlableItem.registerLvlableItem((Item) iterator.next());
+            RPGableItem.registerRPGItem((Item) iterator.next());
         }
 
         for (Entry<Item, ItemAttributesMap> data : lvlItemRegistr.data.entrySet()) {
-            LvlableItem.registerParamsDefault(data.getKey(), data.getValue());
-            data.getValue().lvlComponent.registerAttributes(data.getKey(), data.getValue());
+            RPGableItem.registerParamsDefault(data.getKey(), data.getValue());
+            data.getValue().rpgComponent.registerAttributes(data.getKey(), data.getValue());
             if (RPGConfig.itemAllItemsLvlable || RPGConfig.itemSupportedLvlItems.contains(data.getKey().unlocalizedName)) {
                 lvlItemRegistr.registr.add(data.getKey());
                 DangerRPG.infoLog(Utils.toString("Register lvlable item: ", data.getKey().unlocalizedName, " (mod supported: ", String.valueOf(data.getValue().isSupported), ")"));
@@ -206,7 +206,7 @@ public abstract class RPGCapability
     public static class RPGEntityRegistr
     {
         public Set<Class<? extends EntityLivingBase>> registr = new HashSet<Class<? extends EntityLivingBase>>();
-        public HashMap<Class<? extends EntityLivingBase>, EntityAttributesSet> data = new HashMap<Class<? extends EntityLivingBase>, EntityAttributesSet>();
+        public HashMap<Class<? extends EntityLivingBase>, EntityAttributesMap> data = new HashMap<Class<? extends EntityLivingBase>, EntityAttributesMap>();
 
         private Set<Class<? extends EntityLivingBase>> copy;
 
@@ -227,14 +227,14 @@ public abstract class RPGCapability
                 RPGCapability.rpgEntityRegistr.registr.contains(entity.getClass());
         }
 
-        public EntityAttributesSet getAttributesSet(EntityLivingBase entity)
+        public EntityAttributesMap getAttributesSet(EntityLivingBase entity)
         {
             return entity instanceof EntityPlayer ?
                 RPGCapability.rpgEntityRegistr.data.get(EntityPlayer.class) :
                 RPGCapability.rpgEntityRegistr.data.get(entity.getClass());
         }
 
-        public void setAttributesSet(EntityLivingBase entity, EntityAttributesSet set)
+        public void setAttributesSet(EntityLivingBase entity, EntityAttributesMap set)
         {
             data.put(entity instanceof EntityPlayer ? EntityPlayer.class : entity.getClass(), set);
         }

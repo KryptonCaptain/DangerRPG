@@ -5,11 +5,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import mixac1.dangerrpg.api.item.ILvlableItem;
-import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemArmor;
-import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemTool;
-import mixac1.dangerrpg.capability.LvlableItem;
-import mixac1.dangerrpg.capability.RPGEntityData;
+import mixac1.dangerrpg.api.item.IRPGItem;
+import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemArmor;
+import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemTool;
+import mixac1.dangerrpg.capability.RPGableEntity;
+import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.init.RPGCapability;
@@ -139,7 +139,7 @@ public abstract class RPGHelper
     {
         float power = getUsePower(player, stack, useDuration, defMaxPow);
 
-        float minPower = ItemAttributes.MIN_CUST_TIME.hasIt(stack) ? ItemAttributes.MIN_CUST_TIME.get(stack, player) : defMinPow;
+        float minPower = ItemAttributes.MIN_CUST_TIME.getSafe(stack, player, defMinPow);
         if (power < minPower) {
             return -1f;
         }
@@ -148,7 +148,7 @@ public abstract class RPGHelper
 
     public static float getUsePower(EntityPlayer player, ItemStack stack, int useDuration, float defMaxPow)
     {
-        float power = useDuration / (ItemAttributes.SHOT_SPEED.hasIt(stack) ? ItemAttributes.SHOT_SPEED.get(stack, player) : defMaxPow);
+        float power = useDuration / ItemAttributes.SHOT_SPEED.getSafe(stack, player, defMaxPow);
         power = (power * power + power * 2.0F) / 3.0F;
 
         if (power > 1.0F) {
@@ -159,13 +159,13 @@ public abstract class RPGHelper
 
     public static IMaterialSpecial getMaterialSpecial(ItemStack stack)
     {
-        if (stack != null && LvlableItem.isLvlable(stack)) {
-            ILvlableItem ilvl = RPGCapability.lvlItemRegistr.data.get(stack.getItem()).lvlComponent;
-            if (ilvl instanceof ILvlableItemArmor) {
-                return ((ILvlableItemArmor) ilvl).getArmorMaterial(stack.getItem());
+        if (stack != null && RPGableItem.isRPGable(stack)) {
+            IRPGItem ilvl = RPGCapability.lvlItemRegistr.data.get(stack.getItem()).rpgComponent;
+            if (ilvl instanceof IRPGItemArmor) {
+                return ((IRPGItemArmor) ilvl).getArmorMaterial(stack.getItem());
             }
-            else if (ilvl instanceof ILvlableItemTool) {
-                return ((ILvlableItemTool) ilvl).getToolMaterial(stack.getItem());
+            else if (ilvl instanceof IRPGItemTool) {
+                return ((IRPGItemTool) ilvl).getToolMaterial(stack.getItem());
             }
         }
         return null;
@@ -243,7 +243,7 @@ public abstract class RPGHelper
 
     public static float getMeleeDamageHook(EntityLivingBase entity, float defaultDamage)
     {
-        if (RPGEntityData.isRPGEntity(entity)) {
+        if (RPGableEntity.isRPGable(entity)) {
             return RPGCapability.rpgEntityRegistr.getAttributesSet(entity).rpgComponent.getEAMeleeDamage(entity).getValue(entity);
         }
         return defaultDamage;
@@ -251,7 +251,7 @@ public abstract class RPGHelper
 
     public static float getRangeDamageHook(EntityLivingBase entity, float defaultDamage)
     {
-        if (RPGEntityData.isRPGEntity(entity)) {
+        if (RPGableEntity.isRPGable(entity)) {
             return RPGCapability.rpgEntityRegistr.getAttributesSet(entity).rpgComponent.getEARangeDamage(entity).getValue(entity);
         }
         return defaultDamage;

@@ -5,17 +5,18 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.client.RPGRenderHelper;
-import mixac1.dangerrpg.init.RPGRenderers;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 
 @SideOnly(Side.CLIENT)
-public abstract class RenderRPGItemModel implements IItemRenderer
+public class RenderItemIcon implements IItemRenderer
 {
+    public static final RenderItemIcon INSTANCE = new RenderItemIcon();
+
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type)
     {
@@ -28,26 +29,22 @@ public abstract class RenderRPGItemModel implements IItemRenderer
         return false;
     }
 
-    @Override
-    public void renderItem(ItemRenderType type, ItemStack stack, Object... data)
-    {
-        GL11.glPushMatrix();
-        EntityLivingBase entityliving = (EntityLivingBase) data[1];
-        RPGRenderHelper.mc.renderEngine.bindTexture(getTexture(stack));
-        float tickness = specific(type, stack, entityliving);
-        getModel().render((Entity) data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, tickness);
-        GL11.glPopMatrix();
-    }
-
     public float specific(ItemRenderType type, ItemStack stack, EntityLivingBase entity)
     {
         return 0.0625F;
     }
 
-    public abstract ModelBase getModel();
-
-    public ResourceLocation getTexture(ItemStack stack)
+    @Override
+    public void renderItem(ItemRenderType type, ItemStack stack, Object... data)
     {
-        return RPGRenderers.modelTextures.get(stack.getItem());
+        GL11.glPushMatrix();
+        Tessellator tess = Tessellator.instance;
+        EntityLivingBase entityliving = (EntityLivingBase) data[1];
+        IIcon icon = entityliving.getItemIcon(stack, 0);
+        float tickness = specific(type, stack, entityliving);
+
+        ItemRenderer.renderItemIn2D(tess, icon.getMaxU(), icon.getMinV(), icon.getMinU(), icon.getMaxV(), icon.getIconWidth(), icon.getIconHeight(), tickness);
+        RPGRenderHelper.renderEnchantEffect(tess, stack, 256, 256, tickness);
+        GL11.glPopMatrix();
     }
 }

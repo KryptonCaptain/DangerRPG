@@ -5,9 +5,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gloomyfolken.hooklib.asm.Hook;
 import gloomyfolken.hooklib.asm.Hook.ReturnValue;
 import gloomyfolken.hooklib.asm.ReturnCondition;
-import mixac1.dangerrpg.api.item.ILvlableItem;
-import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemBow;
-import mixac1.dangerrpg.capability.LvlableItem;
+import mixac1.dangerrpg.api.item.IRPGItem;
+import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemBow;
+import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.enchantment.Enchantment;
@@ -17,7 +17,6 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -32,19 +31,23 @@ public class HookItemBow
     @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
     public static IIcon getItemIcon(EntityPlayer player, ItemStack stack, int par, @ReturnValue IIcon returnValue)
     {
-        if (LvlableItem.isLvlable(stack) && player.getItemInUse() != null &&
-            stack.getItemUseAction() == EnumAction.bow && ItemAttributes.SHOT_SPEED.hasIt(stack)) {
+        if (RPGableItem.isRPGable(stack) && player.getItemInUse() != null &&
+            stack.getItem() instanceof ItemBow && ItemAttributes.SHOT_SPEED.hasIt(stack)) {
             int ticks = stack.getMaxItemUseDuration() - player.getItemInUseCount();
             float speed = ItemAttributes.SHOT_SPEED.get(stack, player);
-            if (ticks >= speed) {
-                return ((ItemBow) stack.getItem()).getItemIconForUseDuration(2);
+            ItemBow bow = (ItemBow) stack.getItem();
+            try {
+                if (ticks >= speed) {
+                    return bow.getItemIconForUseDuration(2);
+                }
+                else if (ticks > speed / 2) {
+                    return bow.getItemIconForUseDuration(1);
+                }
+                else if (ticks > 0) {
+                    return bow.getItemIconForUseDuration(0);
+                }
             }
-            else if (ticks > speed / 2) {
-                return ((ItemBow) stack.getItem()).getItemIconForUseDuration(1);
-            }
-            else if (ticks > 0) {
-                return ((ItemBow) stack.getItem()).getItemIconForUseDuration(0);
-            }
+            catch (NullPointerException e) {}
         }
         return returnValue;
     }
@@ -96,12 +99,12 @@ public class HookItemBow
         }
         useDuration = event.charge;
 
-        if (LvlableItem.isLvlable(stack)) {
-            if (bow instanceof ILvlableItemBow) {
-                ((ILvlableItemBow) bow).onStoppedUsing(stack, world, player, useDuration);
+        if (RPGableItem.isRPGable(stack)) {
+            if (bow instanceof IRPGItemBow) {
+                ((IRPGItemBow) bow).onStoppedUsing(stack, world, player, useDuration);
             }
             else {
-                ILvlableItem.DEFAULT_BOW.onStoppedUsing(stack, world, player, useDuration);
+                IRPGItem.DEFAULT_BOW.onStoppedUsing(stack, world, player, useDuration);
             }
         }
         else {

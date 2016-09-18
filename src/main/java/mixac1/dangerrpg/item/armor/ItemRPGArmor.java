@@ -3,9 +3,9 @@ package mixac1.dangerrpg.item.armor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemArmor;
-import mixac1.dangerrpg.capability.LvlableItem;
-import mixac1.dangerrpg.capability.LvlableItem.ItemAttributesMap;
+import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemArmor;
+import mixac1.dangerrpg.capability.RPGableItem;
+import mixac1.dangerrpg.capability.RPGableItem.ItemAttributesMap;
 import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGOther.RPGCreativeTabs;
 import mixac1.dangerrpg.item.IHasBooksInfo;
@@ -21,7 +21,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
-public class ItemRPGArmor extends ItemArmor implements ILvlableItemArmor, IHasBooksInfo
+public class ItemRPGArmor extends ItemArmor implements IRPGItemArmor, IHasBooksInfo
 {
     protected static String[] ARMOR_TYPES = new String[] {"_helmet", "_chestplate", "_leggings", "_boots"};
     protected RPGArmorMaterial armorMaterial;
@@ -67,7 +67,7 @@ public class ItemRPGArmor extends ItemArmor implements ILvlableItemArmor, IHasBo
     @Override
     public void registerAttributes(Item item, ItemAttributesMap map)
     {
-        LvlableItem.registerParamsItemArmor(item, map);
+        RPGableItem.registerParamsItemArmor(item, map);
     }
 
     @Override

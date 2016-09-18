@@ -1,9 +1,9 @@
 package mixac1.dangerrpg.item.tool;
 
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemTool;
-import mixac1.dangerrpg.capability.LvlableItem;
-import mixac1.dangerrpg.capability.LvlableItem.ItemAttributesMap;
+import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemTool;
+import mixac1.dangerrpg.capability.RPGableItem;
+import mixac1.dangerrpg.capability.RPGableItem.ItemAttributesMap;
 import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGOther.RPGCreativeTabs;
 import mixac1.dangerrpg.item.IHasBooksInfo;
@@ -16,7 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 
-public class ItemRPGSpade extends ItemSpade implements ILvlableItemTool, IHasBooksInfo
+public class ItemRPGSpade extends ItemSpade implements IRPGItemTool, IHasBooksInfo
 {
     RPGToolMaterial toolMaterial;
 
@@ -51,6 +51,6 @@ public class ItemRPGSpade extends ItemSpade implements ILvlableItemTool, IHasBoo
     @Override
     public void registerAttributes(Item item, ItemAttributesMap map)
     {
-        LvlableItem.registerParamsItemTool(item, map);
+        RPGableItem.registerParamsItemTool(item, map);
     }
 }

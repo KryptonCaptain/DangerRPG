@@ -1,9 +1,9 @@
 package mixac1.dangerrpg.item.weapon;
 
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.api.item.ILvlableItem.ILvlableItemStaff;
-import mixac1.dangerrpg.capability.LvlableItem;
-import mixac1.dangerrpg.capability.LvlableItem.ItemAttributesMap;
+import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemStaff;
+import mixac1.dangerrpg.capability.RPGableItem;
+import mixac1.dangerrpg.capability.RPGableItem.ItemAttributesMap;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.entity.projectile.EntityMagicOrb;
 import mixac1.dangerrpg.init.RPGItems;
@@ -25,7 +25,7 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
-public class ItemRPGStaff extends ItemSword implements ILvlableItemStaff, IHasBooksInfo
+public class ItemRPGStaff extends ItemSword implements IRPGItemStaff, IHasBooksInfo
 {
     public RPGToolMaterial toolMaterial;
     public RPGStaffComponent staffComponent;
@@ -44,7 +44,7 @@ public class ItemRPGStaff extends ItemSword implements ILvlableItemStaff, IHasBo
     @Override
     public void registerAttributes(Item item, ItemAttributesMap map)
     {
-        LvlableItem.registerParamsItemStaff(item, map);
+        RPGableItem.registerParamsItemStaff(item, map);
     }
 
     @Override
@@ -87,7 +87,7 @@ public class ItemRPGStaff extends ItemSword implements ILvlableItemStaff, IHasBo
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
     {
-        if (RPGHelper.spendMana(player, ItemAttributes.MANA_COST.get(stack, player))) {
+        if (RPGHelper.spendMana(player, ItemAttributes.MANA_COST.getSafe(stack, player, 0))) {
             player.setItemInUse(stack, getMaxItemUseDuration(stack));
         }
         return stack;

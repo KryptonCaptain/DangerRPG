@@ -87,16 +87,16 @@ public class HookArmorSystem
     {
         if (entity instanceof EntityPlayer) {
             if (source == DamageSource.lava) {
-                return PlayerAttributes.LAVA_RESIST.hasIt(entity) ? PlayerAttributes.LAVA_RESIST.getValue(entity) : 0;
+                return PlayerAttributes.LAVA_RESIST.getSafe(entity, 0f);
             }
             else if (source == DamageSource.inFire || source == DamageSource.onFire) {
-                return PlayerAttributes.FIRE_RESIST.hasIt(entity) ? PlayerAttributes.FIRE_RESIST.getValue(entity) : 0;
+                return PlayerAttributes.FIRE_RESIST.getSafe(entity, 0f);
             }
             else if (source.isMagicDamage()) {
-                return PlayerAttributes.MAGIC_RESIST.hasIt(entity) ? PlayerAttributes.MAGIC_RESIST.getValue(entity) : 0;
+                return PlayerAttributes.MAGIC_RESIST.getSafe(entity, 0f);
             }
             else if (!source.isUnblockable()) {
-                return PlayerAttributes.PHISIC_RESIST.hasIt(entity) ? PlayerAttributes.PHISIC_RESIST.getValue(entity) : 0;
+                return PlayerAttributes.PHISIC_RESIST.getSafe(entity, 0f);
             }
         }
         return 0;
@@ -170,6 +170,7 @@ public class HookArmorSystem
                     }
                 }
             }
+            damage *= 1 - ratio;
         }
         return (float) (damage / MAX_PHISICAL_ARMOR);
     }

@@ -30,10 +30,15 @@ public abstract class ItemAttribute
      */
     public abstract float get(ItemStack stack);
 
-    /**
-     * Warning: Check {@link #hasIt(ItemStack)} before use this method
-     */
-    public abstract float get(ItemStack stack, EntityPlayer player);
+    public float get(ItemStack stack, EntityPlayer player)
+    {
+        return get(stack);
+    }
+
+    public float getSafe(ItemStack stack, EntityPlayer player, float defaultValue)
+    {
+        return hasIt(stack) ? get(stack, player) : defaultValue;
+    }
 
     /**
      * Warning: Check {@link #hasIt(ItemStack)} before use this method
@@ -56,7 +61,7 @@ public abstract class ItemAttribute
 
     public String getDispayValue(ItemStack stack, EntityPlayer player)
     {
-        return String.format("%.2f", get(stack, player));
+        return String.format("%.2f", getSafe(stack, player, 0));
     }
 
     public boolean isVisibleInInfoBook(ItemStack stack)

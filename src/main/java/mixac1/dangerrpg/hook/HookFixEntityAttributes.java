@@ -4,7 +4,7 @@ import java.util.List;
 
 import gloomyfolken.hooklib.asm.Hook;
 import gloomyfolken.hooklib.asm.ReturnCondition;
-import mixac1.dangerrpg.entity.projectile.EntityArrowRPG;
+import mixac1.dangerrpg.entity.projectile.EntityRPGArrow;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.util.RPGHelper;
 import net.minecraft.enchantment.Enchantment;
@@ -84,7 +84,7 @@ public class HookFixEntityAttributes
     @Hook(returnCondition = ReturnCondition.ALWAYS)
     public static void attackEntityWithRangedAttack(EntitySkeleton that, EntityLivingBase entity, float value)
     {
-        EntityArrowRPG entityarrow = new EntityArrowRPG(that.worldObj, that, entity, 1.6F, 14 - that.worldObj.difficultySetting.getDifficultyId() * 4);
+        EntityRPGArrow entityarrow = new EntityRPGArrow(that.worldObj, that, entity, 1.6F, 14 - that.worldObj.difficultySetting.getDifficultyId() * 4);
         int j = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, that.getHeldItem());
 
 

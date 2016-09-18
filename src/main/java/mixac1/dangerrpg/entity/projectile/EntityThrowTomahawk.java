@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-public class EntityThrowTomahawk extends EntityThrowLvlItem
+public class EntityThrowTomahawk extends EntityThrowRPGItem
 {
     public EntityThrowTomahawk(World world)
     {

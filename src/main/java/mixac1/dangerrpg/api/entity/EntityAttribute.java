@@ -1,8 +1,8 @@
 package mixac1.dangerrpg.api.entity;
 
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.capability.RPGEntityData;
-import mixac1.dangerrpg.capability.RPGEntityData.TypeStub;
+import mixac1.dangerrpg.capability.EntityData;
+import mixac1.dangerrpg.capability.EntityData.TypeStub;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgSyncEA;
@@ -65,9 +65,9 @@ public class EntityAttribute<Type>
         return isValid(value);
     }
 
-    public RPGEntityData getEntityData(EntityLivingBase entity)
+    public EntityData getEntityData(EntityLivingBase entity)
     {
-        return RPGEntityData.get(entity);
+        return EntityData.get(entity);
     }
 
     /**
@@ -107,6 +107,11 @@ public class EntityAttribute<Type>
         return value;
     }
 
+    public Type getSafe(EntityLivingBase entity, Type defaultValue)
+    {
+        return hasIt(entity) ? getValue(entity) : defaultValue;
+    }
+
     /**
      * Warning: Check {@link EntityAttribute#hasIt(EntityLivingBase)} before use this method
      */
@@ -129,7 +134,7 @@ public class EntityAttribute<Type>
 
     public void sync(EntityLivingBase entity)
     {
-        if (RPGEntityData.isServerSide(entity)) {
+        if (EntityData.isServerSide(entity)) {
             RPGNetwork.net.sendToAll(new MsgSyncEA(this, entity));
         }
     }

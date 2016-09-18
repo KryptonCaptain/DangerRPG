@@ -7,7 +7,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
-public abstract class RenderNormalModel extends RenderRPGItemModel
+public abstract class RenderNormalModel extends RenderItemModel
 {
     @Override
     public float specific(ItemRenderType type, ItemStack stack, EntityLivingBase entity)

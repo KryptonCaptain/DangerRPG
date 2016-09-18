@@ -18,7 +18,7 @@ public class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringPlus(get(stack, player));
+            return getStringPlus(getSafe(stack, player, 0));
         }
     };
 
@@ -27,9 +27,9 @@ public class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            float value = get(stack, player);
+            float value = getSafe(stack, player, 0);
             float power;
-            if (ItemAttributes.SHOT_POWER.hasIt(stack) && (power = ItemAttributes.SHOT_POWER.get(stack, player)) != 1F) {
+            if ((power = ItemAttributes.SHOT_POWER.getSafe(stack, player, 0)) != 1F) {
                 if (power > 1) {
                     return String.format("%.2f - %.2f", value, value * power);
                 }
@@ -38,7 +38,7 @@ public class ItemAttributes
                 }
             }
             else {
-                return getStringPlus(get(stack, player));
+                return getStringPlus(value);
             }
         }
     };
@@ -50,7 +50,7 @@ public class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringSpeed(get(stack, player), normalValue);
+            return getStringSpeed(getSafe(stack, player, 0), normalValue);
         }
     };
 
@@ -59,7 +59,7 @@ public class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringSpeed(get(stack, player), normalValue);
+            return getStringSpeed(getSafe(stack, player, 0), normalValue);
         }
     };
 
@@ -77,7 +77,7 @@ public class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringPlus(get(stack, player));
+            return getStringPlus(getSafe(stack, player, 0));
         }
     };
 
@@ -86,7 +86,7 @@ public class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringPlus(get(stack, player));
+            return getStringPlus(getSafe(stack, player, 0));
         }
     };
 
@@ -117,7 +117,7 @@ public class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringProcentage(get(stack, player));
+            return getStringProcentage(getSafe(stack, player, 0));
         }
     };
 
@@ -126,7 +126,7 @@ public class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringProcentage(get(stack, player));
+            return getStringProcentage(getSafe(stack, player, 0));
         }
     };
 
@@ -135,7 +135,7 @@ public class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringProcentage(get(stack, player));
+            return getStringProcentage(getSafe(stack, player, 0));
         }
     };
 
@@ -144,7 +144,7 @@ public class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringProcentage(get(stack, player));
+            return getStringProcentage(getSafe(stack, player, 0));
         }
     };
 
@@ -155,7 +155,7 @@ public class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringInteger(get(stack, player));
+            return getStringInteger(getSafe(stack, player, 0));
         }
     };
 
@@ -164,7 +164,7 @@ public class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringInteger(get(stack, player));
+            return getStringInteger(getSafe(stack, player, 0));
         }
     };
 
@@ -173,7 +173,7 @@ public class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringInteger(get(stack, player));
+            return getStringInteger(getSafe(stack, player, 0));
         }
 
         @Override
@@ -188,7 +188,7 @@ public class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringInteger(get(stack, player));
+            return getStringInteger(getSafe(stack, player, 0));
         }
     };
 
