@@ -7,7 +7,7 @@ import java.util.List;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.init.RPGConfig;
+import mixac1.dangerrpg.init.RPGConfig.RPGClientConfig;
 import mixac1.dangerrpg.inventory.ContainerRPGWorkbench;
 import mixac1.dangerrpg.recipe.LargeShapelessRecipe;
 import net.minecraft.item.ItemStack;
@@ -41,7 +41,7 @@ public class LargeShapelessRecipeHandler extends LargeShapedRecipeHandler
                 if (irecipe instanceof LargeShapelessRecipe) {
                     recipe = largeShapelessRecipe((LargeShapelessRecipe) irecipe);
                 }
-                else if (RPGConfig.mainShowShapedRecipe) {
+                else if (RPGClientConfig.neiShowShapedRecipe) {
                     if (irecipe instanceof ShapelessRecipes) {
                         recipe = shapelessRecipe((ShapelessRecipes) irecipe);
                     }
@@ -71,7 +71,7 @@ public class LargeShapelessRecipeHandler extends LargeShapedRecipeHandler
                 if (irecipe instanceof LargeShapelessRecipe) {
                     recipe = largeShapelessRecipe((LargeShapelessRecipe) irecipe);
                 }
-                else if (RPGConfig.mainShowShapedRecipe) {
+                else if (RPGClientConfig.neiShowShapedRecipe) {
                     if (irecipe instanceof ShapelessRecipes) {
                         recipe = shapelessRecipe((ShapelessRecipes) irecipe);
                     }
@@ -96,7 +96,7 @@ public class LargeShapelessRecipeHandler extends LargeShapedRecipeHandler
             if (irecipe instanceof LargeShapelessRecipe) {
                 recipe = largeShapelessRecipe((LargeShapelessRecipe) irecipe);
             }
-            else if (RPGConfig.mainShowShapedRecipe) {
+            else if (RPGClientConfig.neiShowShapedRecipe) {
                 if (irecipe instanceof ShapelessRecipes) {
                     recipe = shapelessRecipe((ShapelessRecipes) irecipe);
                 }

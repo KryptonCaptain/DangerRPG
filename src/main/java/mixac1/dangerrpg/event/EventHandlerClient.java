@@ -5,12 +5,14 @@ import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
+import mixac1.dangerrpg.api.event.GuiModeChangeEvent;
 import mixac1.dangerrpg.capability.GemType;
 import mixac1.dangerrpg.client.gui.RPGGuiIngame;
-import mixac1.dangerrpg.init.RPGConfig;
+import mixac1.dangerrpg.init.RPGConfig.RPGClientConfig;
 import mixac1.dangerrpg.init.RPGGuiHandlers;
 import mixac1.dangerrpg.init.RPGKeyBinds;
 import mixac1.dangerrpg.init.RPGNetwork;
+import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.IUseItemExtra;
 import mixac1.dangerrpg.network.MsgUseItemExtra;
 import mixac1.dangerrpg.network.MsgUseItemSpecial;
@@ -24,22 +26,21 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 public class EventHandlerClient
 {
     public static Minecraft mc = Minecraft.getMinecraft();
-    private static RPGGuiIngame guiIngame = new RPGGuiIngame();
 
     @SubscribeEvent
     public void renderRPGGuiIngame(RenderGameOverlayEvent.Post event)
     {
         if (!event.isCancelable() &&
              event.type == ElementType.ALL &&
-             RPGConfig.mainEnableModGui) {
-            guiIngame.renderGameOverlay(event.resolution);
+             RPGClientConfig.guiIsEnableHUD) {
+            RPGGuiIngame.INSTANCE.renderGameOverlay(event.resolution);
         }
     }
 
     @SubscribeEvent
     public void renderDisableOldBars(RenderGameOverlayEvent.Pre event)
     {
-        if (RPGConfig.mainEnableModGui) {
+        if (RPGClientConfig.guiIsEnableHUD) {
             if (event.type == ElementType.HEALTH ||
                 event.type == ElementType.ARMOR ||
                 event.type == ElementType.FOOD ||
@@ -74,6 +75,15 @@ public class EventHandlerClient
                 player.openGui(DangerRPG.instance, RPGGuiHandlers.GUI_INFO_BOOK, player.worldObj,
                                (int) player.posX, (int) player.posY, (int) player.posZ);
             }
+            else if (RPGKeyBinds.guiModeKey.getIsKeyPressed()) {
+                RPGOther.GuiMode.change();
+            }
         }
+    }
+
+    @SubscribeEvent
+    public void onGuiModeChange(GuiModeChangeEvent e)
+    {
+        RPGGuiIngame.INSTANCE.update(e.type);
     }
 }

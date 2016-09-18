@@ -11,6 +11,8 @@ import java.util.HashSet;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.FMLInjectionData;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.util.RPGHelper;
 import net.minecraftforge.common.config.ConfigCategory;
@@ -23,10 +25,24 @@ public abstract class RPGConfig
     public static File dir;
 
     /* MAIN */
-    public static boolean   mainEnableModGui;
-    public static int       mainDamageForArmorBar;
     public static boolean   mainEnableInfoLog;
-    public static boolean   mainShowShapedRecipe;
+
+    /* CLIENT */
+    @SideOnly(Side.CLIENT)
+    public static class RPGClientConfig
+    {
+        public static boolean   guiIsEnableHUD;
+        public static int       guiPlayerHUDOffsetX;
+        public static int       guiPlayerHUDOffsetY;
+        public static boolean   guiPlayerHUDIsInvert;
+        public static int       guiEnemyHUDOffsetX;
+        public static int       guiEnemyHUDOffsetY;
+        public static boolean   guiEnemyHUDIsInvert;
+        public static boolean   guiTwiceHealthManaBar;
+        public static int       guiDamageForTestArmor;
+
+        public static boolean   neiShowShapedRecipe;
+    }
 
     /* PLAYER */
     public static int       playerLoseLvlCount;
@@ -68,6 +84,33 @@ public abstract class RPGConfig
         if (config.hasChanged()) {
             config.save();
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void loadClient(FMLPreInitializationEvent e)
+    {
+        ConfigCategory cat = config.getCategory("Client Category");
+        cat.setRequiresMcRestart(true);
+        cat.setShowInGui(true);
+
+        RPGClientConfig.guiIsEnableHUD = getBoolean(cat.getName(), "guiIsEnableHUD", true,
+                "Enable Modify Gui");
+
+        RPGClientConfig.guiPlayerHUDOffsetX = getInteger(cat.getName(), "guiPlayerHUDOffsetX", 10, "");
+        RPGClientConfig.guiPlayerHUDOffsetY = getInteger(cat.getName(), "guiPlayerHUDOffsetY", 10, "");
+        RPGClientConfig.guiPlayerHUDIsInvert = getBoolean(cat.getName(), "guiPlayerHUDIsInvert", false, "");
+
+        RPGClientConfig.guiEnemyHUDOffsetX = getInteger(cat.getName(), "guiEnemyHUDOffsetX", 10, "");
+        RPGClientConfig.guiEnemyHUDOffsetY = getInteger(cat.getName(), "guiEnemyHUDOffsetY", 10, "");
+        RPGClientConfig.guiEnemyHUDIsInvert = getBoolean(cat.getName(), "guiEnemyHUDIsInvert", true, "");
+
+        RPGClientConfig.guiTwiceHealthManaBar = getBoolean(cat.getName(), "guiTwiceHealthManaBar", true, "");
+
+        RPGClientConfig.guiDamageForTestArmor = getInteger(cat.getName(), "guiDamageForTestArmor", 25,
+                "Damage count for calculate resistance in armor bar.");
+
+        RPGClientConfig.neiShowShapedRecipe = getBoolean(cat.getName(), "neiShowShapedRecipe", false,
+                "Show default shape recipes in Shaped and Shapeless Crafting(need NEI)");
     }
 
     public static void preLoadCapability(FMLPostInitializationEvent e)
@@ -135,17 +178,8 @@ public abstract class RPGConfig
         cat.setRequiresMcRestart(true);
         cat.setShowInGui(true);
 
-        mainEnableModGui = getBoolean(cat.getName(), "mainEnableModGui", true,
-                "Enable Modify Gui");
-
         mainEnableInfoLog = getBoolean(cat.getName(), "mainEnableInfoLog", true,
                 "Enable writing info message to log");
-
-        mainShowShapedRecipe = getBoolean(cat.getName(), "mainShowShapedRecipe", false,
-                "Show default shape recipes in Shaped and Shapeless Crafting(need NEI)");
-
-        mainDamageForArmorBar = getInteger(cat.getName(), "mainDamageForArmorBar", 25,
-                "Damage count for calculate resistance in armor bar");
     }
 
     private static void initPlayerCategory()

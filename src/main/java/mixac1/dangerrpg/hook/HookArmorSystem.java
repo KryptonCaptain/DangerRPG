@@ -9,7 +9,7 @@ import gloomyfolken.hooklib.asm.Hook;
 import gloomyfolken.hooklib.asm.ReturnCondition;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
-import mixac1.dangerrpg.init.RPGConfig;
+import mixac1.dangerrpg.init.RPGConfig.RPGClientConfig;
 import mixac1.dangerrpg.init.RPGOther.RPGDamageSource;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -49,7 +49,7 @@ public class HookArmorSystem
     {
         float value = 0;
         Minecraft mc = Minecraft.getMinecraft();
-        float damage = RPGConfig.mainDamageForArmorBar * MAX_PHISICAL_ARMOR;
+        float damage = RPGClientConfig.guiDamageForTestArmor * MAX_PHISICAL_ARMOR;
 
         ArrayList<ArmorProperties> list = getArrayArmorProperties(mc.thePlayer, mc.thePlayer.inventory.armorInventory, source, damage);
         if (list.size() > 0) {
