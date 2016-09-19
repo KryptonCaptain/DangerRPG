@@ -14,6 +14,7 @@ import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
+import mixac1.dangerrpg.client.gui.GuiMode;
 import mixac1.dangerrpg.util.RPGHelper;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
@@ -115,6 +116,8 @@ public abstract class RPGConfig
 
         RPGClientConfig.guiDamageForTestArmor = getInteger(cat.getName(), "guiDamageForTestArmor", 25,
                 "Damage count for calculate resistance in armor bar.");
+
+        GuiMode.set(getInteger(cat.getName(), "guiDafaultHUDMode", 1, ""));
 
         RPGClientConfig.neiShowShapedRecipe = getBoolean(cat.getName(), "neiShowShapedRecipe", false,
                 "Show default shape recipes in Shaped and Shapeless Crafting(need NEI)");

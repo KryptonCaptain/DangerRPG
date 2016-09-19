@@ -39,7 +39,7 @@ public class EntityRPGArrow extends EntityMaterial
 
         points -= entity.getHealth();
         if (points > 0 && thrower instanceof EntityPlayer) {
-            RPGableItem.upEquipment((EntityPlayer) thrower, entity, getStack(), points);
+            RPGableItem.upEquipment((EntityPlayer) thrower, entity, null, points);
         }
     }
 

@@ -7,12 +7,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.event.GuiModeChangeEvent;
 import mixac1.dangerrpg.capability.GemType;
+import mixac1.dangerrpg.client.gui.GuiMode;
 import mixac1.dangerrpg.client.gui.RPGGuiIngame;
 import mixac1.dangerrpg.init.RPGConfig.RPGClientConfig;
 import mixac1.dangerrpg.init.RPGGuiHandlers;
 import mixac1.dangerrpg.init.RPGKeyBinds;
 import mixac1.dangerrpg.init.RPGNetwork;
-import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.IUseItemExtra;
 import mixac1.dangerrpg.network.MsgUseItemExtra;
 import mixac1.dangerrpg.network.MsgUseItemSpecial;
@@ -76,7 +76,7 @@ public class EventHandlerClient
                                (int) player.posX, (int) player.posY, (int) player.posZ);
             }
             else if (RPGKeyBinds.guiModeKey.getIsKeyPressed()) {
-                RPGOther.GuiMode.change();
+                GuiMode.change();
             }
         }
     }

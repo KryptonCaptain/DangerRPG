@@ -243,26 +243,30 @@ public abstract class RPGableItem
         return RPGCapability.lvlItemRegistr.data.get(stack.getItem()).map.keySet();
     }
 
-    public static void createRPGItem(ItemStack stack)
+    public static void initRPGItem(ItemStack stack)
     {
-        if (isRPGable(stack)) {
-            if (stack.stackTagCompound == null) {
-                stack.stackTagCompound = new NBTTagCompound();
-            }
-            setStartParams(stack);
+        if (!stack.hasTagCompound()) {
+            stack.setTagCompound(new NBTTagCompound());
         }
+        initParams(stack);
     }
 
-    public static void setStartParams(ItemStack stack)
+    public static void initParams(ItemStack stack)
     {
-        if (isRPGable(stack)) {
+        if (!ItemAttributes.LEVEL.hasIt(stack)) {
             ItemAttributes.LEVEL.set(stack, 1);
+        }
+        if (!ItemAttributes.CURR_EXP.hasIt(stack)) {
             ItemAttributes.CURR_EXP.set(stack, 0);
+        }
+        if (!ItemAttributes.MAX_EXP.hasIt(stack)) {
             ItemAttributes.MAX_EXP.init(stack);
+        }
 
-            Set<ItemAttribute> itemAttributes = getAttributeValues(stack);
-            for (ItemAttribute iterator : itemAttributes) {
-                iterator.init(stack);
+        Set<ItemAttribute> itemAttributes = getAttributeValues(stack);
+        for (ItemAttribute it : itemAttributes) {
+            if (!it.hasIt(stack)) {
+                it.init(stack);
             }
         }
     }
@@ -317,8 +321,14 @@ public abstract class RPGableItem
         if (e.points > 0) {
             ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
 
-            if (e.needUp[0] && stack != null && isRPGable(stack)) {
-                stacks.add(stack);
+            if (e.needUp[0]) {
+                if (stack == null) {
+                    stack = player.getCurrentEquippedItem();
+                }
+
+                if (stack != null && isRPGable(stack)) {
+                    stacks.add(stack);
+                }
             }
 
             ItemStack[] armors = player.inventory.armorInventory;

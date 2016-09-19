@@ -22,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 
 public class HookItems
@@ -34,8 +35,16 @@ public class HookItems
     public static void ItemStack(ItemStack stack, Item item, int size, int metadata)
     {
         if (RPGableItem.isRPGable(stack)) {
-            RPGableItem.createRPGItem(stack);
+            RPGableItem.initRPGItem(stack);
             GemableItem.createGemableItem(stack);
+        }
+    }
+
+    @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
+    public static void readFromNBT(ItemStack stack, NBTTagCompound nbt)
+    {
+        if (RPGableItem.isRPGable(stack)) {
+            RPGableItem.initRPGItem(stack);
         }
     }
 

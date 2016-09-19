@@ -25,10 +25,20 @@ public abstract class ItemAttribute
 
     public abstract boolean hasIt(ItemStack stack);
 
+    public abstract float getRaw(ItemStack stack);
+
     /**
      * Warning: Check {@link #hasIt(ItemStack)} before use this method
      */
-    public abstract float get(ItemStack stack);
+    public float get(ItemStack stack)
+    {
+        float value = getRaw(stack);
+        if (!isValid(value)) {
+            init(stack);
+            value = getRaw(stack);
+        }
+        return value;
+    }
 
     public float get(ItemStack stack, EntityPlayer player)
     {
@@ -40,10 +50,17 @@ public abstract class ItemAttribute
         return hasIt(stack) ? get(stack, player) : defaultValue;
     }
 
+    public abstract void setRaw(ItemStack stack, float value);
+
     /**
      * Warning: Check {@link #hasIt(ItemStack)} before use this method
      */
-    public abstract void set(ItemStack stack, float value);
+    public void set(ItemStack stack, float value)
+    {
+        if (isValid(value)) {
+            setRaw(stack, value);
+        }
+    }
 
     /**
      * Warning: Check {@link #hasIt(ItemStack)} before use this method

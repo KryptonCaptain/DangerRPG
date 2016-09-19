@@ -22,22 +22,15 @@ public class IADynamic extends ItemAttribute
     }
 
     @Override
-    public float get(ItemStack stack)
+    public float getRaw(ItemStack stack)
     {
-        float value = stack.stackTagCompound.getFloat(name);
-        if (!isValid(value)) {
-            init(stack);
-            value = stack.stackTagCompound.getFloat(name);
-        }
-        return value;
+        return stack.stackTagCompound.getFloat(name);
     }
 
     @Override
-    public void set(ItemStack stack, float value)
+    public void setRaw(ItemStack stack, float value)
     {
-        if (isValid(value)) {
-            stack.stackTagCompound.setFloat(name, value);
-        }
+        stack.stackTagCompound.setFloat(name, value);
     }
 
     @Override

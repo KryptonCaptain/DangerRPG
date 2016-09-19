@@ -22,33 +22,38 @@ public class IAStatic extends ItemAttribute
     }
 
     @Override
-    public float get(ItemStack stack)
+    public float getRaw(ItemStack stack)
     {
-        float value = RPGCapability.lvlItemRegistr.data.get(stack.getItem()).map.get(this).value;
-        if (!isValid(value)) {
-            init(stack);
-            value = RPGCapability.lvlItemRegistr.data.get(stack.getItem()).map.get(this).value;
-        }
-        return value;
+        return RPGCapability.lvlItemRegistr.data.get(stack.getItem()).map.get(this).value;
+    }
+
+    @Override
+    public void setRaw(ItemStack stack, float value)
+    {
+
     }
 
     @Override
     public final void set(ItemStack stack, float value)
     {
+
     }
 
     @Override
     public final void add(ItemStack stack, float value)
     {
+
     }
 
     @Override
     public final void init(ItemStack stack)
     {
+
     }
 
     @Override
     public final void lvlUp(ItemStack stack)
     {
+
     }
 }

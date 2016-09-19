@@ -1,7 +1,7 @@
 package mixac1.dangerrpg.api.event;
 
 import cpw.mods.fml.common.eventhandler.Event;
-import mixac1.dangerrpg.init.RPGOther.GuiMode.GuiModeType;
+import mixac1.dangerrpg.client.gui.GuiMode.GuiModeType;
 
 public class GuiModeChangeEvent extends Event
 {
