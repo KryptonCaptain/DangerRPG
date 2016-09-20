@@ -21,10 +21,10 @@ public class MsgSyncConfig implements IMessage
     @Override
     public void fromBytes(ByteBuf buf)
     {
-        RPGCapability.lvlItemRegistr.registr.clear();
+        RPGCapability.rpgItemRegistr.registr.clear();
         int size = buf.readInt();
         for (int i = 0; i < size; ++i) {
-            RPGCapability.lvlItemRegistr.registr.add(Item.getItemById(buf.readInt()));
+            RPGCapability.rpgItemRegistr.registr.add(Item.getItemById(buf.readInt()));
         }
 
         RPGCapability.rpgEntityRegistr.registr.clear();
@@ -45,8 +45,8 @@ public class MsgSyncConfig implements IMessage
     @Override
     public void toBytes(ByteBuf buf)
     {
-        buf.writeInt(RPGCapability.lvlItemRegistr.getCloneSet().size());
-        for (Item item : RPGCapability.lvlItemRegistr.getCloneSet()) {
+        buf.writeInt(RPGCapability.rpgItemRegistr.getCloneSet().size());
+        for (Item item : RPGCapability.rpgItemRegistr.getCloneSet()) {
             buf.writeInt(item.getIdFromItem(item));
         }
 

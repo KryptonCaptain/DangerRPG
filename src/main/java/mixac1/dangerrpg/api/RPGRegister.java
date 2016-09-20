@@ -50,7 +50,7 @@ public abstract class RPGRegister
      */
     public static void registerRPGItem(Item item, IRPGItem iRPG)
     {
-        RPGCapability.lvlItemRegistr.data.put(item, new ItemAttributesMap(iRPG, true));
+        RPGCapability.rpgItemRegistr.data.put(item, new ItemAttributesMap(iRPG, true));
     }
 
     /**

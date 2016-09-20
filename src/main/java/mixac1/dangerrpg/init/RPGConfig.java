@@ -1,9 +1,6 @@
 package mixac1.dangerrpg.init;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -20,56 +17,14 @@ import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
-public abstract class RPGConfig
+public class RPGConfig
 {
-    public static Configuration config;
     public static File dir;
 
-    /* MAIN */
-    public static boolean   mainEnableInfoLog;
-
-    /* CLIENT */
-    @SideOnly(Side.CLIENT)
-    public static class RPGClientConfig
-    {
-        public static boolean   guiIsEnableHUD;
-        public static int       guiPlayerHUDOffsetX;
-        public static int       guiPlayerHUDOffsetY;
-        public static boolean   guiPlayerHUDIsInvert;
-        public static int       guiEnemyHUDOffsetX;
-        public static int       guiEnemyHUDOffsetY;
-        public static boolean   guiEnemyHUDIsInvert;
-        public static int       guiChargeOffsetX;
-        public static int       guiChargeOffsetY;
-        public static boolean   guiChargeIsCentered;
-        public static boolean   guiTwiceHealthManaBar;
-        public static int       guiDamageForTestArmor;
-
-        public static boolean   neiShowShapedRecipe;
-    }
-
-    /* PLAYER */
-    public static int       playerLoseLvlCount;
-
-    /* ENTITY */
-    public static boolean   entityAllEntityRPG;
-
-    public static HashSet<String> entitySupportedRPGEntities = new HashSet<String>();
-
-    /* ITEM */
-    public static boolean   itemAllItemsLvlable;
-    public static boolean   itemCanUpInTable;
-    public static int       itemMaxLevel;
-    public static int       itemStartMaxExp;
-    public static float     itemExpMul;
-
-    public static HashSet<String> itemSupportedLvlItems = new HashSet<String>();
+    private static ArrayList<RPGConfigCommon> configs = new ArrayList<RPGConfigCommon>();
 
     public static void load(FMLPreInitializationEvent e)
     {
-        config = new Configuration(e.getSuggestedConfigurationFile(), DangerRPG.VERSION, true);
-        config.load();
-
         dir = new File((File) FMLInjectionData.data()[6], "config/".concat(DangerRPG.MODID));
         if (dir.exists()) {
             if (!dir.isDirectory()) {
@@ -80,226 +35,298 @@ public abstract class RPGConfig
             dir.mkdir();
         }
 
-        initMainCategory();
-        initPlayerCategory();
-        initEntityCategory();
-        initItemCategory();
-
-        if (config.hasChanged()) {
-            config.save();
-        }
+        configs.add(new MainConfig("MainConfig"));
+        configs.add(new ItemConfig("ItemConfig"));
+        configs.add(new EntityConfig("EntityConfig"));
     }
 
     @SideOnly(Side.CLIENT)
     public static void loadClient(FMLPreInitializationEvent e)
     {
-        ConfigCategory cat = config.getCategory("Client Category");
-        cat.setRequiresMcRestart(true);
-        cat.setShowInGui(true);
-
-        RPGClientConfig.guiIsEnableHUD = getBoolean(cat.getName(), "guiIsEnableHUD", true,
-                "Enable Modify Gui");
-
-        RPGClientConfig.guiPlayerHUDOffsetX = getInteger(cat.getName(), "guiPlayerHUDOffsetX", 10, "");
-        RPGClientConfig.guiPlayerHUDOffsetY = getInteger(cat.getName(), "guiPlayerHUDOffsetY", 10, "");
-        RPGClientConfig.guiPlayerHUDIsInvert = getBoolean(cat.getName(), "guiPlayerHUDIsInvert", false, "");
-
-        RPGClientConfig.guiEnemyHUDOffsetX = getInteger(cat.getName(), "guiEnemyHUDOffsetX", 10, "");
-        RPGClientConfig.guiEnemyHUDOffsetY = getInteger(cat.getName(), "guiEnemyHUDOffsetY", 10, "");
-        RPGClientConfig.guiEnemyHUDIsInvert = getBoolean(cat.getName(), "guiEnemyHUDIsInvert", true, "");
-
-        RPGClientConfig.guiChargeOffsetX = getInteger(cat.getName(), "guiChargeOffsetX", 0, "");
-        RPGClientConfig.guiChargeOffsetY = getInteger(cat.getName(), "guiChargeOffsetY", 45, "");
-        RPGClientConfig.guiChargeIsCentered = getBoolean(cat.getName(), "guiChargeIsCentered", true, "");
-
-        RPGClientConfig.guiTwiceHealthManaBar = getBoolean(cat.getName(), "guiTwiceHealthManaBar", true, "");
-
-        RPGClientConfig.guiDamageForTestArmor = getInteger(cat.getName(), "guiDamageForTestArmor", 25,
-                "Damage count for calculate resistance in armor bar.");
-
-        GuiMode.set(getInteger(cat.getName(), "guiDafaultHUDMode", 1, ""));
-
-        RPGClientConfig.neiShowShapedRecipe = getBoolean(cat.getName(), "neiShowShapedRecipe", false,
-                "Show default shape recipes in Shaped and Shapeless Crafting(need NEI)");
+        configs.add(new ClientConfig("ClientConfig"));
     }
 
-    public static void preLoadCapability(FMLPostInitializationEvent e)
+    public static void postLoadPre(FMLPostInitializationEvent e)
     {
-        Property prop;
-
-        ArrayList<String> names = RPGHelper.getItemNames(RPGCapability.lvlItemRegistr.data.keySet(), true);
-        prop = getPropertyStrings("Supported Lvl items", "itemSupportedLvlItems", names.toArray(new String[names.size()]),
-                "Set supported lvlable items (activated if 'itemAllItemsLvlable' is false)", false);
-        if (!itemAllItemsLvlable) {
-            itemSupportedLvlItems = new HashSet<String>(Arrays.asList(prop.getStringList()));
-        }
-
-
-        prop = getPropertyStrings("Supported RPG entities", "entitySupportedRPGEntities", new String[] {},
-                "Set supported RPGable entities (activated if 'entityAllEntityRPG' is false)", false);
-        if (!entityAllEntityRPG) {
-            entitySupportedRPGEntities = new HashSet<String>(Arrays.asList(prop.getStringList()));
-        }
-
-
-        if (config.hasChanged()) {
-            config.save();
+        for (RPGConfigCommon config : configs) {
+            config.postLoadPre();
         }
     }
 
-    public static void postLoadCapability(FMLPostInitializationEvent e)
+    public static void postLoadPost(FMLPostInitializationEvent e)
     {
-        Property prop;
+        for (RPGConfigCommon config : configs) {
+            config.postLoadPost();
+        }
+    }
 
-        ArrayList<String> names = RPGHelper.getItemNames(RPGCapability.lvlItemRegistr.registr, true);
-        RPGConfig.getPropertyStrings("Supported Lvl items", "itemSupportedLvlItems",
-                names.toArray(new String[names.size()]), null, true);
+    public static class MainConfig extends RPGConfigCommon
+    {
+        public static boolean   mainEnableInfoLog   = true;
+        public static int       playerLoseLvlCount  = 3;
 
-
-        names = RPGHelper.getEntityNames(RPGCapability.rpgEntityRegistr.registr, true);
-        RPGConfig.getPropertyStrings("Supported RPG entities", "entitySupportedRPGEntities",
-                names.toArray(new String[names.size()]), null, true);
-
-
-        if (config.hasChanged()) {
-            config.save();
+        public MainConfig(String fileName)
+        {
+            super(fileName);
         }
 
-        PrintWriter file = createPrintWriter("AllEntityNames.txt");
-        names = RPGHelper.getEntityNames(RPGCapability.rpgEntityRegistr.data.keySet(), true);
-        for (String str : names) {
-            file.write(str.concat("\n"));
+        @Override
+        public void load()
+        {
+            mainEnableInfoLog = getBoolean("mainEnableInfoLog", mainEnableInfoLog,
+                    "Enable writing info message to log (true/false)");
+
+            playerLoseLvlCount = getInteger("playerLoseLvlCount", playerLoseLvlCount,
+                    "Set number of lost points of level when player die");
+
+            save();
         }
-        file.flush();
-        file.close();
+    }
 
-        file = createPrintWriter("AllItemNames.txt");
-        names = RPGHelper.getItemNames(RPGCapability.lvlItemRegistr.data.keySet(), true);
-        for (String str : names) {
-            file.write(str.concat("\n"));
+    @SideOnly(Side.CLIENT)
+    public static class ClientConfig extends RPGConfigCommon
+    {
+        public static boolean   guiIsEnableHUD          = true;
+        public static int       guiPlayerHUDOffsetX     = 10;
+        public static int       guiPlayerHUDOffsetY     = 10;
+        public static boolean   guiPlayerHUDIsInvert    = false;
+        public static int       guiEnemyHUDOffsetX      = 10;
+        public static int       guiEnemyHUDOffsetY      = 10;
+        public static boolean   guiEnemyHUDIsInvert     = true;
+        public static int       guiChargeOffsetX        = 0;
+        public static int       guiChargeOffsetY        = 45;
+        public static boolean   guiChargeIsCentered     = true;
+        public static boolean   guiTwiceHealthManaBar   = true;
+        public static int       guiDafaultHUDMode       = 1;
+        public static int       guiDamageForTestArmor   = 25;
+
+        public static boolean   neiShowShapedRecipe     = false;
+
+        public ClientConfig(String fileName)
+        {
+            super(fileName);
         }
-        file.flush();
-        file.close();
-    }
 
-    private static void initMainCategory()
-    {
-        ConfigCategory cat = config.getCategory("Main Category");
-        cat.setRequiresMcRestart(true);
-        cat.setShowInGui(true);
+        @Override
+        public void load()
+        {
+            guiIsEnableHUD = getBoolean("guiIsEnableHUD", guiIsEnableHUD,
+                    "Enable RPG HUD (true/false)");
 
-        mainEnableInfoLog = getBoolean(cat.getName(), "mainEnableInfoLog", true,
-                "Enable writing info message to log");
-    }
+            guiPlayerHUDOffsetX = getInteger("guiPlayerHUDOffsetX", guiPlayerHUDOffsetX,
+                    "Change X offset of player's HUD");
 
-    private static void initPlayerCategory()
-    {
-        ConfigCategory cat = config.getCategory("Player Category");
-        cat.setRequiresMcRestart(true);
-        cat.setShowInGui(true);
-        Property prop;
+            guiPlayerHUDOffsetY = getInteger("guiPlayerHUDOffsetY", guiPlayerHUDOffsetY,
+                    "Change Y offset of player's HUD");
 
-        playerLoseLvlCount = getInteger(cat.getName(), "playerLoseLvlCount", 3,
-                "Set number of lost points of level when player die");
-    }
+            guiPlayerHUDIsInvert = getBoolean("guiPlayerHUDIsInvert", guiPlayerHUDIsInvert,
+                    "Change side of player's HUD (true/false)");
 
-    private static void initEntityCategory()
-    {
-        ConfigCategory cat = config.getCategory("Entity Category");
-        cat.setRequiresMcRestart(true);
-        cat.setShowInGui(true);
-        Property prop;
+            guiEnemyHUDOffsetX = getInteger("guiEnemyHUDOffsetX", guiEnemyHUDOffsetX,
+                    "Change X offset of enemy's HUD");
 
-        entityAllEntityRPG = getBoolean(cat.getName(), "entityAllEntityRPG", true,
-                "Are all entity RPGable?");
-    }
+            guiEnemyHUDOffsetY = getInteger("guiEnemyHUDOffsetY", guiEnemyHUDOffsetY,
+                    "Change Y offset of enemy's HUD");
 
-    private static void initItemCategory()
-    {
-        ConfigCategory cat = config.getCategory("Item Category");
-        cat.setRequiresMcRestart(true);
-        cat.setShowInGui(true);
-        Property prop;
+            guiEnemyHUDIsInvert = getBoolean("guiEnemyHUDIsInvert", guiEnemyHUDIsInvert,
+                    "Change side of enemy's HUD (true/false)");
 
-        itemAllItemsLvlable = getBoolean(cat.getName(), "itemAllItemsLvlable", false,
-                "Are all weapons, tools levelable?");
+            guiChargeOffsetX = getInteger("guiChargeOffsetX", guiChargeOffsetX,
+                    "Change X offset of charge bar");
 
-        itemCanUpInTable = getBoolean(cat.getName(), "itemCanUpInTable", true,
-                "Can items upgrade in lvlup table without creative mode?");
+            guiChargeOffsetY = getInteger("guiChargeOffsetY", guiChargeOffsetY,
+                    "Change Y offset of charge bar");
 
-        itemMaxLevel = getInteger(cat.getName(), "itemMaxLevel", 100,
-                "Set items max level");
+            guiChargeIsCentered = getBoolean("guiChargeIsCentered", guiChargeIsCentered,
+                    "Charge bar need centering (true/false)");
 
-        itemStartMaxExp = getInteger(cat.getName(), "itemStartMaxExp", 100,
-                "Set items start needed expirience");
+            guiTwiceHealthManaBar = getBoolean("guiTwiceHealthManaBar", guiTwiceHealthManaBar,
+                    "Twice health-mana bar (true/false)");
 
-        itemExpMul = (float) getDouble(cat.getName(), "itemExpMul", 1.15D,
-                "Set items expirience multiplier");
-    }
+            guiDamageForTestArmor = getInteger("guiDamageForTestArmor", guiDamageForTestArmor,
+                    "Default damage value for calculate resistance in armor bar.");
 
-    public static Property getPropertyStrings(String category, String field, String[] defValue, String comment, boolean needClear)
-    {
-        ConfigCategory cat = config.getCategory(category);
-        if (needClear) {
-            cat.clear();
+            guiDafaultHUDMode = getInteger("guiDafaultHUDMode", guiDafaultHUDMode,
+                    "Set default HUD mode:\n[0] - normal\n[1] - normal digital\n[2] - simple\n[3] - simple digital");
+            GuiMode.set(guiDafaultHUDMode);
+
+            neiShowShapedRecipe = getBoolean("neiShowShapedRecipe", neiShowShapedRecipe,
+                    "Is show default recipes in RPG workbench (need NEI) (true/false)");
+
+            save();
         }
-        Property prop = config.get(category, field, defValue);
-        if (comment != null) {
-            prop.comment = comment;
-        }
-        return prop;
     }
 
-    private static int getInteger(String category, String field, int defValue, String comment)
+    public static class ItemConfig extends RPGConfigCommon
     {
-        Property prop = config.get(category, field, defValue);
-        if (comment != null) {
-            prop.comment = comment;
-        }
-        return prop.getInt(defValue);
-    }
+        public static boolean   isAllItemsRPGable   = false;
+        public static boolean   canUpInTable        = true;
+        public static int       maxLevel            = 100;
+        public static int       startMaxExp         = 100;
+        public static float     expMul              = 1.15f;
 
-    private static double getDouble(String category, String field, double defValue, String comment)
-    {
-        Property prop = config.get(category, field, defValue);
-        if (comment != null) {
-            prop.comment = comment;
-        }
-        return prop.getDouble(defValue);
-    }
+        public static HashSet<String> supportedRPGItems = new HashSet<String>();
 
-    private static boolean getBoolean(String category, String field, boolean defValue, String comment)
-    {
-        Property prop = config.get(category, field, defValue);
-        if (comment != null) {
-            prop.comment = comment;
+        public ItemConfig(String fileName)
+        {
+            super(fileName);
         }
-        return prop.getBoolean(defValue);
-    }
 
-    private static File createFile(String path)
-    {
-        File file = new File(dir, path);
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
+        @Override
+        public void load()
+        {
+            isAllItemsRPGable = getBoolean("isAllItemsRPGable", isAllItemsRPGable,
+                    "All weapons, tools , armors are RPGable (dangerous) (true/false)");
+
+            canUpInTable = getBoolean("canUpInTable", canUpInTable,
+                    "Items can be upgrade in LevelUp Table without creative mode (true/false) \nLevelUp Table is invisible now");
+
+            maxLevel = getInteger("maxLevel", maxLevel,
+                    "Set max level of RPG items");
+
+            startMaxExp = getInteger("startMaxExp", startMaxExp,
+                    "Set start needed expirience for RPG items");
+
+            expMul = (float) getDouble("expMul", expMul,
+                    "Set expirience multiplier for RPG items");
+
+            save();
+        }
+
+        @Override
+        public void postLoadPre()
+        {
+            ArrayList<String> names = RPGHelper.getItemNames(RPGCapability.rpgItemRegistr.data.keySet(), true);
+            Property prop = getPropertyStrings("supportedRPGItems", names.toArray(new String[names.size()]),
+                    "Set supported RPG items (activated if 'isAllItemsRPGable' is false) (true/false)", false);
+            if (!isAllItemsRPGable) {
+                supportedRPGItems = new HashSet<String>(Arrays.asList(prop.getStringList()));
             }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
+
+            save();
         }
-        return file;
+
+        @Override
+        public void postLoadPost()
+        {
+            ArrayList<String> names = RPGHelper.getItemNames(RPGCapability.rpgItemRegistr.registr, true);
+            getPropertyStrings("supportedRPGItems", names.toArray(new String[names.size()]), null, true);
+
+            names = RPGHelper.getItemNames(RPGCapability.rpgItemRegistr.data.keySet(), true);
+            getPropertyStrings("itemList", names.toArray(new String[names.size()]),
+                    "List of all items, which can be RPGable", true);
+
+            save();
+        }
     }
 
-    private static PrintWriter createPrintWriter(String path)
+    public static class EntityConfig extends RPGConfigCommon
     {
-        try {
-            return new PrintWriter(createFile(path));
+        public static boolean isAllEntitiesRPGable = false;
+
+        public static HashSet<String> supportedRPGEntities = new HashSet<String>();
+
+        public EntityConfig(String fileName)
+        {
+            super(fileName);
         }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
+
+        @Override
+        public void load()
+        {
+            isAllEntitiesRPGable = getBoolean("isAllEntitiesRPGable", isAllEntitiesRPGable,
+                    "All entities are RPGable (true/false)");
+
+            save();
         }
-        return null;
+
+        @Override
+        public void postLoadPre()
+        {
+            ArrayList<String> names = RPGHelper.getEntityNames(RPGCapability.rpgEntityRegistr.data.keySet(), true);
+            Property prop = getPropertyStrings("supportedRPGEntities", names.toArray(new String[names.size()]),
+                    "Set supported RPG entities (activated if 'isAllEntitiesRPGable' is false) (true/false)", false);
+            if (!isAllEntitiesRPGable) {
+                supportedRPGEntities = new HashSet<String>(Arrays.asList(prop.getStringList()));
+            }
+            save();
+        }
+
+        @Override
+        public void postLoadPost()
+        {
+            ArrayList<String> names = RPGHelper.getEntityNames(RPGCapability.rpgEntityRegistr.registr, true);
+            getPropertyStrings("supportedRPGEntities", names.toArray(new String[names.size()]), null, true);
+
+            names = RPGHelper.getEntityNames(RPGCapability.rpgEntityRegistr.data.keySet(), true);
+            getPropertyStrings("entityList", names.toArray(new String[names.size()]),
+                    "List of all entities, which can be RPGable", true);
+
+            save();
+        }
+    }
+
+    public static abstract class RPGConfigCommon
+    {
+        protected Configuration config;
+        protected ConfigCategory category;
+
+        protected RPGConfigCommon(String fileName)
+        {
+            config = new Configuration(new File(dir, fileName.concat(".cfg")), DangerRPG.VERSION, true);
+
+            category = config.getCategory(fileName);
+            category.setRequiresMcRestart(true);
+            category.setShowInGui(true);
+
+            load();
+        }
+
+        protected void load() {}
+
+        public void postLoadPre() {}
+
+        public void postLoadPost() {}
+
+        public void save()
+        {
+            if (config.hasChanged()) {
+                config.save();
+            }
+        }
+
+        protected Property getPropertyStrings(String categoryName, String[] defValue, String comment, boolean needClear)
+        {
+
+            ConfigCategory cat = config.getCategory(categoryName);
+            if (needClear) {
+                cat.clear();
+            }
+
+            Property prop = config.get(cat.getName(), "list", defValue);
+            prop.comment = comment != null ? comment : needClear ? "" : prop.comment;
+            return prop;
+        }
+
+        protected int getInteger(String field, int defValue, String comment)
+        {
+            Property prop = config.get(category.getName(), field, defValue);
+            prop.comment = comment != null ? comment : "";
+            return prop.getInt(defValue);
+        }
+
+        protected double getDouble(String field, double defValue, String comment)
+        {
+            Property prop = config.get(category.getName(), field, defValue);
+            prop.comment = comment != null ? comment : "";
+            return prop.getDouble(defValue);
+        }
+
+        protected boolean getBoolean(String field, boolean defValue, String comment)
+        {
+            Property prop = config.get(category.getName(), field, defValue);
+            prop.comment = comment != null ? comment : "";
+            return prop.getBoolean(defValue);
+        }
     }
 }
-

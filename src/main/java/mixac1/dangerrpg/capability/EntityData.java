@@ -103,8 +103,8 @@ public class EntityData implements IExtendedEntityProperties
             }
         }
 
-        if (count > RPGConfig.playerLoseLvlCount) {
-            count = RPGConfig.playerLoseLvlCount;
+        if (count > RPGConfig.MainConfig.playerLoseLvlCount) {
+            count = RPGConfig.MainConfig.playerLoseLvlCount;
         }
 
         for (int i = 0; i < count; ++i) {

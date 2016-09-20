@@ -15,7 +15,7 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.client.gui.GuiRPGWorkbench;
-import mixac1.dangerrpg.init.RPGConfig.RPGClientConfig;
+import mixac1.dangerrpg.init.RPGConfig.ClientConfig;
 import mixac1.dangerrpg.inventory.ContainerRPGWorkbench;
 import mixac1.dangerrpg.recipe.LargeShapedRecipe;
 import mixac1.dangerrpg.util.Utils;
@@ -49,7 +49,7 @@ public class LargeShapedRecipeHandler extends TemplateRecipeHandler
                 if (irecipe instanceof LargeShapedRecipe) {
                     recipe = new CachedLargeShapedRecipe((LargeShapedRecipe) irecipe);
                 }
-                else if (RPGClientConfig.neiShowShapedRecipe) {
+                else if (ClientConfig.neiShowShapedRecipe) {
                     if (irecipe instanceof ShapedRecipes) {
                         recipe = new CachedLargeShapedRecipe((ShapedRecipes) irecipe);
                     }
@@ -80,7 +80,7 @@ public class LargeShapedRecipeHandler extends TemplateRecipeHandler
                 if (irecipe instanceof LargeShapedRecipe) {
                     recipe = new CachedLargeShapedRecipe((LargeShapedRecipe) irecipe);
                 }
-                else if (RPGClientConfig.neiShowShapedRecipe) {
+                else if (ClientConfig.neiShowShapedRecipe) {
                     if (irecipe instanceof ShapedRecipes) {
                         recipe = new CachedLargeShapedRecipe((ShapedRecipes) irecipe);
                     }
@@ -107,7 +107,7 @@ public class LargeShapedRecipeHandler extends TemplateRecipeHandler
             if (irecipe instanceof LargeShapedRecipe) {
                 recipe = new CachedLargeShapedRecipe((LargeShapedRecipe) irecipe);
             }
-            else if (RPGClientConfig.neiShowShapedRecipe) {
+            else if (ClientConfig.neiShowShapedRecipe) {
                 if (irecipe instanceof ShapedRecipes) {
                     recipe = new CachedLargeShapedRecipe((ShapedRecipes) irecipe);
                 }

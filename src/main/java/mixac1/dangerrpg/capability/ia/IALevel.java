@@ -10,16 +10,16 @@ public class IALevel extends IADynamic
     {
         super(name);
     }
-    
+
     @Override
     public boolean isValid(float value)
     {
-        return super.isValid(value) && value <= RPGConfig.itemMaxLevel;
+        return super.isValid(value) && value <= RPGConfig.ItemConfig.maxLevel;
     }
-    
+
     @Override
     public void init(ItemStack stack) {}
-    
+
     @Override
     public void lvlUp(ItemStack stack) {}
 }

@@ -160,7 +160,7 @@ public abstract class RPGHelper
     public static IMaterialSpecial getMaterialSpecial(ItemStack stack)
     {
         if (stack != null && RPGableItem.isRPGable(stack)) {
-            IRPGItem ilvl = RPGCapability.lvlItemRegistr.data.get(stack.getItem()).rpgComponent;
+            IRPGItem ilvl = RPGCapability.rpgItemRegistr.data.get(stack.getItem()).rpgComponent;
             if (ilvl instanceof IRPGItemArmor) {
                 return ((IRPGItemArmor) ilvl).getArmorMaterial(stack.getItem());
             }
@@ -215,9 +215,7 @@ public abstract class RPGHelper
     {
         ArrayList<String> names = new ArrayList<String>();
         for (Item item : items) {
-            if (item.unlocalizedName != null) {
-                names.add(item.unlocalizedName);
-            }
+            names.add(item.delegate.name());
         }
         if (needSort) {
             Collections.sort(names);

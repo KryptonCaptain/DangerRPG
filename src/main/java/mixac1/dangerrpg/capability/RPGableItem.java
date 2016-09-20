@@ -51,7 +51,7 @@ public abstract class RPGableItem
         @Override
         public Float up(Float value, Object... meta)
         {
-            return value * RPGConfig.itemExpMul;
+            return value * RPGConfig.ItemConfig.expMul;
         }
     };
 
@@ -75,7 +75,7 @@ public abstract class RPGableItem
     public static boolean registerRPGItem(Item item)
     {
         if (item != null && !(item instanceof ItemBlock) && item.unlocalizedName != null) {
-            if (RPGCapability.lvlItemRegistr.data.containsKey(item)) {
+            if (RPGCapability.rpgItemRegistr.data.containsKey(item)) {
                 return true;
             }
 
@@ -87,7 +87,7 @@ public abstract class RPGableItem
                                 null;
 
             if (iRPG != null) {
-                RPGCapability.lvlItemRegistr.data.put(item, new ItemAttributesMap(iRPG, false));
+                RPGCapability.rpgItemRegistr.data.put(item, new ItemAttributesMap(iRPG, false));
                 return true;
             }
         }
@@ -96,7 +96,7 @@ public abstract class RPGableItem
 
     public static void registerParamsDefault(Item item, ItemAttributesMap map)
     {
-        map.addDynamicItemAttribute(ItemAttributes.MAX_EXP, RPGConfig.itemStartMaxExp, EXP_MUL);
+        map.addDynamicItemAttribute(ItemAttributes.MAX_EXP, RPGConfig.ItemConfig.startMaxExp, EXP_MUL);
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.DefaultIAEvent(item, map));
     }
 
@@ -235,12 +235,12 @@ public abstract class RPGableItem
 
     public static boolean isRPGable(ItemStack stack)
     {
-        return RPGCapability.lvlItemRegistr.registr.contains(stack.getItem());
+        return RPGCapability.rpgItemRegistr.registr.contains(stack.getItem());
     }
 
     public static Set<ItemAttribute> getAttributeValues(ItemStack stack)
     {
-        return RPGCapability.lvlItemRegistr.data.get(stack.getItem()).map.keySet();
+        return RPGCapability.rpgItemRegistr.data.get(stack.getItem()).map.keySet();
     }
 
     public static void initRPGItem(ItemStack stack)
@@ -293,7 +293,7 @@ public abstract class RPGableItem
             }
             int level = (int) ItemAttributes.LEVEL.get(stack);
 
-            if (level < RPGConfig.itemMaxLevel) {
+            if (level < RPGConfig.ItemConfig.maxLevel) {
                 long currEXP = (long) ItemAttributes.CURR_EXP.get(stack);
                 int maxEXP  = (int) ItemAttributes.MAX_EXP.get(stack);
 
@@ -301,7 +301,7 @@ public abstract class RPGableItem
 
                 while (currEXP >= maxEXP) {
                     instantLvlUp(stack);
-                    if (++level < RPGConfig.itemMaxLevel) {
+                    if (++level < RPGConfig.ItemConfig.maxLevel) {
                         currEXP -= maxEXP;
                     } else {
                         currEXP = maxEXP;

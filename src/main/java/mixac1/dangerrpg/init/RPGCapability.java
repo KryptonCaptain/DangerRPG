@@ -10,6 +10,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.registry.GameData;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.RPGRegister;
+import mixac1.dangerrpg.api.entity.IRPGEntity;
 import mixac1.dangerrpg.api.entity.IRPGEntity.RPGCommonEntityMob;
 import mixac1.dangerrpg.api.entity.IRPGEntity.RPGEntityRangeMob;
 import mixac1.dangerrpg.api.item.IRPGItem;
@@ -18,17 +19,36 @@ import mixac1.dangerrpg.capability.RPGableEntity.EntityAttributesMap;
 import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.RPGableItem.ItemAttributesMap;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
-import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.EntityBlaze;
+import net.minecraft.entity.monster.EntityCaveSpider;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntityGhast;
+import net.minecraft.entity.monster.EntityGiantZombie;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.EntityMagmaCube;
+import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.entity.monster.EntitySilverfish;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.entity.monster.EntitySnowman;
+import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.EntityWitch;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityBat;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityMooshroom;
+import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.passive.EntitySquid;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -36,13 +56,13 @@ import net.minecraft.item.Item;
 
 public abstract class RPGCapability
 {
-    public static LvlItemRegistr lvlItemRegistr = new LvlItemRegistr();
+    public static RPGItemRegistr rpgItemRegistr = new RPGItemRegistr();
 
     public static RPGEntityRegistr rpgEntityRegistr = new RPGEntityRegistr();
 
     public static void preLoad(FMLPostInitializationEvent e)
     {
-        registerDefaultLvlableItems();
+        registerDefaultRPGItems();
 
         registerDefaultRPGEntities();
     }
@@ -53,11 +73,11 @@ public abstract class RPGCapability
 
         loadItems();
 
-        lvlItemRegistr.createCloneSet();
+        rpgItemRegistr.createCloneSet();
         rpgEntityRegistr.createCloneSet();
     }
 
-    private static void registerDefaultLvlableItems()
+    private static void registerDefaultRPGItems()
     {
         Iterator iterator = GameData.getItemRegistry().iterator();
         while(iterator.hasNext()) {
@@ -133,6 +153,28 @@ public abstract class RPGCapability
 
     private static void registerDefaultRPGEntities()
     {
+        RPGRegister.registerRPGEntity(EntityBat.class, IRPGEntity.DEFAULT_LIVING);
+        RPGRegister.registerRPGEntity(EntitySquid.class, IRPGEntity.DEFAULT_LIVING);
+        RPGRegister.registerRPGEntity(EntityChicken.class, IRPGEntity.DEFAULT_LIVING);
+        RPGRegister.registerRPGEntity(EntitySnowman.class, IRPGEntity.DEFAULT_LIVING);
+        RPGRegister.registerRPGEntity(EntityCow.class, IRPGEntity.DEFAULT_LIVING);
+        RPGRegister.registerRPGEntity(EntityPig.class, IRPGEntity.DEFAULT_LIVING);
+        RPGRegister.registerRPGEntity(EntityHorse.class, IRPGEntity.DEFAULT_LIVING);
+        RPGRegister.registerRPGEntity(EntityOcelot.class, IRPGEntity.DEFAULT_LIVING);
+        RPGRegister.registerRPGEntity(EntitySheep.class, IRPGEntity.DEFAULT_LIVING);
+        RPGRegister.registerRPGEntity(EntityMooshroom.class, IRPGEntity.DEFAULT_LIVING);
+        RPGRegister.registerRPGEntity(EntityVillager.class, IRPGEntity.DEFAULT_LIVING);
+
+        RPGRegister.registerRPGEntity(EntitySpider.class, IRPGEntity.DEFAULT_MOB);
+        RPGRegister.registerRPGEntity(EntityZombie.class, IRPGEntity.DEFAULT_MOB);
+        RPGRegister.registerRPGEntity(EntityCreeper.class, IRPGEntity.DEFAULT_MOB);
+        RPGRegister.registerRPGEntity(EntityCaveSpider.class, IRPGEntity.DEFAULT_MOB);
+        RPGRegister.registerRPGEntity(EntityWitch.class, IRPGEntity.DEFAULT_MOB);
+        RPGRegister.registerRPGEntity(EntityPigZombie.class, IRPGEntity.DEFAULT_MOB);
+        RPGRegister.registerRPGEntity(EntitySilverfish.class, IRPGEntity.DEFAULT_MOB);
+        RPGRegister.registerRPGEntity(EntityEnderman.class, IRPGEntity.DEFAULT_MOB);
+        RPGRegister.registerRPGEntity(EntityGiantZombie.class, IRPGEntity.DEFAULT_MOB);
+
         RPGRegister.registerRPGEntity(EntityBlaze.class, new RPGEntityRangeMob(5f));
         RPGRegister.registerRPGEntity(EntitySkeleton.class, new RPGEntityRangeMob(2f));
         RPGRegister.registerRPGEntity(EntityGhast.class, new RPGEntityRangeMob(6f));
@@ -160,9 +202,10 @@ public abstract class RPGCapability
         for (Entry<Class<? extends EntityLivingBase>, EntityAttributesMap> data : rpgEntityRegistr.data.entrySet()) {
             RPGableEntity.registerEntityDefault(data.getKey(), data.getValue());
             data.getValue().rpgComponent.registerAttributes(data.getKey(), data.getValue());
-            if (RPGConfig.entityAllEntityRPG || RPGConfig.entitySupportedRPGEntities.contains(EntityList.classToStringMapping.get(data.getKey()))) {
+            if (RPGConfig.EntityConfig.isAllEntitiesRPGable || RPGConfig.EntityConfig.supportedRPGEntities.contains(EntityList.classToStringMapping.get(data.getKey()))) {
                 rpgEntityRegistr.registr.add(data.getKey());
-                DangerRPG.infoLog(Utils.toString("Register rpg entity: ", EntityList.classToStringMapping.get(data.getKey())));
+                DangerRPG.infoLog(String.format("Register RPG entity (sup from mod: %s): %s",
+                                  data.getValue().isSupported ? " true" : "false", EntityList.classToStringMapping.get(data.getKey())));
             }
         }
         rpgEntityRegistr.registr.add(EntityPlayer.class);
@@ -175,17 +218,18 @@ public abstract class RPGCapability
             RPGableItem.registerRPGItem((Item) iterator.next());
         }
 
-        for (Entry<Item, ItemAttributesMap> data : lvlItemRegistr.data.entrySet()) {
+        for (Entry<Item, ItemAttributesMap> data : rpgItemRegistr.data.entrySet()) {
             RPGableItem.registerParamsDefault(data.getKey(), data.getValue());
             data.getValue().rpgComponent.registerAttributes(data.getKey(), data.getValue());
-            if (RPGConfig.itemAllItemsLvlable || RPGConfig.itemSupportedLvlItems.contains(data.getKey().unlocalizedName)) {
-                lvlItemRegistr.registr.add(data.getKey());
-                DangerRPG.infoLog(Utils.toString("Register lvlable item: ", data.getKey().unlocalizedName, " (mod supported: ", String.valueOf(data.getValue().isSupported), ")"));
+            if (RPGConfig.ItemConfig.isAllItemsRPGable || RPGConfig.ItemConfig.supportedRPGItems.contains(data.getKey().delegate.name())) {
+                rpgItemRegistr.registr.add(data.getKey());
+                DangerRPG.infoLog(String.format("Register RPG item (sup from mod: %s): %s",
+                                  data.getValue().isSupported ? " true" : "false", data.getKey().delegate.name()));
             }
         }
     }
 
-    public static class LvlItemRegistr
+    public static class RPGItemRegistr
     {
         public Set<Item> registr = new HashSet<Item>();
         public HashMap<Item, ItemAttributesMap> data = new HashMap<Item, ItemAttributesMap>();

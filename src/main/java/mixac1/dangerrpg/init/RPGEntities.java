@@ -4,11 +4,11 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.entity.projectile.EntityRPGArrow;
 import mixac1.dangerrpg.entity.projectile.EntityMagicOrb;
 import mixac1.dangerrpg.entity.projectile.EntityMaterial;
 import mixac1.dangerrpg.entity.projectile.EntityPowerMagicOrb;
 import mixac1.dangerrpg.entity.projectile.EntityProjectile;
+import mixac1.dangerrpg.entity.projectile.EntityRPGArrow;
 import mixac1.dangerrpg.entity.projectile.EntitySniperArrow;
 import mixac1.dangerrpg.entity.projectile.EntityThrowKnife;
 import mixac1.dangerrpg.entity.projectile.EntityThrowRPGItem;
@@ -48,6 +48,6 @@ public abstract class RPGEntities
 
     private static void registerEntityProjecttile(Class<? extends Entity> entityClass)
     {
-        EntityRegistry.registerModEntity(entityClass, entityClass.getName(), count++, DangerRPG.instance, 64, 20, true);
+        EntityRegistry.registerModEntity(entityClass, entityClass.getSimpleName(), count++, DangerRPG.instance, 64, 20, true);
     }
 }

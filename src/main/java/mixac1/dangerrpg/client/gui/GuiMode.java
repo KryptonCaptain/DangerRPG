@@ -26,7 +26,7 @@ public class GuiMode
 
     public static void set(int number)
     {
-        curr = (int) Utils.alignment(number, 0, GuiModeType.values().length);
+        curr = (int) Utils.alignment(number, 0, GuiModeType.values().length - 1);
     }
 
     public static boolean isIt(GuiModeType type)

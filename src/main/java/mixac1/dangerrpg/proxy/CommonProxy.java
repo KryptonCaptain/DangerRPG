@@ -52,11 +52,11 @@ public class CommonProxy
     {
         RPGCapability.preLoad(e);
 
-        RPGConfig.preLoadCapability(e);
+        RPGConfig.postLoadPre(e);
 
         RPGCapability.load(e);
 
-        RPGConfig.postLoadCapability(e);
+        RPGConfig.postLoadPost(e);
     }
 
     public EntityPlayer getClientPlayer()

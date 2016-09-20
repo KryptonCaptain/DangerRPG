@@ -24,7 +24,7 @@ public class ContainerLvlupTable extends Container
     private int posZ;
     private boolean firstUse = true;
     public int expToUp;
-    
+
     public IInventory tableInventory = new InventoryBasic("Lvlup", true, 1)
     {
         @Override
@@ -32,28 +32,28 @@ public class ContainerLvlupTable extends Container
         {
             return 1;
         }
-        
+
         @Override
         public void markDirty()
         {
             super.markDirty();
             ContainerLvlupTable.this.onCraftMatrixChanged(this);
         }
-        
+
         @Override
         public boolean isItemValidForSlot(int index, ItemStack stack)
         {
             return RPGableItem.isRPGable(stack);
         }
     };
-    
+
     public ContainerLvlupTable(IInventory playerv, World world, int x, int y, int z)
     {
         worldPointer = world;
         posX = x;
         posY = y;
         posZ = z;
-        
+
         addSlotToContainer(new Slot(tableInventory, 0, 34, 63)
         {
             @Override
@@ -62,19 +62,19 @@ public class ContainerLvlupTable extends Container
                 return inventory.isItemValidForSlot(slotNumber, stack);
             }
         });
-        
+
         // Player inventory: 1 - 27
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
                 addSlotToContainer(new Slot(playerv, j + i * 9 + 9, 8 + j * 18, 92 + i * 18));
             }
         }
-    
+
         // Player Inventory, Slot 28 - 36
         for (int i = 0; i < 9; ++i) {
             addSlotToContainer(new Slot(playerv, i, 8 + i * 18, 150));
         }
-        
+
         // Player armor's slots: 37 - 40
         for (int i = 0; i < 4; ++i) {
             final int k = i;
@@ -85,7 +85,7 @@ public class ContainerLvlupTable extends Container
                 {
                     return 1;
                 }
-   
+
                 @Override
                 public boolean isItemValid(ItemStack stack)
                 {
@@ -97,7 +97,7 @@ public class ContainerLvlupTable extends Container
             });
         }
     }
-    
+
     @Override
     public void addCraftingToCrafters(ICrafting craft)
     {
@@ -127,7 +127,7 @@ public class ContainerLvlupTable extends Container
             super.updateProgressBar(par1, par2);
         }
     }
-    
+
     @Override
     public boolean canInteractWith(EntityPlayer player)
     {
@@ -137,7 +137,7 @@ public class ContainerLvlupTable extends Container
         }
         return player.getDistance(posX + 0.5D, posY + 0.5D, posZ + 0.5D) <= 64.0D;
     }
-    
+
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int fromSlot)
     {
@@ -147,18 +147,18 @@ public class ContainerLvlupTable extends Container
         if (slot != null && slot.getHasStack()) {
             ItemStack stack1 = slot.getStack();
             stack = stack1.copy();
-     
+
             if (RPGableItem.isRPGable(stack) && !((Slot)inventorySlots.get(0)).getHasStack()) {
                 if (!mergeItemStack(stack1, 0, 1, false)) {
                     return null;
                 }
-            } 
+            }
             else if (stack.getItem() instanceof ItemArmor && !((Slot)inventorySlots.get(37 + ((ItemArmor)stack.getItem()).armorType)).getHasStack()) {
                 int j = 37 + ((ItemArmor)stack.getItem()).armorType;
                 if (!mergeItemStack(stack1, j, j + 1, false)) {
                     return null;
                 }
-            }   
+            }
             else if (fromSlot >= 1 && fromSlot < 28) {
                 if (!mergeItemStack(stack1, 28, 37, false)) {
                     return null;
@@ -197,7 +197,7 @@ public class ContainerLvlupTable extends Container
         }
         return stack;
     }
-    
+
     @Override
     public void onContainerClosed(EntityPlayer player)
     {
@@ -211,7 +211,7 @@ public class ContainerLvlupTable extends Container
             }
         }
     }
-    
+
     @Override
     public void onCraftMatrixChanged(IInventory inventory)
     {
@@ -230,7 +230,7 @@ public class ContainerLvlupTable extends Container
             }
         }
     }
-    
+
     @Override
     public boolean enchantItem(EntityPlayer player, int flag)
     {
@@ -244,7 +244,7 @@ public class ContainerLvlupTable extends Container
                     }
                     return true;
                 }
-                else if (RPGConfig.itemCanUpInTable && expToUp <= player.experienceTotal) {
+                else if (RPGConfig.ItemConfig.canUpInTable && expToUp <= player.experienceTotal) {
                     if (!worldPointer.isRemote) {
                         RPGableItem.addExp(stack, expToUp);
                         player.addExperience(-expToUp);
@@ -253,12 +253,12 @@ public class ContainerLvlupTable extends Container
                     }
                     return true;
                 }
-                
+
             }
             else {
-                if (RPGConfig.itemCanUpInTable && player.experienceTotal > 0) {
+                if (RPGConfig.ItemConfig.canUpInTable && player.experienceTotal > 0) {
                     if (!worldPointer.isRemote) {
-                        while (player.experienceTotal > 0 && ItemAttributes.LEVEL.get(stack) < RPGConfig.itemMaxLevel) {
+                        while (player.experienceTotal > 0 && ItemAttributes.LEVEL.get(stack) < RPGConfig.ItemConfig.maxLevel) {
                             float temp = ItemAttributes.MAX_EXP.get(stack) - ItemAttributes.CURR_EXP.get(stack);
                             int needToUp = (int) ((temp > (int) temp) ? temp + 1 : temp);
                             if (player.experienceTotal > needToUp) {
