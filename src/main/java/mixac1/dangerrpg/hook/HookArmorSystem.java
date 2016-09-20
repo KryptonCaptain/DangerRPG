@@ -5,13 +5,13 @@ import java.util.Arrays;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gloomyfolken.hooklib.asm.Hook;
-import gloomyfolken.hooklib.asm.ReturnCondition;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.init.RPGConfig.ClientConfig;
 import mixac1.dangerrpg.init.RPGOther.RPGDamageSource;
 import mixac1.dangerrpg.util.Utils;
+import mixac1.hooklib.asm.Hook;
+import mixac1.hooklib.asm.ReturnCondition;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

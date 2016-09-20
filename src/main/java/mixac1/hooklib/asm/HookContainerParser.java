@@ -1,4 +1,4 @@
-package gloomyfolken.hooklib.asm;
+package mixac1.hooklib.asm;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -10,8 +10,10 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
-import gloomyfolken.hooklib.asm.Hook.LocalVariable;
-import gloomyfolken.hooklib.asm.Hook.ReturnValue;
+import mixac1.dangerrpg.DangerRPG;
+import mixac1.dangerrpg.util.Utils;
+import mixac1.hooklib.asm.Hook.LocalVariable;
+import mixac1.hooklib.asm.Hook.ReturnValue;
 
 public class HookContainerParser {
 
@@ -43,7 +45,6 @@ public class HookContainerParser {
     }
 
     protected void parseHooks(String className) {
-        transformer.logger.debug("Parsing hooks contatiner " + className);
         parseHooks(ReadClassHelper.getClassData(className));
     }
 
@@ -52,8 +53,8 @@ public class HookContainerParser {
     }
 
     private void invalidHook(String message) {
-        transformer.logger.warning("Found invalid hook " + currentClassName + "#" + currentMethodName);
-        transformer.logger.warning(message);
+        DangerRPG.logger.warn(Utils.toString("Found invalid hook ", currentClassName, "#", currentMethodName));
+        DangerRPG.logger.warn(message);
     }
 
     private void createHook() {
@@ -132,15 +133,15 @@ public class HookContainerParser {
         if (returnCondition != ReturnCondition.NEVER) {
             Object primitiveConstant = getPrimitiveConstant();
             if (primitiveConstant != null) {
-                builder.setReturnValue(gloomyfolken.hooklib.asm.ReturnValue.PRIMITIVE_CONSTANT);
+                builder.setReturnValue(mixac1.hooklib.asm.ReturnValue.PRIMITIVE_CONSTANT);
                 builder.setPrimitiveConstant(primitiveConstant);
             } else if (Boolean.TRUE.equals(annotationValues.get("returnNull"))) {
-                builder.setReturnValue(gloomyfolken.hooklib.asm.ReturnValue.NULL);
+                builder.setReturnValue(mixac1.hooklib.asm.ReturnValue.NULL);
             } else if (annotationValues.containsKey("returnAnotherMethod")) {
-                builder.setReturnValue(gloomyfolken.hooklib.asm.ReturnValue.ANOTHER_METHOD_RETURN_VALUE);
+                builder.setReturnValue(mixac1.hooklib.asm.ReturnValue.ANOTHER_METHOD_RETURN_VALUE);
                 builder.setReturnMethod((String) annotationValues.get("returnAnotherMethod"));
             } else if (methodType.getReturnType() != Type.VOID_TYPE) {
-                builder.setReturnValue(gloomyfolken.hooklib.asm.ReturnValue.HOOK_RETURN_VALUE);
+                builder.setReturnValue(mixac1.hooklib.asm.ReturnValue.HOOK_RETURN_VALUE);
             }
         }
 

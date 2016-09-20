@@ -2,13 +2,13 @@ package mixac1.dangerrpg.hook;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gloomyfolken.hooklib.asm.Hook;
-import gloomyfolken.hooklib.asm.Hook.ReturnValue;
-import gloomyfolken.hooklib.asm.ReturnCondition;
 import mixac1.dangerrpg.api.item.IRPGItem;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemBow;
 import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
+import mixac1.hooklib.asm.Hook;
+import mixac1.hooklib.asm.ReturnCondition;
+import mixac1.hooklib.asm.Hook.ReturnValue;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;

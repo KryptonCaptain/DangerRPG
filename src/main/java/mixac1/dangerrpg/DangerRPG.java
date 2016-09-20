@@ -12,6 +12,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import mixac1.dangerrpg.init.RPGConfig;
 import mixac1.dangerrpg.proxy.CommonProxy;
+import mixac1.dangerrpg.util.Utils;
 import net.minecraft.util.StatCollector;
 
 @Mod(modid                     = DangerRPG.MODID,
@@ -33,7 +34,7 @@ public class DangerRPG
                 serverSide = "mixac1.dangerrpg.proxy.CommonProxy")
     public static CommonProxy  proxy;
 
-    private static final Logger logger = LogManager.getLogger(DangerRPG.MODID);
+    public static final Logger logger = LogManager.getLogger(DangerRPG.MODID);
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
@@ -57,15 +58,15 @@ public class DangerRPG
     {
         StringBuilder buf = new StringBuilder();
         for (Object obj : objs) {
-            buf.append(obj != null ? obj.toString() : "null").append(" ");
+            buf.append(obj != null ? obj.toString() : "(null)").append(" ");
         }
         DangerRPG.logger.info(buf.toString());
     }
 
-    public static void infoLog(Object obj)
+    public static void infoLog(Object... objs)
     {
         if (RPGConfig.MainConfig.mainEnableInfoLog) {
-            DangerRPG.logger.info(obj != null ? obj.toString() : "null");
+            DangerRPG.logger.info(Utils.toString(objs));
         }
     }
 

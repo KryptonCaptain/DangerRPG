@@ -1,4 +1,4 @@
-package gloomyfolken.hooklib.asm;
+package mixac1.hooklib.asm;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;

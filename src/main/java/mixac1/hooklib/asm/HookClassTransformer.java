@@ -1,4 +1,4 @@
-package gloomyfolken.hooklib.asm;
+package mixac1.hooklib.asm;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -9,11 +9,10 @@ import java.util.List;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
-import gloomyfolken.hooklib.asm.HookLogger.SystemOutLogger;
+import mixac1.dangerrpg.DangerRPG;
 
 public class HookClassTransformer {
 
-    public HookLogger logger = new SystemOutLogger();
     public HashMap<String, List<AsmHook>> hooksMap = new HashMap<String, List<AsmHook>>();
     private HookContainerParser containerParser = new HookContainerParser(this);
 
@@ -41,8 +40,11 @@ public class HookClassTransformer {
         if (hooks != null) {
             try {
                 Collections.sort(hooks);
-                logger.debug("Injecting hooks into class " + className);
                 int numHooks = hooks.size();
+
+                for (AsmHook hook : hooks) {
+                    DangerRPG.log(String.format("Hook: patching method %s#%s", hook.getTargetClassName(), hook.getTargetMethodName()));
+                }
 
                 /*
                  Начиная с седьмой версии джавы, сильно изменился процесс верификации байткода.
@@ -59,21 +61,19 @@ public class HookClassTransformer {
                 cr.accept(hooksWriter, java7 ? ClassReader.SKIP_FRAMES : ClassReader.EXPAND_FRAMES);
 
                 int numInjectedHooks = numHooks - hooksWriter.hooks.size();
-                logger.debug("Successfully injected " + numInjectedHooks + " hook" +
-                        (numInjectedHooks == 1 ? "" : "s") + " to " + className);
-                for (AsmHook notInjected : hooksWriter.hooks) {
-                    logger.warning("Can not found target method of hook " + notInjected);
+                for (AsmHook hook : hooks) {
+                    DangerRPG.log(String.format("Warning: unsuccesfull pathing method %s#%s", hook.getTargetClassName(), hook.getTargetMethodName()));
                 }
 
                 return cw.toByteArray();
             }
             catch (Exception e) {
-                logger.severe("A problem has occured during transformation of class " + className + ".");
-                logger.severe("Attached hooks:");
+                DangerRPG.logger.error("A problem has occured during transformation of class " + className + ".");
+                DangerRPG.logger.error("Attached hooks:");
                 for (AsmHook hook : hooks) {
-                    logger.severe(hook.toString());
+                    DangerRPG.logger.error(hook.toString());
                 }
-                logger.severe("Stack trace:", e);
+                DangerRPG.logger.error("Stack trace:", e);
             }
         }
         return bytecode;

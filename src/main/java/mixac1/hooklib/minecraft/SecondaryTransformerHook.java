@@ -1,7 +1,7 @@
-package gloomyfolken.hooklib.minecraft;
+package mixac1.hooklib.minecraft;
 
 import cpw.mods.fml.common.Loader;
-import gloomyfolken.hooklib.asm.Hook;
+import mixac1.hooklib.asm.Hook;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 
 public class SecondaryTransformerHook {

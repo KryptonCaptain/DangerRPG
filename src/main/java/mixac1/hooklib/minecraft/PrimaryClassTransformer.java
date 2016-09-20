@@ -1,9 +1,9 @@
-package gloomyfolken.hooklib.minecraft;
+package mixac1.hooklib.minecraft;
 
 import cpw.mods.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
-import gloomyfolken.hooklib.asm.AsmHook;
-import gloomyfolken.hooklib.asm.HookClassTransformer;
-import gloomyfolken.hooklib.asm.HookInjectorClassVisitor;
+import mixac1.hooklib.asm.AsmHook;
+import mixac1.hooklib.asm.HookClassTransformer;
+import mixac1.hooklib.asm.HookInjectorClassVisitor;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Type;

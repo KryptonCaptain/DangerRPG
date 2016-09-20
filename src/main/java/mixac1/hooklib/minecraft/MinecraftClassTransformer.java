@@ -1,11 +1,4 @@
-package gloomyfolken.hooklib.minecraft;
-
-import net.minecraft.launchwrapper.IClassTransformer;
-import org.objectweb.asm.ClassWriter;
-
-import gloomyfolken.hooklib.asm.AsmHook;
-import gloomyfolken.hooklib.asm.HookClassTransformer;
-import gloomyfolken.hooklib.asm.HookInjectorClassVisitor;
+package mixac1.hooklib.minecraft;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -14,6 +7,14 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.objectweb.asm.ClassWriter;
+
+import mixac1.dangerrpg.DangerRPG;
+import mixac1.hooklib.asm.AsmHook;
+import mixac1.hooklib.asm.HookClassTransformer;
+import mixac1.hooklib.asm.HookInjectorClassVisitor;
+import net.minecraft.launchwrapper.IClassTransformer;
 
 public class MinecraftClassTransformer extends HookClassTransformer implements IClassTransformer {
 
@@ -28,9 +29,9 @@ public class MinecraftClassTransformer extends HookClassTransformer implements I
                 long timeStart = System.currentTimeMillis();
                 methodNames = loadMethodNames();
                 long time = System.currentTimeMillis() - timeStart;
-                logger.debug("Methods dictionary loaded in " + time + " ms");
+                DangerRPG.logger.debug("Methods dictionary loaded in " + time + " ms");
             } catch (IOException e) {
-                logger.severe("Can not load obfuscated method names", e);
+                DangerRPG.logger.error("Can not load obfuscated method names", e);
             }
         }
 
@@ -41,7 +42,9 @@ public class MinecraftClassTransformer extends HookClassTransformer implements I
 
     private HashMap<Integer, String> loadMethodNames() throws IOException {
         InputStream resourceStream = getClass().getResourceAsStream("/methods.bin");
-        if (resourceStream == null) throw new IOException("Methods dictionary not found");
+        if (resourceStream == null) {
+            throw new IOException("Methods dictionary not found");
+        }
         DataInputStream input = new DataInputStream(new BufferedInputStream(resourceStream));
         int numMethods = input.readInt();
         HashMap<Integer, String> map = new HashMap<Integer, String>(numMethods);

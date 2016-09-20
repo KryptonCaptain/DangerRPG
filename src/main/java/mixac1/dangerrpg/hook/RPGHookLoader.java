@@ -1,7 +1,7 @@
 package mixac1.dangerrpg.hook;
 
-import gloomyfolken.hooklib.minecraft.HookLoader;
-import gloomyfolken.hooklib.minecraft.PrimaryClassTransformer;
+import mixac1.hooklib.minecraft.HookLoader;
+import mixac1.hooklib.minecraft.PrimaryClassTransformer;
 
 public class RPGHookLoader extends HookLoader
 {

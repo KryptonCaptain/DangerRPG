@@ -1,4 +1,4 @@
-package gloomyfolken.hooklib.asm;
+package mixac1.hooklib.asm;
 
 /**
  * В зависимости от этого значения после вызова хук-метода может быть вызван return.

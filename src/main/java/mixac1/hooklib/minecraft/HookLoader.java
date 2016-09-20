@@ -1,4 +1,4 @@
-package gloomyfolken.hooklib.minecraft;
+package mixac1.hooklib.minecraft;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -9,9 +9,9 @@ import org.apache.commons.io.IOUtils;
 
 import cpw.mods.fml.common.asm.transformers.DeobfuscationTransformer;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
-import gloomyfolken.hooklib.asm.AsmHook;
-import gloomyfolken.hooklib.asm.HookClassTransformer;
-import gloomyfolken.hooklib.asm.ReadClassHelper;
+import mixac1.hooklib.asm.AsmHook;
+import mixac1.hooklib.asm.HookClassTransformer;
+import mixac1.hooklib.asm.ReadClassHelper;
 
 /**
  * Удобная базовая реализация IFMLLoadingPlugin для использования HookLib.

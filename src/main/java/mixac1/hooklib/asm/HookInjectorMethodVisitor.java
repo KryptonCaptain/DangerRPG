@@ -1,4 +1,4 @@
-package gloomyfolken.hooklib.asm;
+package mixac1.hooklib.asm;
 
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;

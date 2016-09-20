@@ -1,8 +1,8 @@
-package gloomyfolken.hooklib.disk;
+package mixac1.hooklib.disk;
 
 import org.apache.commons.io.IOUtils;
 
-import gloomyfolken.hooklib.asm.HookClassTransformer;
+import mixac1.hooklib.asm.HookClassTransformer;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -1,4 +1,4 @@
-package gloomyfolken.hooklib.helper;
+package mixac1.hooklib.helper;
 
 import java.io.DataOutputStream;
 import java.io.File;

@@ -1,11 +1,11 @@
 package mixac1.dangerrpg.hook;
 
-import gloomyfolken.hooklib.asm.Hook;
-import gloomyfolken.hooklib.asm.Hook.ReturnValue;
-import gloomyfolken.hooklib.asm.ReturnCondition;
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
 import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
+import mixac1.hooklib.asm.Hook;
+import mixac1.hooklib.asm.ReturnCondition;
+import mixac1.hooklib.asm.Hook.ReturnValue;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

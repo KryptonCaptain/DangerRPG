@@ -4,9 +4,6 @@ import java.util.UUID;
 
 import com.google.common.collect.Multimap;
 
-import gloomyfolken.hooklib.asm.Hook;
-import gloomyfolken.hooklib.asm.Hook.ReturnValue;
-import gloomyfolken.hooklib.asm.ReturnCondition;
 import mixac1.dangerrpg.api.event.ItemStackEvent.AddAttributeModifiers;
 import mixac1.dangerrpg.capability.GemableItem;
 import mixac1.dangerrpg.capability.RPGableItem;
@@ -15,6 +12,9 @@ import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.init.RPGOther.RPGItemRarity;
 import mixac1.dangerrpg.item.IMaterialSpecial;
 import mixac1.dangerrpg.util.RPGHelper;
+import mixac1.hooklib.asm.Hook;
+import mixac1.hooklib.asm.ReturnCondition;
+import mixac1.hooklib.asm.Hook.ReturnValue;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;

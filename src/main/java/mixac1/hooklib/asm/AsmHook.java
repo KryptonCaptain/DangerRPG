@@ -1,4 +1,4 @@
-package gloomyfolken.hooklib.asm;
+package mixac1.hooklib.asm;
 
 import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.ARETURN;
@@ -33,8 +33,8 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
-import gloomyfolken.hooklib.asm.HookInjectorFactory.MethodEnter;
-import gloomyfolken.hooklib.asm.HookInjectorFactory.MethodExit;
+import mixac1.hooklib.asm.HookInjectorFactory.MethodEnter;
+import mixac1.hooklib.asm.HookInjectorFactory.MethodExit;
 
 /**
  * Класс, отвечающий за установку одного хука в один метод.
@@ -79,6 +79,10 @@ public class AsmHook implements Cloneable, Comparable<AsmHook> {
 
     protected String getTargetClassName() {
         return targetClassName;
+    }
+
+    protected String getTargetMethodName() {
+        return targetMethodName;
     }
 
     protected boolean isTargetMethod(String name, String desc) {

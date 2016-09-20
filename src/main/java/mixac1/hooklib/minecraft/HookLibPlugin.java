@@ -1,4 +1,4 @@
-package gloomyfolken.hooklib.minecraft;
+package mixac1.hooklib.minecraft;
 
 import cpw.mods.fml.relauncher.CoreModManager;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
