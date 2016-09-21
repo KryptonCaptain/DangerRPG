@@ -17,6 +17,7 @@ import mixac1.dangerrpg.init.RPGConfig;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.network.MsgSyncEntityData;
+import mixac1.dangerrpg.util.Tuple.Stub;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,16 +26,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 import net.minecraftforge.common.MinecraftForge;
 
-public class EntityData implements IExtendedEntityProperties
+public class RPGEntityProperties implements IExtendedEntityProperties
 {
     protected static final String ID = "RPGCommonEntityData";
 
     public final EntityLivingBase entity;
 
-    public HashMap<Integer, TypeStub> attributeMap = new HashMap<Integer, TypeStub>();
+    public HashMap<Integer, Stub> attributeMap = new HashMap<Integer, Stub>();
     public HashMap<Integer, Integer>  lvlMap       = new HashMap<Integer, Integer>();
 
-    public EntityData(EntityLivingBase entity)
+    public RPGEntityProperties(EntityLivingBase entity)
     {
         this.entity = entity;
     }
@@ -62,12 +63,12 @@ public class EntityData implements IExtendedEntityProperties
 
     public static void register(EntityLivingBase entity)
     {
-        entity.registerExtendedProperties(ID, new EntityData(entity));
+        entity.registerExtendedProperties(ID, new RPGEntityProperties(entity));
     }
 
-    public static EntityData get(EntityLivingBase entity)
+    public static RPGEntityProperties get(EntityLivingBase entity)
     {
-        return (EntityData) entity.getExtendedProperties(ID);
+        return (RPGEntityProperties) entity.getExtendedProperties(ID);
     }
 
     public static boolean isServerSide(EntityLivingBase entity)
@@ -159,21 +160,11 @@ public class EntityData implements IExtendedEntityProperties
 
     public Set<EntityAttribute> getEntityAttributes()
     {
-        return RPGCapability.rpgEntityRegistr.getAttributesSet(entity).attributes.keySet();
+        return RPGCapability.rpgEntityRegistr.get(entity).attributes.keySet();
     }
 
     public List<LvlEAProvider> getLvlProviders()
     {
-        return RPGCapability.rpgEntityRegistr.getAttributesSet(entity).lvlProviders;
-    }
-
-    public static class TypeStub<Type>
-    {
-        public Type value;
-
-        public TypeStub(Type value)
-        {
-            this.value = value;
-        }
+        return RPGCapability.rpgEntityRegistr.get(entity).lvlProviders;
     }
 }

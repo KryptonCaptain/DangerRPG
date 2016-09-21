@@ -1,16 +1,20 @@
 package mixac1.dangerrpg.api.item;
 
 import mixac1.dangerrpg.DangerRPG;
+import mixac1.dangerrpg.init.RPGCapability;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 public abstract class ItemAttribute
 {
     public final String name;
+    public final int hash;
 
     public ItemAttribute(String name)
     {
         this.name = name;
+        hash = name.hashCode();
+        RPGCapability.mapIntToItemAttribute.put(hash, this);
     }
 
     public boolean isValid(float value)
@@ -84,5 +88,11 @@ public abstract class ItemAttribute
     public boolean isVisibleInInfoBook(ItemStack stack)
     {
         return true;
+    }
+
+    @Override
+    public final int hashCode()
+    {
+        return hash;
     }
 }

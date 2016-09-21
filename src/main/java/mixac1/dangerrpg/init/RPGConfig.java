@@ -196,7 +196,7 @@ public class RPGConfig
         @Override
         public void postLoadPre()
         {
-            ArrayList<String> names = RPGHelper.getItemNames(RPGCapability.rpgItemRegistr.data.keySet(), true);
+            ArrayList<String> names = RPGHelper.getItemNames(RPGCapability.rpgItemRegistr.keySet(), true);
             Property prop = getPropertyStrings("supportedRPGItems", names.toArray(new String[names.size()]),
                     "Set supported RPG items (activated if 'isAllItemsRPGable' is false) (true/false)", false);
             if (!isAllItemsRPGable) {
@@ -209,10 +209,10 @@ public class RPGConfig
         @Override
         public void postLoadPost()
         {
-            ArrayList<String> names = RPGHelper.getItemNames(RPGCapability.rpgItemRegistr.registr, true);
+            ArrayList<String> names = RPGHelper.getItemNames(RPGCapability.rpgItemRegistr.getActiveElements().keySet(), true);
             getPropertyStrings("supportedRPGItems", names.toArray(new String[names.size()]), null, true);
 
-            names = RPGHelper.getItemNames(RPGCapability.rpgItemRegistr.data.keySet(), true);
+            names = RPGHelper.getItemNames(RPGCapability.rpgItemRegistr.keySet(), true);
             getPropertyStrings("itemList", names.toArray(new String[names.size()]),
                     "List of all items, which can be RPGable", true);
 
@@ -243,7 +243,7 @@ public class RPGConfig
         @Override
         public void postLoadPre()
         {
-            ArrayList<String> names = RPGHelper.getEntityNames(RPGCapability.rpgEntityRegistr.data.keySet(), true);
+            ArrayList<String> names = RPGHelper.getEntityNames(RPGCapability.rpgEntityRegistr.keySet(), true);
             Property prop = getPropertyStrings("supportedRPGEntities", names.toArray(new String[names.size()]),
                     "Set supported RPG entities (activated if 'isAllEntitiesRPGable' is false) (true/false)", false);
             if (!isAllEntitiesRPGable) {
@@ -255,10 +255,10 @@ public class RPGConfig
         @Override
         public void postLoadPost()
         {
-            ArrayList<String> names = RPGHelper.getEntityNames(RPGCapability.rpgEntityRegistr.registr, true);
+            ArrayList<String> names = RPGHelper.getEntityNames(RPGCapability.rpgEntityRegistr.getActiveElements().keySet(), true);
             getPropertyStrings("supportedRPGEntities", names.toArray(new String[names.size()]), null, true);
 
-            names = RPGHelper.getEntityNames(RPGCapability.rpgEntityRegistr.data.keySet(), true);
+            names = RPGHelper.getEntityNames(RPGCapability.rpgEntityRegistr.keySet(), true);
             getPropertyStrings("entityList", names.toArray(new String[names.size()]),
                     "List of all entities, which can be RPGable", true);
 

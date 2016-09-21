@@ -9,7 +9,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.LvlEAProvider;
-import mixac1.dangerrpg.capability.EntityData;
+import mixac1.dangerrpg.capability.RPGEntityProperties;
 import mixac1.dangerrpg.capability.RPGableEntity;
 import mixac1.dangerrpg.client.gui.GuiInfoBookContentEntity.LevelUpButton;
 import mixac1.dangerrpg.init.RPGKeyBinds;
@@ -77,7 +77,7 @@ public class GuiInfoBook extends GuiScreen
             isTargetPlayer = true;
         }
 
-        attributes = EntityData.get(target).getLvlProviders();
+        attributes = RPGEntityProperties.get(target).getLvlProviders();
     }
 
     @Override

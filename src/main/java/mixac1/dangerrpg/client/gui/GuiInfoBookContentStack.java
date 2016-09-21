@@ -93,7 +93,7 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
         }
 
         if (isLvlable) {
-            if (!RPGCapability.rpgItemRegistr.data.get(stack.getItem()).isSupported) {
+            if (!RPGCapability.rpgItemRegistr.get(stack.getItem()).isSupported) {
                 addString(DangerRPG.trans("rpgstr.item_not_supported"));
                 addString("");
             }

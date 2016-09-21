@@ -4,7 +4,7 @@ import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.item.IRPGItem;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemBow;
 import mixac1.dangerrpg.capability.RPGableItem;
-import mixac1.dangerrpg.capability.RPGableItem.ItemAttributesMap;
+import mixac1.dangerrpg.capability.RPGableItem.ItemData;
 import mixac1.dangerrpg.init.RPGOther.RPGCreativeTabs;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGBowComponent;
@@ -32,7 +32,7 @@ public class ItemRPGBow extends ItemBow implements IRPGItemBow, IHasBooksInfo
     }
 
     @Override
-    public void registerAttributes(Item item, ItemAttributesMap map)
+    public void registerAttributes(Item item, ItemData map)
     {
         RPGableItem.registerParamsItemBow(item, map);
     }

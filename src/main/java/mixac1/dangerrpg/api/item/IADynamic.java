@@ -17,7 +17,7 @@ public class IADynamic extends ItemAttribute
     @Override
     public boolean hasIt(ItemStack stack)
     {
-        return RPGCapability.rpgItemRegistr.registr.contains(stack.getItem())
+        return RPGCapability.rpgItemRegistr.isActivated(stack.getItem())
                && stack.stackTagCompound.hasKey(name);
     }
 
@@ -42,12 +42,12 @@ public class IADynamic extends ItemAttribute
     @Override
     public void init(ItemStack stack)
     {
-        set(stack, RPGCapability.rpgItemRegistr.data.get(stack.getItem()).map.get(this).value);
+        set(stack, RPGCapability.rpgItemRegistr.get(stack.getItem()).map.get(this).value);
     }
 
     @Override
     public void lvlUp(ItemStack stack)
     {
-        set(stack, RPGCapability.rpgItemRegistr.data.get(stack.getItem()).map.get(this).up(get(stack), stack));
+        set(stack, RPGCapability.rpgItemRegistr.get(stack.getItem()).map.get(this).up(get(stack), stack));
     }
 }

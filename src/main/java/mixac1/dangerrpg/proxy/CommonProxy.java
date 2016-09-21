@@ -59,6 +59,11 @@ public class CommonProxy
         RPGConfig.postLoadPost(e);
     }
 
+    public Side getSide()
+    {
+        return this instanceof ClientProxy ? Side.CLIENT : Side.SERVER;
+    }
+
     public EntityPlayer getClientPlayer()
     {
         return null;

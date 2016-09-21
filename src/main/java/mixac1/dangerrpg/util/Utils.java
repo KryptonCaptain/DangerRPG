@@ -1,5 +1,11 @@
 package mixac1.dangerrpg.util;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.util.Collections;
 import java.util.Random;
 
@@ -79,5 +85,39 @@ public abstract class Utils
     public static double randDouble(double bound, int accuracy, boolean isAroundZero)
     {
         return randDouble(rand, bound, accuracy, isAroundZero);
+    }
+
+    public static <Type> byte[] serialize(Type obj)
+    {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutput out = null;
+        byte[] ret = null;
+        try {
+            out = new ObjectOutputStream(bos);
+            out.writeObject(obj);
+            out.flush();
+            ret = bos.toByteArray();
+            bos.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+    public static <Type> Type deserialize(byte[] obj)
+    {
+        ByteArrayInputStream bis = new ByteArrayInputStream(obj);
+        ObjectInput in = null;
+        Type ret = null;
+        try {
+            in = new ObjectInputStream(bis);
+            ret = (Type) in.readObject();
+            in.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ret;
     }
 }

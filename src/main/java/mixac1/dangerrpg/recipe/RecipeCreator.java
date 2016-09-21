@@ -2,7 +2,7 @@ package mixac1.dangerrpg.recipe;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import mixac1.dangerrpg.init.RPGRecipes;
-import mixac1.dangerrpg.util.Tuple.Tuple2;
+import mixac1.dangerrpg.util.Tuple.Pair;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -76,7 +76,7 @@ public abstract class RecipeCreator
                     params[i * 2 + 2] = objs[i];
                 }
 
-                Tuple2<Integer, Integer> sizes = getRecipeSizes(pattern);
+                Pair<Integer, Integer> sizes = getRecipeSizes(pattern);
                 if (sizes.value1 <= 3 && sizes.value2 <= 3) {
                     GameRegistry.addShapedRecipe(result, params);
                 }
@@ -86,7 +86,7 @@ public abstract class RecipeCreator
             }
         }
 
-        protected Tuple2<Integer, Integer> getRecipeSizes(String[] pattern)
+        protected Pair<Integer, Integer> getRecipeSizes(String[] pattern)
         {
             int width = 0;
             int height = pattern.length;
@@ -95,7 +95,7 @@ public abstract class RecipeCreator
                     width = str.length();
                 }
             }
-            return new Tuple2(width, height);
+            return new Pair(width, height);
         }
 
         protected char[] getSymbols()
@@ -132,9 +132,9 @@ public abstract class RecipeCreator
         }
 
         @Override
-        protected Tuple2<Integer, Integer> getRecipeSizes(String[] pattern)
+        protected Pair<Integer, Integer> getRecipeSizes(String[] pattern)
         {
-            return new Tuple2(width, height);
+            return new Pair(width, height);
         }
     }
 

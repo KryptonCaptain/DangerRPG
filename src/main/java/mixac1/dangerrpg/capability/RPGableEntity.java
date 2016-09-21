@@ -1,9 +1,9 @@
 package mixac1.dangerrpg.capability;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import mixac1.dangerrpg.api.entity.EntityAttribute;
 import mixac1.dangerrpg.api.entity.IRPGEntity;
@@ -13,6 +13,7 @@ import mixac1.dangerrpg.api.event.RegEAEvent;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.init.RPGCapability;
+import mixac1.dangerrpg.init.RPGCapability.RPGDataRegister.ElementData;
 import mixac1.dangerrpg.util.IMultiplier;
 import mixac1.dangerrpg.util.IMultiplier.IMultiplierE;
 import mixac1.dangerrpg.util.IMultiplier.MultiplierAdd;
@@ -26,13 +27,13 @@ public abstract class RPGableEntity
 {
     public static boolean isRPGable(EntityLivingBase entity)
     {
-        return RPGCapability.rpgEntityRegistr.isRegistered(entity);
+        return RPGCapability.rpgEntityRegistr.isActivated(entity);
     }
 
     public static boolean registerEntity(Class entityClass)
     {
         if (EntityLivingBase.class.isAssignableFrom(entityClass)) {
-            if (RPGCapability.rpgEntityRegistr.data.containsKey(entityClass)) {
+            if (RPGCapability.rpgEntityRegistr.containsKey(entityClass)) {
                 return true;
             }
 
@@ -40,31 +41,31 @@ public abstract class RPGableEntity
                               EntityMob.class.isAssignableFrom(entityClass)    ? IRPGEntity.DEFAULT_MOB:
                                                                                  IRPGEntity.DEFAULT_LIVING;
 
-            RPGCapability.rpgEntityRegistr.data.put(entityClass, new EntityAttributesMap(iRPG, false));
+            RPGCapability.rpgEntityRegistr.put(entityClass, new EntityData(iRPG, false));
             return true;
         }
         return false;
     }
 
-    public static void registerEntityDefault(Class<? extends EntityLivingBase> entityClass, EntityAttributesMap map)
+    public static void registerEntityDefault(Class<? extends EntityLivingBase> entityClass, EntityData map)
     {
         map.addEntityAttribute(EntityAttributes.LVL, 1);
         MinecraftForge.EVENT_BUS.post(new RegEAEvent.DefaultEAEvent(entityClass, map));
     }
 
-    public static void registerEntityLiving(Class<? extends EntityLiving> entityClass, EntityAttributesMap map)
+    public static void registerEntityLiving(Class<? extends EntityLiving> entityClass, EntityData map)
     {
         map.addEntityAttribute(EntityAttributes.HEALTH, 0f);
         MinecraftForge.EVENT_BUS.post(new RegEAEvent.EntytyLivingEAEvent(entityClass, map));
     }
 
-    public static void registerEntityMob(Class<? extends EntityMob> entityClass, EntityAttributesMap map)
+    public static void registerEntityMob(Class<? extends EntityMob> entityClass, EntityData map)
     {
         map.addEntityAttribute(EntityAttributes.MELEE_DAMAGE, 0f);
         MinecraftForge.EVENT_BUS.post(new RegEAEvent.EntytyMobEAEvent(entityClass, map));
     }
 
-    public static void registerEntityPlayer(Class<? extends EntityPlayer> entityClass, EntityAttributesMap map)
+    public static void registerEntityPlayer(Class<? extends EntityPlayer> entityClass, EntityData map)
     {
         IMultiplierE<Float> ADD_1     = IMultiplier.ADD_1;
         IMultiplierE<Float> ADD_2     = new MultiplierAdd(2F);
@@ -102,14 +103,13 @@ public abstract class RPGableEntity
         MinecraftForge.EVENT_BUS.post(new RegEAEvent.PlayerEAEvent(entityClass, map));
 }
 
-    public static class EntityAttributesMap
+    public static class EntityData extends ElementData<Object>
     {
-        public Map<EntityAttribute, EntityAttrParams> attributes = new LinkedHashMap<EntityAttribute, EntityAttrParams>();
+        public HashMap<EntityAttribute, EntityAttrParams> attributes = new LinkedHashMap<EntityAttribute, EntityAttrParams>();
         public List<LvlEAProvider> lvlProviders = new LinkedList<LvlEAProvider>();
         public IRPGEntity rpgComponent;
-        public boolean isSupported;
 
-        public EntityAttributesMap(IRPGEntity rpgComponent, boolean isSupported)
+        public EntityData(IRPGEntity rpgComponent, boolean isSupported)
         {
             this.rpgComponent = rpgComponent;
             this.isSupported = isSupported;
@@ -125,6 +125,18 @@ public abstract class RPGableEntity
         public <T> void addEntityAttribute(EntityAttribute<T> attr, T startvalue)
         {
             attributes.put(attr, new EntityAttrParams(startvalue, null));
+        }
+
+        @Override
+        public Object getTransferData()
+        {
+            return null;
+        }
+
+        @Override
+        public void unpackTransferData(Object data)
+        {
+
         }
 
         public static class EntityAttrParams<Type>

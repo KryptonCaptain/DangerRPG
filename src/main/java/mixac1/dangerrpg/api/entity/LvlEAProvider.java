@@ -1,6 +1,6 @@
 package mixac1.dangerrpg.api.entity;
 
-import mixac1.dangerrpg.capability.EntityData;
+import mixac1.dangerrpg.capability.RPGEntityProperties;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgReqUpEA;
@@ -71,7 +71,7 @@ public class LvlEAProvider<Type>
             else {
                 int exp = getExpUp(target);
                 if (exp <= upper.experienceLevel) {
-                    if (EntityData.isServerSide(target)) {
+                    if (RPGEntityProperties.isServerSide(target)) {
                         upper.addExperienceLevel(-exp);
                     }
                     return up(target, upper, true);
@@ -87,7 +87,7 @@ public class LvlEAProvider<Type>
     @Deprecated
     public boolean up(EntityLivingBase target, EntityPlayer upper, boolean flag)
     {
-        if (EntityData.isServerSide(target)) {
+        if (RPGEntityProperties.isServerSide(target)) {
             int lvl = getLvl(target);
             if (flag) {
                 if (lvl < maxLvl) {

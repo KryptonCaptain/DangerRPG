@@ -6,7 +6,7 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
 import mixac1.dangerrpg.api.event.InitRPGEntityEvent;
-import mixac1.dangerrpg.capability.EntityData;
+import mixac1.dangerrpg.capability.RPGEntityProperties;
 import mixac1.dangerrpg.capability.RPGableEntity;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
@@ -32,7 +32,7 @@ public class EventHandlerEntity
     public void onEntityConstructing(EntityConstructing e)
     {
         if (e.entity instanceof EntityLivingBase && RPGableEntity.isRPGable((EntityLivingBase) e.entity)) {
-            EntityData.register((EntityLivingBase) e.entity);
+            RPGEntityProperties.register((EntityLivingBase) e.entity);
         }
     }
 
@@ -44,7 +44,7 @@ public class EventHandlerEntity
                 RPGNetwork.net.sendToServer(new MsgSyncEntityData((EntityLivingBase) e.entity));
             }
             else {
-                EntityData.get((EntityLivingBase) e.entity).serverInit();
+                RPGEntityProperties.get((EntityLivingBase) e.entity).serverInit();
             }
         }
     }
@@ -53,11 +53,11 @@ public class EventHandlerEntity
     public void onPlayerCloned(PlayerEvent.Clone e)
     {
         if (e.wasDeath) {
-            EntityData.get(e.original).rebuildOnDeath();
+            RPGEntityProperties.get(e.original).rebuildOnDeath();
         }
         NBTTagCompound nbt = new NBTTagCompound();
-        EntityData.get(e.original).saveNBTData(nbt);
-        EntityData.get(e.entityPlayer).loadNBTData(nbt);
+        RPGEntityProperties.get(e.original).saveNBTData(nbt);
+        RPGEntityProperties.get(e.entityPlayer).loadNBTData(nbt);
     }
 
     @SubscribeEvent
@@ -76,12 +76,12 @@ public class EventHandlerEntity
             EntityAttributes.HEALTH.addValue(health * lvl, e.entity);
         }
 
-        EAFloat attr = RPGCapability.rpgEntityRegistr.getAttributesSet(e.entity).rpgComponent.getEAMeleeDamage(e.entity);
+        EAFloat attr = RPGCapability.rpgEntityRegistr.get(e.entity).rpgComponent.getEAMeleeDamage(e.entity);
         if (attr != null) {
             attr.addValue(attr.getValue(e.entity) / 10 * lvl, e.entity);
         }
 
-        attr = RPGCapability.rpgEntityRegistr.getAttributesSet(e.entity).rpgComponent.getEARangeDamage(e.entity);
+        attr = RPGCapability.rpgEntityRegistr.get(e.entity).rpgComponent.getEARangeDamage(e.entity);
         if (attr != null) {
             attr.addValue(attr.getValue(e.entity) / 10 * lvl, e.entity);
         }

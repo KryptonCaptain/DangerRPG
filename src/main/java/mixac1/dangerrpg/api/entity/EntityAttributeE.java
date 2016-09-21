@@ -33,7 +33,7 @@ public class EntityAttributeE extends EAFloat
     @Override
     public void serverInit(EntityLivingBase entity)
     {
-        setValueRaw((Float) RPGCapability.rpgEntityRegistr.getAttributesSet(entity).attributes.get(this).startValue
+        setValueRaw((Float) RPGCapability.rpgEntityRegistr.get(entity).attributes.get(this).startValue
                     + getValueRaw(entity), entity);
     }
 

@@ -17,8 +17,8 @@ public class EASlimeDamage extends EAFloat
     {
         if (entity instanceof EntitySlime) {
             int size = ((EntitySlime) entity).getSlimeSize();
-            return (Float) getEntityData(entity).attributeMap.get(hash).value * size / 4 + size;
+            return (Float) getEntityData(entity).attributeMap.get(hash).value1 * size / 4 + size;
         }
-        return (Float) getEntityData(entity).attributeMap.get(hash).value;
+        return (Float) getEntityData(entity).attributeMap.get(hash).value1;
     }
 }

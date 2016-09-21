@@ -1,7 +1,7 @@
 package mixac1.dangerrpg.api.item;
 
 import mixac1.dangerrpg.capability.RPGableItem;
-import mixac1.dangerrpg.capability.RPGableItem.ItemAttributesMap;
+import mixac1.dangerrpg.capability.RPGableItem.ItemData;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.entity.projectile.EntityRPGArrow;
 import mixac1.dangerrpg.entity.projectile.EntityMaterial;
@@ -36,7 +36,7 @@ import net.minecraft.world.World;
  */
 public interface IRPGItem
 {
-    public void registerAttributes(Item item, ItemAttributesMap map);
+    public void registerAttributes(Item item, ItemData map);
 
     public RPGItemComponent getItemComponent(Item item);
 
@@ -87,7 +87,7 @@ public interface IRPGItem
     public static final IRPGItem DEFAULT_ITEM = new IRPGItem()
     {
         @Override
-        public void registerAttributes(Item item, ItemAttributesMap map) {}
+        public void registerAttributes(Item item, ItemData map) {}
 
         @Override
         public RPGItemComponent getItemComponent(Item item)
@@ -99,7 +99,7 @@ public interface IRPGItem
     public static final IRPGItem DEFAULT_ITEM_MOD = new IRPGItemMod()
     {
         @Override
-        public void registerAttributes(Item item, ItemAttributesMap map)
+        public void registerAttributes(Item item, ItemData map)
         {
             RPGableItem.registerParamsItemMod(item, map);
         }
@@ -114,7 +114,7 @@ public interface IRPGItem
     public static final IRPGItemTool DEFAULT_SWORD = new IRPGItemTool()
     {
         @Override
-        public void registerAttributes(Item item, ItemAttributesMap map)
+        public void registerAttributes(Item item, ItemData map)
         {
             RPGableItem.registerParamsItemSword(item, map);
         }
@@ -135,7 +135,7 @@ public interface IRPGItem
     public static final IRPGItemTool DEFAULT_TOOL = new IRPGItemTool()
     {
         @Override
-        public void registerAttributes(Item item, ItemAttributesMap map)
+        public void registerAttributes(Item item, ItemData map)
         {
             RPGableItem.registerParamsItemTool(item, map);
         }
@@ -174,7 +174,7 @@ public interface IRPGItem
     public static final IRPGItemArmor DEFAULT_ARMOR = new IRPGItemArmor()
     {
         @Override
-        public void registerAttributes(Item item, ItemAttributesMap map)
+        public void registerAttributes(Item item, ItemData map)
         {
             RPGableItem.registerParamsItemArmor(item, map);
         }
@@ -195,7 +195,7 @@ public interface IRPGItem
     public static final IRPGItemBow DEFAULT_BOW = new IRPGItemBow()
     {
         @Override
-        public void registerAttributes(Item item, ItemAttributesMap map)
+        public void registerAttributes(Item item, ItemData map)
         {
             RPGableItem.registerParamsItemBow(item, map);
         }

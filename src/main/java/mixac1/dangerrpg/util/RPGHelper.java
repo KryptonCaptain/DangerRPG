@@ -1,9 +1,9 @@
 package mixac1.dangerrpg.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import mixac1.dangerrpg.api.item.IRPGItem;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemArmor;
@@ -160,7 +160,7 @@ public abstract class RPGHelper
     public static IMaterialSpecial getMaterialSpecial(ItemStack stack)
     {
         if (stack != null && RPGableItem.isRPGable(stack)) {
-            IRPGItem ilvl = RPGCapability.rpgItemRegistr.data.get(stack.getItem()).rpgComponent;
+            IRPGItem ilvl = RPGCapability.rpgItemRegistr.get(stack.getItem()).rpgComponent;
             if (ilvl instanceof IRPGItemArmor) {
                 return ((IRPGItemArmor) ilvl).getArmorMaterial(stack.getItem());
             }
@@ -211,7 +211,7 @@ public abstract class RPGHelper
         return true;
     }
 
-    public static ArrayList<String> getItemNames(Set<Item> items, boolean needSort)
+    public static ArrayList<String> getItemNames(Collection<Item> items, boolean needSort)
     {
         ArrayList<String> names = new ArrayList<String>();
         for (Item item : items) {
@@ -223,7 +223,7 @@ public abstract class RPGHelper
         return names;
     }
 
-    public static ArrayList<String> getEntityNames(Set<Class<? extends EntityLivingBase>> set, boolean needSort)
+    public static ArrayList<String> getEntityNames(Collection<Class<? extends EntityLivingBase>> set, boolean needSort)
     {
         String tmp;
         ArrayList<String> names = new ArrayList<String>();
@@ -242,7 +242,7 @@ public abstract class RPGHelper
     public static float getMeleeDamageHook(EntityLivingBase entity, float defaultDamage)
     {
         if (RPGableEntity.isRPGable(entity)) {
-            return RPGCapability.rpgEntityRegistr.getAttributesSet(entity).rpgComponent.getEAMeleeDamage(entity).getValue(entity);
+            return RPGCapability.rpgEntityRegistr.get(entity).rpgComponent.getEAMeleeDamage(entity).getValue(entity);
         }
         return defaultDamage;
     }
@@ -250,7 +250,7 @@ public abstract class RPGHelper
     public static float getRangeDamageHook(EntityLivingBase entity, float defaultDamage)
     {
         if (RPGableEntity.isRPGable(entity)) {
-            return RPGCapability.rpgEntityRegistr.getAttributesSet(entity).rpgComponent.getEARangeDamage(entity).getValue(entity);
+            return RPGCapability.rpgEntityRegistr.get(entity).rpgComponent.getEARangeDamage(entity).getValue(entity);
         }
         return defaultDamage;
     }

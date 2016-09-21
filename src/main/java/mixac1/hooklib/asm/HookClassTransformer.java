@@ -43,7 +43,7 @@ public class HookClassTransformer {
                 int numHooks = hooks.size();
 
                 for (AsmHook hook : hooks) {
-                    DangerRPG.log(String.format("Hook: patching method %s#%s", hook.getTargetClassName(), hook.getTargetMethodName()));
+                    DangerRPG.infoLog(String.format("Hook: patching method %s#%s", hook.getTargetClassName(), hook.getTargetMethodName()));
                 }
 
                 /*
@@ -62,7 +62,7 @@ public class HookClassTransformer {
 
                 int numInjectedHooks = numHooks - hooksWriter.hooks.size();
                 for (AsmHook hook : hooks) {
-                    DangerRPG.log(String.format("Warning: unsuccesfull pathing method %s#%s", hook.getTargetClassName(), hook.getTargetMethodName()));
+                    DangerRPG.infoLog(String.format("Warning: unsuccesfull pathing method %s#%s", hook.getTargetClassName(), hook.getTargetMethodName()));
                 }
 
                 return cw.toByteArray();

@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 
 /**
  * Extends this class for creating Static {@link ItemAttribute}<br>
- * Value saving to {@link RPGCapability.RPGItemRegistr}
+ * Value saving to {@link RPGCapability.RPGItemRegister}
  */
 public class IAStatic extends ItemAttribute
 {
@@ -17,14 +17,14 @@ public class IAStatic extends ItemAttribute
     @Override
     public boolean hasIt(ItemStack stack)
     {
-        return RPGCapability.rpgItemRegistr.registr.contains(stack.getItem())
-            && RPGCapability.rpgItemRegistr.data.get(stack.getItem()).map.containsKey(this);
+        return RPGCapability.rpgItemRegistr.isActivated(stack.getItem())
+                && RPGCapability.rpgItemRegistr.get(stack.getItem()).map.containsKey(this);
     }
 
     @Override
     public float getRaw(ItemStack stack)
     {
-        return RPGCapability.rpgItemRegistr.data.get(stack.getItem()).map.get(this).value;
+        return RPGCapability.rpgItemRegistr.get(stack.getItem()).map.get(this).value;
     }
 
     @Override

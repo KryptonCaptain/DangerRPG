@@ -1,24 +1,28 @@
 package mixac1.dangerrpg.init;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.registry.GameData;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.RPGRegister;
+import mixac1.dangerrpg.api.entity.EntityAttribute;
 import mixac1.dangerrpg.api.entity.IRPGEntity;
 import mixac1.dangerrpg.api.entity.IRPGEntity.RPGCommonEntityMob;
 import mixac1.dangerrpg.api.entity.IRPGEntity.RPGEntityRangeMob;
 import mixac1.dangerrpg.api.item.IRPGItem;
+import mixac1.dangerrpg.api.item.ItemAttribute;
 import mixac1.dangerrpg.capability.RPGableEntity;
-import mixac1.dangerrpg.capability.RPGableEntity.EntityAttributesMap;
+import mixac1.dangerrpg.capability.RPGableEntity.EntityData;
 import mixac1.dangerrpg.capability.RPGableItem;
-import mixac1.dangerrpg.capability.RPGableItem.ItemAttributesMap;
+import mixac1.dangerrpg.capability.RPGableItem.ItemData;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
+import mixac1.dangerrpg.init.RPGCapability.RPGDataRegister.ElementData;
+import mixac1.dangerrpg.util.Tuple.Pair;
+import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
@@ -56,9 +60,11 @@ import net.minecraft.item.Item;
 
 public abstract class RPGCapability
 {
-    public static RPGItemRegistr rpgItemRegistr = new RPGItemRegistr();
+    public static RPGItemRegister   rpgItemRegistr   = new RPGItemRegister();
+    public static RPGEntityRegister rpgEntityRegistr = new RPGEntityRegister();
 
-    public static RPGEntityRegistr rpgEntityRegistr = new RPGEntityRegistr();
+    public static HashMap<Integer, ItemAttribute>   mapIntToItemAttribute   = new HashMap<Integer, ItemAttribute>();
+    public static HashMap<Integer, EntityAttribute> mapIntToEntityAttribute = new HashMap<Integer, EntityAttribute>();
 
     public static void preLoad(FMLPostInitializationEvent e)
     {
@@ -73,8 +79,8 @@ public abstract class RPGCapability
 
         loadItems();
 
-        rpgItemRegistr.createCloneSet();
-        rpgEntityRegistr.createCloneSet();
+        rpgItemRegistr.createTransferData();
+        rpgEntityRegistr.createTransferData();
     }
 
     private static void registerDefaultRPGItems()
@@ -199,16 +205,17 @@ public abstract class RPGCapability
 
         RPGableEntity.registerEntity(EntityPlayer.class);
 
-        for (Entry<Class<? extends EntityLivingBase>, EntityAttributesMap> data : rpgEntityRegistr.data.entrySet()) {
-            RPGableEntity.registerEntityDefault(data.getKey(), data.getValue());
-            data.getValue().rpgComponent.registerAttributes(data.getKey(), data.getValue());
-            if (RPGConfig.EntityConfig.isAllEntitiesRPGable || RPGConfig.EntityConfig.supportedRPGEntities.contains(EntityList.classToStringMapping.get(data.getKey()))) {
-                rpgEntityRegistr.registr.add(data.getKey());
+        for (Entry<Class<? extends EntityLivingBase>, EntityData> it : rpgEntityRegistr.entrySet()) {
+            RPGableEntity.registerEntityDefault(it.getKey(), it.getValue());
+            it.getValue().rpgComponent.registerAttributes(it.getKey(), it.getValue());
+            if (RPGConfig.EntityConfig.isAllEntitiesRPGable || RPGConfig.EntityConfig.supportedRPGEntities.contains(EntityList.classToStringMapping.get(it.getKey()))) {
+                rpgEntityRegistr.get(it.getKey()).isActivated = true;
                 DangerRPG.infoLog(String.format("Register RPG entity (sup from mod: %s): %s",
-                                  data.getValue().isSupported ? " true" : "false", EntityList.classToStringMapping.get(data.getKey())));
+                                  it.getValue().isSupported ? " true" : "false", EntityList.classToStringMapping.get(it.getKey())));
             }
         }
-        rpgEntityRegistr.registr.add(EntityPlayer.class);
+
+        rpgEntityRegistr.get(EntityPlayer.class).isActivated = true;
     }
 
     private static void loadItems()
@@ -218,69 +225,142 @@ public abstract class RPGCapability
             RPGableItem.registerRPGItem((Item) iterator.next());
         }
 
-        for (Entry<Item, ItemAttributesMap> data : rpgItemRegistr.data.entrySet()) {
-            RPGableItem.registerParamsDefault(data.getKey(), data.getValue());
-            data.getValue().rpgComponent.registerAttributes(data.getKey(), data.getValue());
-            if (RPGConfig.ItemConfig.isAllItemsRPGable || RPGConfig.ItemConfig.supportedRPGItems.contains(data.getKey().delegate.name())) {
-                rpgItemRegistr.registr.add(data.getKey());
+        for (Entry<Item, ItemData> it : rpgItemRegistr.entrySet()) {
+            RPGableItem.registerParamsDefault(it.getKey(), it.getValue());
+            it.getValue().rpgComponent.registerAttributes(it.getKey(), it.getValue());
+            if (RPGConfig.ItemConfig.isAllItemsRPGable || RPGConfig.ItemConfig.supportedRPGItems.contains(it.getKey().delegate.name())) {
+                rpgItemRegistr.get(it.getKey()).isActivated = true;
                 DangerRPG.infoLog(String.format("Register RPG item (sup from mod: %s): %s",
-                                  data.getValue().isSupported ? " true" : "false", data.getKey().delegate.name()));
+                                  it.getValue().isSupported ? " true" : "false", it.getKey().delegate.name()));
             }
         }
     }
 
-    public static class RPGItemRegistr
+    public static abstract class RPGDataRegister<Key, Data extends ElementData<TransferData>, TransferKey, TransferData> extends HashMap<Key, Data>
     {
-        public Set<Item> registr = new HashSet<Item>();
-        public HashMap<Item, ItemAttributesMap> data = new HashMap<Item, ItemAttributesMap>();
+        private byte[] tranferData;
 
-        private Set<Item> copy;
-
-        private void createCloneSet()
+        public boolean isActivated(Key key)
         {
-            copy = new HashSet<Item>(registr);
+            return containsKey(key) && get(key).isActivated;
         }
 
-        public Set<Item> getCloneSet()
+        public boolean isSupported(Key key)
         {
-            return copy;
+            return containsKey(key) && get(key).isSupported;
+        }
+
+        public HashMap<Key, Data> getActiveElements()
+        {
+            HashMap<Key, Data> map = new HashMap<Key, Data>();
+            for (Entry<Key, Data> entry : entrySet()) {
+                if (entry.getValue().isActivated) {
+                    map.put(entry.getKey(), entry.getValue());
+                }
+            }
+            return map;
+        }
+
+        protected abstract TransferKey codingKey(Key key);
+
+        protected abstract Key decodingKey(TransferKey key);
+
+        public void createTransferData()
+        {
+            LinkedList<Pair<TransferKey, TransferData>> list = new LinkedList<Pair<TransferKey, TransferData>>();
+            for (Entry<Key, Data> entry : getActiveElements().entrySet()) {
+                TransferKey key = codingKey(entry.getKey());
+                if (key != null) {
+                    list.add(new Pair<TransferKey, TransferData>(key, entry.getValue().getTransferData()));
+                }
+            }
+
+            tranferData = Utils.serialize(list);
+        }
+
+        public byte[] getTransferData()
+        {
+            return tranferData;
+        }
+
+        public void extractTransferData(byte[] tranferData)
+        {
+            for (Entry<Key, Data> entry : entrySet()) {
+                entry.getValue().isActivated = false;
+            }
+
+            LinkedList<Pair<TransferKey, TransferData>> list = Utils.deserialize(tranferData);
+            for (Pair<TransferKey, TransferData> data : list) {
+                Key key = decodingKey(data.value1);
+                if (key != null) {
+                    get(key).unpackTransferData(data.value2);
+                    get(key).isActivated = true;
+                }
+            }
+        }
+
+        public static abstract class ElementData<TransferData>
+        {
+            public boolean isActivated;
+            public boolean isSupported;
+
+            public abstract TransferData getTransferData();
+
+            public abstract void unpackTransferData(TransferData data);
         }
     }
 
-    public static class RPGEntityRegistr
+    public static class RPGItemRegister extends RPGDataRegister<Item, ItemData, Integer, HashMap<Integer, Float>>
     {
-        public Set<Class<? extends EntityLivingBase>> registr = new HashSet<Class<? extends EntityLivingBase>>();
-        public HashMap<Class<? extends EntityLivingBase>, EntityAttributesMap> data = new HashMap<Class<? extends EntityLivingBase>, EntityAttributesMap>();
-
-        private Set<Class<? extends EntityLivingBase>> copy;
-
-        private void createCloneSet()
+        @Override
+        protected Integer codingKey(Item key)
         {
-            copy = new HashSet<Class<? extends EntityLivingBase>>(registr);
+            return Item.getIdFromItem(key);
         }
 
-        public Set<Class<? extends EntityLivingBase>> getCloneSet()
+        @Override
+        protected Item decodingKey(Integer key)
         {
-            return copy;
+            return Item.getItemById(key);
+        }
+    }
+
+    public static class RPGEntityRegister extends RPGDataRegister<Class<? extends EntityLivingBase>, EntityData, String, Object>
+    {
+        public Class<? extends EntityLivingBase> getClass(EntityLivingBase entity)
+        {
+            return entity instanceof EntityPlayer ? EntityPlayer.class : entity.getClass();
         }
 
-        public boolean isRegistered(EntityLivingBase entity)
+        public boolean isActivated(EntityLivingBase entity)
         {
-            return entity instanceof EntityPlayer ?
-                RPGCapability.rpgEntityRegistr.registr.contains(EntityPlayer.class) :
-                RPGCapability.rpgEntityRegistr.registr.contains(entity.getClass());
+            return super.isActivated(getClass(entity));
         }
 
-        public EntityAttributesMap getAttributesSet(EntityLivingBase entity)
+        public EntityData get(EntityLivingBase entity)
         {
-            return entity instanceof EntityPlayer ?
-                RPGCapability.rpgEntityRegistr.data.get(EntityPlayer.class) :
-                RPGCapability.rpgEntityRegistr.data.get(entity.getClass());
+            return super.get(getClass(entity));
         }
 
-        public void setAttributesSet(EntityLivingBase entity, EntityAttributesMap set)
+        public void put(EntityLivingBase entity, EntityData data)
         {
-            data.put(entity instanceof EntityPlayer ? EntityPlayer.class : entity.getClass(), set);
+            super.put(getClass(entity), data);
+        }
+
+        @Override
+        protected String codingKey(Class<? extends EntityLivingBase> key)
+        {
+            return (String) (EntityList.classToStringMapping.containsKey(key) ?
+                    EntityList.classToStringMapping.get(key) : EntityPlayer.class.isAssignableFrom(key) ?
+                            "player" : null);
+        }
+
+        @Override
+        protected Class<? extends EntityLivingBase> decodingKey(String key)
+        {
+            return (Class<? extends EntityLivingBase>) (EntityList.stringToClassMapping.containsKey(key) ?
+                    EntityList.stringToClassMapping.get(key) : "player".equals(key) ?
+                            EntityPlayer.class : null);
         }
     }
 }

@@ -4,7 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.IRPGEntity;
-import mixac1.dangerrpg.capability.EntityData;
+import mixac1.dangerrpg.capability.RPGEntityProperties;
 import mixac1.dangerrpg.capability.RPGableEntity;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
@@ -200,9 +200,9 @@ public class RPGGuiIngame extends Gui
 
         IRPGEntity iRPG = null;
         if (RPGableEntity.isRPGable(entity)) {
-            EntityData data = EntityData.get(entity);
+            RPGEntityProperties data = RPGEntityProperties.get(entity);
             if (data != null && data.checkValid()) {
-                iRPG = RPGCapability.rpgEntityRegistr.getAttributesSet(entity).rpgComponent;
+                iRPG = RPGCapability.rpgEntityRegistr.get(entity).rpgComponent;
             }
         }
 

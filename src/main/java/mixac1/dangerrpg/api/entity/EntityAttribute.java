@@ -1,12 +1,12 @@
 package mixac1.dangerrpg.api.entity;
 
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.capability.EntityData;
-import mixac1.dangerrpg.capability.EntityData.TypeStub;
+import mixac1.dangerrpg.capability.RPGEntityProperties;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgSyncEA;
 import mixac1.dangerrpg.util.ITypeProvider;
+import mixac1.dangerrpg.util.Tuple.Stub;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -27,11 +27,12 @@ public class EntityAttribute<Type>
         this.name = name;
         this.hash = name.hashCode();
         this.typeProvider = typeProvider;
+        RPGCapability.mapIntToEntityAttribute.put(hash, this);
     }
 
     public void init(EntityLivingBase entity)
     {
-        getEntityData(entity).attributeMap.put(hash, new TypeStub<Type>((Type) typeProvider.getEmpty()));
+        getEntityData(entity).attributeMap.put(hash, new Stub<Type>((Type) typeProvider.getEmpty()));
         LvlEAProvider lvlProvider = getLvlProvider(entity);
         if (lvlProvider != null) {
             lvlProvider.init(entity);
@@ -40,19 +41,18 @@ public class EntityAttribute<Type>
 
     public void serverInit(EntityLivingBase entity)
     {
-        setValueRaw((Type) RPGCapability.rpgEntityRegistr.getAttributesSet(entity).attributes.get(this).startValue,
-                    entity);
+        setValueRaw((Type) RPGCapability.rpgEntityRegistr.get(entity).attributes.get(this).startValue, entity);
     }
 
     public LvlEAProvider getLvlProvider(EntityLivingBase entity)
     {
-        return RPGCapability.rpgEntityRegistr.getAttributesSet(entity).attributes.get(this).lvlProvider;
+        return RPGCapability.rpgEntityRegistr.get(entity).attributes.get(this).lvlProvider;
     }
 
     public boolean hasIt(EntityLivingBase entity)
     {
-        return RPGCapability.rpgEntityRegistr.isRegistered(entity)
-               && RPGCapability.rpgEntityRegistr.getAttributesSet(entity).attributes.containsKey(this);
+        return RPGCapability.rpgEntityRegistr.isActivated(entity)
+               && RPGCapability.rpgEntityRegistr.get(entity).attributes.containsKey(this);
     }
 
     public boolean isValid(Type value)
@@ -65,9 +65,9 @@ public class EntityAttribute<Type>
         return isValid(value);
     }
 
-    public EntityData getEntityData(EntityLivingBase entity)
+    public RPGEntityProperties getEntityData(EntityLivingBase entity)
     {
-        return EntityData.get(entity);
+        return RPGEntityProperties.get(entity);
     }
 
     /**
@@ -77,7 +77,7 @@ public class EntityAttribute<Type>
     @Deprecated
     public Type getValueRaw(EntityLivingBase entity)
     {
-        return (Type) getEntityData(entity).attributeMap.get(hash).value;
+        return (Type) getEntityData(entity).attributeMap.get(hash).value1;
     }
 
     /**
@@ -88,7 +88,7 @@ public class EntityAttribute<Type>
     public boolean setValueRaw(Type value, EntityLivingBase entity)
     {
         if (!value.equals(getValueRaw(entity))) {
-            getEntityData(entity).attributeMap.get(hash).value = value;
+            getEntityData(entity).attributeMap.get(hash).value1 = value;
             return true;
         }
         return false;
@@ -134,7 +134,7 @@ public class EntityAttribute<Type>
 
     public void sync(EntityLivingBase entity)
     {
-        if (EntityData.isServerSide(entity)) {
+        if (RPGEntityProperties.isServerSide(entity)) {
             RPGNetwork.net.sendToAll(new MsgSyncEA(this, entity));
         }
     }
