@@ -4,8 +4,8 @@ import org.lwjgl.opengl.GL11;
 
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.IRPGEntity;
-import mixac1.dangerrpg.capability.RPGEntityProperties;
 import mixac1.dangerrpg.capability.RPGableEntity;
+import mixac1.dangerrpg.capability.data.RPGEntityProperties;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;

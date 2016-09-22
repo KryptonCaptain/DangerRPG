@@ -7,7 +7,7 @@ import com.google.common.collect.Sets;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemTool;
 import mixac1.dangerrpg.capability.RPGableItem;
-import mixac1.dangerrpg.capability.RPGableItem.ItemData;
+import mixac1.dangerrpg.capability.data.RPGItemData;
 import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGOther.RPGCreativeTabs;
 import mixac1.dangerrpg.item.IHasBooksInfo;
@@ -87,7 +87,7 @@ public class ItemRPGMultiTool extends ItemTool implements IRPGItemTool, IHasBook
     }
 
     @Override
-    public void registerAttributes(Item item, ItemData map)
+    public void registerAttributes(Item item, RPGItemData map)
     {
         RPGableItem.registerParamsItemTool(item, map);
     }

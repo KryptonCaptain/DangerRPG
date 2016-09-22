@@ -2,7 +2,7 @@ package mixac1.dangerrpg.api.entity;
 
 import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
 import mixac1.dangerrpg.capability.RPGableEntity;
-import mixac1.dangerrpg.capability.RPGableEntity.EntityData;
+import mixac1.dangerrpg.capability.data.RPGEntityData;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,7 +15,7 @@ public interface IRPGEntity
 
     public EAFloat getEARangeDamage(EntityLivingBase entity);
 
-    public void registerAttributes(Class<? extends EntityLivingBase> entityClass, EntityData set);
+    public void registerAttributes(Class<? extends EntityLivingBase> entityClass, RPGEntityData set);
 
     public static IRPGEntity DEFAULT_PLAYER = new IRPGEntity()
     {
@@ -32,7 +32,7 @@ public interface IRPGEntity
         }
 
         @Override
-        public void registerAttributes(Class<? extends EntityLivingBase> entityClass, EntityData set)
+        public void registerAttributes(Class<? extends EntityLivingBase> entityClass, RPGEntityData set)
         {
             RPGableEntity.registerEntityPlayer((Class<? extends EntityPlayer>) entityClass, set);
         }
@@ -57,7 +57,7 @@ public interface IRPGEntity
         }
 
         @Override
-        public void registerAttributes(Class<? extends EntityLivingBase> entityClass, EntityData set)
+        public void registerAttributes(Class<? extends EntityLivingBase> entityClass, RPGEntityData set)
         {
             RPGableEntity.registerEntityLiving((Class<? extends EntityLiving>) entityClass, set);
         }
@@ -72,7 +72,7 @@ public interface IRPGEntity
         }
 
         @Override
-        public void registerAttributes(Class<? extends EntityLivingBase> entityClass, EntityData set)
+        public void registerAttributes(Class<? extends EntityLivingBase> entityClass, RPGEntityData set)
         {
             super.registerAttributes(entityClass, set);
             RPGableEntity.registerEntityMob((Class<? extends EntityMob>) entityClass, set);
@@ -97,7 +97,7 @@ public interface IRPGEntity
         }
 
         @Override
-        public void registerAttributes(Class<? extends EntityLivingBase> entityClass, EntityData set)
+        public void registerAttributes(Class<? extends EntityLivingBase> entityClass, RPGEntityData set)
         {
             super.registerAttributes(entityClass, set);
             if (set.attributes.containsKey(EntityAttributes.MELEE_DAMAGE)) {
@@ -123,7 +123,7 @@ public interface IRPGEntity
         }
 
         @Override
-        public void registerAttributes(Class<? extends EntityLivingBase> entityClass, EntityData set)
+        public void registerAttributes(Class<? extends EntityLivingBase> entityClass, RPGEntityData set)
         {
             super.registerAttributes(entityClass, set);
             set.addEntityAttribute(EntityAttributes.RANGE_DAMAGE, value);

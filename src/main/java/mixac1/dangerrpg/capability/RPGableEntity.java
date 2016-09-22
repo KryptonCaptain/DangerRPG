@@ -1,16 +1,9 @@
 package mixac1.dangerrpg.capability;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-
-import mixac1.dangerrpg.api.entity.EntityAttribute;
 import mixac1.dangerrpg.api.entity.IRPGEntity;
-import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import mixac1.dangerrpg.api.entity.LvlEAProvider.DafailtLvlEAProvider;
 import mixac1.dangerrpg.api.event.RegEAEvent;
-import mixac1.dangerrpg.capability.RPGDataRegister.ElementData;
+import mixac1.dangerrpg.capability.data.RPGEntityData;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.init.RPGCapability;
@@ -41,31 +34,31 @@ public abstract class RPGableEntity
                               EntityMob.class.isAssignableFrom(entityClass)    ? IRPGEntity.DEFAULT_MOB:
                                                                                  IRPGEntity.DEFAULT_LIVING;
 
-            RPGCapability.rpgEntityRegistr.put(entityClass, new EntityData(iRPG, false));
+            RPGCapability.rpgEntityRegistr.put(entityClass, new RPGEntityData(iRPG, false));
             return true;
         }
         return false;
     }
 
-    public static void registerEntityDefault(Class<? extends EntityLivingBase> entityClass, EntityData map)
+    public static void registerEntityDefault(Class<? extends EntityLivingBase> entityClass, RPGEntityData map)
     {
         map.addEntityAttribute(EntityAttributes.LVL, 1);
         MinecraftForge.EVENT_BUS.post(new RegEAEvent.DefaultEAEvent(entityClass, map));
     }
 
-    public static void registerEntityLiving(Class<? extends EntityLiving> entityClass, EntityData map)
+    public static void registerEntityLiving(Class<? extends EntityLiving> entityClass, RPGEntityData map)
     {
         map.addEntityAttribute(EntityAttributes.HEALTH, 0f);
         MinecraftForge.EVENT_BUS.post(new RegEAEvent.EntytyLivingEAEvent(entityClass, map));
     }
 
-    public static void registerEntityMob(Class<? extends EntityMob> entityClass, EntityData map)
+    public static void registerEntityMob(Class<? extends EntityMob> entityClass, RPGEntityData map)
     {
         map.addEntityAttribute(EntityAttributes.MELEE_DAMAGE, 0f);
         MinecraftForge.EVENT_BUS.post(new RegEAEvent.EntytyMobEAEvent(entityClass, map));
     }
 
-    public static void registerEntityPlayer(Class<? extends EntityPlayer> entityClass, EntityData map)
+    public static void registerEntityPlayer(Class<? extends EntityPlayer> entityClass, RPGEntityData map)
     {
         IMultiplierE<Float> ADD_1     = IMultiplier.ADD_1;
         IMultiplierE<Float> ADD_2     = new MultiplierAdd(2F);
@@ -101,54 +94,5 @@ public abstract class RPGableEntity
         map.addEntityAttribute(PlayerAttributes.SPEED_COUNTER, 0f);
 
         MinecraftForge.EVENT_BUS.post(new RegEAEvent.PlayerEAEvent(entityClass, map));
-}
-
-    public static class EntityData extends ElementData<Object>
-    {
-        public HashMap<EntityAttribute, EntityAttrParams> attributes = new LinkedHashMap<EntityAttribute, EntityAttrParams>();
-        public List<LvlEAProvider> lvlProviders = new LinkedList<LvlEAProvider>();
-        public IRPGEntity rpgComponent;
-
-        public EntityData(IRPGEntity rpgComponent, boolean isSupported)
-        {
-            this.rpgComponent = rpgComponent;
-            this.isSupported = isSupported;
-        }
-
-        public <T> void addLvlableEntityAttribute(EntityAttribute<T> attr, T startvalue, LvlEAProvider<T> lvlProvider)
-        {
-            lvlProvider.attr = attr;
-            attributes.put(attr, new EntityAttrParams(startvalue, lvlProvider));
-            lvlProviders.add(lvlProvider);
-        }
-
-        public <T> void addEntityAttribute(EntityAttribute<T> attr, T startvalue)
-        {
-            attributes.put(attr, new EntityAttrParams(startvalue, null));
-        }
-
-        @Override
-        public Object getTransferData()
-        {
-            return null;
-        }
-
-        @Override
-        public void unpackTransferData(Object data)
-        {
-
-        }
-
-        public static class EntityAttrParams<Type>
-        {
-            public Type startValue;
-            public LvlEAProvider<Type> lvlProvider;
-
-            public EntityAttrParams(Type startValue, LvlEAProvider<Type> lvlProvider)
-            {
-                this.startValue = startValue;
-                this.lvlProvider = lvlProvider;
-            }
-        }
     }
 }

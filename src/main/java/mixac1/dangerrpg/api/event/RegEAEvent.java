@@ -2,7 +2,7 @@ package mixac1.dangerrpg.api.event;
 
 import cpw.mods.fml.common.eventhandler.Event;
 import mixac1.dangerrpg.api.entity.EntityAttribute;
-import mixac1.dangerrpg.capability.RPGableEntity.EntityData;
+import mixac1.dangerrpg.capability.data.RPGEntityData;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
@@ -11,9 +11,9 @@ import net.minecraft.entity.player.EntityPlayer;
 public class RegEAEvent extends Event
 {
     public Class<? extends EntityLivingBase> entityClass;
-    public EntityData set;
+    public RPGEntityData set;
 
-    protected RegEAEvent(Class<? extends EntityLivingBase> entityClass, EntityData set)
+    protected RegEAEvent(Class<? extends EntityLivingBase> entityClass, RPGEntityData set)
     {
         this.entityClass = entityClass;
         this.set = set;
@@ -25,7 +25,7 @@ public class RegEAEvent extends Event
      */
     public static class DefaultEAEvent extends RegEAEvent
     {
-        public DefaultEAEvent(Class<? extends EntityLivingBase> entityClass, EntityData map)
+        public DefaultEAEvent(Class<? extends EntityLivingBase> entityClass, RPGEntityData map)
         {
             super(entityClass, map);
         }
@@ -37,7 +37,7 @@ public class RegEAEvent extends Event
      */
     public static class EntytyLivingEAEvent extends RegEAEvent
     {
-        public EntytyLivingEAEvent(Class<? extends EntityLiving> entityClass, EntityData map)
+        public EntytyLivingEAEvent(Class<? extends EntityLiving> entityClass, RPGEntityData map)
         {
             super(entityClass, map);
         }
@@ -49,7 +49,7 @@ public class RegEAEvent extends Event
      */
     public static class EntytyMobEAEvent extends RegEAEvent
     {
-        public EntytyMobEAEvent(Class<? extends EntityMob> entityClass, EntityData map)
+        public EntytyMobEAEvent(Class<? extends EntityMob> entityClass, RPGEntityData map)
         {
             super(entityClass, map);
         }
@@ -61,7 +61,7 @@ public class RegEAEvent extends Event
      */
     public static class PlayerEAEvent extends RegEAEvent
     {
-        public PlayerEAEvent(Class<? extends EntityPlayer> entityClass, EntityData map)
+        public PlayerEAEvent(Class<? extends EntityPlayer> entityClass, RPGEntityData map)
         {
             super(entityClass, map);
         }

@@ -1,4 +1,4 @@
-package mixac1.dangerrpg.capability;
+package mixac1.dangerrpg.capability.data;
 
 import java.util.ArrayList;
 import java.util.Collection;

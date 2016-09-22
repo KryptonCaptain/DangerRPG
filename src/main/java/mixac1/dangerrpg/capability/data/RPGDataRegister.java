@@ -1,12 +1,10 @@
-package mixac1.dangerrpg.capability;
+package mixac1.dangerrpg.capability.data;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import mixac1.dangerrpg.capability.RPGDataRegister.ElementData;
-import mixac1.dangerrpg.capability.RPGableEntity.EntityData;
-import mixac1.dangerrpg.capability.RPGableItem.ItemData;
-import mixac1.dangerrpg.capability.RPGableItem.ItemData.ItemAttrParams;
+import mixac1.dangerrpg.capability.data.RPGDataRegister.ElementData;
+import mixac1.dangerrpg.capability.data.RPGItemData.ItemAttrParams;
 import mixac1.dangerrpg.util.Tuple.Pair;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.EntityList;
@@ -87,7 +85,7 @@ public abstract class RPGDataRegister<Key, Data extends ElementData<TransferData
         public abstract void unpackTransferData(TransferData data);
     }
 
-    public static class RPGItemRegister extends RPGDataRegister<Item, ItemData, Integer, HashMap<Integer, ItemAttrParams>>
+    public static class RPGItemRegister extends RPGDataRegister<Item, RPGItemData, Integer, HashMap<Integer, ItemAttrParams>>
     {
         @Override
         protected Integer codingKey(Item key)
@@ -102,7 +100,7 @@ public abstract class RPGDataRegister<Key, Data extends ElementData<TransferData
         }
     }
 
-    public static class RPGEntityRegister extends RPGDataRegister<Class<? extends EntityLivingBase>, EntityData, String, Object>
+    public static class RPGEntityRegister extends RPGDataRegister<Class<? extends EntityLivingBase>, RPGEntityData, String, Object>
     {
         public Class<? extends EntityLivingBase> getClass(EntityLivingBase entity)
         {
@@ -114,12 +112,12 @@ public abstract class RPGDataRegister<Key, Data extends ElementData<TransferData
             return super.isActivated(getClass(entity));
         }
 
-        public EntityData get(EntityLivingBase entity)
+        public RPGEntityData get(EntityLivingBase entity)
         {
             return super.get(getClass(entity));
         }
 
-        public void put(EntityLivingBase entity, EntityData data)
+        public void put(EntityLivingBase entity, RPGEntityData data)
         {
             super.put(getClass(entity), data);
         }

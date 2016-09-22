@@ -3,7 +3,7 @@ package mixac1.dangerrpg.item.weapon;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemStaff;
 import mixac1.dangerrpg.capability.RPGableItem;
-import mixac1.dangerrpg.capability.RPGableItem.ItemData;
+import mixac1.dangerrpg.capability.data.RPGItemData;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.entity.projectile.EntityMagicOrb;
 import mixac1.dangerrpg.init.RPGItems;
@@ -42,7 +42,7 @@ public class ItemRPGStaff extends ItemSword implements IRPGItemStaff, IHasBooksI
     }
 
     @Override
-    public void registerAttributes(Item item, ItemData map)
+    public void registerAttributes(Item item, RPGItemData map)
     {
         RPGableItem.registerParamsItemStaff(item, map);
     }

@@ -14,8 +14,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.item.ItemAttribute;
-import mixac1.dangerrpg.capability.RPGableItem.ItemData;
-import mixac1.dangerrpg.capability.RPGableItem.ItemData.ItemAttrParams;
+import mixac1.dangerrpg.capability.data.RPGItemData;
+import mixac1.dangerrpg.capability.data.RPGItemData.ItemAttrParams;
 import mixac1.dangerrpg.client.gui.GuiMode;
 import mixac1.dangerrpg.util.IMultiplier.IMulConfigurable;
 import mixac1.dangerrpg.util.IMultiplier.MulType;
@@ -187,8 +187,8 @@ public class RPGConfig
                     + "\n"
                     + "Q: How do congigure any item?\n"
                     + "A: Take name of item frome the 'itemList' and put it to the 'needCustomSetting' list.\n"
-                    + "After this, run the game, close and reopen this config.\n"
-                    + "You can find generated element for configue that item.");
+                    + "After this, run the game, exit from game and reopen this config.\n"
+                    + "You be able find generated element for configure that item.");
         }
 
         @Override
@@ -228,7 +228,7 @@ public class RPGConfig
         @Override
         public void postLoadPost()
         {
-            HashMap<Item, ItemData> map = RPGCapability.rpgItemRegistr.getActiveElements();
+            HashMap<Item, RPGItemData> map = RPGCapability.rpgItemRegistr.getActiveElements();
 
             customConfig(map);
 
@@ -243,7 +243,7 @@ public class RPGConfig
             save();
         }
 
-        protected void customConfig(HashMap<Item, ItemData> map)
+        protected void customConfig(HashMap<Item, RPGItemData> map)
         {
             String str = "customSetting";
 
@@ -251,14 +251,21 @@ public class RPGConfig
                     "Set items, which needs customization", true);
             HashSet<String> needCustomSetting = new HashSet<String>(Arrays.asList(prop.getStringList()));
 
+            ConfigCategory cat = this.config.getCategory(str);
+            cat.setComment("How do config multiplier ('.mul')\n"
+                    + "You can use two types of multiplier:\n"
+                    + "ADD 'value' - adding value to the input parameter.\n"
+                    + "MUL 'value' - multiplication the input parameter by the value.\n"
+                    + "HARD - not for using. There is a hard expression, but you can change it using ADD or MUL");
+
             if (!needCustomSetting.isEmpty()) {
-                for (Entry<Item, ItemData> item : map.entrySet()) {
+                for (Entry<Item, RPGItemData> item : map.entrySet()) {
                     if (needCustomSetting.contains(item.getKey().delegate.name())) {
                         for (Entry<ItemAttribute, ItemAttrParams> ia : item.getValue().map.entrySet()) {
-                            String cat = Utils.toString(str, ".", item.getKey().delegate.name());
-                            ia.getValue().value = getRPGAttributeValue(cat, ia);
+                            String catStr = Utils.toString(str, ".", item.getKey().delegate.name());
+                            ia.getValue().value = getRPGAttributeValue(catStr, ia);
                             if (ia.getValue().mul != null) {
-                                ia.getValue().mul = getRPGMultiplier(cat, ia);
+                                ia.getValue().mul = getRPGMultiplier(catStr, ia);
                             }
                         }
                     }

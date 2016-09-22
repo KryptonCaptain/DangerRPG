@@ -1,6 +1,6 @@
 package mixac1.dangerrpg.api.entity;
 
-import mixac1.dangerrpg.capability.RPGEntityProperties;
+import mixac1.dangerrpg.capability.data.RPGEntityProperties;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgReqUpEA;

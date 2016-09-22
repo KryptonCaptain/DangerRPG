@@ -4,8 +4,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.api.entity.IRPGEntity;
 import mixac1.dangerrpg.api.item.IRPGItem;
-import mixac1.dangerrpg.capability.RPGableEntity.EntityData;
-import mixac1.dangerrpg.capability.RPGableItem.ItemData;
+import mixac1.dangerrpg.capability.data.RPGEntityData;
+import mixac1.dangerrpg.capability.data.RPGItemData;
 import mixac1.dangerrpg.client.render.item.RenderItemModel;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGRenderers;
@@ -50,7 +50,7 @@ public abstract class RPGRegister
      */
     public static void registerRPGItem(Item item, IRPGItem iRPG)
     {
-        RPGCapability.rpgItemRegistr.put(item, new ItemData(iRPG, true));
+        RPGCapability.rpgItemRegistr.put(item, new RPGItemData(iRPG, true));
     }
 
     /**
@@ -60,6 +60,6 @@ public abstract class RPGRegister
      */
     public static void registerRPGEntity(Class<? extends EntityLivingBase> entityClass, IRPGEntity iRPG)
     {
-        RPGCapability.rpgEntityRegistr.put(entityClass, new EntityData(iRPG, true));
+        RPGCapability.rpgEntityRegistr.put(entityClass, new RPGEntityData(iRPG, true));
     }
 }

@@ -1,15 +1,10 @@
 package mixac1.dangerrpg.capability;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import mixac1.dangerrpg.api.event.RegIAEvent;
 import mixac1.dangerrpg.api.event.UpEquipmentEvent;
-import mixac1.dangerrpg.api.item.IADynamic;
-import mixac1.dangerrpg.api.item.IAStatic;
 import mixac1.dangerrpg.api.item.IRPGItem;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemArmor;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemBow;
@@ -18,8 +13,7 @@ import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemMod;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemStaff;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemTool;
 import mixac1.dangerrpg.api.item.ItemAttribute;
-import mixac1.dangerrpg.capability.RPGDataRegister.ElementData;
-import mixac1.dangerrpg.capability.RPGableItem.ItemData.ItemAttrParams;
+import mixac1.dangerrpg.capability.data.RPGItemData;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.hook.HookArmorSystem;
 import mixac1.dangerrpg.init.RPGCapability;
@@ -89,20 +83,20 @@ public abstract class RPGableItem
                             null;
 
             if (iRPG != null) {
-                RPGCapability.rpgItemRegistr.put(item, new ItemData(iRPG, false));
+                RPGCapability.rpgItemRegistr.put(item, new RPGItemData(iRPG, false));
                 return true;
             }
         }
         return false;
     }
 
-    public static void registerParamsDefault(Item item, ItemData map)
+    public static void registerParamsDefault(Item item, RPGItemData map)
     {
         map.addDynamicItemAttribute(ItemAttributes.MAX_EXP, RPGConfig.ItemConfig.startMaxExp, EXP_MUL);
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.DefaultIAEvent(item, map));
     }
 
-    public static void registerParamsItemMod(Item item, ItemData map)
+    public static void registerParamsItemMod(Item item, RPGItemData map)
     {
         float durab, ench;
         RPGItemComponent comp;
@@ -124,7 +118,7 @@ public abstract class RPGableItem
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemModIAEvent(item, map));
     }
 
-    public static void registerParamsItemSword(Item item, ItemData map)
+    public static void registerParamsItemSword(Item item, RPGItemData map)
     {
         registerParamsItemMod(item, map);
         IRPGItemTool iRPG = (IRPGItemTool) (item instanceof IRPGItemTool ? item : IRPGItem.DEFAULT_SWORD);
@@ -143,7 +137,7 @@ public abstract class RPGableItem
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemSwordIAEvent(item, map));
     }
 
-    public static void registerParamsItemTool(Item item, ItemData map)
+    public static void registerParamsItemTool(Item item, RPGItemData map)
     {
         registerParamsItemMod(item, map);
         IRPGItemTool iRPG = (IRPGItemTool) (item instanceof IRPGItemTool ? item : IRPGItem.DEFAULT_TOOL);
@@ -164,7 +158,7 @@ public abstract class RPGableItem
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemToolIAEvent(item, map));
     }
 
-    public static void registerParamsItemArmor(Item item, ItemData map)
+    public static void registerParamsItemArmor(Item item, RPGItemData map)
     {
         registerParamsItemMod(item, map);
         IRPGItemArmor iRPG = (IRPGItemArmor) (item instanceof IRPGItemArmor ? item : IRPGItem.DEFAULT_ARMOR);
@@ -178,7 +172,7 @@ public abstract class RPGableItem
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemArmorIAEvent(item, map));
     }
 
-    public static void registerParamsItemBow(Item item, ItemData map)
+    public static void registerParamsItemBow(Item item, RPGItemData map)
     {
         registerParamsItemMod(item, map);
         IRPGItemBow iRPG = (IRPGItemBow) (item instanceof IRPGItemBow ? item : IRPGItem.DEFAULT_BOW);
@@ -200,7 +194,7 @@ public abstract class RPGableItem
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemBowIAEvent(item, map));
     }
 
-    public static void registerParamsItemGun(Item item, ItemData map)
+    public static void registerParamsItemGun(Item item, RPGItemData map)
     {
         registerParamsItemMod(item, map);
         IRPGItemGun iRPG = (IRPGItemGun) item;
@@ -223,7 +217,7 @@ public abstract class RPGableItem
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemGunIAEvent(item, map));
     }
 
-    public static void registerParamsItemStaff(Item item, ItemData map)
+    public static void registerParamsItemStaff(Item item, RPGItemData map)
     {
         registerParamsItemGun(item, map);
         IRPGItemStaff iRPG = (IRPGItemStaff) item;
@@ -365,69 +359,6 @@ public abstract class RPGableItem
             e.points = e.points / stacks.size();
             for (ItemStack tmp : stacks) {
                 addExp(tmp, (int) e.points);
-            }
-        }
-    }
-
-    public static class ItemData extends ElementData<HashMap<Integer, ItemAttrParams>>
-    {
-        public HashMap<ItemAttribute, ItemAttrParams> map = new LinkedHashMap<ItemAttribute, ItemAttrParams>();
-        public IRPGItem rpgComponent;
-
-        public ItemData(IRPGItem lvlComponent, boolean isSupported)
-        {
-            this.rpgComponent = lvlComponent;
-            this.isSupported = isSupported;
-        }
-
-        public void addStaticItemAttribute(IAStatic attr, float value)
-        {
-            map.put(attr, new ItemAttrParams(value, null));
-        }
-
-        public void addDynamicItemAttribute(IADynamic attr, float value, IMulConfigurable mul)
-        {
-            map.put(attr, new ItemAttrParams(value, mul));
-        }
-
-        @Override
-        public HashMap<Integer, ItemAttrParams> getTransferData()
-        {
-            HashMap<Integer, ItemAttrParams> tmp = new HashMap<Integer, ItemAttrParams>();
-            for (Entry<ItemAttribute, ItemAttrParams> entry : map.entrySet()) {
-                tmp.put(entry.getKey().hash, entry.getValue());
-            }
-            return tmp;
-        }
-
-        @Override
-        public void unpackTransferData(HashMap<Integer, ItemAttrParams> data)
-        {
-            for (Entry<Integer, ItemAttrParams> entry : data.entrySet()) {
-                if (RPGCapability.mapIntToItemAttribute.containsKey(entry.getKey())) {
-                    ItemAttribute attr = RPGCapability.mapIntToItemAttribute.get(entry.getKey());
-                    if (map.containsKey(attr)) {
-                        map.get(attr).value = entry.getValue().value;
-                        map.get(attr).mul = entry.getValue().mul;
-                    }
-                }
-            }
-        }
-
-        public static class ItemAttrParams
-        {
-            public float value;
-            public IMulConfigurable mul;
-
-            public ItemAttrParams(float value, IMulConfigurable mul)
-            {
-                this.value = value;
-                this.mul = mul;
-            }
-
-            public float up(float value)
-            {
-                return mul.up(value);
             }
         }
     }

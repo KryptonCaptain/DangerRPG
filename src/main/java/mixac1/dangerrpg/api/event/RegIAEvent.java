@@ -2,7 +2,7 @@ package mixac1.dangerrpg.api.event;
 
 import cpw.mods.fml.common.eventhandler.Event;
 import mixac1.dangerrpg.api.item.ItemAttribute;
-import mixac1.dangerrpg.capability.RPGableItem.ItemData;
+import mixac1.dangerrpg.capability.data.RPGItemData;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBow;
@@ -12,9 +12,9 @@ import net.minecraft.item.ItemTool;
 public class RegIAEvent extends Event
 {
     public Item item;
-    public ItemData map;
+    public RPGItemData map;
 
-    protected RegIAEvent(Item item, ItemData map)
+    protected RegIAEvent(Item item, RPGItemData map)
     {
         this.item = item;
         this.map = map;
@@ -26,7 +26,7 @@ public class RegIAEvent extends Event
      */
     public static class DefaultIAEvent extends RegIAEvent
     {
-        public DefaultIAEvent(Item item, ItemData map)
+        public DefaultIAEvent(Item item, RPGItemData map)
         {
             super(item, map);
         }
@@ -38,7 +38,7 @@ public class RegIAEvent extends Event
      */
     public static class ItemModIAEvent extends RegIAEvent
     {
-        public ItemModIAEvent(Item item, ItemData map)
+        public ItemModIAEvent(Item item, RPGItemData map)
         {
             super(item, map);
         }
@@ -50,7 +50,7 @@ public class RegIAEvent extends Event
      */
     public static class ItemSwordIAEvent extends RegIAEvent
     {
-        public ItemSwordIAEvent(Item item, ItemData map)
+        public ItemSwordIAEvent(Item item, RPGItemData map)
         {
             super(item, map);
         }
@@ -62,7 +62,7 @@ public class RegIAEvent extends Event
      */
     public static class ItemToolIAEvent extends RegIAEvent
     {
-        public ItemToolIAEvent(Item item, ItemData map)
+        public ItemToolIAEvent(Item item, RPGItemData map)
         {
             super(item, map);
         }
@@ -74,7 +74,7 @@ public class RegIAEvent extends Event
      */
     public static class ItemArmorIAEvent extends RegIAEvent
     {
-        public ItemArmorIAEvent(Item item, ItemData map)
+        public ItemArmorIAEvent(Item item, RPGItemData map)
         {
             super(item, map);
         }
@@ -86,7 +86,7 @@ public class RegIAEvent extends Event
      */
     public static class ItemBowIAEvent extends RegIAEvent
     {
-        public ItemBowIAEvent(Item item, ItemData map)
+        public ItemBowIAEvent(Item item, RPGItemData map)
         {
             super(item, map);
         }
@@ -97,7 +97,7 @@ public class RegIAEvent extends Event
      */
     public static class ItemGunIAEvent extends RegIAEvent
     {
-        public ItemGunIAEvent(Item item, ItemData map)
+        public ItemGunIAEvent(Item item, RPGItemData map)
         {
             super(item, map);
         }
@@ -108,7 +108,7 @@ public class RegIAEvent extends Event
      */
     public static class ItemStaffIAEvent extends RegIAEvent
     {
-        public ItemStaffIAEvent(Item item, ItemData map)
+        public ItemStaffIAEvent(Item item, RPGItemData map)
         {
             super(item, map);
         }
