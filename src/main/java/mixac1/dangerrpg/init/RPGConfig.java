@@ -3,7 +3,9 @@ package mixac1.dangerrpg.init;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map.Entry;
 
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -11,8 +13,16 @@ import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
+import mixac1.dangerrpg.api.item.ItemAttribute;
+import mixac1.dangerrpg.capability.RPGableItem.ItemData;
+import mixac1.dangerrpg.capability.RPGableItem.ItemData.ItemAttrParams;
 import mixac1.dangerrpg.client.gui.GuiMode;
+import mixac1.dangerrpg.util.IMultiplier.IMulConfigurable;
+import mixac1.dangerrpg.util.IMultiplier.MulType;
 import mixac1.dangerrpg.util.RPGHelper;
+import mixac1.dangerrpg.util.Utils;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
@@ -165,11 +175,20 @@ public class RPGConfig
         public static int       startMaxExp         = 100;
         public static float     expMul              = 1.15f;
 
-        public static HashSet<String> supportedRPGItems = new HashSet<String>();
+        public static HashSet<String> activeRPGItems = new HashSet<String>();
 
         public ItemConfig(String fileName)
         {
             super(fileName);
+            category.setComment("FAQ:\n"
+                    + "Q: How do activate RPG item?\n"
+                    + "A: Take name of item frome the 'itemList' and put it to the 'activeRPGItems' list.\n"
+                    + "Or you can enabled flag 'isAllItemsRPGable' for active all items.\n"
+                    + "\n"
+                    + "Q: How do congigure any item?\n"
+                    + "A: Take name of item frome the 'itemList' and put it to the 'needCustomSetting' list.\n"
+                    + "After this, run the game, close and reopen this config.\n"
+                    + "You can find generated element for configue that item.");
         }
 
         @Override
@@ -197,10 +216,10 @@ public class RPGConfig
         public void postLoadPre()
         {
             ArrayList<String> names = RPGHelper.getItemNames(RPGCapability.rpgItemRegistr.keySet(), true);
-            Property prop = getPropertyStrings("supportedRPGItems", names.toArray(new String[names.size()]),
-                    "Set supported RPG items (activated if 'isAllItemsRPGable' is false) (true/false)", false);
+            Property prop = getPropertyStrings("activeRPGItems", names.toArray(new String[names.size()]),
+                    "Set active RPG items (activated if 'isAllItemsRPGable' is false) (true/false)", false);
             if (!isAllItemsRPGable) {
-                supportedRPGItems = new HashSet<String>(Arrays.asList(prop.getStringList()));
+                activeRPGItems = new HashSet<String>(Arrays.asList(prop.getStringList()));
             }
 
             save();
@@ -209,8 +228,13 @@ public class RPGConfig
         @Override
         public void postLoadPost()
         {
-            ArrayList<String> names = RPGHelper.getItemNames(RPGCapability.rpgItemRegistr.getActiveElements().keySet(), true);
-            getPropertyStrings("supportedRPGItems", names.toArray(new String[names.size()]), null, true);
+            HashMap<Item, ItemData> map = RPGCapability.rpgItemRegistr.getActiveElements();
+
+            customConfig(map);
+
+            ArrayList<String> names = RPGHelper.getItemNames(map.keySet(), true);
+            getPropertyStrings("activeRPGItems", names.toArray(new String[names.size()]),
+                    "Set active RPG items (activated if 'isAllItemsRPGable' is false) (true/false)", true);
 
             names = RPGHelper.getItemNames(RPGCapability.rpgItemRegistr.keySet(), true);
             getPropertyStrings("itemList", names.toArray(new String[names.size()]),
@@ -218,13 +242,70 @@ public class RPGConfig
 
             save();
         }
+
+        protected void customConfig(HashMap<Item, ItemData> map)
+        {
+            String str = "customSetting";
+
+            Property prop = getPropertyStrings("needCustomSetting", new String[] {Items.diamond_sword.delegate.name()},
+                    "Set items, which needs customization", true);
+            HashSet<String> needCustomSetting = new HashSet<String>(Arrays.asList(prop.getStringList()));
+
+            if (!needCustomSetting.isEmpty()) {
+                for (Entry<Item, ItemData> item : map.entrySet()) {
+                    if (needCustomSetting.contains(item.getKey().delegate.name())) {
+                        for (Entry<ItemAttribute, ItemAttrParams> ia : item.getValue().map.entrySet()) {
+                            String cat = Utils.toString(str, ".", item.getKey().delegate.name());
+                            ia.getValue().value = getRPGAttributeValue(cat, ia);
+                            if (ia.getValue().mul != null) {
+                                ia.getValue().mul = getRPGMultiplier(cat, ia);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        protected float getRPGAttributeValue(String category, Entry<ItemAttribute, ItemAttrParams> attr)
+        {
+            Property prop = config.get(category, attr.getKey().name, attr.getValue().value);
+            float value = (float) prop.getDouble();
+            if (attr.getKey().isValid(value)) {
+                return value;
+            }
+            else {
+                prop.set(attr.getValue().value);
+                return attr.getValue().value;
+            }
+        }
+
+        protected IMulConfigurable getRPGMultiplier(String category, Entry<ItemAttribute, ItemAttrParams> attr)
+        {
+            String def = attr.getValue().mul.toString();
+            Property prop = config.get(category, attr.getKey().name.concat(".mul"), def);
+            String str = prop.getString();
+
+            if (!def.equals(str)) {
+                String[] strs = str.split(" ");
+                if (strs.length == 2) {
+                    MulType type = MulType.valueOf(strs[0].toUpperCase());
+                    Float value = Float.valueOf(strs[1]);
+                    if (type != null && value != null) {
+                        return type.getMul(value);
+                    }
+                }
+            }
+
+            prop.set(def);
+            return attr.getValue().mul;
+        }
     }
 
     public static class EntityConfig extends RPGConfigCommon
     {
         public static boolean isAllEntitiesRPGable = false;
 
-        public static HashSet<String> supportedRPGEntities = new HashSet<String>();
+        public static HashSet<String> activeRPGEntities = new HashSet<String>();
 
         public EntityConfig(String fileName)
         {
@@ -244,10 +325,10 @@ public class RPGConfig
         public void postLoadPre()
         {
             ArrayList<String> names = RPGHelper.getEntityNames(RPGCapability.rpgEntityRegistr.keySet(), true);
-            Property prop = getPropertyStrings("supportedRPGEntities", names.toArray(new String[names.size()]),
-                    "Set supported RPG entities (activated if 'isAllEntitiesRPGable' is false) (true/false)", false);
+            Property prop = getPropertyStrings("activeRPGEntities", names.toArray(new String[names.size()]),
+                    "Set active RPG entities (activated if 'isAllEntitiesRPGable' is false) (true/false)", false);
             if (!isAllEntitiesRPGable) {
-                supportedRPGEntities = new HashSet<String>(Arrays.asList(prop.getStringList()));
+                activeRPGEntities = new HashSet<String>(Arrays.asList(prop.getStringList()));
             }
             save();
         }
@@ -256,7 +337,8 @@ public class RPGConfig
         public void postLoadPost()
         {
             ArrayList<String> names = RPGHelper.getEntityNames(RPGCapability.rpgEntityRegistr.getActiveElements().keySet(), true);
-            getPropertyStrings("supportedRPGEntities", names.toArray(new String[names.size()]), null, true);
+            getPropertyStrings("activeRPGEntities", names.toArray(new String[names.size()]),
+                    "Set active RPG entities (activated if 'isAllEntitiesRPGable' is false) (true/false)", true);
 
             names = RPGHelper.getEntityNames(RPGCapability.rpgEntityRegistr.keySet(), true);
             getPropertyStrings("entityList", names.toArray(new String[names.size()]),
@@ -297,36 +379,62 @@ public class RPGConfig
 
         protected Property getPropertyStrings(String categoryName, String[] defValue, String comment, boolean needClear)
         {
-
             ConfigCategory cat = config.getCategory(categoryName);
             if (needClear) {
                 cat.clear();
             }
 
-            Property prop = config.get(cat.getName(), "list", defValue);
-            prop.comment = comment != null ? comment : needClear ? "" : prop.comment;
+            Property prop = config.get(cat.getQualifiedName(), "list", defValue);
+            prop.comment = comment != null ? comment : "";
             return prop;
         }
 
-        protected int getInteger(String field, int defValue, String comment)
+        protected int getInteger(String category, String field, int defValue, String comment)
         {
-            Property prop = config.get(category.getName(), field, defValue);
+            Property prop = config.get(category, field, defValue);
             prop.comment = comment != null ? comment : "";
             return prop.getInt(defValue);
         }
 
-        protected double getDouble(String field, double defValue, String comment)
+        protected double getDouble(String category, String field, double defValue, String comment)
         {
-            Property prop = config.get(category.getName(), field, defValue);
+            Property prop = config.get(category, field, defValue);
             prop.comment = comment != null ? comment : "";
             return prop.getDouble(defValue);
         }
 
-        protected boolean getBoolean(String field, boolean defValue, String comment)
+        protected boolean getBoolean(String category, String field, boolean defValue, String comment)
         {
-            Property prop = config.get(category.getName(), field, defValue);
+            Property prop = config.get(category, field, defValue);
             prop.comment = comment != null ? comment : "";
             return prop.getBoolean(defValue);
+        }
+
+        protected String getString(String category, String field, String defValue, String comment)
+        {
+            Property prop = config.get(category, field, defValue);
+            prop.comment = comment != null ? comment : "";
+            return prop.getString();
+        }
+
+        protected int getInteger(String field, int defValue, String comment)
+        {
+            return this.getInteger(category.getQualifiedName(), field, defValue, comment);
+        }
+
+        protected double getDouble(String field, double defValue, String comment)
+        {
+            return this.getDouble(category.getQualifiedName(), field, defValue, comment);
+        }
+
+        protected boolean getBoolean(String field, boolean defValue, String comment)
+        {
+            return this.getBoolean(category.getQualifiedName(), field, defValue, comment);
+        }
+
+        protected String getString(String field, String defValue, String comment)
+        {
+            return this.getString(field, defValue, comment);
         }
     }
 }

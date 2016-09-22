@@ -19,9 +19,9 @@ public class LvlEAProvider<Type>
     public IMultiplierE<Type> mulValue;
     public int maxLvl;
     public int startExpCost;
-    public IMultiplier<Integer> mulExpCost;
+    public IMultiplier<Float> mulExpCost;
 
-    public LvlEAProvider(int startExpCost, int maxLvl, IMultiplierE<Type> mulValue, IMultiplier<Integer> mulExpCost)
+    public LvlEAProvider(int startExpCost, int maxLvl, IMultiplierE<Type> mulValue, IMultiplier<Float> mulExpCost)
     {
         this.mulValue = mulValue;
         this.maxLvl = maxLvl;
@@ -48,7 +48,7 @@ public class LvlEAProvider<Type>
 
     public int getExpUp(EntityLivingBase entity)
     {
-        return startExpCost + mulExpCost.up(getLvl(entity));
+        return (int) (startExpCost + mulExpCost.up((float) getLvl(entity)));
     }
 
     public boolean isMaxLvl(EntityLivingBase entity)

@@ -18,10 +18,11 @@ import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemMod;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemStaff;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemTool;
 import mixac1.dangerrpg.api.item.ItemAttribute;
+import mixac1.dangerrpg.capability.RPGDataRegister.ElementData;
+import mixac1.dangerrpg.capability.RPGableItem.ItemData.ItemAttrParams;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.hook.HookArmorSystem;
 import mixac1.dangerrpg.init.RPGCapability;
-import mixac1.dangerrpg.init.RPGCapability.RPGDataRegister.ElementData;
 import mixac1.dangerrpg.init.RPGConfig;
 import mixac1.dangerrpg.item.RPGArmorMaterial;
 import mixac1.dangerrpg.item.RPGItemComponent;
@@ -33,6 +34,8 @@ import mixac1.dangerrpg.item.RPGItemComponent.RPGStaffComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
 import mixac1.dangerrpg.item.RPGToolMaterial;
 import mixac1.dangerrpg.util.IMultiplier;
+import mixac1.dangerrpg.util.IMultiplier.IMulConfigurable;
+import mixac1.dangerrpg.util.IMultiplier.MultiplierMul;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -48,29 +51,26 @@ import net.minecraftforge.common.MinecraftForge;
 
 public abstract class RPGableItem
 {
-    public static final IMultiplier<Float> EXP_MUL = new IMultiplier<Float>()
-    {
-        @Override
-        public Float up(Float value, Object... meta)
-        {
-            return value * RPGConfig.ItemConfig.expMul;
-        }
-    };
+    public static final MultiplierMul EXP_MUL = new MultiplierMul(RPGConfig.ItemConfig.expMul);
 
-    public static final IMultiplier<Float> DUR_MUL = new IMultiplier<Float>()
+    public static final IMulConfigurable DUR_MUL = new IMulConfigurable()
     {
         @Override
-        public Float up(Float value, Object... meta)
+        public Float down(Float value, Object... objs)
         {
-            ItemStack stack = (ItemStack) meta[0];
-            int lvl = (int) ItemAttributes.LEVEL.get(stack);
-            if (lvl >= 15) {
-                stack.getTagCompound().setBoolean("Unbreakable", true);
-                return value;
-            }
-            else {
-                return value + 25 * (lvl - 1);
-            }
+            return value;
+        }
+
+        @Override
+        public Float up(Float value, Object... objs)
+        {
+            return value > 500 ? value * 1.1f : value + 50;
+        }
+
+        @Override
+        public String toString()
+        {
+            return MulType.HARD.toString();
         }
     };
 
@@ -82,11 +82,11 @@ public abstract class RPGableItem
             }
 
             IRPGItem iRPG = item instanceof ItemSword ? IRPGItem.DEFAULT_SWORD :
-                                item instanceof ItemTool  ? IRPGItem.DEFAULT_TOOL  :
-                                item instanceof ItemHoe   ? IRPGItem.DEFAULT_TOOL  :
-                                item instanceof ItemArmor ? IRPGItem.DEFAULT_ARMOR :
-                                item instanceof ItemBow   ? IRPGItem.DEFAULT_BOW   :
-                                null;
+                            item instanceof ItemTool  ? IRPGItem.DEFAULT_TOOL  :
+                            item instanceof ItemHoe   ? IRPGItem.DEFAULT_TOOL  :
+                            item instanceof ItemArmor ? IRPGItem.DEFAULT_ARMOR :
+                            item instanceof ItemBow   ? IRPGItem.DEFAULT_BOW   :
+                            null;
 
             if (iRPG != null) {
                 RPGCapability.rpgItemRegistr.put(item, new ItemData(iRPG, false));
@@ -250,10 +250,32 @@ public abstract class RPGableItem
         if (!stack.hasTagCompound()) {
             stack.setTagCompound(new NBTTagCompound());
         }
+
         initParams(stack);
     }
 
+    public static void reinitRPGItem(ItemStack stack)
+    {
+        if (!stack.hasTagCompound()) {
+            stack.setTagCompound(new NBTTagCompound());
+        }
+
+        reinitParams(stack);
+    }
+
     public static void initParams(ItemStack stack)
+    {
+        ItemAttributes.LEVEL.set(stack, 1);
+        ItemAttributes.CURR_EXP.set(stack, 0);
+        ItemAttributes.MAX_EXP.init(stack);
+
+        Set<ItemAttribute> itemAttributes = getAttributeValues(stack);
+        for (ItemAttribute it : itemAttributes) {
+            it.init(stack);
+        }
+    }
+
+    public static void reinitParams(ItemStack stack)
     {
         if (!ItemAttributes.LEVEL.hasIt(stack)) {
             ItemAttributes.LEVEL.set(stack, 1);
@@ -347,7 +369,7 @@ public abstract class RPGableItem
         }
     }
 
-    public static class ItemData extends ElementData<HashMap<Integer, Float>>
+    public static class ItemData extends ElementData<HashMap<Integer, ItemAttrParams>>
     {
         public HashMap<ItemAttribute, ItemAttrParams> map = new LinkedHashMap<ItemAttribute, ItemAttrParams>();
         public IRPGItem rpgComponent;
@@ -363,29 +385,30 @@ public abstract class RPGableItem
             map.put(attr, new ItemAttrParams(value, null));
         }
 
-        public void addDynamicItemAttribute(IADynamic attr, float value, IMultiplier mul)
+        public void addDynamicItemAttribute(IADynamic attr, float value, IMulConfigurable mul)
         {
             map.put(attr, new ItemAttrParams(value, mul));
         }
 
         @Override
-        public HashMap<Integer, Float> getTransferData()
+        public HashMap<Integer, ItemAttrParams> getTransferData()
         {
-            HashMap<Integer, Float> tmp = new HashMap<Integer, Float>();
+            HashMap<Integer, ItemAttrParams> tmp = new HashMap<Integer, ItemAttrParams>();
             for (Entry<ItemAttribute, ItemAttrParams> entry : map.entrySet()) {
-                tmp.put(entry.getKey().hash, entry.getValue().value);
+                tmp.put(entry.getKey().hash, entry.getValue());
             }
             return tmp;
         }
 
         @Override
-        public void unpackTransferData(HashMap<Integer, Float> data)
+        public void unpackTransferData(HashMap<Integer, ItemAttrParams> data)
         {
-            for (Entry<Integer, Float> entry : data.entrySet()) {
+            for (Entry<Integer, ItemAttrParams> entry : data.entrySet()) {
                 if (RPGCapability.mapIntToItemAttribute.containsKey(entry.getKey())) {
                     ItemAttribute attr = RPGCapability.mapIntToItemAttribute.get(entry.getKey());
                     if (map.containsKey(attr)) {
-                        map.get(attr).value = entry.getValue();
+                        map.get(attr).value = entry.getValue().value;
+                        map.get(attr).mul = entry.getValue().mul;
                     }
                 }
             }
@@ -394,17 +417,17 @@ public abstract class RPGableItem
         public static class ItemAttrParams
         {
             public float value;
-            public IMultiplier<Float> mul;
+            public IMulConfigurable mul;
 
-            public ItemAttrParams(float value, IMultiplier<Float> mul)
+            public ItemAttrParams(float value, IMulConfigurable mul)
             {
                 this.value = value;
                 this.mul = mul;
             }
 
-            public float up(float value, ItemStack stack)
+            public float up(float value)
             {
-                return mul.up(value, stack);
+                return mul.up(value);
             }
         }
     }

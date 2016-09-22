@@ -13,8 +13,8 @@ import mixac1.dangerrpg.init.RPGOther.RPGItemRarity;
 import mixac1.dangerrpg.item.IMaterialSpecial;
 import mixac1.dangerrpg.util.RPGHelper;
 import mixac1.hooklib.asm.Hook;
-import mixac1.hooklib.asm.ReturnCondition;
 import mixac1.hooklib.asm.Hook.ReturnValue;
+import mixac1.hooklib.asm.ReturnCondition;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -44,7 +44,7 @@ public class HookItems
     public static void readFromNBT(ItemStack stack, NBTTagCompound nbt)
     {
         if (RPGableItem.isRPGable(stack)) {
-            RPGableItem.initRPGItem(stack);
+            RPGableItem.reinitRPGItem(stack);
         }
     }
 

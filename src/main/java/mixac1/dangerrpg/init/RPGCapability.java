@@ -2,7 +2,6 @@ package mixac1.dangerrpg.init;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Map.Entry;
 
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -15,14 +14,13 @@ import mixac1.dangerrpg.api.entity.IRPGEntity.RPGCommonEntityMob;
 import mixac1.dangerrpg.api.entity.IRPGEntity.RPGEntityRangeMob;
 import mixac1.dangerrpg.api.item.IRPGItem;
 import mixac1.dangerrpg.api.item.ItemAttribute;
+import mixac1.dangerrpg.capability.RPGDataRegister.RPGEntityRegister;
+import mixac1.dangerrpg.capability.RPGDataRegister.RPGItemRegister;
 import mixac1.dangerrpg.capability.RPGableEntity;
 import mixac1.dangerrpg.capability.RPGableEntity.EntityData;
 import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.RPGableItem.ItemData;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
-import mixac1.dangerrpg.init.RPGCapability.RPGDataRegister.ElementData;
-import mixac1.dangerrpg.util.Tuple.Pair;
-import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
@@ -78,7 +76,10 @@ public abstract class RPGCapability
         loadEntities();
 
         loadItems();
+    }
 
+    public static void postLoad(FMLPostInitializationEvent e)
+    {
         rpgItemRegistr.createTransferData();
         rpgEntityRegistr.createTransferData();
     }
@@ -208,7 +209,7 @@ public abstract class RPGCapability
         for (Entry<Class<? extends EntityLivingBase>, EntityData> it : rpgEntityRegistr.entrySet()) {
             RPGableEntity.registerEntityDefault(it.getKey(), it.getValue());
             it.getValue().rpgComponent.registerAttributes(it.getKey(), it.getValue());
-            if (RPGConfig.EntityConfig.isAllEntitiesRPGable || RPGConfig.EntityConfig.supportedRPGEntities.contains(EntityList.classToStringMapping.get(it.getKey()))) {
+            if (RPGConfig.EntityConfig.isAllEntitiesRPGable || RPGConfig.EntityConfig.activeRPGEntities.contains(EntityList.classToStringMapping.get(it.getKey()))) {
                 rpgEntityRegistr.get(it.getKey()).isActivated = true;
                 DangerRPG.infoLog(String.format("Register RPG entity (sup from mod: %s): %s",
                                   it.getValue().isSupported ? " true" : "false", EntityList.classToStringMapping.get(it.getKey())));
@@ -228,139 +229,11 @@ public abstract class RPGCapability
         for (Entry<Item, ItemData> it : rpgItemRegistr.entrySet()) {
             RPGableItem.registerParamsDefault(it.getKey(), it.getValue());
             it.getValue().rpgComponent.registerAttributes(it.getKey(), it.getValue());
-            if (RPGConfig.ItemConfig.isAllItemsRPGable || RPGConfig.ItemConfig.supportedRPGItems.contains(it.getKey().delegate.name())) {
+            if (RPGConfig.ItemConfig.isAllItemsRPGable || RPGConfig.ItemConfig.activeRPGItems.contains(it.getKey().delegate.name())) {
                 rpgItemRegistr.get(it.getKey()).isActivated = true;
                 DangerRPG.infoLog(String.format("Register RPG item (sup from mod: %s): %s",
                                   it.getValue().isSupported ? " true" : "false", it.getKey().delegate.name()));
             }
-        }
-    }
-
-    public static abstract class RPGDataRegister<Key, Data extends ElementData<TransferData>, TransferKey, TransferData> extends HashMap<Key, Data>
-    {
-        private byte[] tranferData;
-
-        public boolean isActivated(Key key)
-        {
-            return containsKey(key) && get(key).isActivated;
-        }
-
-        public boolean isSupported(Key key)
-        {
-            return containsKey(key) && get(key).isSupported;
-        }
-
-        public HashMap<Key, Data> getActiveElements()
-        {
-            HashMap<Key, Data> map = new HashMap<Key, Data>();
-            for (Entry<Key, Data> entry : entrySet()) {
-                if (entry.getValue().isActivated) {
-                    map.put(entry.getKey(), entry.getValue());
-                }
-            }
-            return map;
-        }
-
-        protected abstract TransferKey codingKey(Key key);
-
-        protected abstract Key decodingKey(TransferKey key);
-
-        public void createTransferData()
-        {
-            LinkedList<Pair<TransferKey, TransferData>> list = new LinkedList<Pair<TransferKey, TransferData>>();
-            for (Entry<Key, Data> entry : getActiveElements().entrySet()) {
-                TransferKey key = codingKey(entry.getKey());
-                if (key != null) {
-                    list.add(new Pair<TransferKey, TransferData>(key, entry.getValue().getTransferData()));
-                }
-            }
-
-            tranferData = Utils.serialize(list);
-        }
-
-        public byte[] getTransferData()
-        {
-            return tranferData;
-        }
-
-        public void extractTransferData(byte[] tranferData)
-        {
-            for (Entry<Key, Data> entry : entrySet()) {
-                entry.getValue().isActivated = false;
-            }
-
-            LinkedList<Pair<TransferKey, TransferData>> list = Utils.deserialize(tranferData);
-            for (Pair<TransferKey, TransferData> data : list) {
-                Key key = decodingKey(data.value1);
-                if (key != null) {
-                    get(key).unpackTransferData(data.value2);
-                    get(key).isActivated = true;
-                }
-            }
-        }
-
-        public static abstract class ElementData<TransferData>
-        {
-            public boolean isActivated;
-            public boolean isSupported;
-
-            public abstract TransferData getTransferData();
-
-            public abstract void unpackTransferData(TransferData data);
-        }
-    }
-
-    public static class RPGItemRegister extends RPGDataRegister<Item, ItemData, Integer, HashMap<Integer, Float>>
-    {
-        @Override
-        protected Integer codingKey(Item key)
-        {
-            return Item.getIdFromItem(key);
-        }
-
-        @Override
-        protected Item decodingKey(Integer key)
-        {
-            return Item.getItemById(key);
-        }
-    }
-
-    public static class RPGEntityRegister extends RPGDataRegister<Class<? extends EntityLivingBase>, EntityData, String, Object>
-    {
-        public Class<? extends EntityLivingBase> getClass(EntityLivingBase entity)
-        {
-            return entity instanceof EntityPlayer ? EntityPlayer.class : entity.getClass();
-        }
-
-        public boolean isActivated(EntityLivingBase entity)
-        {
-            return super.isActivated(getClass(entity));
-        }
-
-        public EntityData get(EntityLivingBase entity)
-        {
-            return super.get(getClass(entity));
-        }
-
-        public void put(EntityLivingBase entity, EntityData data)
-        {
-            super.put(getClass(entity), data);
-        }
-
-        @Override
-        protected String codingKey(Class<? extends EntityLivingBase> key)
-        {
-            return (String) (EntityList.classToStringMapping.containsKey(key) ?
-                    EntityList.classToStringMapping.get(key) : EntityPlayer.class.isAssignableFrom(key) ?
-                            "player" : null);
-        }
-
-        @Override
-        protected Class<? extends EntityLivingBase> decodingKey(String key)
-        {
-            return (Class<? extends EntityLivingBase>) (EntityList.stringToClassMapping.containsKey(key) ?
-                    EntityList.stringToClassMapping.get(key) : "player".equals(key) ?
-                            EntityPlayer.class : null);
         }
     }
 }

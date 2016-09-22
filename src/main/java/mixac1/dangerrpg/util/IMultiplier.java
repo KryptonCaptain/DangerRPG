@@ -6,10 +6,55 @@ public interface IMultiplier<Type>
 
     public interface IMultiplierE<Type> extends IMultiplier<Type>
     {
-        public Type down(Type value, Object... meta);
+        public Type down(Type value, Object... objs);
     }
 
-    public static class MultiplierAdd implements IMultiplierE<Float>
+    public interface IMulConfigurable extends IMultiplierE<Float> {}
+
+    enum MulType
+    {
+        ADD
+        {
+            @Override
+            public IMulConfigurable getMul(Float d)
+            {
+                return new MultiplierAdd(d);
+            }
+        },
+
+        MUL
+        {
+            @Override
+            public IMulConfigurable getMul(Float d)
+            {
+                return new MultiplierMul(d);
+            }
+        },
+
+        HARD
+        {
+            @Override
+            public String toString(Float value)
+            {
+                return name();
+            }
+        },
+
+        ;
+
+        public IMulConfigurable getMul(Float value)
+        {
+            return null;
+        }
+
+        public String toString(Float value)
+        {
+            return Utils.toString(name(), " ", value);
+        }
+
+    }
+
+    public static class MultiplierAdd implements IMulConfigurable
     {
         private Float add;
 
@@ -19,32 +64,53 @@ public interface IMultiplier<Type>
         }
 
         @Override
-        public Float up(Float value, Object... meta)
+        public Float up(Float value, Object... objs)
         {
             return value + add;
         }
 
         @Override
-        public Float down(Float value, Object... meta)
+        public Float down(Float value, Object... objs)
         {
             return value - add;
         }
+
+        @Override
+        public String toString()
+        {
+            return MulType.ADD.toString(add);
+        }
     }
 
-    public static final IMultiplierE ADD_1 = new MultiplierAdd(1F);
-
-    public static IMultiplierE MUL_1 = new IMultiplierE()
+    public static class MultiplierMul implements IMulConfigurable
     {
-        @Override
-        public Object up(Object value, Object... meta)
+        private Float mul;
+
+        public MultiplierMul(Float mul)
         {
-            return value;
+            this.mul = mul;
         }
 
         @Override
-        public Object down(Object value, Object... meta)
+        public Float up(Float value, Object... objs)
         {
-            return value;
+            return value * mul;
         }
-    };
+
+        @Override
+        public Float down(Float value, Object... objs)
+        {
+            return value / mul;
+        }
+
+        @Override
+        public String toString()
+        {
+            return MulType.MUL.toString(mul);
+        }
+    }
+
+    public static final MultiplierAdd ADD_1 = new MultiplierAdd(1F);
+
+    public static final MultiplierMul MUL_1 = new MultiplierMul(1F);
 }

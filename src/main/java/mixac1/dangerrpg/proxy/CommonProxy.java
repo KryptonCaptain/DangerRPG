@@ -57,6 +57,8 @@ public class CommonProxy
         RPGCapability.load(e);
 
         RPGConfig.postLoadPost(e);
+
+        RPGCapability.postLoad(e);
     }
 
     public Side getSide()
