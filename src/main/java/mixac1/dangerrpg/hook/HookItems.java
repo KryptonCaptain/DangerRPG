@@ -1,12 +1,10 @@
 package mixac1.dangerrpg.hook;
 
-import java.util.UUID;
-
 import com.google.common.collect.Multimap;
 
-import mixac1.dangerrpg.api.event.ItemStackEvent.AddAttributeModifiers;
 import mixac1.dangerrpg.capability.GemableItem;
 import mixac1.dangerrpg.capability.RPGableItem;
+import mixac1.dangerrpg.capability.data.RPGUUIDs;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.init.RPGOther.RPGItemRarity;
@@ -23,7 +21,6 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.MinecraftForge;
 
 public class HookItems
 {
@@ -54,10 +51,9 @@ public class HookItems
         if (RPGableItem.isRPGable(stack)) {
             if (ItemAttributes.MELEE_DAMAGE.hasIt(stack)) {
                 returnValue.removeAll(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName());
-                returnValue.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF"), "Weapon modifier",
+                returnValue.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(RPGUUIDs.DEFAULT_DAMAGE, "Weapon modifier",
                         ItemAttributes.MELEE_DAMAGE.get(stack), 0));
             }
-            MinecraftForge.EVENT_BUS.post(new AddAttributeModifiers(stack, returnValue));
         }
         return returnValue;
     }

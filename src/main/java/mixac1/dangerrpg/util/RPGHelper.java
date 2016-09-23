@@ -3,7 +3,11 @@ package mixac1.dangerrpg.util;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
+
+import com.google.common.collect.Multimap;
 
 import mixac1.dangerrpg.api.item.IRPGItem;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemArmor;
@@ -18,6 +22,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -254,28 +260,24 @@ public abstract class RPGHelper
         }
         return defaultDamage;
     }
+
+    public static float getItemDamage(ItemStack stack, EntityPlayer player)
+    {
+        float value = 0;
+
+        Multimap map = stack.getItem().getAttributeModifiers(stack);
+        Iterator iterator = map.entries().iterator();
+        while (iterator.hasNext()) {
+            Entry entry = (Entry)iterator.next();
+            if (((String) entry.getKey()).equals(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName())) {
+                value += ((AttributeModifier) entry.getValue()).getAmount();
+            }
+        }
+        return value;
+    }
+
+    public static float getPlayerDamage(ItemStack stack, EntityPlayer player)
+    {
+        return getItemDamage(stack, player) + PlayerAttributes.STRENGTH.getValue(player) * ItemAttributes.STR_MUL.get(stack);
+    }
 }
-
-//if (worldObj.isRemote) {
-//    int color = getColor();
-//    double r = 0.3D;
-//    double frec = Math.PI / 6;
-//    double x, y, z, tmp;
-//
-//    for (double k = 0; k < Math.PI * 2; k += frec) {
-//        y = posY + r * Math.cos(k);
-//        tmp = Math.abs(r * Math.sin(k));
-//        for (double l = 0; l < Math.PI * 2; l += frec) {
-//            x = posX + tmp * Math.cos(l);
-//            z = posZ + tmp * Math.sin(l);
-//            DangerRPG.proxy.spawnEntityFX(RPGEntityFXManager.EntityAuraFXE, x, y, z, motionX, motionY, motionZ, color);
-//        }
-//    }
-//}
-
-//for (float l = 0F; l < 2 * Math.PI; l += Math.PI / 6) {
-//    double px = entity.posX + radius * Math.cos(l);
-//    double py = entity.posZ + radius * Math.sin(l);
-//    Minecraft.getMinecraft().effectRenderer.addEffect(new EntitySplashFX(Minecraft.getMinecraft().theWorld,
-//            px, entity.posY + 1.5D, py, 0F, 0.4F, 0F));
-//}

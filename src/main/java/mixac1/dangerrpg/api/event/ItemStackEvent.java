@@ -2,8 +2,6 @@ package mixac1.dangerrpg.api.event;
 
 import java.util.List;
 
-import com.google.common.collect.Multimap;
-
 import cpw.mods.fml.common.eventhandler.Cancelable;
 import cpw.mods.fml.common.eventhandler.Event;
 import net.minecraft.entity.EntityLivingBase;
@@ -64,22 +62,6 @@ public class ItemStackEvent extends Event
             this.player = player;
             this.list = list;
             this.par = par;
-        }
-    }
-
-    /**
-     * It is fires whenever a {@link Item#getAttributeModifiers(ItemStack)} is processed
-     * and stack is lvlable item
-     */
-    @Cancelable
-    public static class AddAttributeModifiers extends ItemStackEvent
-    {
-        public Multimap map;
-
-        public AddAttributeModifiers(ItemStack stack, Multimap map)
-        {
-            super(stack);
-            this.map = map;
         }
     }
 }

@@ -7,17 +7,24 @@ import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
 import mixac1.dangerrpg.api.event.InitRPGEntityEvent;
 import mixac1.dangerrpg.capability.RPGableEntity;
+import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.data.RPGEntityProperties;
+import mixac1.dangerrpg.capability.data.RPGUUIDs;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
+import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgSyncConfig;
 import mixac1.dangerrpg.network.MsgSyncEntityData;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
@@ -125,6 +132,18 @@ public class EventHandlerEntity
                 if (DangerRPG.proxy.getTick(e.side) % 100 == 0) {
                     e.player.heal(PlayerAttributes.HEALTH_REGEN.getValue(e.player));
                 }
+
+                ItemStack stack = e.player.getCurrentEquippedItem();
+                if (stack != null && RPGableItem.isRPGable(stack)) {
+                    IAttributeInstance attr = e.player.getEntityAttribute(SharedMonsterAttributes.attackDamage);
+                    AttributeModifier mod = attr.getModifier(RPGUUIDs.ADDITIONAL_STR_DAMAGE);
+                    if (mod != null) {
+                        attr.removeModifier(mod);
+                    }
+                    AttributeModifier newMod = new AttributeModifier(RPGUUIDs.ADDITIONAL_STR_DAMAGE, "Strenght damage",
+                            PlayerAttributes.STRENGTH.getValue(e.player) * ItemAttributes.STR_MUL.get(stack), 0).setSaved(true);
+                    attr.applyModifier(newMod);
+                }
             }
             else {
 
@@ -132,6 +151,10 @@ public class EventHandlerEntity
 
             if (e.player.getHealth() > (tmp1 = e.player.getMaxHealth())) {
                 e.player.setHealth(tmp1);
+            }
+
+            if (PlayerAttributes.CURR_MANA.getValue(e.player) > (tmp1 = PlayerAttributes.MANA.getValue(e.player))) {
+                PlayerAttributes.CURR_MANA.setValue(tmp1, e.player);
             }
         }
     }

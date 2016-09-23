@@ -208,10 +208,11 @@ public class RPGGuiIngame extends Gui
 
         if (!(entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isCreativeMode)) {
 
+            boolean isPlayer = entity instanceof EntityPlayer;
             boolean hasHealth = true;
-            boolean hasMana = entity instanceof EntityPlayer;
-            boolean hasArmor = entity instanceof EntityPlayer;
-            boolean hasMeleeDamage = iRPG != null && iRPG.getEAMeleeDamage(entity) != null;
+            boolean hasMana = isPlayer;
+            boolean hasArmor = isPlayer;
+            boolean hasMeleeDamage = iRPG != null && (iRPG.getEAMeleeDamage(entity) != null || isPlayer);
             boolean hasRangeDamage = iRPG != null && iRPG.getEARangeDamage(entity) != null;
             boolean hasFood = entity == mc.thePlayer && mc.thePlayer.getFoodStats().getFoodLevel() < 20;
             boolean hasAir = entity == mc.thePlayer && mc.thePlayer.getAir() < 300;
@@ -268,21 +269,6 @@ public class RPGGuiIngame extends Gui
                 yFal += barIconHeight;
             }
 
-
-            if (hasMeleeDamage) {
-                drawTexturedModalRect(offsetX + invert(barIconOffsetX), offsetY + barIconOffsetY + yFal, barIconOffsetU, barIconOffsetV + barIconHeight * 7, barIconWidth, barIconHeight, isInverted);
-
-                offsetMeleeDmg = offsetY + barIconOffsetY + yFal;
-                yFal += barIconHeight;
-            }
-
-            if (hasRangeDamage) {
-                drawTexturedModalRect(offsetX + invert(barIconOffsetX), offsetY + barIconOffsetY + yFal, barIconOffsetU, barIconOffsetV + barIconHeight * 8, barIconWidth, barIconHeight, isInverted);
-
-                offsetRangeDmg = offsetY + barIconOffsetY + yFal;
-                yFal += barIconHeight;
-            }
-
             if (hasFood && hasAir) {
                 drawTexturedModalRect(offsetX + invert(barIconOffsetX), offsetY + barIconOffsetY + yFal, barIconOffsetU, barIconOffsetV + barIconHeight * 6, barIconWidth, barIconHeight, isInverted);
                 if (mc.thePlayer.isPotionActive(Potion.hunger)) {
@@ -313,6 +299,20 @@ public class RPGGuiIngame extends Gui
                 }
             }
 
+            if (hasMeleeDamage && mode.isDigital) {
+                drawTexturedModalRect(offsetX + invert(barIconOffsetX), offsetY + barIconOffsetY + yFal, barIconOffsetU, barIconOffsetV + barIconHeight * 7, barIconWidth, barIconHeight, isInverted);
+
+                offsetMeleeDmg = offsetY + barIconOffsetY + yFal;
+                yFal += barIconHeight;
+            }
+
+            if (hasRangeDamage && mode.isDigital) {
+                drawTexturedModalRect(offsetX + invert(barIconOffsetX), offsetY + barIconOffsetY + yFal, barIconOffsetU, barIconOffsetV + barIconHeight * 8, barIconWidth, barIconHeight, isInverted);
+
+                offsetRangeDmg = offsetY + barIconOffsetY + yFal;
+                yFal += barIconHeight;
+            }
+
             if (mode.isDigital) {
                 if (hasMana && hasHealth && ClientConfig.guiTwiceHealthManaBar) {
                     s = Utils.toString(genValueStr(entity.getHealth() + entity.getAbsorptionAmount()), "/", genValueStr(PlayerAttributes.CURR_MANA.getValue(entity)));
@@ -330,12 +330,12 @@ public class RPGGuiIngame extends Gui
                 }
             }
 
-            if (hasMeleeDamage) {
+            if (hasMeleeDamage && mode.isDigital) {
                 s = genValueStr(iRPG.getEAMeleeDamage(entity).getValue(entity));
                 fr.drawStringWithShadow(s, offsetX + getOffsetX(s, barOffsetX, isInverted), offsetMeleeDmg + (barIconHeight - fr.FONT_HEIGHT) / 2 + 1, 0xFFFFFF);
             }
 
-            if (hasRangeDamage) {
+            if (hasRangeDamage && mode.isDigital) {
                 s = genValueStr(iRPG.getEARangeDamage(entity).getValue(entity));
                 fr.drawStringWithShadow(s, offsetX + getOffsetX(s, barOffsetX, isInverted), offsetRangeDmg + (barIconHeight - fr.FONT_HEIGHT) / 2 + 1, 0xFFFFFF);
             }

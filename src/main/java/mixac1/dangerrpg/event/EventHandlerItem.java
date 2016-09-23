@@ -33,10 +33,12 @@ public class EventHandlerItem
                     float speed = ItemAttributes.MELEE_SPEED.getSafe(e.stack, player, 10f);
                     PlayerAttributes.SPEED_COUNTER.setValue(speed < 0 ? 0 : speed, player);
                 }
+                else {
+                    e.damage += PlayerAttributes.STRENGTH.getValue(player) * ItemAttributes.STR_MUL.getSafe(e.stack, player, 0);
+                }
 
                 e.entity.hurtResistantTime = 0;
                 e.knockback += ItemAttributes.KNOCKBACK.getSafe(e.stack, player, 0);
-                e.damage += PlayerAttributes.STRENGTH.getValue(player) * ItemAttributes.STR_MUL.getSafe(e.stack, player, 0);
             }
         }
     }

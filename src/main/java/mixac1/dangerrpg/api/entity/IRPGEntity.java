@@ -22,7 +22,7 @@ public interface IRPGEntity
         @Override
         public EAFloat getEAMeleeDamage(EntityLivingBase entity)
         {
-            return null;
+            return EntityAttributes.MELEE_DAMAGE;
         }
 
         @Override

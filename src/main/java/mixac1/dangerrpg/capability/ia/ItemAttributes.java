@@ -2,6 +2,7 @@ package mixac1.dangerrpg.capability.ia;
 
 import mixac1.dangerrpg.api.item.IADynamic;
 import mixac1.dangerrpg.api.item.IAStatic;
+import mixac1.dangerrpg.capability.ia.IADamage.IAMeleeDamage;
 import mixac1.dangerrpg.hook.HookArmorSystem;
 import mixac1.dangerrpg.init.RPGOther.RPGDamageSource;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,7 +14,7 @@ public class ItemAttributes
     public static final IADynamic CURR_EXP = new IACurrExp("curr_exp");
     public static final IADynamic MAX_EXP = new IADynamic("max_exp");
 
-    public static final IAStatic MELEE_DAMAGE = new IADamage("melee_damage")
+    public static final IAStatic MELEE_DAMAGE = new IAMeleeDamage("melee_damage")
     {
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
