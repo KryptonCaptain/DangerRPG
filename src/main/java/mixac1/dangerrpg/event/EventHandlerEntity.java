@@ -129,6 +129,10 @@ public class EventHandlerEntity
             else {
 
             }
+
+            if (e.player.getHealth() > (tmp1 = e.player.getMaxHealth())) {
+                e.player.setHealth(tmp1);
+            }
         }
     }
 

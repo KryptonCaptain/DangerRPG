@@ -68,7 +68,7 @@ public abstract class RPGDataRegister<Key, Data extends ElementData<TransferData
         LinkedList<Pair<TransferKey, TransferData>> list = Utils.deserialize(tranferData);
         for (Pair<TransferKey, TransferData> data : list) {
             Key key = decodingKey(data.value1);
-            if (key != null) {
+            if (key != null && containsKey(key)) {
                 get(key).unpackTransferData(data.value2);
                 get(key).isActivated = true;
             }

@@ -21,10 +21,6 @@ public class EACurrMana extends EAFloat
     @Deprecated
     public boolean setValueRaw(Float value, EntityLivingBase entity)
     {
-        if (!value.equals(getValueRaw(entity))) {
-            getEntityData(entity).attributeMap.get(hash).value1 = Utils.alignment(value, 0f, PlayerAttributes.MANA.getValueRaw(entity));
-            return true;
-        }
-        return false;
+        return super.setValueRaw(Utils.alignment(value, 0f, PlayerAttributes.MANA.getValueRaw(entity)), entity);
     }
 }

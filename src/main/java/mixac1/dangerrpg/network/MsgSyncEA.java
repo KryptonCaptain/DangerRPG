@@ -23,7 +23,7 @@ public class MsgSyncEA implements IMessage
 
         nbt.setInteger("hash", attr.hash);
         nbt.setInteger("id", entity.getEntityId());
-        attr.toNBT(nbt, entity);
+        attr.toNBTforMsg(nbt, entity);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class MsgSyncEA implements IMessage
             if (entity != null) {
                 EntityAttribute attr = RPGEntityProperties.get(entity).getEntityAttribute(msg.nbt.getInteger("hash"));
                 if (attr != null) {
-                    attr.fromNBT(msg.nbt, entity);
+                    attr.fromNBTforMsg(msg.nbt, entity);
                 }
             }
             return null;

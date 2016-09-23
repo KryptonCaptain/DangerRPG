@@ -315,12 +315,12 @@ public class RPGGuiIngame extends Gui
 
             if (mode.isDigital) {
                 if (hasMana && hasHealth && ClientConfig.guiTwiceHealthManaBar) {
-                    s = Utils.toString(genValueStr(entity.getHealth()), "/", genValueStr(PlayerAttributes.CURR_MANA.getValue(entity)));
+                    s = Utils.toString(genValueStr(entity.getHealth() + entity.getAbsorptionAmount()), "/", genValueStr(PlayerAttributes.CURR_MANA.getValue(entity)));
                     fr.drawStringWithShadow(s, offsetX + getOffsetX(s, barOffsetX + barWidth + 4, isInverted), offsetHealth + (barIconHeight - fr.FONT_HEIGHT) / 2 - 1, 0xFFFFFF);
                 }
                 else {
                     if (hasHealth) {
-                        s = genValueStr(entity.getHealth());
+                        s = genValueStr(entity.getHealth() + entity.getAbsorptionAmount());
                         fr.drawStringWithShadow(s, offsetX + getOffsetX(s, barOffsetX + barWidth + 4, isInverted), offsetHealth + (barIconHeight - fr.FONT_HEIGHT) / 2 - 1, 0xFFFFFF);
                     }
                     if (hasMana) {
@@ -358,7 +358,7 @@ public class RPGGuiIngame extends Gui
     {
         float curr = entity.getHealth();
         float absorbHealth = entity.getAbsorptionAmount();
-        float max = entity.getMaxHealth() + absorbHealth;
+        float max = EntityAttributes.HEALTH.getSafe(entity, entity.getMaxHealth() + absorbHealth);
         if (max > 0) {
             int proc = getProcent(curr, max, barWidth);
             int procAbsorb = getProcent(absorbHealth, max, barWidth);

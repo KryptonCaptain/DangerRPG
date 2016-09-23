@@ -2,23 +2,19 @@ package mixac1.dangerrpg.api.entity;
 
 import java.util.UUID;
 
-import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
-import mixac1.dangerrpg.init.RPGCapability;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 
-public class EntityAttributeE extends EAFloat
+public class EAWithExistIAttr extends EAWithIAttr
 {
-    protected final UUID ID;
-    protected IAttribute attribute;
+    protected final UUID IDBase;
 
-    public EntityAttributeE(String name, UUID ID, IAttribute attribute)
+    public EAWithExistIAttr(String name, UUID IDBase, IAttribute attribute)
     {
-        super(name);
-        this.ID = ID;
-        this.attribute = attribute;
+        super(name, attribute);
+        this.IDBase = IDBase;
     }
 
     @Override
@@ -33,8 +29,7 @@ public class EntityAttributeE extends EAFloat
     @Override
     public void serverInit(EntityLivingBase entity)
     {
-        setValueRaw((Float) RPGCapability.rpgEntityRegistr.get(entity).attributes.get(this).startValue
-                    + getValueRaw(entity), entity);
+
     }
 
     @Override
@@ -50,15 +45,21 @@ public class EntityAttributeE extends EAFloat
     {
         if (!value.equals(getValueRaw(entity)) && !entity.worldObj.isRemote) {
             IAttributeInstance attr = entity.getEntityAttribute(attribute);
-            AttributeModifier mod = attr.getModifier(ID);
+            AttributeModifier mod = attr.getModifier(IDBase);
             if (mod != null) {
                 attr.removeModifier(mod);
             }
-            value -= (float) attr.getAttributeValue();
-            AttributeModifier newMod = new AttributeModifier(ID, name, value, 0).setSaved(true);
+            value -= (float) attr.getBaseValue();
+            AttributeModifier newMod = new AttributeModifier(IDBase, name, value, 0).setSaved(true);
             attr.applyModifier(newMod);
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Float getBaseValue(EntityLivingBase entity)
+    {
+        return (float) entity.getEntityAttribute(attribute).getBaseValue() + getModifierValue(entity, IDBase);
     }
 }

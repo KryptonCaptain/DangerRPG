@@ -165,6 +165,16 @@ public class EntityAttribute<Type>
         }
     }
 
+    public void toNBTforMsg(NBTTagCompound nbt, EntityLivingBase entity)
+    {
+        toNBT(nbt, entity);
+    }
+
+    public void fromNBTforMsg(NBTTagCompound nbt, EntityLivingBase entity)
+    {
+        fromNBT(nbt, entity);
+    }
+
     public String getDisplayValue(EntityLivingBase entity)
     {
         return typeProvider.toString(getValue(entity));

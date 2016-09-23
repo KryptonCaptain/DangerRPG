@@ -1,24 +1,43 @@
 package mixac1.dangerrpg.capability.ea;
 
-import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
+import java.util.UUID;
+
+import mixac1.dangerrpg.api.entity.EAWithIAttr;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.monster.EntitySlime;
 
-public class EASlimeDamage extends EAFloat
+public class EASlimeDamage extends EAWithIAttr
 {
-    public EASlimeDamage(String name)
+    public EASlimeDamage(String name, IAttribute attr)
     {
         super(name);
     }
 
     @Override
-    @Deprecated
     public Float getValueRaw(EntityLivingBase entity)
+    {
+        return super.getValueRaw(entity) * getSlimeMul(entity);
+    }
+
+    @Override
+    public Float getBaseValue(EntityLivingBase entity)
+    {
+        return super.getBaseValue(entity) * getSlimeMul(entity);
+    }
+
+    @Override
+    public Float getModifierValue(EntityLivingBase entity, UUID ID)
+    {
+        return super.getModifierValue(entity, ID) * getSlimeMul(entity);
+    }
+
+    private float getSlimeMul(EntityLivingBase entity)
     {
         if (entity instanceof EntitySlime) {
             int size = ((EntitySlime) entity).getSlimeSize();
-            return (Float) getEntityData(entity).attributeMap.get(hash).value1 * size / 4 + size;
+            return size / 4;
         }
-        return (Float) getEntityData(entity).attributeMap.get(hash).value1;
+        return 1;
     }
 }

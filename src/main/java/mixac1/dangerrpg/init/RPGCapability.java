@@ -1,6 +1,7 @@
 package mixac1.dangerrpg.init;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
@@ -63,6 +64,11 @@ public abstract class RPGCapability
 
     public static HashMap<Integer, ItemAttribute>   mapIntToItemAttribute   = new HashMap<Integer, ItemAttribute>();
     public static HashMap<Integer, EntityAttribute> mapIntToEntityAttribute = new HashMap<Integer, EntityAttribute>();
+    public static HashSet<Class<? extends EntityLivingBase>> blackListEntities = new HashSet<Class<? extends EntityLivingBase>>()
+    {{
+        add(EntityBat.class);
+        add(EntitySquid.class);
+    }};
 
     public static void preLoad(FMLPostInitializationEvent e)
     {
@@ -82,6 +88,13 @@ public abstract class RPGCapability
     {
         rpgItemRegistr.createTransferData();
         rpgEntityRegistr.createTransferData();
+
+        if (rpgItemRegistr.getTransferData().length == 0) {
+            ;
+        }
+        if (rpgEntityRegistr.getTransferData().length == 0) {
+            ;
+        }
     }
 
     private static void registerDefaultRPGItems()
@@ -160,8 +173,6 @@ public abstract class RPGCapability
 
     private static void registerDefaultRPGEntities()
     {
-        RPGRegister.registerRPGEntity(EntityBat.class, IRPGEntity.DEFAULT_LIVING);
-        RPGRegister.registerRPGEntity(EntitySquid.class, IRPGEntity.DEFAULT_LIVING);
         RPGRegister.registerRPGEntity(EntityChicken.class, IRPGEntity.DEFAULT_LIVING);
         RPGRegister.registerRPGEntity(EntitySnowman.class, IRPGEntity.DEFAULT_LIVING);
         RPGRegister.registerRPGEntity(EntityCow.class, IRPGEntity.DEFAULT_LIVING);
@@ -187,8 +198,8 @@ public abstract class RPGCapability
         RPGRegister.registerRPGEntity(EntityGhast.class, new RPGEntityRangeMob(6f));
         RPGRegister.registerRPGEntity(EntityWither.class, new RPGEntityRangeMob(8f));
 
-        RPGRegister.registerRPGEntity(EntitySlime.class, new RPGCommonEntityMob(EntityAttributes.MELEE_DAMAGE_SLIME, 0f));
-        RPGRegister.registerRPGEntity(EntityMagmaCube.class, new RPGCommonEntityMob(EntityAttributes.MELEE_DAMAGE_SLIME, 2f));
+        RPGRegister.registerRPGEntity(EntitySlime.class, new RPGCommonEntityMob(EntityAttributes.MELEE_DAMAGE_SLIME, 12f));
+        RPGRegister.registerRPGEntity(EntityMagmaCube.class, new RPGCommonEntityMob(EntityAttributes.MELEE_DAMAGE_SLIME, 16f));
 
         RPGRegister.registerRPGEntity(EntityWolf.class, new RPGCommonEntityMob(EntityAttributes.MELEE_DAMAGE_STAB, 3f));
         RPGRegister.registerRPGEntity(EntityIronGolem.class, new RPGCommonEntityMob(EntityAttributes.MELEE_DAMAGE_STAB, 14f));
@@ -201,6 +212,12 @@ public abstract class RPGCapability
             Entry<Class, String> entry = (Entry<Class, String>) obj;
             if (entry.getKey() != null && entry.getValue() != null) {
                 RPGableEntity.registerEntity(entry.getKey());
+            }
+        }
+
+        for (Class<? extends EntityLivingBase> it : blackListEntities) {
+            if (rpgEntityRegistr.containsKey(it)) {
+                rpgEntityRegistr.remove(it);
             }
         }
 
