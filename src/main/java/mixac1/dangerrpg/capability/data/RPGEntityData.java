@@ -9,6 +9,8 @@ import mixac1.dangerrpg.api.entity.EntityAttribute;
 import mixac1.dangerrpg.api.entity.IRPGEntity;
 import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import mixac1.dangerrpg.capability.data.RPGDataRegister.ElementData;
+import mixac1.dangerrpg.util.IMultiplier.IMulConfigurable;
+import mixac1.dangerrpg.util.IMultiplier.MultiplierMul;
 
 public class RPGEntityData extends ElementData<Object>
 {
@@ -51,10 +53,24 @@ public class RPGEntityData extends ElementData<Object>
         public Type startValue;
         public LvlEAProvider<Type> lvlProvider;
 
+        /**
+         * Used for static level up entity
+         */
+        public IMulConfigurable mulValue;
+
+        private static final IMulConfigurable MUL_0d1 = new MultiplierMul(0.1f);
+
         public EntityAttrParams(Type startValue, LvlEAProvider<Type> lvlProvider)
+        {
+            this(startValue, lvlProvider, MUL_0d1);
+        }
+
+        public EntityAttrParams(Type startValue, LvlEAProvider<Type> lvlProvider, IMulConfigurable mulValue)
         {
             this.startValue = startValue;
             this.lvlProvider = lvlProvider;
+
+            this.mulValue = mulValue;
         }
     }
 }

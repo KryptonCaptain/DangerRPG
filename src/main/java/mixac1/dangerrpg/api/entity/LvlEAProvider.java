@@ -5,7 +5,9 @@ import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgReqUpEA;
 import mixac1.dangerrpg.util.IMultiplier;
+import mixac1.dangerrpg.util.IMultiplier.IMulConfigurable;
 import mixac1.dangerrpg.util.IMultiplier.IMultiplierE;
+import mixac1.dangerrpg.util.RPGHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -19,9 +21,9 @@ public class LvlEAProvider<Type>
     public IMultiplierE<Type> mulValue;
     public int maxLvl;
     public int startExpCost;
-    public IMultiplier<Float> mulExpCost;
+    public IMulConfigurable mulExpCost;
 
-    public LvlEAProvider(int startExpCost, int maxLvl, IMultiplierE<Type> mulValue, IMultiplier<Float> mulExpCost)
+    public LvlEAProvider(int startExpCost, int maxLvl, IMultiplierE<Type> mulValue, IMulConfigurable mulExpCost)
     {
         this.mulValue = mulValue;
         this.maxLvl = maxLvl;
@@ -48,7 +50,7 @@ public class LvlEAProvider<Type>
 
     public int getExpUp(EntityLivingBase entity)
     {
-        return (int) (startExpCost + mulExpCost.up((float) getLvl(entity)));
+        return (int) RPGHelper.multyMul(startExpCost, getLvl(entity), mulExpCost);
     }
 
     public boolean isMaxLvl(EntityLivingBase entity)
@@ -121,9 +123,9 @@ public class LvlEAProvider<Type>
 
     public static class DafailtLvlEAProvider extends LvlEAProvider<Float>
     {
-        public DafailtLvlEAProvider(int startExpCost, int maxLvl, IMultiplierE<Float> mulValue)
+        public DafailtLvlEAProvider(int startExpCost, int maxLvl, IMulConfigurable mulValue)
         {
-            super(startExpCost, maxLvl, mulValue, IMultiplier.MUL_1);
+            super(startExpCost, maxLvl, mulValue, IMultiplier.ADD_1);
         }
     }
 }

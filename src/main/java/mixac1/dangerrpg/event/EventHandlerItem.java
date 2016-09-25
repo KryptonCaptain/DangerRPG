@@ -5,6 +5,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import mixac1.dangerrpg.api.event.DealtDamageEvent;
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
 import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
@@ -23,7 +24,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 public class EventHandlerItem
 {
     @SubscribeEvent
-    public void hitEntity(HitEntityEvent e)
+    public void onHitEntity(HitEntityEvent e)
     {
         if (e.attacker instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) e.attacker;
@@ -34,7 +35,7 @@ public class EventHandlerItem
                     PlayerAttributes.SPEED_COUNTER.setValue(speed < 0 ? 0 : speed, player);
                 }
                 else {
-                    e.damage += PlayerAttributes.STRENGTH.getValue(player) * ItemAttributes.STR_MUL.getSafe(e.stack, player, 0);
+                    e.newDamage += PlayerAttributes.STRENGTH.getValue(player) * ItemAttributes.STR_MUL.getSafe(e.stack, player, 0);
                 }
 
                 e.entity.hurtResistantTime = 0;
@@ -77,10 +78,18 @@ public class EventHandlerItem
     }
 
     @SubscribeEvent
-    public void breakSpeed(BreakSpeed e)
+    public void onBreakSpeed(BreakSpeed e)
     {
         if (ForgeHooks.canToolHarvestBlock(e.block, e.metadata, e.entityPlayer.inventory.getCurrentItem())) {
             e.newSpeed += PlayerAttributes.EFFICIENCY.getValue(e.entityPlayer);
+        }
+    }
+
+    @SubscribeEvent
+    public void onDealtDamage(DealtDamageEvent e)
+    {
+        if (e.damage > 0) {
+            RPGableItem.upEquipment(e.player, e.target, e.stack, e.damage);
         }
     }
 }

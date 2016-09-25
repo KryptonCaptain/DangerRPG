@@ -18,6 +18,9 @@ import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.item.IMaterialSpecial;
+import mixac1.dangerrpg.util.IMultiplier.IMulConfigurable;
+import mixac1.dangerrpg.util.IMultiplier.MultiplierAdd;
+import mixac1.dangerrpg.util.IMultiplier.MultiplierMul;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -279,5 +282,21 @@ public abstract class RPGHelper
     public static float getPlayerDamage(ItemStack stack, EntityPlayer player)
     {
         return getItemDamage(stack, player) + PlayerAttributes.STRENGTH.getValue(player) * ItemAttributes.STR_MUL.get(stack);
+    }
+
+    public static float multyMul(float value, int count, IMulConfigurable mul)
+    {
+        if (mul instanceof MultiplierAdd) {
+            return ((MultiplierAdd) mul).add * count + value;
+        }
+        else if (mul instanceof MultiplierMul) {
+            return ((MultiplierMul) mul).mul * count * value + value;
+        }
+        else {
+            for (int i = 0; i < count; ++i) {
+                value = mul.up(value);
+            }
+        }
+        return value;
     }
 }

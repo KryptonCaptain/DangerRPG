@@ -1,7 +1,7 @@
 package mixac1.dangerrpg.entity.projectile;
 
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
-import mixac1.dangerrpg.capability.RPGableItem;
+import mixac1.dangerrpg.api.event.UpEquipmentEvent;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -60,7 +60,7 @@ public class EntityThrowRPGItem extends EntityMaterial
             }
             HitEntityEvent event = new HitEntityEvent(stack, entity, thrower, phisicDamage, 0, true);
             MinecraftForge.EVENT_BUS.post(event);
-            phisicDamage = event.damage;
+            phisicDamage = event.newDamage;
         }
 
         float points = entity.getHealth();
@@ -68,8 +68,8 @@ public class EntityThrowRPGItem extends EntityMaterial
         super.applyEntityHitEffects(entity, dmgMul);
 
         points -= entity.getHealth();
-        if (points > 0 && thrower instanceof EntityPlayer) {
-            RPGableItem.upEquipment((EntityPlayer) thrower, entity, getStack(), points);
+        if (thrower instanceof EntityPlayer) {
+            MinecraftForge.EVENT_BUS.post(new UpEquipmentEvent((EntityPlayer) thrower, entity, stack, points));
         }
     }
 }

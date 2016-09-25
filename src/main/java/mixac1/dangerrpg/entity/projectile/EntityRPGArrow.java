@@ -1,12 +1,13 @@
 package mixac1.dangerrpg.entity.projectile;
 
-import mixac1.dangerrpg.capability.RPGableItem;
+import mixac1.dangerrpg.api.event.UpEquipmentEvent;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 
 public class EntityRPGArrow extends EntityMaterial
 {
@@ -38,8 +39,8 @@ public class EntityRPGArrow extends EntityMaterial
         super.applyEntityHitEffects(entity, dmgMul);
 
         points -= entity.getHealth();
-        if (points > 0 && thrower instanceof EntityPlayer) {
-            RPGableItem.upEquipment((EntityPlayer) thrower, entity, null, points);
+        if (thrower instanceof EntityPlayer) {
+            MinecraftForge.EVENT_BUS.post(new UpEquipmentEvent((EntityPlayer) thrower, entity, null, points));
         }
     }
 

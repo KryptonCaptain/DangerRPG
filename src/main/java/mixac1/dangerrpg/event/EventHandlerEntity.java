@@ -14,9 +14,12 @@ import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.init.RPGCapability;
+import mixac1.dangerrpg.init.RPGConfig.EntityConfig;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgSyncConfig;
 import mixac1.dangerrpg.network.MsgSyncEntityData;
+import mixac1.dangerrpg.util.IMultiplier.IMulConfigurable;
+import mixac1.dangerrpg.util.RPGHelper;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -73,24 +76,28 @@ public class EventHandlerEntity
         ChunkCoordinates spawn = e.entity.worldObj.getSpawnPoint();
         double distance = Utils.getDiagonal(e.entity.posX - spawn.posX, e.entity.posZ - spawn.posZ);
 
-        int lvl = (int) (distance / 50);
+        int lvl = (int) (distance / EntityConfig.entityLvlUpFrequency);
         if (EntityAttributes.LVL.hasIt(e.entity)) {
             EntityAttributes.LVL.setValue(lvl + 1, e.entity);
         }
 
+        IMulConfigurable mul;
         if (EntityAttributes.HEALTH.hasIt(e.entity)) {
-            float health = e.entity.getHealth() / 10;
-            EntityAttributes.HEALTH.addValue(health * lvl, e.entity);
+            float health = e.entity.getHealth();
+            mul = RPGCapability.rpgEntityRegistr.get(e.entity).attributes.get(EntityAttributes.HEALTH).mulValue;
+            EntityAttributes.HEALTH.setValue(RPGHelper.multyMul(health, lvl, mul), e.entity);
         }
 
         EAFloat attr = RPGCapability.rpgEntityRegistr.get(e.entity).rpgComponent.getEAMeleeDamage(e.entity);
         if (attr != null) {
-            attr.addValue(attr.getValue(e.entity) / 10 * lvl, e.entity);
+            mul = RPGCapability.rpgEntityRegistr.get(e.entity).attributes.get(attr).mulValue;
+            attr.addValue(RPGHelper.multyMul(attr.getValue(e.entity), lvl, mul), e.entity);
         }
 
         attr = RPGCapability.rpgEntityRegistr.get(e.entity).rpgComponent.getEARangeDamage(e.entity);
         if (attr != null) {
-            attr.addValue(attr.getValue(e.entity) / 10 * lvl, e.entity);
+            mul = RPGCapability.rpgEntityRegistr.get(e.entity).attributes.get(attr).mulValue;
+            attr.addValue(RPGHelper.multyMul(attr.getValue(e.entity), lvl, mul), e.entity);
         }
     }
 

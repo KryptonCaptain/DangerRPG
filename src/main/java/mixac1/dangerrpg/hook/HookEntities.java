@@ -1,11 +1,12 @@
 package mixac1.dangerrpg.hook;
 
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
+import mixac1.dangerrpg.api.event.UpEquipmentEvent;
 import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.hooklib.asm.Hook;
-import mixac1.hooklib.asm.ReturnCondition;
 import mixac1.hooklib.asm.Hook.ReturnValue;
+import mixac1.hooklib.asm.ReturnCondition;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -90,7 +91,7 @@ public class HookEntities
                 if (stack != null && entity instanceof EntityLivingBase) {
                     HitEntityEvent event = new HitEntityEvent(stack, (EntityLivingBase) entity, player, dmg, knockback, false);
                     MinecraftForge.EVENT_BUS.post(event);
-                    dmg = event.damage;
+                    dmg = event.newDamage;
                     knockback = event.knockback;
                 }
 
@@ -102,9 +103,7 @@ public class HookEntities
                 if (entity.attackEntityFrom(DamageSource.causePlayerDamage(player), dmg)) {
                     if (entity instanceof EntityLivingBase) {
                         points -= ((EntityLivingBase) entity).getHealth();
-                        if (points > 0) {
-                            RPGableItem.upEquipment(player, (EntityLivingBase) entity, stack, points);
-                        }
+                        MinecraftForge.EVENT_BUS.post(new UpEquipmentEvent(player, (EntityLivingBase) entity, stack, points));
                     }
 
                     if (knockback > 0) {

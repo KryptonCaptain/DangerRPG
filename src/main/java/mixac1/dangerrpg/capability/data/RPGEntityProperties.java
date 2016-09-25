@@ -104,8 +104,8 @@ public class RPGEntityProperties implements IExtendedEntityProperties
             }
         }
 
-        if (count > RPGConfig.MainConfig.playerLoseLvlCount) {
-            count = RPGConfig.MainConfig.playerLoseLvlCount;
+        if (count > RPGConfig.EntityConfig.playerLoseLvlCount) {
+            count = RPGConfig.EntityConfig.playerLoseLvlCount;
         }
 
         for (int i = 0; i < count; ++i) {
@@ -150,12 +150,14 @@ public class RPGEntityProperties implements IExtendedEntityProperties
 
     public EntityAttribute getEntityAttribute(int hash)
     {
-        return (EntityAttribute) getObject(hash, getEntityAttributes());
+        EntityAttribute attr = RPGCapability.mapIntToEntityAttribute.get(hash);
+        return RPGCapability.rpgEntityRegistr.get(entity).attributes.containsKey(attr) ? attr : null;
     }
 
     public LvlEAProvider getLvlProvider(int hash)
     {
-        return (LvlEAProvider) getObject(hash, getLvlProviders());
+        EntityAttribute attr = getEntityAttribute(hash);
+        return attr != null ? attr.getLvlProvider(entity) : null;
     }
 
     public Set<EntityAttribute> getEntityAttributes()

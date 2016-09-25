@@ -7,8 +7,9 @@ import mixac1.dangerrpg.capability.data.RPGEntityData;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.init.RPGCapability;
+import mixac1.dangerrpg.init.RPGConfig;
 import mixac1.dangerrpg.util.IMultiplier;
-import mixac1.dangerrpg.util.IMultiplier.IMultiplierE;
+import mixac1.dangerrpg.util.IMultiplier.IMulConfigurable;
 import mixac1.dangerrpg.util.IMultiplier.MultiplierAdd;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -60,21 +61,24 @@ public abstract class RPGableEntity
 
     public static void registerEntityPlayer(Class<? extends EntityPlayer> entityClass, RPGEntityData map)
     {
-        IMultiplierE<Float> ADD_1     = IMultiplier.ADD_1;
-        IMultiplierE<Float> ADD_2     = new MultiplierAdd(2F);
-        IMultiplierE<Float> ADD_0d001 = new MultiplierAdd(0.001F);
-        IMultiplierE<Float> ADD_0d01  = new MultiplierAdd(0.01F);
-        IMultiplierE<Float> ADD_0d014 = new MultiplierAdd(0.014F);
-        IMultiplierE<Float> ADD_0d025 = new MultiplierAdd(0.025F);
-        IMultiplierE<Float> ADD_0d2   = new MultiplierAdd(0.2F);
+        IMulConfigurable ADD_1     = IMultiplier.ADD_1;
+        IMulConfigurable ADD_2     = new MultiplierAdd(2F);
+        IMulConfigurable ADD_0d001 = new MultiplierAdd(0.001F);
+        IMulConfigurable ADD_0d01  = new MultiplierAdd(0.01F);
+        IMulConfigurable ADD_0d014 = new MultiplierAdd(0.014F);
+        IMulConfigurable ADD_0d025 = new MultiplierAdd(0.025F);
+        IMulConfigurable ADD_0d2   = new MultiplierAdd(0.2F);
+
+        float q0 = RPGConfig.EntityConfig.playerStartManaValue;
+        float q1 = RPGConfig.EntityConfig.playerStartManaRegenValue;
 
         map.addLvlableEntityAttribute(PlayerAttributes.HEALTH,        0f,  new DafailtLvlEAProvider(2, 1000, ADD_2));
-        map.addLvlableEntityAttribute(PlayerAttributes.MANA,          10f, new DafailtLvlEAProvider(2, 1000, ADD_2));
+        map.addLvlableEntityAttribute(PlayerAttributes.MANA,          q0,  new DafailtLvlEAProvider(2, 1000, ADD_2));
         map.addLvlableEntityAttribute(PlayerAttributes.STRENGTH,      0f,  new DafailtLvlEAProvider(2, 1000, ADD_1));
         map.addLvlableEntityAttribute(PlayerAttributes.AGILITY,       0f,  new DafailtLvlEAProvider(2, 1000, ADD_1));
         map.addLvlableEntityAttribute(PlayerAttributes.INTELLIGENCE,  0f,  new DafailtLvlEAProvider(2, 1000, ADD_1));
         map.addLvlableEntityAttribute(PlayerAttributes.EFFICIENCY,    0f,  new DafailtLvlEAProvider(2, 1000, ADD_2));
-        map.addLvlableEntityAttribute(PlayerAttributes.MANA_REGEN,    1f,  new DafailtLvlEAProvider(2, 1000, ADD_0d2));
+        map.addLvlableEntityAttribute(PlayerAttributes.MANA_REGEN,    q1,  new DafailtLvlEAProvider(2, 1000, ADD_0d2));
         map.addLvlableEntityAttribute(PlayerAttributes.HEALTH_REGEN,  0f,  new DafailtLvlEAProvider(2, 1000, ADD_0d2));
 
         map.addLvlableEntityAttribute(PlayerAttributes.MOVE_SPEED,    0f,  new DafailtLvlEAProvider(2, 20,   ADD_0d001));

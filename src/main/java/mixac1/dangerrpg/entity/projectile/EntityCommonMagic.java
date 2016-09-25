@@ -3,7 +3,7 @@ package mixac1.dangerrpg.entity.projectile;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
-import mixac1.dangerrpg.capability.RPGableItem;
+import mixac1.dangerrpg.api.event.UpEquipmentEvent;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.util.RPGHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -51,7 +51,7 @@ public class EntityCommonMagic extends EntityWithStack
             }
             HitEntityEvent event = new HitEntityEvent(stack, entity, thrower, (float) damage, 0, true);
             MinecraftForge.EVENT_BUS.post(event);
-            damage = event.damage;
+            damage = event.newDamage;
         }
 
         float points = entity.getHealth();
@@ -59,8 +59,8 @@ public class EntityCommonMagic extends EntityWithStack
         super.applyEntityHitEffects(entity, dmgMul);
 
         points -= entity.getHealth();
-        if (points > 0 && thrower instanceof EntityPlayer) {
-            RPGableItem.upEquipment((EntityPlayer) thrower, entity, getStack(), points);
+        if (thrower instanceof EntityPlayer) {
+            MinecraftForge.EVENT_BUS.post(new UpEquipmentEvent((EntityPlayer) thrower, entity, stack, points));
         }
     }
 

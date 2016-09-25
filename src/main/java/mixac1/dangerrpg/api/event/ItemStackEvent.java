@@ -29,7 +29,8 @@ public class ItemStackEvent extends Event
         public EntityLivingBase entity;
         public EntityLivingBase attacker;
 
-        public float damage;
+        public float oldDamage;
+        public float newDamage;
         public float knockback;
         public boolean isRangeed;
 
@@ -39,7 +40,7 @@ public class ItemStackEvent extends Event
             super(stack);
             this.entity = entity;
             this.attacker = attacker;
-            this.damage = damage;
+            this.oldDamage = this.newDamage = damage;
             this.knockback = knockback;
             this.isRangeed = isRangeed;
         }

@@ -54,11 +54,23 @@ public interface IMultiplier<Type>
             return Utils.toString(name(), " ", value);
         }
 
+        public static IMulConfigurable getMul(String str)
+        {
+            String[] strs = str.split(" ");
+            if (strs.length == 2) {
+                MulType type = MulType.valueOf(strs[0].toUpperCase());
+                Float value = Float.valueOf(strs[1]);
+                if (type != null && value != null) {
+                    return type.getMul(value);
+                }
+            }
+            return null;
+        }
     }
 
     public static class MultiplierAdd implements IMulConfigurable
     {
-        private Float add;
+        public final Float add;
 
         public MultiplierAdd(Float add)
         {
@@ -86,7 +98,7 @@ public interface IMultiplier<Type>
 
     public static class MultiplierMul implements IMulConfigurable
     {
-        private Float mul;
+        public final Float mul;
 
         public MultiplierMul(Float mul)
         {
