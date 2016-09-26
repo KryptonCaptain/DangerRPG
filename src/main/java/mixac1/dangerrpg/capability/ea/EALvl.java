@@ -14,4 +14,10 @@ public class EALvl extends EAInteger
     {
         return getValueRaw(entity) > 0;
     }
+
+    @Override
+    public boolean isValid(Integer value)
+    {
+        return value >= 0;
+    }
 }

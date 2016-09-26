@@ -244,7 +244,7 @@ public class ContainerLvlupTable extends Container
                     }
                     return true;
                 }
-                else if (RPGConfig.ItemConfig.canUpInTable && expToUp <= player.experienceTotal) {
+                else if (RPGConfig.itemConfig.canUpInTable && expToUp <= player.experienceTotal) {
                     if (!worldPointer.isRemote) {
                         RPGableItem.addExp(stack, expToUp);
                         player.addExperience(-expToUp);
@@ -256,9 +256,9 @@ public class ContainerLvlupTable extends Container
 
             }
             else {
-                if (RPGConfig.ItemConfig.canUpInTable && player.experienceTotal > 0) {
+                if (RPGConfig.itemConfig.canUpInTable && player.experienceTotal > 0) {
                     if (!worldPointer.isRemote) {
-                        while (player.experienceTotal > 0 && ItemAttributes.LEVEL.get(stack) < RPGConfig.ItemConfig.maxLevel) {
+                        while (player.experienceTotal > 0 && ItemAttributes.LEVEL.get(stack) < RPGConfig.itemConfig.maxLevel) {
                             float temp = ItemAttributes.MAX_EXP.get(stack) - ItemAttributes.CURR_EXP.get(stack);
                             int needToUp = (int) ((temp > (int) temp) ? temp + 1 : temp);
                             if (player.experienceTotal > needToUp) {

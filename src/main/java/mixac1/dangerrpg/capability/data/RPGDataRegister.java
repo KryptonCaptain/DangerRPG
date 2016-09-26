@@ -4,17 +4,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import mixac1.dangerrpg.capability.data.RPGDataRegister.ElementData;
-import mixac1.dangerrpg.capability.data.RPGItemData.ItemAttrParams;
 import mixac1.dangerrpg.util.Tuple.Pair;
 import mixac1.dangerrpg.util.Utils;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 
-public abstract class RPGDataRegister<Key, Data extends ElementData<TransferData>, TransferKey, TransferData> extends HashMap<Key, Data>
+public abstract class RPGDataRegister<Key, Data extends ElementData<Key, TransferData>, TransferKey, TransferData> extends HashMap<Key, Data>
 {
-    private byte[] tranferData;
+    private byte[] transferData;
 
     public boolean isActivated(Key key)
     {
@@ -47,16 +42,16 @@ public abstract class RPGDataRegister<Key, Data extends ElementData<TransferData
         for (Entry<Key, Data> entry : getActiveElements().entrySet()) {
             TransferKey key = codingKey(entry.getKey());
             if (key != null) {
-                list.add(new Pair<TransferKey, TransferData>(key, entry.getValue().getTransferData()));
+                list.add(new Pair<TransferKey, TransferData>(key, entry.getValue().getTransferData(entry.getKey())));
             }
         }
 
-        tranferData = Utils.serialize(list);
+        transferData = Utils.serialize(list);
     }
 
     public byte[] getTransferData()
     {
-        return tranferData;
+        return transferData;
     }
 
     public void extractTransferData(byte[] tranferData)
@@ -69,73 +64,21 @@ public abstract class RPGDataRegister<Key, Data extends ElementData<TransferData
         for (Pair<TransferKey, TransferData> data : list) {
             Key key = decodingKey(data.value1);
             if (key != null && containsKey(key)) {
-                get(key).unpackTransferData(data.value2);
+                if (data.value2 != null) {
+                    get(key).unpackTransferData(data.value2);
+                }
                 get(key).isActivated = true;
             }
         }
     }
 
-    public static abstract class ElementData<TransferData>
+    public static abstract class ElementData<Key, TransferData>
     {
         public boolean isActivated;
         public boolean isSupported;
 
-        public abstract TransferData getTransferData();
+        public abstract TransferData getTransferData(Key key);
 
         public abstract void unpackTransferData(TransferData data);
-    }
-
-    public static class RPGItemRegister extends RPGDataRegister<Item, RPGItemData, Integer, HashMap<Integer, ItemAttrParams>>
-    {
-        @Override
-        protected Integer codingKey(Item key)
-        {
-            return Item.getIdFromItem(key);
-        }
-
-        @Override
-        protected Item decodingKey(Integer key)
-        {
-            return Item.getItemById(key);
-        }
-    }
-
-    public static class RPGEntityRegister extends RPGDataRegister<Class<? extends EntityLivingBase>, RPGEntityData, String, Object>
-    {
-        public Class<? extends EntityLivingBase> getClass(EntityLivingBase entity)
-        {
-            return entity instanceof EntityPlayer ? EntityPlayer.class : entity.getClass();
-        }
-
-        public boolean isActivated(EntityLivingBase entity)
-        {
-            return super.isActivated(getClass(entity));
-        }
-
-        public RPGEntityData get(EntityLivingBase entity)
-        {
-            return super.get(getClass(entity));
-        }
-
-        public void put(EntityLivingBase entity, RPGEntityData data)
-        {
-            super.put(getClass(entity), data);
-        }
-
-        @Override
-        protected String codingKey(Class<? extends EntityLivingBase> key)
-        {
-            return (String) (EntityList.classToStringMapping.containsKey(key) ?
-                    EntityList.classToStringMapping.get(key) : EntityPlayer.class.isAssignableFrom(key) ?
-                            "player" : null);
-        }
-
-        @Override
-        protected Class<? extends EntityLivingBase> decodingKey(String key)
-        {
-            return (Class<? extends EntityLivingBase>) (EntityList.stringToClassMapping.containsKey(key) ?
-                    EntityList.stringToClassMapping.get(key) : "player".equals(key) ?
-                            EntityPlayer.class : null);
-        }
     }
 }

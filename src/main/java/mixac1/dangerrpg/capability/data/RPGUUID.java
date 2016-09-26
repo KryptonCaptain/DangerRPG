@@ -2,7 +2,7 @@ package mixac1.dangerrpg.capability.data;
 
 import java.util.UUID;
 
-public abstract class RPGUUIDs
+public abstract class RPGUUID
 {
     public static final UUID DEFAULT_DAMAGE         = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
     public static final UUID MOD_HEALTH_DAMAGE      = UUID.fromString("fd6315bf-9f57-46cb-bb38-4aacb5d2967a");

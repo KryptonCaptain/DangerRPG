@@ -1,7 +1,7 @@
 package mixac1.dangerrpg.api.item;
 
 import mixac1.dangerrpg.capability.RPGableItem;
-import mixac1.dangerrpg.capability.data.RPGItemData;
+import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.entity.projectile.EntityMaterial;
 import mixac1.dangerrpg.entity.projectile.EntityRPGArrow;

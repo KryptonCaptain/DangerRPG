@@ -19,7 +19,6 @@ import net.minecraft.util.ResourceLocation;
 public class GuiInfoBookContentEntity extends GuiInfoBookContent
 {
     public static final ResourceLocation TEXTURE = new ResourceLocation("DangerRPG:textures/gui/info_book_player_content.png");
-    private LevelUpButton button;
 
     public static int imageWidth  = 176;
     public static int imageHeight = 84;
@@ -31,7 +30,7 @@ public class GuiInfoBookContentEntity extends GuiInfoBookContent
     public static int butOffsetY = 1;
     public static int butOffsetU = 176;
     public static int butOffsetV = 0;
-    public static int butSizeX = 64;
+    public static int butSizeX = 32;
     public static int butSizeY = 15;
 
     public static int titleSizeX = 109;
@@ -165,11 +164,14 @@ public class GuiInfoBookContentEntity extends GuiInfoBookContent
     public static class LevelUpButton extends GuiButton
     {
         private GuiInfoBookContentEntity parent;
+        private boolean isUp;
 
-        public LevelUpButton(int id, int x, int y, GuiInfoBookContentEntity parent)
+
+        public LevelUpButton(int id, boolean isUp, int x, int y, GuiInfoBookContentEntity parent)
         {
-            super(id, x, y, butSizeX, butSizeY, DangerRPG.trans("rpgstr.info_book.lvlup_but"));
+            super(id, x, y, butSizeX, butSizeY, isUp ? "+" : "-");
             this.parent = parent;
+            this.isUp = isUp;
         }
 
         @Override
@@ -181,7 +183,9 @@ public class GuiInfoBookContentEntity extends GuiInfoBookContent
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 mc.getTextureManager().bindTexture(TEXTURE);
 
-                enabled = parent.parent.attributes.get(parent.currIndex).canUp(parent.parent.target, parent.parent.player);
+                enabled = isUp ?
+                        parent.parent.attributes.get(parent.currIndex).canUp(parent.parent.target, parent.parent.player) :
+                        parent.parent.attributes.get(parent.currIndex).canDown(parent.parent.target, parent.parent.player);
                 int color = 0x919191;
 
                 if (enabled) {
@@ -204,7 +208,7 @@ public class GuiInfoBookContentEntity extends GuiInfoBookContent
         @Override
         public boolean mousePressed(Minecraft mc, int x, int y)
         {
-            if (super.mousePressed(mc, x, y) && parent.parent.attributes.get(parent.currIndex).tryUp(parent.parent.target, parent.parent.player)) {
+            if (super.mousePressed(mc, x, y) && parent.parent.attributes.get(parent.currIndex).tryUp(parent.parent.target, parent.parent.player, isUp)) {
                 return true;
             }
             return false;

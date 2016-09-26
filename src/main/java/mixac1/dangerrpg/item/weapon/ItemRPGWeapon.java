@@ -5,7 +5,7 @@ import mixac1.dangerrpg.api.item.IGemableItem;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemTool;
 import mixac1.dangerrpg.capability.GemType;
 import mixac1.dangerrpg.capability.RPGableItem;
-import mixac1.dangerrpg.capability.data.RPGItemData;
+import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
 import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGOther.RPGCreativeTabs;
 import mixac1.dangerrpg.item.IHasBooksInfo;

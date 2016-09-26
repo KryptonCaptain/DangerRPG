@@ -13,7 +13,7 @@ import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemMod;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemStaff;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemTool;
 import mixac1.dangerrpg.api.item.ItemAttribute;
-import mixac1.dangerrpg.capability.data.RPGItemData;
+import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.hook.HookArmorSystem;
 import mixac1.dangerrpg.init.RPGCapability;
@@ -45,7 +45,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 public abstract class RPGableItem
 {
-    public static final MultiplierMul EXP_MUL = new MultiplierMul(RPGConfig.ItemConfig.expMul);
+    public static final MultiplierMul EXP_MUL = new MultiplierMul(RPGConfig.itemConfig.expMul);
 
     public static final IMulConfigurable DUR_MUL = new IMulConfigurable()
     {
@@ -92,7 +92,7 @@ public abstract class RPGableItem
 
     public static void registerParamsDefault(Item item, RPGItemData map)
     {
-        map.addDynamicItemAttribute(ItemAttributes.MAX_EXP, RPGConfig.ItemConfig.startMaxExp, EXP_MUL);
+        map.addDynamicItemAttribute(ItemAttributes.MAX_EXP, RPGConfig.itemConfig.startMaxExp, EXP_MUL);
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.DefaultIAEvent(item, map));
     }
 
@@ -236,7 +236,7 @@ public abstract class RPGableItem
 
     public static Set<ItemAttribute> getAttributeValues(ItemStack stack)
     {
-        return RPGCapability.rpgItemRegistr.get(stack.getItem()).map.keySet();
+        return RPGCapability.rpgItemRegistr.get(stack.getItem()).attributes.keySet();
     }
 
     public static void initRPGItem(ItemStack stack)
@@ -311,7 +311,7 @@ public abstract class RPGableItem
             }
             int level = (int) ItemAttributes.LEVEL.get(stack);
 
-            if (level < RPGConfig.ItemConfig.maxLevel) {
+            if (level < RPGConfig.itemConfig.maxLevel) {
                 long currEXP = (long) ItemAttributes.CURR_EXP.get(stack);
                 int maxEXP  = (int) ItemAttributes.MAX_EXP.get(stack);
 
@@ -319,7 +319,7 @@ public abstract class RPGableItem
 
                 while (currEXP >= maxEXP) {
                     instantLvlUp(stack);
-                    if (++level < RPGConfig.ItemConfig.maxLevel) {
+                    if (++level < RPGConfig.itemConfig.maxLevel) {
                         currEXP -= maxEXP;
                     } else {
                         currEXP = maxEXP;

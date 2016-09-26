@@ -3,7 +3,7 @@ package mixac1.dangerrpg.capability;
 import mixac1.dangerrpg.api.entity.IRPGEntity;
 import mixac1.dangerrpg.api.entity.LvlEAProvider.DafailtLvlEAProvider;
 import mixac1.dangerrpg.api.event.RegEAEvent;
-import mixac1.dangerrpg.capability.data.RPGEntityData;
+import mixac1.dangerrpg.capability.data.RPGEntityRegister.RPGEntityData;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.init.RPGCapability;
@@ -69,8 +69,8 @@ public abstract class RPGableEntity
         IMulConfigurable ADD_0d025 = new MultiplierAdd(0.025F);
         IMulConfigurable ADD_0d2   = new MultiplierAdd(0.2F);
 
-        float q0 = RPGConfig.EntityConfig.playerStartManaValue;
-        float q1 = RPGConfig.EntityConfig.playerStartManaRegenValue;
+        float q0 = RPGConfig.entityConfig.playerStartManaValue;
+        float q1 = RPGConfig.entityConfig.playerStartManaRegenValue;
 
         map.addLvlableEntityAttribute(PlayerAttributes.HEALTH,        0f,  new DafailtLvlEAProvider(2, 1000, ADD_2));
         map.addLvlableEntityAttribute(PlayerAttributes.MANA,          q0,  new DafailtLvlEAProvider(2, 1000, ADD_2));

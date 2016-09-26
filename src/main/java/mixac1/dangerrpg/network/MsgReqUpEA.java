@@ -15,14 +15,16 @@ public class MsgReqUpEA implements IMessage
     public int hash;
     public int targetId;
     public int upperId;
+    public boolean isUp;
 
     public MsgReqUpEA() {}
 
-    public MsgReqUpEA(int hash, int targetId, int upperId)
+    public MsgReqUpEA(int hash, int targetId, int upperId, boolean isUp)
     {
         this.hash = hash;
         this.targetId = targetId;
         this.upperId = upperId;
+        this.isUp = isUp;
     }
 
     @Override
@@ -31,6 +33,7 @@ public class MsgReqUpEA implements IMessage
         this.hash = buf.readInt();
         this.targetId = buf.readInt();
         this.upperId = buf.readInt();
+        this.isUp = buf.readBoolean();
     }
 
     @Override
@@ -39,6 +42,7 @@ public class MsgReqUpEA implements IMessage
         buf.writeInt(this.hash);
         buf.writeInt(this.targetId);
         buf.writeInt(this.upperId);
+        buf.writeBoolean(this.isUp);
     }
 
     public static class Handler implements IMessageHandler<MsgReqUpEA, IMessage>
@@ -51,7 +55,7 @@ public class MsgReqUpEA implements IMessage
             if (target != null && upper != null && upper instanceof EntityPlayer) {
                 LvlEAProvider lvlProvider = RPGEntityProperties.get(target).getLvlProvider(msg.hash);
                 if (lvlProvider != null) {
-                    lvlProvider.tryUp(target, (EntityPlayer) upper);
+                    lvlProvider.tryUp(target, (EntityPlayer) upper, msg.isUp);
                 }
             }
             return null;

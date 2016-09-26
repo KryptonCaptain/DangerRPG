@@ -14,7 +14,7 @@ public class IALevel extends IADynamic
     @Override
     public boolean isValid(float value)
     {
-        return super.isValid(value) && value <= RPGConfig.ItemConfig.maxLevel;
+        return super.isValid(value) && value <= RPGConfig.itemConfig.maxLevel;
     }
 
     @Override

@@ -42,12 +42,12 @@ public class IADynamic extends ItemAttribute
     @Override
     public void init(ItemStack stack)
     {
-        set(stack, RPGCapability.rpgItemRegistr.get(stack.getItem()).map.get(this).value);
+        set(stack, RPGCapability.rpgItemRegistr.get(stack.getItem()).attributes.get(this).value);
     }
 
     @Override
     public void lvlUp(ItemStack stack)
     {
-        set(stack, RPGCapability.rpgItemRegistr.get(stack.getItem()).map.get(this).up(get(stack)));
+        set(stack, RPGCapability.rpgItemRegistr.get(stack.getItem()).attributes.get(this).up(get(stack)));
     }
 }

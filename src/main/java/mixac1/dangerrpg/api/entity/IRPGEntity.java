@@ -2,7 +2,7 @@ package mixac1.dangerrpg.api.entity;
 
 import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
 import mixac1.dangerrpg.capability.RPGableEntity;
-import mixac1.dangerrpg.capability.data.RPGEntityData;
+import mixac1.dangerrpg.capability.data.RPGEntityRegister.RPGEntityData;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;

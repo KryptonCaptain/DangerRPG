@@ -3,7 +3,7 @@ package mixac1.dangerrpg.item.weapon;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemStaff;
 import mixac1.dangerrpg.capability.RPGableItem;
-import mixac1.dangerrpg.capability.data.RPGItemData;
+import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.entity.projectile.EntityMagicOrb;
 import mixac1.dangerrpg.init.RPGItems;

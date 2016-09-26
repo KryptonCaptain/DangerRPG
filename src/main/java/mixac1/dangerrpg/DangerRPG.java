@@ -65,7 +65,7 @@ public class DangerRPG
 
     public static void infoLog(Object... objs)
     {
-        if (RPGConfig.MainConfig.mainEnableInfoLog) {
+        if (RPGConfig.mainConfig != null ? RPGConfig.mainConfig.mainEnableInfoLog : true) {
             DangerRPG.logger.info(Utils.toString(objs));
         }
     }

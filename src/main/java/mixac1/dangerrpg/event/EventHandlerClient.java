@@ -9,7 +9,7 @@ import mixac1.dangerrpg.api.event.GuiModeChangeEvent;
 import mixac1.dangerrpg.capability.GemType;
 import mixac1.dangerrpg.client.gui.GuiMode;
 import mixac1.dangerrpg.client.gui.RPGGuiIngame;
-import mixac1.dangerrpg.init.RPGConfig.ClientConfig;
+import mixac1.dangerrpg.init.RPGConfig;
 import mixac1.dangerrpg.init.RPGGuiHandlers;
 import mixac1.dangerrpg.init.RPGKeyBinds;
 import mixac1.dangerrpg.init.RPGNetwork;
@@ -32,7 +32,7 @@ public class EventHandlerClient
     {
         if (!event.isCancelable() &&
              event.type == ElementType.ALL &&
-             ClientConfig.guiIsEnableHUD) {
+             RPGConfig.clientConfig.guiIsEnableHUD) {
             RPGGuiIngame.INSTANCE.renderGameOverlay(event.resolution);
         }
     }
@@ -40,7 +40,7 @@ public class EventHandlerClient
     @SubscribeEvent
     public void renderDisableOldBars(RenderGameOverlayEvent.Pre event)
     {
-        if (ClientConfig.guiIsEnableHUD) {
+        if (RPGConfig.clientConfig.guiIsEnableHUD) {
             if (event.type == ElementType.HEALTH ||
                 event.type == ElementType.ARMOR ||
                 event.type == ElementType.FOOD ||

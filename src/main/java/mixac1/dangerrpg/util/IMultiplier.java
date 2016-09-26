@@ -2,7 +2,7 @@ package mixac1.dangerrpg.util;
 
 import java.io.Serializable;
 
-public interface IMultiplier<Type>
+public interface IMultiplier<Type> extends Serializable
 {
     public Type up(Type value, Object... objs);
 
@@ -11,7 +11,7 @@ public interface IMultiplier<Type>
         public Type down(Type value, Object... objs);
     }
 
-    public interface IMulConfigurable extends IMultiplierE<Float>, Serializable {}
+    public interface IMulConfigurable extends IMultiplierE<Float> {}
 
     enum MulType
     {

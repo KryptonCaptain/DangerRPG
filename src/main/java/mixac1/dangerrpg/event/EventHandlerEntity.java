@@ -1,7 +1,6 @@
 package mixac1.dangerrpg.event;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
@@ -9,14 +8,13 @@ import mixac1.dangerrpg.api.event.InitRPGEntityEvent;
 import mixac1.dangerrpg.capability.RPGableEntity;
 import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.data.RPGEntityProperties;
-import mixac1.dangerrpg.capability.data.RPGUUIDs;
+import mixac1.dangerrpg.capability.data.RPGUUID;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.init.RPGCapability;
-import mixac1.dangerrpg.init.RPGConfig.EntityConfig;
+import mixac1.dangerrpg.init.RPGConfig;
 import mixac1.dangerrpg.init.RPGNetwork;
-import mixac1.dangerrpg.network.MsgSyncConfig;
 import mixac1.dangerrpg.network.MsgSyncEntityData;
 import mixac1.dangerrpg.util.IMultiplier.IMulConfigurable;
 import mixac1.dangerrpg.util.RPGHelper;
@@ -26,7 +24,6 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
@@ -76,7 +73,7 @@ public class EventHandlerEntity
         ChunkCoordinates spawn = e.entity.worldObj.getSpawnPoint();
         double distance = Utils.getDiagonal(e.entity.posX - spawn.posX, e.entity.posZ - spawn.posZ);
 
-        int lvl = (int) (distance / EntityConfig.entityLvlUpFrequency);
+        int lvl = (int) (distance / RPGConfig.entityConfig.entityLvlUpFrequency);
         if (EntityAttributes.LVL.hasIt(e.entity)) {
             EntityAttributes.LVL.setValue(lvl + 1, e.entity);
         }
@@ -143,11 +140,11 @@ public class EventHandlerEntity
                 ItemStack stack = e.player.getCurrentEquippedItem();
                 if (stack != null && RPGableItem.isRPGable(stack)) {
                     IAttributeInstance attr = e.player.getEntityAttribute(SharedMonsterAttributes.attackDamage);
-                    AttributeModifier mod = attr.getModifier(RPGUUIDs.ADDITIONAL_STR_DAMAGE);
+                    AttributeModifier mod = attr.getModifier(RPGUUID.ADDITIONAL_STR_DAMAGE);
                     if (mod != null) {
                         attr.removeModifier(mod);
                     }
-                    AttributeModifier newMod = new AttributeModifier(RPGUUIDs.ADDITIONAL_STR_DAMAGE, "Strenght damage",
+                    AttributeModifier newMod = new AttributeModifier(RPGUUID.ADDITIONAL_STR_DAMAGE, "Strenght damage",
                             PlayerAttributes.STRENGTH.getValue(e.player) * ItemAttributes.STR_MUL.get(stack), 0).setSaved(true);
                     attr.applyModifier(newMod);
                 }
@@ -164,11 +161,5 @@ public class EventHandlerEntity
                 PlayerAttributes.CURR_MANA.setValue(tmp1, e.player);
             }
         }
-    }
-
-    @SubscribeEvent
-    public void onPlayerLoggedInEvent(PlayerLoggedInEvent e)
-    {
-        RPGNetwork.net.sendTo(new MsgSyncConfig(), (EntityPlayerMP) e.player);
     }
 }

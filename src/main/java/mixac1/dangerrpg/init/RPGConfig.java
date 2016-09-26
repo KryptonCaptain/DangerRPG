@@ -16,10 +16,10 @@ import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.EntityAttribute;
 import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import mixac1.dangerrpg.api.item.ItemAttribute;
-import mixac1.dangerrpg.capability.data.RPGEntityData;
-import mixac1.dangerrpg.capability.data.RPGEntityData.EntityAttrParams;
-import mixac1.dangerrpg.capability.data.RPGItemData;
-import mixac1.dangerrpg.capability.data.RPGItemData.ItemAttrParams;
+import mixac1.dangerrpg.capability.data.RPGEntityRegister.EntityAttrParams;
+import mixac1.dangerrpg.capability.data.RPGEntityRegister.RPGEntityData;
+import mixac1.dangerrpg.capability.data.RPGItemRegister.ItemAttrParams;
+import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.client.gui.GuiMode;
 import mixac1.dangerrpg.util.IMultiplier.IMulConfigurable;
@@ -39,11 +39,7 @@ import net.minecraftforge.common.config.Property;
 public class RPGConfig
 {
     public static File dir;
-
-    private static ArrayList<RPGConfigCommon> configs = new ArrayList<RPGConfigCommon>();
-
-    public static void load(FMLPreInitializationEvent e)
-    {
+    static {
         dir = new File((File) FMLInjectionData.data()[6], "config/".concat(DangerRPG.MODID));
         if (dir.exists()) {
             if (!dir.isDirectory()) {
@@ -53,35 +49,51 @@ public class RPGConfig
         else {
             dir.mkdir();
         }
+    }
 
-        configs.add(new MainConfig("MainConfig"));
-        configs.add(new ItemConfig("ItemConfig"));
-        configs.add(new EntityConfig("EntityConfig"));
+    @SideOnly(Side.CLIENT)
+    public static ClientConfig  clientConfig = new ClientConfig("ClientConfig");
+    public static MainConfig    mainConfig   = new MainConfig("MainConfig");
+    public static ItemConfig    itemConfig   = new ItemConfig("ItemConfig");
+    public static EntityConfig  entityConfig = new EntityConfig("EntityConfig");
+
+    public static void load(FMLPreInitializationEvent e)
+    {
+        mainConfig.load();
+        itemConfig.load();
+        entityConfig.load();
+
+        if (RPGConfig.mainConfig.mainEnableTransferConfig) {
+            mainConfig.createTransferData();
+            itemConfig.createTransferData();
+            entityConfig.createTransferData();
+        }
     }
 
     @SideOnly(Side.CLIENT)
     public static void loadClient(FMLPreInitializationEvent e)
     {
-        configs.add(new ClientConfig("ClientConfig"));
+        clientConfig.load();
     }
 
     public static void postLoadPre(FMLPostInitializationEvent e)
     {
-        for (RPGConfigCommon config : configs) {
-            config.postLoadPre();
-        }
+        mainConfig.postLoadPre();
+        itemConfig.postLoadPre();
+        entityConfig.postLoadPre();
     }
 
     public static void postLoadPost(FMLPostInitializationEvent e)
     {
-        for (RPGConfigCommon config : configs) {
-            config.postLoadPost();
-        }
+        mainConfig.postLoadPost();
+        itemConfig.postLoadPost();
+        entityConfig.postLoadPost();
     }
 
     public static class MainConfig extends RPGConfigCommon
     {
-        public static boolean   mainEnableInfoLog   = true;
+        public boolean   mainEnableInfoLog          = true;
+        public boolean   mainEnableTransferConfig   = false;
 
         public MainConfig(String fileName)
         {
@@ -100,7 +112,7 @@ public class RPGConfig
                     + "HARD - not for using. There is a hard expression, but you can change it using ADD or MUL\n"
                     + "\n");
 
-            super.init();
+            save();
         }
 
         @Override
@@ -109,6 +121,9 @@ public class RPGConfig
             mainEnableInfoLog = config.getBoolean("mainEnableInfoLog", category.getName(), mainEnableInfoLog,
                     "Enable writing info message to log (true/false)");
 
+            mainEnableTransferConfig = config.getBoolean("mainEnableTransferConfig", category.getName(), mainEnableTransferConfig,
+                    "Enable transfer config data from server to client (true/false)");
+
             save();
         }
     }
@@ -116,19 +131,19 @@ public class RPGConfig
     @SideOnly(Side.CLIENT)
     public static class ClientConfig extends RPGConfigCommon
     {
-        public static boolean   guiIsEnableHUD          = true;
-        public static int       guiPlayerHUDOffsetX     = 10;
-        public static int       guiPlayerHUDOffsetY     = 10;
-        public static boolean   guiPlayerHUDIsInvert    = false;
-        public static int       guiEnemyHUDOffsetX      = 10;
-        public static int       guiEnemyHUDOffsetY      = 10;
-        public static boolean   guiEnemyHUDIsInvert     = true;
-        public static int       guiChargeOffsetX        = 0;
-        public static int       guiChargeOffsetY        = 45;
-        public static boolean   guiChargeIsCentered     = true;
-        public static boolean   guiTwiceHealthManaBar   = true;
-        public static int       guiDafaultHUDMode       = 1;
-        public static int       guiDamageForTestArmor   = 25;
+        public boolean   guiIsEnableHUD          = true;
+        public int       guiPlayerHUDOffsetX     = 10;
+        public int       guiPlayerHUDOffsetY     = 10;
+        public boolean   guiPlayerHUDIsInvert    = false;
+        public int       guiEnemyHUDOffsetX      = 10;
+        public int       guiEnemyHUDOffsetY      = 10;
+        public boolean   guiEnemyHUDIsInvert     = true;
+        public int       guiChargeOffsetX        = 0;
+        public int       guiChargeOffsetY        = 45;
+        public boolean   guiChargeIsCentered     = true;
+        public boolean   guiTwiceHealthManaBar   = true;
+        public int       guiDafaultHUDMode       = 1;
+        public int       guiDamageForTestArmor   = 25;
 
         public static boolean   neiShowShapedRecipe     = false;
 
@@ -189,11 +204,11 @@ public class RPGConfig
 
     public static class ItemConfig extends RPGConfigCommon
     {
-        public static boolean   isAllItemsRPGable   = false;
-        public static boolean   canUpInTable        = true;
-        public static int       maxLevel            = 100;
-        public static int       startMaxExp         = 100;
-        public static float     expMul              = 1.15f;
+        public boolean   isAllItemsRPGable   = false;
+        public boolean   canUpInTable        = true;
+        public int       maxLevel            = 100;
+        public int       startMaxExp         = 100;
+        public float     expMul              = 1.15f;
 
         public static HashSet<String> activeRPGItems = new HashSet<String>();
 
@@ -214,7 +229,8 @@ public class RPGConfig
                     + "A: Take name of item frome the 'itemList' and put it to the 'needCustomSetting' list.\n"
                     + "After this, run the game, exit from game and reopen this config.\n"
                     + "You be able find generated element for configure that item.");
-            super.init();
+
+            save();
         }
 
         @Override
@@ -284,7 +300,7 @@ public class RPGConfig
                         if (!item.getValue().isSupported) {
                             cat.setComment("Warning: it isn't support from mod");
                         }
-                        for (Entry<ItemAttribute, ItemAttrParams> ia : item.getValue().map.entrySet()) {
+                        for (Entry<ItemAttribute, ItemAttrParams> ia : item.getValue().attributes.entrySet()) {
                             ia.getValue().value = getRPGAttributeValue(cat.getName(), ia);
                             if (ia.getValue().mul != null) {
                                 ia.getValue().mul = getRPGMultiplier(cat.getName(), ia);
@@ -330,11 +346,13 @@ public class RPGConfig
 
     public static class EntityConfig extends RPGConfigCommon
     {
-        public static boolean isAllEntitiesRPGable      = false;
-        public static int     entityLvlUpFrequency      = 50;
-        public static int     playerLoseLvlCount        = 3;
-        public static int     playerStartManaValue      = 10;
-        public static int     playerStartManaRegenValue = 1;
+        public boolean isAllEntitiesRPGable       = false;
+        public int     entityLvlUpFrequency       = 50;
+        public int     playerLoseLvlCount         = 3;
+        public int     playerStartManaValue       = 10;
+        public int     playerStartManaRegenValue  = 1;
+        public boolean playerCanLvlDownAttr       = true;
+        public float   playerPercentLoseExpPoints = 0.5f;
 
         public static HashSet<String> activeRPGEntities = new HashSet<String>();
 
@@ -355,7 +373,8 @@ public class RPGConfig
                     + "A: Take name of entity frome the 'entityList' and put it to the 'needCustomSetting' list.\n"
                     + "After this, run the game, exit from game and reopen this config.\n"
                     + "You be able find generated element for configure that entity.");
-            super.init();
+
+            save();
         }
 
         @Override
@@ -375,6 +394,12 @@ public class RPGConfig
 
             playerStartManaRegenValue = config.getInt("playerStartManaRegenValue", category.getName(), playerStartManaRegenValue, 0, Integer.MAX_VALUE,
                     "Set start mana regeneration value");
+
+            playerCanLvlDownAttr = config.getBoolean("playerCanLvlDownAttr", category.getName(), playerCanLvlDownAttr,
+                    "Can player decrease own stats without creative mode? (true/false)");
+
+            playerPercentLoseExpPoints = config.getFloat("playerPercentLoseExpPoints", category.getName(), playerPercentLoseExpPoints, 0f, 1f,
+                    "Set percent of lose experience points when level down player's stat");
 
             save();
         }
@@ -477,6 +502,8 @@ public class RPGConfig
         protected Configuration config;
         protected ConfigCategory category;
 
+        private byte[] transferData;
+
         protected RPGConfigCommon(String fileName)
         {
             config = new Configuration(new File(dir, fileName.concat(".cfg")), DangerRPG.VERSION, true);
@@ -486,23 +513,29 @@ public class RPGConfig
             init();
         }
 
-        protected void init()
-        {
-            load();
-            save();
-        }
+        protected void init() {}
 
         protected void load() {}
 
-        public void postLoadPre() {}
+        protected void postLoadPre() {}
 
-        public void postLoadPost() {}
+        protected void postLoadPost() {}
 
         public void save()
         {
             if (config.hasChanged()) {
                 config.save();
             }
+        }
+
+        public void createTransferData()
+        {
+            transferData = Utils.serialize(this);
+        }
+
+        public byte[] getTransferData()
+        {
+            return transferData;
         }
 
         protected Property getPropertyStrings(String categoryName, String[] defValue, String comment, boolean needClear)
@@ -516,5 +549,11 @@ public class RPGConfig
             prop.comment = comment != null ? comment : "";
             return prop;
         }
+    }
+
+    public static RPGConfigCommon extractTransferData(byte[] transferData)
+    {
+        return Utils.deserialize(transferData);
+
     }
 }

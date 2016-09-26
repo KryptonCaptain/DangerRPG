@@ -188,7 +188,7 @@ item.gem_wither_skull.name=Wither Skull Gem
 
 tile.modify_table.name=Modify Table
 tile.lvlup_table.name=LevelUp Table
-tile.rpg_workbench.name=Advanced Workbench
+tile.rpg_workbench.name=Large Workbench
 tile.synthetic_bedrock.name=Synthetic Bedrock
 
 recipe.large_shaped=Shaped Crafting

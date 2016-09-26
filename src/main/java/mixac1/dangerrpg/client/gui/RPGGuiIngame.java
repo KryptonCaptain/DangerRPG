@@ -12,7 +12,7 @@ import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.client.gui.GuiMode.GuiModeType;
 import mixac1.dangerrpg.hook.HookArmorSystem;
 import mixac1.dangerrpg.init.RPGCapability;
-import mixac1.dangerrpg.init.RPGConfig.ClientConfig;
+import mixac1.dangerrpg.init.RPGConfig;
 import mixac1.dangerrpg.util.RPGHelper;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -157,9 +157,9 @@ public class RPGGuiIngame extends Gui
         int width = res.getScaledWidth();
         int height = res.getScaledHeight();
 
-        renderEntityBar(mc.thePlayer, ClientConfig.guiPlayerHUDOffsetX, ClientConfig.guiPlayerHUDOffsetY, ClientConfig.guiPlayerHUDIsInvert, res);
-        renderChargeBar(ClientConfig.guiChargeIsCentered ? (width - chargeWidth) / 2 : ClientConfig.guiChargeOffsetX, height - ClientConfig.guiChargeOffsetY);
-        renderEnemyBar(ClientConfig.guiEnemyHUDOffsetX, ClientConfig.guiEnemyHUDOffsetY, ClientConfig.guiEnemyHUDIsInvert, res);
+        renderEntityBar(mc.thePlayer, RPGConfig.clientConfig.guiPlayerHUDOffsetX, RPGConfig.clientConfig.guiPlayerHUDOffsetY, RPGConfig.clientConfig.guiPlayerHUDIsInvert, res);
+        renderChargeBar(RPGConfig.clientConfig.guiChargeIsCentered ? (width - chargeWidth) / 2 : RPGConfig.clientConfig.guiChargeOffsetX, height - RPGConfig.clientConfig.guiChargeOffsetY);
+        renderEnemyBar(RPGConfig.clientConfig.guiEnemyHUDOffsetX, RPGConfig.clientConfig.guiEnemyHUDOffsetY, RPGConfig.clientConfig.guiEnemyHUDIsInvert, res);
 
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_BLEND);
@@ -219,7 +219,7 @@ public class RPGGuiIngame extends Gui
 
             int offsetHealth = 0, offsetMana = 0, offsetMeleeDmg = 0, offsetRangeDmg = 0;
 
-            if (hasMana && hasHealth && ClientConfig.guiTwiceHealthManaBar) {
+            if (hasMana && hasHealth && RPGConfig.clientConfig.guiTwiceHealthManaBar) {
                 drawTexturedModalRect(offsetX + invert(barIconOffsetX), offsetY + barIconOffsetY + yFal, barIconOffsetU, barIconOffsetV + barIconHeight * 2, barIconWidth, barIconHeight, isInverted);
                 drawTexturedModalRect(offsetX + invert(barOffsetX), offsetY + barOffsetY + yFal - 2, barOffsetU, barOffsetV, barWidth, barHeight, isInverted);
                 drawTexturedModalRect(offsetX + invert(barOffsetX), offsetY + barOffsetY + yFal + 2, barOffsetU, barOffsetV, barWidth, barHeight, isInverted);
@@ -259,11 +259,17 @@ public class RPGGuiIngame extends Gui
                 if (proc > 0) {
                     drawTexturedModalRect(offsetX + invert(barOffsetX), offsetY + barOffsetY + yFal - 2, barOffsetU, barOffsetV + barHeight * 6, proc, barHeight, isInverted);
                 }
+                else if (proc < 0) {
+                    drawTexturedModalRect(offsetX + invert(barOffsetX), offsetY + barOffsetY + yFal - 2, barOffsetU, barOffsetV + barHeight * 4, -proc, barHeight, isInverted);
+                }
 
                 curr = HookArmorSystem.getTotalMagicArmor();
                 proc = getProcent(curr, 100F, barWidth);
                 if (proc > 0) {
                     drawTexturedModalRect(offsetX + invert(barOffsetX), offsetY + barOffsetY + yFal + 2, barOffsetU, barOffsetV + barHeight * 7, proc, barHeight, isInverted);
+                }
+                else if (proc < 0) {
+                    drawTexturedModalRect(offsetX + invert(barOffsetX), offsetY + barOffsetY + yFal - 2, barOffsetU, barOffsetV + barHeight * 4, -proc, barHeight, isInverted);
                 }
 
                 yFal += barIconHeight;
@@ -314,7 +320,7 @@ public class RPGGuiIngame extends Gui
             }
 
             if (mode.isDigital) {
-                if (hasMana && hasHealth && ClientConfig.guiTwiceHealthManaBar) {
+                if (hasMana && hasHealth && RPGConfig.clientConfig.guiTwiceHealthManaBar) {
                     s = Utils.toString(genValueStr(entity.getHealth() + entity.getAbsorptionAmount()), "/", genValueStr(PlayerAttributes.CURR_MANA.getValue(entity)));
                     fr.drawStringWithShadow(s, offsetX + getOffsetX(s, barOffsetX + barWidth + 4, isInverted), offsetHealth + (barIconHeight - fr.FONT_HEIGHT) / 2 - 1, 0xFFFFFF);
                 }
@@ -460,8 +466,8 @@ public class RPGGuiIngame extends Gui
 
     private int getProcent(float curr, float max, int width)
     {
-        int value = (int) (curr /  max * width);
-        return value <= 1 && curr != 0 ? 1 : value > width ? width : value;
+        curr = curr > max ? max : curr < -max ? -max : curr;
+        return (int) Utils.alignment(curr /  max * width, -width, width);
     }
 
     private String genValueStr(float value)

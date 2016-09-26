@@ -18,13 +18,13 @@ public class IAStatic extends ItemAttribute
     public boolean hasIt(ItemStack stack)
     {
         return RPGCapability.rpgItemRegistr.isActivated(stack.getItem())
-                && RPGCapability.rpgItemRegistr.get(stack.getItem()).map.containsKey(this);
+                && RPGCapability.rpgItemRegistr.get(stack.getItem()).attributes.containsKey(this);
     }
 
     @Override
     public float getRaw(ItemStack stack)
     {
-        return RPGCapability.rpgItemRegistr.get(stack.getItem()).map.get(this).value;
+        return RPGCapability.rpgItemRegistr.get(stack.getItem()).attributes.get(this).value;
     }
 
     @Override

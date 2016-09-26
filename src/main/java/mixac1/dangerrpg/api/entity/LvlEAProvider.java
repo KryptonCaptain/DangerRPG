@@ -2,6 +2,7 @@ package mixac1.dangerrpg.api.entity;
 
 import mixac1.dangerrpg.capability.data.RPGEntityProperties;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
+import mixac1.dangerrpg.init.RPGConfig;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgReqUpEA;
 import mixac1.dangerrpg.util.IMultiplier;
@@ -61,25 +62,38 @@ public class LvlEAProvider<Type>
     public boolean canUp(EntityLivingBase target, EntityPlayer upper)
     {
         return (upper.capabilities.isCreativeMode || upper.experienceLevel >= getExpUp(target))
-               && !isMaxLvl(target);
+               && !isMaxLvl(target) && target == upper;
     }
 
-    public boolean tryUp(EntityLivingBase target, EntityPlayer upper)
+    public boolean canDown(EntityLivingBase target, EntityPlayer upper)
     {
-        if (!isMaxLvl(target)) {
-            if (upper.capabilities.isCreativeMode) {
-                return up(target, upper, true);
+        return (upper.capabilities.isCreativeMode || RPGConfig.entityConfig.playerCanLvlDownAttr)
+               && getLvl(target) > 0 && target == upper;
+    }
+
+    public boolean tryUp(EntityLivingBase target, EntityPlayer upper, boolean isUp)
+    {
+        if (upper.capabilities.isCreativeMode) {
+            return up(target, upper, isUp);
+        }
+
+        if (isUp) {
+            int exp = getExpUp(target);
+            if (exp <= upper.experienceLevel) {
+                if (RPGEntityProperties.isServerSide(target)) {
+                    upper.addExperienceLevel(-exp);
+                }
+                return up(target, upper, isUp);
             }
-            else {
-                int exp = getExpUp(target);
-                if (exp <= upper.experienceLevel) {
-                    if (RPGEntityProperties.isServerSide(target)) {
-                        upper.addExperienceLevel(-exp);
-                    }
-                    return up(target, upper, true);
+        }
+        else {
+            if (RPGConfig.entityConfig.playerCanLvlDownAttr && up(target, upper, isUp)) {
+                if (RPGEntityProperties.isServerSide(target)) {
+                    upper.addExperienceLevel((int) (getExpUp(target) * RPGConfig.entityConfig.playerPercentLoseExpPoints));
                 }
             }
         }
+
         return false;
     }
 
@@ -87,11 +101,11 @@ public class LvlEAProvider<Type>
      * @param flag - if true, then lvl up, else down
      */
     @Deprecated
-    public boolean up(EntityLivingBase target, EntityPlayer upper, boolean flag)
+    public boolean up(EntityLivingBase target, EntityPlayer upper, boolean isUp)
     {
         if (RPGEntityProperties.isServerSide(target)) {
             int lvl = getLvl(target);
-            if (flag) {
+            if (isUp) {
                 if (lvl < maxLvl) {
                     setLvl(lvl + 1, target);
                     EntityAttributes.LVL.addValue(1, target);
@@ -99,20 +113,20 @@ public class LvlEAProvider<Type>
                     return true;
                 }
             }
-            else if (lvl > 1) {
-                setLvl(lvl - 1, target);
-                EntityAttributes.LVL.addValue(-1, target);
-                attr.setValue(mulValue.down(attr.getValue(target), target), target);
-                return true;
+            else {
+                if (lvl > 0) {
+                    setLvl(lvl - 1, target);
+                    EntityAttributes.LVL.addValue(-1, target);
+                    attr.setValue(mulValue.down(attr.getValue(target), target), target);
+                    return true;
+                }
             }
-            return false;
         }
         else {
-            if (flag) {
-                RPGNetwork.net.sendToServer(new MsgReqUpEA(attr.hash, target.getEntityId(), upper.getEntityId()));
-            }
+            RPGNetwork.net.sendToServer(new MsgReqUpEA(attr.hash, target.getEntityId(), upper.getEntityId(), isUp));
             return true;
         }
+        return false;
     }
 
     @Override

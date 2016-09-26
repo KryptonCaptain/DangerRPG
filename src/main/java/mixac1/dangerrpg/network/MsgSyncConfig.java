@@ -5,6 +5,8 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import mixac1.dangerrpg.init.RPGCapability;
+import mixac1.dangerrpg.init.RPGConfig;
+import mixac1.dangerrpg.util.Utils;
 
 public class MsgSyncConfig implements IMessage
 {
@@ -15,23 +17,80 @@ public class MsgSyncConfig implements IMessage
     {
         byte[] bytes;
 
-        bytes = new byte[buf.readInt()];
-        buf.readBytes(bytes);
-        RPGCapability.rpgItemRegistr.extractTransferData(bytes);
+        bytes = bytesFromBytes(buf);
+        if (bytes != null) {
+            if (RPGCapability.rpgItemRegistr.getTransferData() == null) {
+                RPGCapability.rpgItemRegistr.createTransferData();
+            }
+            RPGCapability.rpgItemRegistr.extractTransferData(bytes);
+        }
 
-        bytes = new byte[buf.readInt()];
-        buf.readBytes(bytes);
-        RPGCapability.rpgEntityRegistr.extractTransferData(bytes);
+        bytes = bytesFromBytes(buf);
+        if (bytes != null) {
+            if (RPGCapability.rpgEntityRegistr.getTransferData() == null) {
+                RPGCapability.rpgEntityRegistr.createTransferData();
+            }
+            RPGCapability.rpgEntityRegistr.extractTransferData(bytes);
+        }
+
+        bytes = bytesFromBytes(buf);
+        if (bytes != null) {
+            if (RPGConfig.mainConfig.getTransferData() == null) {
+                RPGConfig.mainConfig.createTransferData();
+            }
+            RPGConfig.mainConfig = Utils.deserialize(bytes);
+        }
+
+        bytes = bytesFromBytes(buf);
+        if (bytes != null) {
+            if (RPGConfig.itemConfig.getTransferData() == null) {
+                RPGConfig.itemConfig.createTransferData();
+            }
+            RPGConfig.itemConfig = Utils.deserialize(bytes);
+        }
+
+        bytes = bytesFromBytes(buf);
+        if (bytes != null) {
+            if (RPGConfig.entityConfig.getTransferData() == null) {
+                RPGConfig.entityConfig.createTransferData();
+            }
+            RPGConfig.entityConfig = Utils.deserialize(bytes);
+        }
     }
 
     @Override
     public void toBytes(ByteBuf buf)
     {
-        buf.writeInt(RPGCapability.rpgItemRegistr.getTransferData().length);
-        buf.writeBytes(RPGCapability.rpgItemRegistr.getTransferData());
+        bytesToBytes(buf, RPGCapability.rpgItemRegistr.getTransferData());
+        bytesToBytes(buf, RPGCapability.rpgEntityRegistr.getTransferData());
 
-        buf.writeInt(RPGCapability.rpgEntityRegistr.getTransferData().length);
-        buf.writeBytes(RPGCapability.rpgEntityRegistr.getTransferData());
+        bytesToBytes(buf, Utils.serialize(RPGConfig.mainConfig));
+        bytesToBytes(buf, Utils.serialize(RPGConfig.itemConfig));
+        bytesToBytes(buf, Utils.serialize(RPGConfig.entityConfig));
+    }
+
+    public void bytesToBytes(ByteBuf buf, byte[] bytes)
+    {
+        if (bytes != null && bytes.length != 0) {
+            buf.writeInt(bytes.length);
+            buf.writeBytes(bytes);
+        }
+        else {
+            buf.writeInt(0);
+        }
+    }
+
+    public byte[] bytesFromBytes(ByteBuf buf)
+    {
+        byte[] bytes = null;
+        int size;
+
+        if ((size = buf.readInt()) > 0) {
+            bytes = new byte[size];
+            buf.readBytes(bytes);
+        }
+
+        return bytes;
     }
 
     public static class Handler implements IMessageHandler<MsgSyncConfig, IMessage>

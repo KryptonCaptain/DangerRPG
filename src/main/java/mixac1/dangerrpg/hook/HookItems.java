@@ -4,7 +4,7 @@ import com.google.common.collect.Multimap;
 
 import mixac1.dangerrpg.capability.GemableItem;
 import mixac1.dangerrpg.capability.RPGableItem;
-import mixac1.dangerrpg.capability.data.RPGUUIDs;
+import mixac1.dangerrpg.capability.data.RPGUUID;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.init.RPGOther.RPGItemRarity;
@@ -51,7 +51,7 @@ public class HookItems
         if (RPGableItem.isRPGable(stack)) {
             if (ItemAttributes.MELEE_DAMAGE.hasIt(stack)) {
                 returnValue.removeAll(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName());
-                returnValue.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(RPGUUIDs.DEFAULT_DAMAGE, "Weapon modifier",
+                returnValue.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(RPGUUID.DEFAULT_DAMAGE, "Weapon modifier",
                         ItemAttributes.MELEE_DAMAGE.get(stack), 0));
             }
         }

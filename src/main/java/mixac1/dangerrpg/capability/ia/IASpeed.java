@@ -19,7 +19,7 @@ public class IASpeed extends IAStatic
     @Override
     public float get(ItemStack stack)
     {
-        return RPGCapability.rpgItemRegistr.get(stack.getItem()).map.get(this).value;
+        return RPGCapability.rpgItemRegistr.get(stack.getItem()).attributes.get(this).value;
     }
 
     @Override

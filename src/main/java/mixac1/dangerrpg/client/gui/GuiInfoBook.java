@@ -61,7 +61,8 @@ public class GuiInfoBook extends GuiScreen
     public static int contentOffsetY = 55;
     public static int contentSize = 190;
 
-    private LevelUpButton button;
+    private LevelUpButton buttonUp;
+    private LevelUpButton buttonDown;
 
     public GuiInfoBook(EntityPlayer player)
     {
@@ -108,7 +109,8 @@ public class GuiInfoBook extends GuiScreen
         for (int i = 1; i < content.length; ++i) {
             content[i] = new GuiInfoBookContentStack(mc, bookImageWidth - contentOffsetX * 2, 0, offsetY + contentOffsetY, contentSize, offsetX + contentOffsetX, this, stacks[i - 1]);
         }
-        buttonList.add(button = new LevelUpButton(100, offsetX + contentOffsetX + GuiInfoBookContentEntity.butOffsetX, offsetY + contentOffsetY + contentSize + GuiInfoBookContentEntity.butOffsetY - GuiInfoBookContentEntity.imageHeight, (GuiInfoBookContentEntity) content[0]));
+        buttonList.add(buttonDown = new LevelUpButton(100, false, offsetX + contentOffsetX + GuiInfoBookContentEntity.butOffsetX, offsetY + contentOffsetY + contentSize + GuiInfoBookContentEntity.butOffsetY - GuiInfoBookContentEntity.imageHeight, (GuiInfoBookContentEntity) content[0]));
+        buttonList.add(buttonUp   = new LevelUpButton(101, true,  offsetX + contentOffsetX + GuiInfoBookContentEntity.butOffsetX + GuiInfoBookContentEntity.butSizeX, offsetY + contentOffsetY + contentSize + GuiInfoBookContentEntity.butOffsetY - GuiInfoBookContentEntity.imageHeight, (GuiInfoBookContentEntity) content[0]));
     }
 
     @Override
@@ -205,7 +207,8 @@ public class GuiInfoBook extends GuiScreen
             if (super.mousePressed(mc, x, y)) {
                 currContent = id;
                 content[id].init();
-                button.visible = id == 0;
+                buttonUp.visible = id == 0;
+                buttonDown.visible = id == 0;
                 return true;
             }
             return false;

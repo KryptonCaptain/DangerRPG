@@ -86,7 +86,7 @@ public interface ITypeProvider<Type>
         @Override
         public boolean isValid(Integer value)
         {
-            return value >= 0;
+            return true;
         }
 
         @Override
@@ -125,7 +125,7 @@ public interface ITypeProvider<Type>
         @Override
         public boolean isValid(Float value)
         {
-            return value >= 0;
+            return true;
         }
 
         @Override

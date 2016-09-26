@@ -104,8 +104,8 @@ public class RPGEntityProperties implements IExtendedEntityProperties
             }
         }
 
-        if (count > RPGConfig.EntityConfig.playerLoseLvlCount) {
-            count = RPGConfig.EntityConfig.playerLoseLvlCount;
+        if (count > RPGConfig.entityConfig.playerLoseLvlCount) {
+            count = RPGConfig.entityConfig.playerLoseLvlCount;
         }
 
         for (int i = 0; i < count; ++i) {
