@@ -40,6 +40,7 @@ import net.minecraftforge.common.config.Property;
 public class RPGConfig
 {
     public static File dir;
+
     static {
         dir = new File((File) FMLInjectionData.data()[6], "config/".concat(DangerRPG.MODID));
         if (dir.exists()) {
@@ -53,10 +54,10 @@ public class RPGConfig
     }
 
     @SideOnly(Side.CLIENT)
-    public static ClientConfig  clientConfig = new ClientConfig("ClientConfig");
-    public static MainConfig    mainConfig   = new MainConfig("MainConfig");
-    public static ItemConfig    itemConfig   = new ItemConfig("ItemConfig");
-    public static EntityConfig  entityConfig = new EntityConfig("EntityConfig");
+    public static ClientConfig clientConfig;
+    public static MainConfig mainConfig = new MainConfig("MainConfig");
+    public static ItemConfig itemConfig = new ItemConfig("ItemConfig");
+    public static EntityConfig entityConfig = new EntityConfig("EntityConfig");
 
     public static void load(FMLPreInitializationEvent e)
     {
@@ -74,6 +75,7 @@ public class RPGConfig
     @SideOnly(Side.CLIENT)
     public static void loadClient(FMLPreInitializationEvent e)
     {
+        clientConfig = new ClientConfig("ClientConfig");
         clientConfig.load();
     }
 
@@ -95,8 +97,8 @@ public class RPGConfig
     {
         public static class Data implements Serializable
         {
-            public boolean   mainEnableInfoLog          = true;
-            public boolean   mainEnableTransferConfig   = false;
+            public boolean mainEnableInfoLog = true;
+            public boolean mainEnableTransferConfig = false;
         }
 
         public static Data d = new Data();
@@ -109,11 +111,8 @@ public class RPGConfig
         @Override
         protected void init()
         {
-            category.setComment("GENERAL INFO:\n"
-                    + "\n"
-                    + "How do config multipliers ('.mul')\n"
-                    + "You can use two types of multiplier:\n"
-                    + "ADD 'value' - adding value to the input parameter.\n"
+            category.setComment("GENERAL INFO:\n" + "\n" + "How do config multipliers ('.mul')\n"
+                    + "You can use two types of multiplier:\n" + "ADD 'value' - adding value to the input parameter.\n"
                     + "MUL 'value' - multiplication the input parameter by the value.\n"
                     + "HARD - not for using. There is a hard expression, but you can change it using ADD or MUL\n"
                     + "\n");
@@ -128,7 +127,7 @@ public class RPGConfig
                     "Enable writing info message to log (true/false)");
 
             d.mainEnableTransferConfig = config.getBoolean("mainEnableTransferConfig", category.getName(), d.mainEnableTransferConfig,
-                    "Enable transfer config data from server to client (true/false)");
+                    "Enable transfer config data from server to client (true/false)\nCan be errors. Synchronize the configuration better by other means.");
 
             save();
         }
@@ -151,21 +150,21 @@ public class RPGConfig
     {
         public static class Data implements Serializable
         {
-            public boolean   guiIsEnableHUD          = true;
-            public int       guiPlayerHUDOffsetX     = 10;
-            public int       guiPlayerHUDOffsetY     = 10;
-            public boolean   guiPlayerHUDIsInvert    = false;
-            public int       guiEnemyHUDOffsetX      = 10;
-            public int       guiEnemyHUDOffsetY      = 10;
-            public boolean   guiEnemyHUDIsInvert     = true;
-            public int       guiChargeOffsetX        = 0;
-            public int       guiChargeOffsetY        = 45;
-            public boolean   guiChargeIsCentered     = true;
-            public boolean   guiTwiceHealthManaBar   = true;
-            public int       guiDafaultHUDMode       = 1;
-            public int       guiDamageForTestArmor   = 25;
+            public boolean guiIsEnableHUD = true;
+            public int guiPlayerHUDOffsetX = 10;
+            public int guiPlayerHUDOffsetY = 10;
+            public boolean guiPlayerHUDIsInvert = false;
+            public int guiEnemyHUDOffsetX = 10;
+            public int guiEnemyHUDOffsetY = 10;
+            public boolean guiEnemyHUDIsInvert = true;
+            public int guiChargeOffsetX = 0;
+            public int guiChargeOffsetY = 45;
+            public boolean guiChargeIsCentered = true;
+            public boolean guiTwiceHealthManaBar = true;
+            public int guiDafaultHUDMode = 1;
+            public int guiDamageForTestArmor = 25;
 
-            public boolean   neiShowShapedRecipe     = false;
+            public boolean neiShowShapedRecipe = false;
         }
 
         public static Data d = new Data();
@@ -241,11 +240,11 @@ public class RPGConfig
     {
         public static class Data implements Serializable
         {
-            public boolean   isAllItemsRPGable   = false;
-            public boolean   canUpInTable        = true;
-            public int       maxLevel            = 100;
-            public int       startMaxExp         = 100;
-            public float     expMul              = 1.15f;
+            public boolean isAllItemsRPGable = false;
+            public boolean canUpInTable = true;
+            public int maxLevel = 100;
+            public int startMaxExp = 100;
+            public float expMul = 1.15f;
         }
 
         public static Data d = new Data();
@@ -260,11 +259,9 @@ public class RPGConfig
         @Override
         protected void init()
         {
-            category.setComment("FAQ:\n"
-                    + "Q: How do activate RPG item?\n"
+            category.setComment("FAQ:\n" + "Q: How do activate RPG item?\n"
                     + "A: Take name of item frome the 'itemList' and put it to the 'activeRPGItems' list.\n"
-                    + "Or you can enable flag 'isAllItemsRPGable' for active all items.\n"
-                    + "\n"
+                    + "Or you can enable flag 'isAllItemsRPGable' for active all items.\n" + "\n"
                     + "Q: How do congigure any item?\n"
                     + "A: Take name of item frome the 'itemList' and put it to the 'needCustomSetting' list.\n"
                     + "After this, run the game, exit from game and reopen this config.\n"
@@ -329,21 +326,22 @@ public class RPGConfig
         {
             String str = "customSetting";
 
-            Property prop = getPropertyStrings("needCustomSetting", new String[] {Items.diamond_sword.delegate.name()},
-                    "Set items, which needs customization", true);
+            Property prop = getPropertyStrings("needCustomSetting",
+                    new String[] { Items.diamond_sword.delegate.name() }, "Set items, which needs customization", true);
             HashSet<String> needCustomSetting = new HashSet<String>(Arrays.asList(prop.getStringList()));
 
             if (!needCustomSetting.isEmpty()) {
                 for (Entry<Item, RPGItemData> item : map.entrySet()) {
                     if (needCustomSetting.contains(item.getKey().delegate.name())) {
-                        ConfigCategory cat = config.getCategory(Utils.toString(str, ".", item.getKey().delegate.name()));
+                        ConfigCategory cat = config
+                                .getCategory(Utils.toString(str, ".", item.getKey().delegate.name()));
                         if (!item.getValue().isSupported) {
                             cat.setComment("Warning: it isn't support from mod");
                         }
                         for (Entry<ItemAttribute, ItemAttrParams> ia : item.getValue().attributes.entrySet()) {
-                            ia.getValue().value = getRPGAttributeValue(cat.getName(), ia);
+                            ia.getValue().value = getRPGAttributeValue(cat.getQualifiedName(), ia);
                             if (ia.getValue().mul != null) {
-                                ia.getValue().mul = getRPGMultiplier(cat.getName(), ia);
+                                ia.getValue().mul = getRPGMultiplier(cat.getQualifiedName(), ia);
                             }
                         }
                     }
@@ -400,13 +398,13 @@ public class RPGConfig
     {
         public static class Data implements Serializable
         {
-            public boolean isAllEntitiesRPGable       = false;
-            public int     entityLvlUpFrequency       = 50;
-            public int     playerLoseLvlCount         = 3;
-            public int     playerStartManaValue       = 10;
-            public int     playerStartManaRegenValue  = 1;
-            public boolean playerCanLvlDownAttr       = true;
-            public float   playerPercentLoseExpPoints = 0.5f;
+            public boolean isAllEntitiesRPGable = false;
+            public int entityLvlUpFrequency = 50;
+            public int playerLoseLvlCount = 3;
+            public int playerStartManaValue = 10;
+            public int playerStartManaRegenValue = 1;
+            public boolean playerCanLvlDownAttr = true;
+            public float playerPercentLoseExpPoints = 0.5f;
         }
 
         public static Data d = new Data();
@@ -421,11 +419,9 @@ public class RPGConfig
         @Override
         protected void init()
         {
-            category.setComment("FAQ:\n"
-                    + "Q: How do activate RPG entity?\n"
+            category.setComment("FAQ:\n" + "Q: How do activate RPG entity?\n"
                     + "A: Take name of entity frome the 'entityList' and put it to the 'activeRPGEntities' list.\n"
-                    + "Or you can enable flag 'isAllEntitiesRPGable' for active all entities.\n"
-                    + "\n"
+                    + "Or you can enable flag 'isAllEntitiesRPGable' for active all entities.\n" + "\n"
                     + "Q: How do congigure any entity?\n"
                     + "A: Take name of entity frome the 'entityList' and put it to the 'needCustomSetting' list.\n"
                     + "After this, run the game, exit from game and reopen this config.\n"
@@ -478,7 +474,8 @@ public class RPGConfig
         {
             playerConfig();
 
-            HashMap<Class<? extends EntityLivingBase>, RPGEntityData> map = RPGCapability.rpgEntityRegistr.getActiveElements();
+            HashMap<Class<? extends EntityLivingBase>, RPGEntityData> map = RPGCapability.rpgEntityRegistr
+                    .getActiveElements();
 
             customConfig(map);
 
@@ -500,9 +497,11 @@ public class RPGConfig
             for (LvlEAProvider lvlProv : RPGCapability.rpgEntityRegistr.get(EntityPlayer.class).lvlProviders) {
                 String catStr = Utils.toString(str, ".", lvlProv.attr.name);
                 lvlProv.maxLvl = config.getInt("maxLvl", catStr, lvlProv.maxLvl, 0, Integer.MAX_VALUE, "");
-                lvlProv.startExpCost = config.getInt("startExpCost", catStr, lvlProv.startExpCost, 0, Integer.MAX_VALUE, "");
+                lvlProv.startExpCost = config.getInt("startExpCost", catStr, lvlProv.startExpCost, 0, Integer.MAX_VALUE,
+                        "");
                 if (lvlProv.mulValue instanceof IMulConfigurable) {
-                    lvlProv.mulValue = getRPGMultiplier(catStr, "value", lvlProv.attr, (IMulConfigurable) lvlProv.mulValue);
+                    lvlProv.mulValue = getRPGMultiplier(catStr, "value", lvlProv.attr,
+                            (IMulConfigurable) lvlProv.mulValue);
                 }
                 lvlProv.mulExpCost = getRPGMultiplier(catStr, "expCost", lvlProv.attr, lvlProv.mulExpCost);
             }
@@ -512,22 +511,24 @@ public class RPGConfig
         {
             String str = "customSetting";
 
-            Property prop = getPropertyStrings("needCustomSetting", new String[] {(String) EntityList.classToStringMapping.get(EntityZombie.class)},
+            Property prop = getPropertyStrings("needCustomSetting",
+                    new String[] { (String) EntityList.classToStringMapping.get(EntityZombie.class) },
                     "Set entities, which needs customization", true);
             HashSet<String> needCustomSetting = new HashSet<String>(Arrays.asList(prop.getStringList()));
 
             if (!needCustomSetting.isEmpty()) {
                 String entityName;
                 for (Entry<Class<? extends EntityLivingBase>, RPGEntityData> entity : map.entrySet()) {
-                    if (!EntityPlayer.class.isAssignableFrom(entity.getKey())
-                        && needCustomSetting.contains(entityName = (String) EntityList.classToStringMapping.get(entity.getKey()))) {
+                    if (!EntityPlayer.class.isAssignableFrom(entity.getKey()) && needCustomSetting
+                            .contains(entityName = (String) EntityList.classToStringMapping.get(entity.getKey()))) {
                         ConfigCategory cat = config.getCategory(Utils.toString(str, ".", entityName));
                         if (!entity.getValue().isSupported) {
                             cat.setComment("Warning: it isn't support from mod");
                         }
                         for (Entry<EntityAttribute, EntityAttrParams> ea : entity.getValue().attributes.entrySet()) {
                             if (ea.getKey() != EntityAttributes.LVL) {
-                                ea.getValue().mulValue = getRPGMultiplier(cat.getName(), ea.getKey().name, ea.getKey(), ea.getValue().mulValue);
+                                ea.getValue().mulValue = getRPGMultiplier(cat.getQualifiedName(), ea.getKey().name, ea.getKey(),
+                                        ea.getValue().mulValue);
                             }
                         }
                     }
@@ -535,7 +536,8 @@ public class RPGConfig
             }
         }
 
-        protected IMulConfigurable getRPGMultiplier(String category, String name, EntityAttribute attr, IMulConfigurable mul)
+        protected IMulConfigurable getRPGMultiplier(String category, String name, EntityAttribute attr,
+                IMulConfigurable mul)
         {
             String defStr = mul.toString();
             Property prop = config.get(category, name.concat(".mul"), defStr);
@@ -582,13 +584,21 @@ public class RPGConfig
             init();
         }
 
-        protected void init() {}
+        protected void init()
+        {
+        }
 
-        protected void load() {}
+        protected void load()
+        {
+        }
 
-        protected void postLoadPre() {}
+        protected void postLoadPre()
+        {
+        }
 
-        protected void postLoadPost() {}
+        protected void postLoadPost()
+        {
+        }
 
         public void save()
         {

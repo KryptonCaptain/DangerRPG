@@ -44,6 +44,9 @@ public abstract class RPGDataRegister<Key, Data extends ElementData<Key, Transfe
             if (key != null) {
                 list.add(new Pair<TransferKey, TransferData>(key, entry.getValue().getTransferData(entry.getKey())));
             }
+            else {
+                throw new NullPointerException();
+            }
         }
 
         transferData = Utils.serialize(list);
@@ -68,6 +71,9 @@ public abstract class RPGDataRegister<Key, Data extends ElementData<Key, Transfe
                     get(key).unpackTransferData(data.value2);
                 }
                 get(key).isActivated = true;
+            }
+            else {
+                throw new NullPointerException();
             }
         }
     }
