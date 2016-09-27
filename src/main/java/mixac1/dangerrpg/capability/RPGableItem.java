@@ -17,7 +17,7 @@ import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.hook.HookArmorSystem;
 import mixac1.dangerrpg.init.RPGCapability;
-import mixac1.dangerrpg.init.RPGConfig;
+import mixac1.dangerrpg.init.RPGConfig.ItemConfig;
 import mixac1.dangerrpg.item.RPGArmorMaterial;
 import mixac1.dangerrpg.item.RPGItemComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.IWithoutToolMaterial;
@@ -45,7 +45,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 public abstract class RPGableItem
 {
-    public static final MultiplierMul EXP_MUL = new MultiplierMul(RPGConfig.itemConfig.expMul);
+    public static final MultiplierMul EXP_MUL = new MultiplierMul(ItemConfig.d.expMul);
 
     public static final IMulConfigurable DUR_MUL = new IMulConfigurable()
     {
@@ -92,7 +92,7 @@ public abstract class RPGableItem
 
     public static void registerParamsDefault(Item item, RPGItemData map)
     {
-        map.addDynamicItemAttribute(ItemAttributes.MAX_EXP, RPGConfig.itemConfig.startMaxExp, EXP_MUL);
+        map.addDynamicItemAttribute(ItemAttributes.MAX_EXP, ItemConfig.d.startMaxExp, EXP_MUL);
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.DefaultIAEvent(item, map));
     }
 
@@ -311,7 +311,7 @@ public abstract class RPGableItem
             }
             int level = (int) ItemAttributes.LEVEL.get(stack);
 
-            if (level < RPGConfig.itemConfig.maxLevel) {
+            if (level < ItemConfig.d.maxLevel) {
                 long currEXP = (long) ItemAttributes.CURR_EXP.get(stack);
                 int maxEXP  = (int) ItemAttributes.MAX_EXP.get(stack);
 
@@ -319,7 +319,7 @@ public abstract class RPGableItem
 
                 while (currEXP >= maxEXP) {
                     instantLvlUp(stack);
-                    if (++level < RPGConfig.itemConfig.maxLevel) {
+                    if (++level < ItemConfig.d.maxLevel) {
                         currEXP -= maxEXP;
                     } else {
                         currEXP = maxEXP;

@@ -52,6 +52,18 @@ public abstract class RecipeCreator
     {
         private static final char[] SYMBOLS = new char[] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
+        protected int resultSize;
+
+        public RecipeCustom()
+        {
+            this(1);
+        }
+
+        public RecipeCustom(int resultSize)
+        {
+            this.resultSize = resultSize;
+        }
+
         protected abstract String[] getPattern();
 
         public void addRecipe(Item result, Object... objs)
@@ -76,6 +88,7 @@ public abstract class RecipeCreator
                     params[i * 2 + 2] = objs[i];
                 }
 
+                result.stackSize = resultSize;
                 Pair<Integer, Integer> sizes = getRecipeSizes(pattern);
                 if (sizes.value1 <= 3 && sizes.value2 <= 3) {
                     GameRegistry.addShapedRecipe(result, params);
@@ -144,7 +157,7 @@ public abstract class RecipeCreator
     public static final RecipeFull RECIPE_FULL_4X4 = new RecipeFull(4, 4);
     public static final RecipeFull RECIPE_FULL_5X5 = new RecipeFull(5, 5);
 
-    public static final RecipeCustom RECIPE_STICK = new RecipeCustom()
+    public static final RecipeCustom RECIPE_STICK = new RecipeCustom(4)
     {
         @Override
         protected String[] getPattern()

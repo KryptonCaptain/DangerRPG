@@ -1,7 +1,7 @@
 package mixac1.dangerrpg.capability.ia;
 
 import mixac1.dangerrpg.api.item.IADynamic;
-import mixac1.dangerrpg.init.RPGConfig;
+import mixac1.dangerrpg.init.RPGConfig.ItemConfig;
 import net.minecraft.item.ItemStack;
 
 public class IALevel extends IADynamic
@@ -14,7 +14,7 @@ public class IALevel extends IADynamic
     @Override
     public boolean isValid(float value)
     {
-        return super.isValid(value) && value <= RPGConfig.itemConfig.maxLevel;
+        return super.isValid(value) && value <= ItemConfig.d.maxLevel;
     }
 
     @Override

@@ -4,7 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
-import mixac1.dangerrpg.init.RPGConfig;
+import mixac1.dangerrpg.init.RPGConfig.ItemConfig;
 import mixac1.dangerrpg.util.RPGHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -244,7 +244,7 @@ public class ContainerLvlupTable extends Container
                     }
                     return true;
                 }
-                else if (RPGConfig.itemConfig.canUpInTable && expToUp <= player.experienceTotal) {
+                else if (ItemConfig.d.canUpInTable && expToUp <= player.experienceTotal) {
                     if (!worldPointer.isRemote) {
                         RPGableItem.addExp(stack, expToUp);
                         player.addExperience(-expToUp);
@@ -256,9 +256,9 @@ public class ContainerLvlupTable extends Container
 
             }
             else {
-                if (RPGConfig.itemConfig.canUpInTable && player.experienceTotal > 0) {
+                if (ItemConfig.d.canUpInTable && player.experienceTotal > 0) {
                     if (!worldPointer.isRemote) {
-                        while (player.experienceTotal > 0 && ItemAttributes.LEVEL.get(stack) < RPGConfig.itemConfig.maxLevel) {
+                        while (player.experienceTotal > 0 && ItemAttributes.LEVEL.get(stack) < ItemConfig.d.maxLevel) {
                             float temp = ItemAttributes.MAX_EXP.get(stack) - ItemAttributes.CURR_EXP.get(stack);
                             int needToUp = (int) ((temp > (int) temp) ? temp + 1 : temp);
                             if (player.experienceTotal > needToUp) {

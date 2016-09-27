@@ -41,7 +41,7 @@ public class LargeShapelessRecipeHandler extends LargeShapedRecipeHandler
                 if (irecipe instanceof LargeShapelessRecipe) {
                     recipe = largeShapelessRecipe((LargeShapelessRecipe) irecipe);
                 }
-                else if (ClientConfig.neiShowShapedRecipe) {
+                else if (ClientConfig.d.neiShowShapedRecipe) {
                     if (irecipe instanceof ShapelessRecipes) {
                         recipe = shapelessRecipe((ShapelessRecipes) irecipe);
                     }
@@ -71,7 +71,7 @@ public class LargeShapelessRecipeHandler extends LargeShapedRecipeHandler
                 if (irecipe instanceof LargeShapelessRecipe) {
                     recipe = largeShapelessRecipe((LargeShapelessRecipe) irecipe);
                 }
-                else if (ClientConfig.neiShowShapedRecipe) {
+                else if (ClientConfig.d.neiShowShapedRecipe) {
                     if (irecipe instanceof ShapelessRecipes) {
                         recipe = shapelessRecipe((ShapelessRecipes) irecipe);
                     }
@@ -96,7 +96,7 @@ public class LargeShapelessRecipeHandler extends LargeShapedRecipeHandler
             if (irecipe instanceof LargeShapelessRecipe) {
                 recipe = largeShapelessRecipe((LargeShapelessRecipe) irecipe);
             }
-            else if (ClientConfig.neiShowShapedRecipe) {
+            else if (ClientConfig.d.neiShowShapedRecipe) {
                 if (irecipe instanceof ShapelessRecipes) {
                     recipe = shapelessRecipe((ShapelessRecipes) irecipe);
                 }

@@ -8,7 +8,6 @@ import mixac1.dangerrpg.api.item.IADynamic;
 import mixac1.dangerrpg.api.item.IAStatic;
 import mixac1.dangerrpg.api.item.IRPGItem;
 import mixac1.dangerrpg.api.item.ItemAttribute;
-import mixac1.dangerrpg.capability.data.RPGDataRegister.ElementData;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.ItemAttrParams;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
 import mixac1.dangerrpg.init.RPGCapability;
@@ -31,7 +30,7 @@ public class RPGItemRegister extends RPGDataRegister<Item, RPGItemData, Integer,
 
     /******************************************************************************************************/
 
-    public static class RPGItemData extends ElementData<Item, HashMap<Integer, ItemAttrParams>>
+    public static class RPGItemData extends RPGDataRegister.ElementData<Item, HashMap<Integer, ItemAttrParams>>
     {
         public HashMap<ItemAttribute, ItemAttrParams> attributes = new LinkedHashMap<ItemAttribute, ItemAttrParams>();
         public IRPGItem rpgComponent;

@@ -1,5 +1,6 @@
 package mixac1.dangerrpg.capability.data;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -8,7 +9,6 @@ import java.util.List;
 import mixac1.dangerrpg.api.entity.EntityAttribute;
 import mixac1.dangerrpg.api.entity.IRPGEntity;
 import mixac1.dangerrpg.api.entity.LvlEAProvider;
-import mixac1.dangerrpg.capability.data.RPGDataRegister.ElementData;
 import mixac1.dangerrpg.capability.data.RPGEntityRegister.EntityTransferData;
 import mixac1.dangerrpg.capability.data.RPGEntityRegister.RPGEntityData;
 import mixac1.dangerrpg.init.RPGCapability;
@@ -59,7 +59,7 @@ public class RPGEntityRegister extends RPGDataRegister<Class<? extends EntityLiv
 
     /******************************************************************************************************/
 
-    public static class RPGEntityData extends ElementData<Class<? extends EntityLivingBase>, HashMap<Integer, EntityTransferData>>
+    public static class RPGEntityData extends RPGDataRegister.ElementData<Class<? extends EntityLivingBase>, HashMap<Integer, EntityTransferData>>
     {
         public HashMap<EntityAttribute, EntityAttrParams> attributes = new LinkedHashMap<EntityAttribute, EntityAttrParams>();
         public List<LvlEAProvider> lvlProviders = new LinkedList<LvlEAProvider>();
@@ -116,7 +116,7 @@ public class RPGEntityRegister extends RPGDataRegister<Class<? extends EntityLiv
         }
     }
 
-    public static class EntityTransferData
+    public static class EntityTransferData implements Serializable
     {
         public IMultiplierE mulValue;
         public int maxLvl;

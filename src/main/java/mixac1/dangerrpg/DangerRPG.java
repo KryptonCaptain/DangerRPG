@@ -10,7 +10,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import mixac1.dangerrpg.init.RPGConfig;
+import mixac1.dangerrpg.init.RPGConfig.MainConfig;
 import mixac1.dangerrpg.proxy.CommonProxy;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.util.StatCollector;
@@ -65,7 +65,7 @@ public class DangerRPG
 
     public static void infoLog(Object... objs)
     {
-        if (RPGConfig.mainConfig != null ? RPGConfig.mainConfig.mainEnableInfoLog : true) {
+        if (MainConfig.d.mainEnableInfoLog) {
             DangerRPG.logger.info(Utils.toString(objs));
         }
     }

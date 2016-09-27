@@ -49,7 +49,7 @@ public class LargeShapedRecipeHandler extends TemplateRecipeHandler
                 if (irecipe instanceof LargeShapedRecipe) {
                     recipe = new CachedLargeShapedRecipe((LargeShapedRecipe) irecipe);
                 }
-                else if (ClientConfig.neiShowShapedRecipe) {
+                else if (ClientConfig.d.neiShowShapedRecipe) {
                     if (irecipe instanceof ShapedRecipes) {
                         recipe = new CachedLargeShapedRecipe((ShapedRecipes) irecipe);
                     }
@@ -80,7 +80,7 @@ public class LargeShapedRecipeHandler extends TemplateRecipeHandler
                 if (irecipe instanceof LargeShapedRecipe) {
                     recipe = new CachedLargeShapedRecipe((LargeShapedRecipe) irecipe);
                 }
-                else if (ClientConfig.neiShowShapedRecipe) {
+                else if (ClientConfig.d.neiShowShapedRecipe) {
                     if (irecipe instanceof ShapedRecipes) {
                         recipe = new CachedLargeShapedRecipe((ShapedRecipes) irecipe);
                     }
@@ -107,7 +107,7 @@ public class LargeShapedRecipeHandler extends TemplateRecipeHandler
             if (irecipe instanceof LargeShapedRecipe) {
                 recipe = new CachedLargeShapedRecipe((LargeShapedRecipe) irecipe);
             }
-            else if (ClientConfig.neiShowShapedRecipe) {
+            else if (ClientConfig.d.neiShowShapedRecipe) {
                 if (irecipe instanceof ShapedRecipes) {
                     recipe = new CachedLargeShapedRecipe((ShapedRecipes) irecipe);
                 }

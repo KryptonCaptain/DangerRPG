@@ -7,7 +7,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
-import mixac1.dangerrpg.init.RPGConfig;
+import mixac1.dangerrpg.init.RPGConfig.ClientConfig;
 import mixac1.dangerrpg.init.RPGOther.RPGDamageSource;
 import mixac1.dangerrpg.util.Utils;
 import mixac1.hooklib.asm.Hook;
@@ -49,7 +49,7 @@ public class HookArmorSystem
     {
         float value = 0;
         Minecraft mc = Minecraft.getMinecraft();
-        float damage = RPGConfig.clientConfig.guiDamageForTestArmor * MAX_PHISICAL_ARMOR;
+        float damage = ClientConfig.d.guiDamageForTestArmor * MAX_PHISICAL_ARMOR;
 
         ArrayList<ArmorProperties> list = getArrayArmorProperties(mc.thePlayer, mc.thePlayer.inventory.armorInventory, source, damage);
         if (list.size() > 0) {

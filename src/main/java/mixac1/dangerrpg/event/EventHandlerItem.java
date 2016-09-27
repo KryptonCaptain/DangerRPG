@@ -6,13 +6,18 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.api.event.DealtDamageEvent;
+import mixac1.dangerrpg.api.event.ItemStackEvent.EquipmentStackChange;
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
 import mixac1.dangerrpg.capability.RPGableItem;
+import mixac1.dangerrpg.capability.data.RPGUUID;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.util.RPGHelper;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -90,6 +95,23 @@ public class EventHandlerItem
     {
         if (e.damage > 0) {
             RPGableItem.upEquipment(e.player, e.target, e.stack, e.damage);
+        }
+    }
+
+    @SubscribeEvent
+    public void onEquipmentStackChange(EquipmentStackChange e)
+    {
+        if (e.slot == 0) {
+            IAttributeInstance attr = e.player.getEntityAttribute(SharedMonsterAttributes.attackDamage);
+            AttributeModifier mod = attr.getModifier(RPGUUID.ADDITIONAL_STR_DAMAGE);
+            if (mod != null) {
+                attr.removeModifier(mod);
+            }
+            if (e.stack != null &&RPGableItem.isRPGable(e.stack)) {
+                AttributeModifier newMod = new AttributeModifier(RPGUUID.ADDITIONAL_STR_DAMAGE, "Strenght damage",
+                        PlayerAttributes.STRENGTH.getValue(e.player) * ItemAttributes.STR_MUL.get(e.stack), 0).setSaved(true);
+                attr.applyModifier(newMod);
+            }
         }
     }
 }

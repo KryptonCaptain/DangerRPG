@@ -22,6 +22,9 @@ import mixac1.dangerrpg.capability.data.RPGEntityRegister.RPGEntityData;
 import mixac1.dangerrpg.capability.data.RPGItemRegister;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
+import mixac1.dangerrpg.init.RPGConfig.EntityConfig;
+import mixac1.dangerrpg.init.RPGConfig.ItemConfig;
+import mixac1.dangerrpg.init.RPGConfig.MainConfig;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
@@ -86,7 +89,7 @@ public abstract class RPGCapability
 
     public static void postLoad(FMLPostInitializationEvent e)
     {
-        if (RPGConfig.mainConfig.mainEnableTransferConfig) {
+        if (MainConfig.d.mainEnableTransferConfig) {
             rpgItemRegistr.createTransferData();
             rpgEntityRegistr.createTransferData();
         }
@@ -221,7 +224,7 @@ public abstract class RPGCapability
         for (Entry<Class<? extends EntityLivingBase>, RPGEntityData> it : rpgEntityRegistr.entrySet()) {
             RPGableEntity.registerEntityDefault(it.getKey(), it.getValue());
             it.getValue().rpgComponent.registerAttributes(it.getKey(), it.getValue());
-            if (RPGConfig.entityConfig.isAllEntitiesRPGable || RPGConfig.EntityConfig.activeRPGEntities.contains(EntityList.classToStringMapping.get(it.getKey()))) {
+            if (EntityConfig.d.isAllEntitiesRPGable || EntityConfig.activeRPGEntities.contains(EntityList.classToStringMapping.get(it.getKey()))) {
                 rpgEntityRegistr.get(it.getKey()).isActivated = true;
                 DangerRPG.infoLog(String.format("Register RPG entity (sup from mod: %s): %s",
                                   it.getValue().isSupported ? " true" : "false", EntityList.classToStringMapping.get(it.getKey())));
@@ -241,7 +244,7 @@ public abstract class RPGCapability
         for (Entry<Item, RPGItemData> it : rpgItemRegistr.entrySet()) {
             RPGableItem.registerParamsDefault(it.getKey(), it.getValue());
             it.getValue().rpgComponent.registerAttributes(it.getKey(), it.getValue());
-            if (RPGConfig.itemConfig.isAllItemsRPGable || RPGConfig.ItemConfig.activeRPGItems.contains(it.getKey().delegate.name())) {
+            if (ItemConfig.d.isAllItemsRPGable || ItemConfig.activeRPGItems.contains(it.getKey().delegate.name())) {
                 rpgItemRegistr.get(it.getKey()).isActivated = true;
                 DangerRPG.infoLog(String.format("Register RPG item (sup from mod: %s): %s",
                                   it.getValue().isSupported ? " true" : "false", it.getKey().delegate.name()));

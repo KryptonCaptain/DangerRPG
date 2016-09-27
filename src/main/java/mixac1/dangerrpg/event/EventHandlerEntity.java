@@ -5,28 +5,24 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
 import mixac1.dangerrpg.api.event.InitRPGEntityEvent;
+import mixac1.dangerrpg.api.event.ItemStackEvent.EquipmentStackChange;
 import mixac1.dangerrpg.capability.RPGableEntity;
-import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.data.RPGEntityProperties;
-import mixac1.dangerrpg.capability.data.RPGUUID;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
-import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.init.RPGCapability;
-import mixac1.dangerrpg.init.RPGConfig;
+import mixac1.dangerrpg.init.RPGConfig.EntityConfig;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgSyncEntityData;
 import mixac1.dangerrpg.util.IMultiplier.IMulConfigurable;
 import mixac1.dangerrpg.util.RPGHelper;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
@@ -73,7 +69,7 @@ public class EventHandlerEntity
         ChunkCoordinates spawn = e.entity.worldObj.getSpawnPoint();
         double distance = Utils.getDiagonal(e.entity.posX - spawn.posX, e.entity.posZ - spawn.posZ);
 
-        int lvl = (int) (distance / RPGConfig.entityConfig.entityLvlUpFrequency);
+        int lvl = (int) (distance / EntityConfig.d.entityLvlUpFrequency);
         if (EntityAttributes.LVL.hasIt(e.entity)) {
             EntityAttributes.LVL.setValue(lvl + 1, e.entity);
         }
@@ -137,16 +133,13 @@ public class EventHandlerEntity
                     e.player.heal(PlayerAttributes.HEALTH_REGEN.getValue(e.player));
                 }
 
-                ItemStack stack = e.player.getCurrentEquippedItem();
-                if (stack != null && RPGableItem.isRPGable(stack)) {
-                    IAttributeInstance attr = e.player.getEntityAttribute(SharedMonsterAttributes.attackDamage);
-                    AttributeModifier mod = attr.getModifier(RPGUUID.ADDITIONAL_STR_DAMAGE);
-                    if (mod != null) {
-                        attr.removeModifier(mod);
+                for (int i = 0; i < 5; ++i) {
+                    ItemStack oldStack = e.player.previousEquipment[i];
+                    ItemStack newStack = e.player.getEquipmentInSlot(i);
+
+                    if (!ItemStack.areItemStacksEqual(newStack, oldStack)) {
+                        MinecraftForge.EVENT_BUS.post(new EquipmentStackChange(newStack, oldStack, i, e.player));
                     }
-                    AttributeModifier newMod = new AttributeModifier(RPGUUID.ADDITIONAL_STR_DAMAGE, "Strenght damage",
-                            PlayerAttributes.STRENGTH.getValue(e.player) * ItemAttributes.STR_MUL.get(stack), 0).setSaved(true);
-                    attr.applyModifier(newMod);
                 }
             }
             else {

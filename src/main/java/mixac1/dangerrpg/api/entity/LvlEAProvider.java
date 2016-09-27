@@ -2,7 +2,7 @@ package mixac1.dangerrpg.api.entity;
 
 import mixac1.dangerrpg.capability.data.RPGEntityProperties;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
-import mixac1.dangerrpg.init.RPGConfig;
+import mixac1.dangerrpg.init.RPGConfig.EntityConfig;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgReqUpEA;
 import mixac1.dangerrpg.util.IMultiplier;
@@ -67,7 +67,7 @@ public class LvlEAProvider<Type>
 
     public boolean canDown(EntityLivingBase target, EntityPlayer upper)
     {
-        return (upper.capabilities.isCreativeMode || RPGConfig.entityConfig.playerCanLvlDownAttr)
+        return (upper.capabilities.isCreativeMode || EntityConfig.d.playerCanLvlDownAttr)
                && getLvl(target) > 0 && target == upper;
     }
 
@@ -87,9 +87,9 @@ public class LvlEAProvider<Type>
             }
         }
         else {
-            if (RPGConfig.entityConfig.playerCanLvlDownAttr && up(target, upper, isUp)) {
+            if (EntityConfig.d.playerCanLvlDownAttr && up(target, upper, isUp)) {
                 if (RPGEntityProperties.isServerSide(target)) {
-                    upper.addExperienceLevel((int) (getExpUp(target) * RPGConfig.entityConfig.playerPercentLoseExpPoints));
+                    upper.addExperienceLevel((int) (getExpUp(target) * EntityConfig.d.playerPercentLoseExpPoints));
                 }
             }
         }

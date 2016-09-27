@@ -13,7 +13,7 @@ import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import mixac1.dangerrpg.api.event.InitRPGEntityEvent;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.init.RPGCapability;
-import mixac1.dangerrpg.init.RPGConfig;
+import mixac1.dangerrpg.init.RPGConfig.EntityConfig;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.network.MsgSyncEntityData;
@@ -104,8 +104,8 @@ public class RPGEntityProperties implements IExtendedEntityProperties
             }
         }
 
-        if (count > RPGConfig.entityConfig.playerLoseLvlCount) {
-            count = RPGConfig.entityConfig.playerLoseLvlCount;
+        if (count > EntityConfig.d.playerLoseLvlCount) {
+            count = EntityConfig.d.playerLoseLvlCount;
         }
 
         for (int i = 0; i < count; ++i) {

@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-@Cancelable
 public class ItemStackEvent extends Event
 {
     public ItemStack stack;
@@ -63,6 +62,21 @@ public class ItemStackEvent extends Event
             this.player = player;
             this.list = list;
             this.par = par;
+        }
+    }
+
+    public static class EquipmentStackChange extends ItemStackEvent
+    {
+        public ItemStack oldStack;
+        public EntityPlayer player;
+        public int slot;
+
+        public EquipmentStackChange(ItemStack newStack, ItemStack oldStack, int slot, EntityPlayer player)
+        {
+            super(newStack);
+            this.oldStack = oldStack;
+            this.player = player;
+            this.slot = slot;
         }
     }
 }

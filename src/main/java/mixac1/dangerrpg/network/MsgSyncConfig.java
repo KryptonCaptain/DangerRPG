@@ -6,7 +6,6 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGConfig;
-import mixac1.dangerrpg.util.Utils;
 
 public class MsgSyncConfig implements IMessage
 {
@@ -38,7 +37,7 @@ public class MsgSyncConfig implements IMessage
             if (RPGConfig.mainConfig.getTransferData() == null) {
                 RPGConfig.mainConfig.createTransferData();
             }
-            RPGConfig.mainConfig = Utils.deserialize(bytes);
+            RPGConfig.mainConfig.extractTransferData(bytes);
         }
 
         bytes = bytesFromBytes(buf);
@@ -46,7 +45,7 @@ public class MsgSyncConfig implements IMessage
             if (RPGConfig.itemConfig.getTransferData() == null) {
                 RPGConfig.itemConfig.createTransferData();
             }
-            RPGConfig.itemConfig = Utils.deserialize(bytes);
+            RPGConfig.itemConfig.extractTransferData(bytes);
         }
 
         bytes = bytesFromBytes(buf);
@@ -54,7 +53,7 @@ public class MsgSyncConfig implements IMessage
             if (RPGConfig.entityConfig.getTransferData() == null) {
                 RPGConfig.entityConfig.createTransferData();
             }
-            RPGConfig.entityConfig = Utils.deserialize(bytes);
+            RPGConfig.entityConfig.extractTransferData(bytes);
         }
     }
 
@@ -64,9 +63,9 @@ public class MsgSyncConfig implements IMessage
         bytesToBytes(buf, RPGCapability.rpgItemRegistr.getTransferData());
         bytesToBytes(buf, RPGCapability.rpgEntityRegistr.getTransferData());
 
-        bytesToBytes(buf, Utils.serialize(RPGConfig.mainConfig));
-        bytesToBytes(buf, Utils.serialize(RPGConfig.itemConfig));
-        bytesToBytes(buf, Utils.serialize(RPGConfig.entityConfig));
+        bytesToBytes(buf, RPGConfig.mainConfig.getTransferData());
+        bytesToBytes(buf, RPGConfig.itemConfig.getTransferData());
+        bytesToBytes(buf, RPGConfig.entityConfig.getTransferData());
     }
 
     public void bytesToBytes(ByteBuf buf, byte[] bytes)

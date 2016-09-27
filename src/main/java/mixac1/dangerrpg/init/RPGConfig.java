@@ -1,6 +1,7 @@
 package mixac1.dangerrpg.init;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -63,7 +64,7 @@ public class RPGConfig
         itemConfig.load();
         entityConfig.load();
 
-        if (RPGConfig.mainConfig.mainEnableTransferConfig) {
+        if (MainConfig.d.mainEnableTransferConfig) {
             mainConfig.createTransferData();
             itemConfig.createTransferData();
             entityConfig.createTransferData();
@@ -92,8 +93,13 @@ public class RPGConfig
 
     public static class MainConfig extends RPGConfigCommon
     {
-        public boolean   mainEnableInfoLog          = true;
-        public boolean   mainEnableTransferConfig   = false;
+        public static class Data implements Serializable
+        {
+            public boolean   mainEnableInfoLog          = true;
+            public boolean   mainEnableTransferConfig   = false;
+        }
+
+        public static Data d = new Data();
 
         public MainConfig(String fileName)
         {
@@ -118,34 +124,51 @@ public class RPGConfig
         @Override
         public void load()
         {
-            mainEnableInfoLog = config.getBoolean("mainEnableInfoLog", category.getName(), mainEnableInfoLog,
+            d.mainEnableInfoLog = config.getBoolean("mainEnableInfoLog", category.getName(), d.mainEnableInfoLog,
                     "Enable writing info message to log (true/false)");
 
-            mainEnableTransferConfig = config.getBoolean("mainEnableTransferConfig", category.getName(), mainEnableTransferConfig,
+            d.mainEnableTransferConfig = config.getBoolean("mainEnableTransferConfig", category.getName(), d.mainEnableTransferConfig,
                     "Enable transfer config data from server to client (true/false)");
 
             save();
+        }
+
+        @Override
+        public void createTransferData()
+        {
+            transferData = Utils.serialize(d);
+        }
+
+        @Override
+        public void extractTransferData(byte[] transferData)
+        {
+            d = Utils.deserialize(transferData);
         }
     }
 
     @SideOnly(Side.CLIENT)
     public static class ClientConfig extends RPGConfigCommon
     {
-        public boolean   guiIsEnableHUD          = true;
-        public int       guiPlayerHUDOffsetX     = 10;
-        public int       guiPlayerHUDOffsetY     = 10;
-        public boolean   guiPlayerHUDIsInvert    = false;
-        public int       guiEnemyHUDOffsetX      = 10;
-        public int       guiEnemyHUDOffsetY      = 10;
-        public boolean   guiEnemyHUDIsInvert     = true;
-        public int       guiChargeOffsetX        = 0;
-        public int       guiChargeOffsetY        = 45;
-        public boolean   guiChargeIsCentered     = true;
-        public boolean   guiTwiceHealthManaBar   = true;
-        public int       guiDafaultHUDMode       = 1;
-        public int       guiDamageForTestArmor   = 25;
+        public static class Data implements Serializable
+        {
+            public boolean   guiIsEnableHUD          = true;
+            public int       guiPlayerHUDOffsetX     = 10;
+            public int       guiPlayerHUDOffsetY     = 10;
+            public boolean   guiPlayerHUDIsInvert    = false;
+            public int       guiEnemyHUDOffsetX      = 10;
+            public int       guiEnemyHUDOffsetY      = 10;
+            public boolean   guiEnemyHUDIsInvert     = true;
+            public int       guiChargeOffsetX        = 0;
+            public int       guiChargeOffsetY        = 45;
+            public boolean   guiChargeIsCentered     = true;
+            public boolean   guiTwiceHealthManaBar   = true;
+            public int       guiDafaultHUDMode       = 1;
+            public int       guiDamageForTestArmor   = 25;
 
-        public static boolean   neiShowShapedRecipe     = false;
+            public boolean   neiShowShapedRecipe     = false;
+        }
+
+        public static Data d = new Data();
 
         public ClientConfig(String fileName)
         {
@@ -155,60 +178,77 @@ public class RPGConfig
         @Override
         public void load()
         {
-            guiIsEnableHUD = config.getBoolean("guiIsEnableHUD", category.getName(), guiIsEnableHUD,
+            d.guiIsEnableHUD = config.getBoolean("guiIsEnableHUD", category.getName(), d.guiIsEnableHUD,
                     "Enable RPG HUD (true/false)");
 
-            guiPlayerHUDOffsetX = config.getInt("guiPlayerHUDOffsetX", category.getName(), guiPlayerHUDOffsetX, 0, Integer.MAX_VALUE,
+            d.guiPlayerHUDOffsetX = config.getInt("guiPlayerHUDOffsetX", category.getName(), d.guiPlayerHUDOffsetX, 0, Integer.MAX_VALUE,
                     "Change X offset of player's HUD");
 
-            guiPlayerHUDOffsetY = config.getInt("guiPlayerHUDOffsetY", category.getName(), guiPlayerHUDOffsetY, 0, Integer.MAX_VALUE,
+            d.guiPlayerHUDOffsetY = config.getInt("guiPlayerHUDOffsetY", category.getName(), d.guiPlayerHUDOffsetY, 0, Integer.MAX_VALUE,
                     "Change Y offset of player's HUD");
 
-            guiPlayerHUDIsInvert = config.getBoolean("guiPlayerHUDIsInvert", category.getName(), guiPlayerHUDIsInvert,
+            d.guiPlayerHUDIsInvert = config.getBoolean("guiPlayerHUDIsInvert", category.getName(), d.guiPlayerHUDIsInvert,
                     "Change side of player's HUD (true/false)");
 
-            guiEnemyHUDOffsetX = config.getInt("guiEnemyHUDOffsetX", category.getName(), guiEnemyHUDOffsetX, 0, Integer.MAX_VALUE,
+            d.guiEnemyHUDOffsetX = config.getInt("guiEnemyHUDOffsetX", category.getName(), d.guiEnemyHUDOffsetX, 0, Integer.MAX_VALUE,
                     "Change X offset of enemy's HUD");
 
-            guiEnemyHUDOffsetY = config.getInt("guiEnemyHUDOffsetY", category.getName(), guiEnemyHUDOffsetY, 0, Integer.MAX_VALUE,
+            d.guiEnemyHUDOffsetY = config.getInt("guiEnemyHUDOffsetY", category.getName(), d.guiEnemyHUDOffsetY, 0, Integer.MAX_VALUE,
                     "Change Y offset of enemy's HUD");
 
-            guiEnemyHUDIsInvert = config.getBoolean("guiEnemyHUDIsInvert", category.getName(), guiEnemyHUDIsInvert,
+            d.guiEnemyHUDIsInvert = config.getBoolean("guiEnemyHUDIsInvert", category.getName(), d.guiEnemyHUDIsInvert,
                     "Change side of enemy's HUD (true/false)");
 
-            guiChargeOffsetX = config.getInt("guiChargeOffsetX", category.getName(), guiChargeOffsetX, 0, Integer.MAX_VALUE,
+            d.guiChargeOffsetX = config.getInt("guiChargeOffsetX", category.getName(), d.guiChargeOffsetX, 0, Integer.MAX_VALUE,
                     "Change X offset of charge bar");
 
-            guiChargeOffsetY = config.getInt("guiChargeOffsetY", category.getName(), guiChargeOffsetY, 0, Integer.MAX_VALUE,
+            d.guiChargeOffsetY = config.getInt("guiChargeOffsetY", category.getName(), d.guiChargeOffsetY, 0, Integer.MAX_VALUE,
                     "Change Y offset of charge bar");
 
-            guiChargeIsCentered = config.getBoolean("guiChargeIsCentered", category.getName(), guiChargeIsCentered,
+            d.guiChargeIsCentered = config.getBoolean("guiChargeIsCentered", category.getName(), d.guiChargeIsCentered,
                     "Charge bar need centering (true/false)");
 
-            guiTwiceHealthManaBar = config.getBoolean("guiTwiceHealthManaBar", category.getName(), guiTwiceHealthManaBar,
+            d.guiTwiceHealthManaBar = config.getBoolean("guiTwiceHealthManaBar", category.getName(), d.guiTwiceHealthManaBar,
                     "Twice health-mana bar (true/false)");
 
-            guiDamageForTestArmor = config.getInt("guiDamageForTestArmor", category.getName(), guiDamageForTestArmor, 0, Integer.MAX_VALUE,
+            d.guiDamageForTestArmor = config.getInt("guiDamageForTestArmor", category.getName(), d.guiDamageForTestArmor, 0, Integer.MAX_VALUE,
                     "Default damage value for calculate resistance in armor bar.");
 
-            guiDafaultHUDMode = config.getInt("guiDafaultHUDMode", category.getName(), guiDafaultHUDMode, 0, 3,
+            d.guiDafaultHUDMode = config.getInt("guiDafaultHUDMode", category.getName(), d.guiDafaultHUDMode, 0, 3,
                     "Set default HUD mode:\n[0] - normal\n[1] - normal digital\n[2] - simple\n[3] - simple digital\n");
-            GuiMode.set(guiDafaultHUDMode);
+            GuiMode.set(d.guiDafaultHUDMode);
 
-            neiShowShapedRecipe = config.getBoolean("neiShowShapedRecipe", category.getName(), neiShowShapedRecipe,
+            d.neiShowShapedRecipe = config.getBoolean("neiShowShapedRecipe", category.getName(), d.neiShowShapedRecipe,
                     "Is show default recipes in RPG workbench (need NEI) (true/false)");
 
             save();
+        }
+
+        @Override
+        public void createTransferData()
+        {
+            transferData = Utils.serialize(d);
+        }
+
+        @Override
+        public void extractTransferData(byte[] transferData)
+        {
+            d = Utils.deserialize(transferData);
         }
     }
 
     public static class ItemConfig extends RPGConfigCommon
     {
-        public boolean   isAllItemsRPGable   = false;
-        public boolean   canUpInTable        = true;
-        public int       maxLevel            = 100;
-        public int       startMaxExp         = 100;
-        public float     expMul              = 1.15f;
+        public static class Data implements Serializable
+        {
+            public boolean   isAllItemsRPGable   = false;
+            public boolean   canUpInTable        = true;
+            public int       maxLevel            = 100;
+            public int       startMaxExp         = 100;
+            public float     expMul              = 1.15f;
+        }
+
+        public static Data d = new Data();
 
         public static HashSet<String> activeRPGItems = new HashSet<String>();
 
@@ -236,19 +276,19 @@ public class RPGConfig
         @Override
         public void load()
         {
-            isAllItemsRPGable = config.getBoolean("isAllItemsRPGable", category.getName(), isAllItemsRPGable,
+            d.isAllItemsRPGable = config.getBoolean("isAllItemsRPGable", category.getName(), d.isAllItemsRPGable,
                     "All weapons, tools , armors are RPGable (dangerous) (true/false)");
 
-            canUpInTable = config.getBoolean("canUpInTable", category.getName(), canUpInTable,
+            d.canUpInTable = config.getBoolean("canUpInTable", category.getName(), d.canUpInTable,
                     "Items can be upgrade in LevelUp Table without creative mode (true/false) \nLevelUp Table is invisible now");
 
-            maxLevel = config.getInt("maxLevel", category.getName(), maxLevel, 1, Integer.MAX_VALUE,
+            d.maxLevel = config.getInt("maxLevel", category.getName(), d.maxLevel, 1, Integer.MAX_VALUE,
                     "Set max level of RPG items");
 
-            startMaxExp = config.getInt("startMaxExp", category.getName(), startMaxExp, 0, Integer.MAX_VALUE,
+            d.startMaxExp = config.getInt("startMaxExp", category.getName(), d.startMaxExp, 0, Integer.MAX_VALUE,
                     "Set start needed expirience for RPG items");
 
-            expMul = config.getFloat("expMul", category.getName(), expMul, 0f, Float.MAX_VALUE,
+            d.expMul = config.getFloat("expMul", category.getName(), d.expMul, 0f, Float.MAX_VALUE,
                     "Set expirience multiplier for RPG items");
 
             save();
@@ -260,7 +300,7 @@ public class RPGConfig
             ArrayList<String> names = RPGHelper.getItemNames(RPGCapability.rpgItemRegistr.keySet(), true);
             Property prop = getPropertyStrings("activeRPGItems", names.toArray(new String[names.size()]),
                     "Set active RPG items (activated if 'isAllItemsRPGable' is false) (true/false)", false);
-            if (!isAllItemsRPGable) {
+            if (!d.isAllItemsRPGable) {
                 activeRPGItems = new HashSet<String>(Arrays.asList(prop.getStringList()));
             }
 
@@ -342,17 +382,34 @@ public class RPGConfig
             prop.set(defStr);
             return attr.getValue().mul;
         }
+
+        @Override
+        public void createTransferData()
+        {
+            transferData = Utils.serialize(d);
+        }
+
+        @Override
+        public void extractTransferData(byte[] transferData)
+        {
+            d = Utils.deserialize(transferData);
+        }
     }
 
     public static class EntityConfig extends RPGConfigCommon
     {
-        public boolean isAllEntitiesRPGable       = false;
-        public int     entityLvlUpFrequency       = 50;
-        public int     playerLoseLvlCount         = 3;
-        public int     playerStartManaValue       = 10;
-        public int     playerStartManaRegenValue  = 1;
-        public boolean playerCanLvlDownAttr       = true;
-        public float   playerPercentLoseExpPoints = 0.5f;
+        public static class Data implements Serializable
+        {
+            public boolean isAllEntitiesRPGable       = false;
+            public int     entityLvlUpFrequency       = 50;
+            public int     playerLoseLvlCount         = 3;
+            public int     playerStartManaValue       = 10;
+            public int     playerStartManaRegenValue  = 1;
+            public boolean playerCanLvlDownAttr       = true;
+            public float   playerPercentLoseExpPoints = 0.5f;
+        }
+
+        public static Data d = new Data();
 
         public static HashSet<String> activeRPGEntities = new HashSet<String>();
 
@@ -380,25 +437,25 @@ public class RPGConfig
         @Override
         public void load()
         {
-            isAllEntitiesRPGable = config.getBoolean("isAllEntitiesRPGable", category.getName(), isAllEntitiesRPGable,
+            d.isAllEntitiesRPGable = config.getBoolean("isAllEntitiesRPGable", category.getName(), d.isAllEntitiesRPGable,
                     "All entities are RPGable (true/false)");
 
-            entityLvlUpFrequency = config.getInt("entityLvlUpFrequency", category.getName(), entityLvlUpFrequency, 1, Integer.MAX_VALUE,
+            d.entityLvlUpFrequency = config.getInt("entityLvlUpFrequency", category.getName(), d.entityLvlUpFrequency, 1, Integer.MAX_VALUE,
                     "Set frequency of RPG entity level up");
 
-            playerLoseLvlCount = config.getInt("playerLoseLvlCount", category.getName(), playerLoseLvlCount, 0, Integer.MAX_VALUE,
+            d.playerLoseLvlCount = config.getInt("playerLoseLvlCount", category.getName(), d.playerLoseLvlCount, 0, Integer.MAX_VALUE,
                     "Set number of lost points of level when player die");
 
-            playerStartManaValue = config.getInt("playerStartManaValue", category.getName(), playerStartManaValue, 0, Integer.MAX_VALUE,
+            d.playerStartManaValue = config.getInt("playerStartManaValue", category.getName(), d.playerStartManaValue, 0, Integer.MAX_VALUE,
                     "Set start mana value");
 
-            playerStartManaRegenValue = config.getInt("playerStartManaRegenValue", category.getName(), playerStartManaRegenValue, 0, Integer.MAX_VALUE,
+            d.playerStartManaRegenValue = config.getInt("playerStartManaRegenValue", category.getName(), d.playerStartManaRegenValue, 0, Integer.MAX_VALUE,
                     "Set start mana regeneration value");
 
-            playerCanLvlDownAttr = config.getBoolean("playerCanLvlDownAttr", category.getName(), playerCanLvlDownAttr,
+            d.playerCanLvlDownAttr = config.getBoolean("playerCanLvlDownAttr", category.getName(), d.playerCanLvlDownAttr,
                     "Can player decrease own stats without creative mode? (true/false)");
 
-            playerPercentLoseExpPoints = config.getFloat("playerPercentLoseExpPoints", category.getName(), playerPercentLoseExpPoints, 0f, 1f,
+            d.playerPercentLoseExpPoints = config.getFloat("playerPercentLoseExpPoints", category.getName(), d.playerPercentLoseExpPoints, 0f, 1f,
                     "Set percent of lose experience points when level down player's stat");
 
             save();
@@ -410,7 +467,7 @@ public class RPGConfig
             ArrayList<String> names = RPGHelper.getEntityNames(RPGCapability.rpgEntityRegistr.keySet(), true);
             Property prop = getPropertyStrings("activeRPGEntities", names.toArray(new String[names.size()]),
                     "Set active RPG entities (activated if 'isAllEntitiesRPGable' is false) (true/false)", false);
-            if (!isAllEntitiesRPGable) {
+            if (!d.isAllEntitiesRPGable) {
                 activeRPGEntities = new HashSet<String>(Arrays.asList(prop.getStringList()));
             }
             save();
@@ -495,6 +552,18 @@ public class RPGConfig
             prop.set(defStr);
             return mul;
         }
+
+        @Override
+        public void createTransferData()
+        {
+            transferData = Utils.serialize(d);
+        }
+
+        @Override
+        public void extractTransferData(byte[] transferData)
+        {
+            d = Utils.deserialize(transferData);
+        }
     }
 
     public static abstract class RPGConfigCommon
@@ -502,7 +571,7 @@ public class RPGConfig
         protected Configuration config;
         protected ConfigCategory category;
 
-        private byte[] transferData;
+        protected byte[] transferData;
 
         protected RPGConfigCommon(String fileName)
         {
@@ -528,10 +597,9 @@ public class RPGConfig
             }
         }
 
-        public void createTransferData()
-        {
-            transferData = Utils.serialize(this);
-        }
+        public abstract void createTransferData();
+
+        public abstract void extractTransferData(byte[] transferData);
 
         public byte[] getTransferData()
         {
@@ -549,11 +617,5 @@ public class RPGConfig
             prop.comment = comment != null ? comment : "";
             return prop;
         }
-    }
-
-    public static RPGConfigCommon extractTransferData(byte[] transferData)
-    {
-        return Utils.deserialize(transferData);
-
     }
 }
