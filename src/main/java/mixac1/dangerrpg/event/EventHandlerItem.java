@@ -6,8 +6,8 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.api.event.DealtDamageEvent;
-import mixac1.dangerrpg.api.event.ItemStackEvent.EquipmentStackChange;
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
+import mixac1.dangerrpg.api.event.ItemStackEvent.StackChangedEvent;
 import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.data.RPGUUID;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
@@ -25,6 +25,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
+import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 
 public class EventHandlerItem
 {
@@ -94,12 +95,18 @@ public class EventHandlerItem
     public void onDealtDamage(DealtDamageEvent e)
     {
         if (e.damage > 0) {
-            RPGableItem.upEquipment(e.player, e.target, e.stack, e.damage);
+            RPGableItem.upEquipment(e.player, e.stack, e.damage, false);
         }
     }
 
     @SubscribeEvent
-    public void onEquipmentStackChange(EquipmentStackChange e)
+    public void onBreak(BreakEvent e)
+    {
+        RPGableItem.upEquipment(e.getPlayer(), e.getPlayer().getCurrentEquippedItem(), e.block.getBlockHardness(e.world, e.x, e.y, e.z), true);
+    }
+
+    @SubscribeEvent
+    public void onStackChangedEvent(StackChangedEvent e)
     {
         if (e.slot == 0) {
             IAttributeInstance attr = e.player.getEntityAttribute(SharedMonsterAttributes.attackDamage);

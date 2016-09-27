@@ -30,7 +30,6 @@ import mixac1.dangerrpg.item.RPGToolMaterial;
 import mixac1.dangerrpg.util.IMultiplier;
 import mixac1.dangerrpg.util.IMultiplier.IMulConfigurable;
 import mixac1.dangerrpg.util.IMultiplier.MultiplierMul;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -303,7 +302,7 @@ public abstract class RPGableItem
         }
     }
 
-    public static void addExp(ItemStack stack, int value)
+    public static void addExp(ItemStack stack, float value)
     {
         if (isRPGable(stack)) {
             if (value <= 0) {
@@ -312,8 +311,8 @@ public abstract class RPGableItem
             int level = (int) ItemAttributes.LEVEL.get(stack);
 
             if (level < ItemConfig.d.maxLevel) {
-                long currEXP = (long) ItemAttributes.CURR_EXP.get(stack);
-                int maxEXP  = (int) ItemAttributes.MAX_EXP.get(stack);
+                float currEXP = ItemAttributes.CURR_EXP.get(stack);
+                float maxEXP  = ItemAttributes.MAX_EXP.get(stack);
 
                 currEXP += value;
 
@@ -331,9 +330,9 @@ public abstract class RPGableItem
         }
     }
 
-    public static void upEquipment(EntityPlayer player, EntityLivingBase target, ItemStack stack, float points)
+    public static void upEquipment(EntityPlayer player, ItemStack stack, float points, boolean onlyCurr)
     {
-        UpEquipmentEvent e = new UpEquipmentEvent(player, target, stack, points);
+        UpEquipmentEvent e = new UpEquipmentEvent(player, stack, points);
         MinecraftForge.EVENT_BUS.post(e);
 
         if (e.points > 0) {
@@ -349,16 +348,18 @@ public abstract class RPGableItem
                 }
             }
 
-            ItemStack[] armors = player.inventory.armorInventory;
-            for (int i = 0; i < armors.length; ++i) {
-                if (e.needUp[i + 1] && armors[i] != null && isRPGable(armors[i])) {
-                    stacks.add(armors[i]);
+            if (!onlyCurr) {
+                ItemStack[] armors = player.inventory.armorInventory;
+                for (int i = 0; i < armors.length; ++i) {
+                    if (e.needUp[i + 1] && armors[i] != null && isRPGable(armors[i])) {
+                        stacks.add(armors[i]);
+                    }
                 }
             }
 
             e.points = e.points / stacks.size();
             for (ItemStack tmp : stacks) {
-                addExp(tmp, (int) e.points);
+                addExp(tmp, e.points);
             }
         }
     }

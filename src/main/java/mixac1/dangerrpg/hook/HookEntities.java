@@ -1,7 +1,7 @@
 package mixac1.dangerrpg.hook;
 
+import mixac1.dangerrpg.api.event.DealtDamageEvent;
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
-import mixac1.dangerrpg.api.event.UpEquipmentEvent;
 import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.hooklib.asm.Hook;
@@ -103,7 +103,7 @@ public class HookEntities
                 if (entity.attackEntityFrom(DamageSource.causePlayerDamage(player), dmg)) {
                     if (entity instanceof EntityLivingBase) {
                         points -= ((EntityLivingBase) entity).getHealth();
-                        MinecraftForge.EVENT_BUS.post(new UpEquipmentEvent(player, (EntityLivingBase) entity, stack, points));
+                        MinecraftForge.EVENT_BUS.post(new DealtDamageEvent(player, (EntityLivingBase) entity, stack, points));
                     }
 
                     if (knockback > 0) {

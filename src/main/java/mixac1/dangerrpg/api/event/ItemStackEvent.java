@@ -65,13 +65,13 @@ public class ItemStackEvent extends Event
         }
     }
 
-    public static class EquipmentStackChange extends ItemStackEvent
+    public static class StackChangedEvent extends ItemStackEvent
     {
         public ItemStack oldStack;
         public EntityPlayer player;
         public int slot;
 
-        public EquipmentStackChange(ItemStack newStack, ItemStack oldStack, int slot, EntityPlayer player)
+        public StackChangedEvent(ItemStack newStack, ItemStack oldStack, int slot, EntityPlayer player)
         {
             super(newStack);
             this.oldStack = oldStack;

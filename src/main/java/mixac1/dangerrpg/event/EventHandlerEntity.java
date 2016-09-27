@@ -5,7 +5,7 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
 import mixac1.dangerrpg.api.event.InitRPGEntityEvent;
-import mixac1.dangerrpg.api.event.ItemStackEvent.EquipmentStackChange;
+import mixac1.dangerrpg.api.event.ItemStackEvent.StackChangedEvent;
 import mixac1.dangerrpg.capability.RPGableEntity;
 import mixac1.dangerrpg.capability.data.RPGEntityProperties;
 import mixac1.dangerrpg.capability.ea.EntityAttributes;
@@ -138,7 +138,7 @@ public class EventHandlerEntity
                     ItemStack newStack = e.player.getEquipmentInSlot(i);
 
                     if (!ItemStack.areItemStacksEqual(newStack, oldStack)) {
-                        MinecraftForge.EVENT_BUS.post(new EquipmentStackChange(newStack, oldStack, i, e.player));
+                        MinecraftForge.EVENT_BUS.post(new StackChangedEvent(newStack, oldStack, i, e.player));
                     }
                 }
             }

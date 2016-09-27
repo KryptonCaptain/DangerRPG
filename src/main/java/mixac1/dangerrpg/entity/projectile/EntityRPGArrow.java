@@ -1,6 +1,6 @@
 package mixac1.dangerrpg.entity.projectile;
 
-import mixac1.dangerrpg.api.event.UpEquipmentEvent;
+import mixac1.dangerrpg.api.event.DealtDamageEvent;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -40,7 +40,7 @@ public class EntityRPGArrow extends EntityMaterial
 
         points -= entity.getHealth();
         if (thrower instanceof EntityPlayer) {
-            MinecraftForge.EVENT_BUS.post(new UpEquipmentEvent((EntityPlayer) thrower, entity, null, points));
+            MinecraftForge.EVENT_BUS.post(new DealtDamageEvent((EntityPlayer) thrower, entity, null, points));
         }
     }
 

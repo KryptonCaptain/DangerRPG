@@ -6,8 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 /**
- * It is fires whenever a {@link EntityPlayer} player is attack {@link EntityLivingBase} target
- * from {@link ItemStack} stack and get points for this.<br>
+ * It is fires whenever needs up equipment {@link ItemStack} stack by the points.<br>
  * You can spend this points for your own needs,
  * remainder will be shared equally on all equipment stacks that need it.<br>
  *<br>
@@ -27,10 +26,9 @@ public class UpEquipmentEvent extends Event
 
     public boolean[] needUp = new boolean[] {true, true, true, true, true};
 
-    public UpEquipmentEvent(EntityPlayer player, EntityLivingBase target, ItemStack stack, float points)
+    public UpEquipmentEvent(EntityPlayer player, ItemStack stack, float points)
     {
         this.player = player;
-        this.target = target;
         this.stack = stack;
         this.points = points;
     }
