@@ -6,20 +6,17 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.AdviceAdapter;
 
-/**
- * Класс, непосредственно вставляющий хук в метод.
- * Чтобы указать конкретное место вставки хука, нужно создать класс extends HookInjector.
- */
-public abstract class HookInjectorMethodVisitor extends AdviceAdapter {
-
+public abstract class HookInjectorMethodVisitor extends AdviceAdapter
+{
     protected final AsmHook hook;
     protected final HookInjectorClassVisitor cv;
     public final String methodName;
     public final Type methodType;
     public final boolean isStatic;
 
-    protected HookInjectorMethodVisitor(MethodVisitor mv, int access, String name, String desc,
-                                        AsmHook hook, HookInjectorClassVisitor cv) {
+    protected HookInjectorMethodVisitor(MethodVisitor mv, int access, String name, String desc, AsmHook hook,
+            HookInjectorClassVisitor cv)
+    {
         super(Opcodes.ASM5, mv, access, name, desc);
         this.hook = hook;
         this.cv = cv;
@@ -28,10 +25,8 @@ public abstract class HookInjectorMethodVisitor extends AdviceAdapter {
         this.methodType = Type.getMethodType(desc);
     }
 
-    /**
-     * Вставляет хук в байткод.
-     */
-    protected final void visitHook() {
+    protected final void visitHook()
+    {
         if (!cv.visitingHook) {
             cv.visitingHook = true;
             hook.inject(this);
@@ -39,63 +34,64 @@ public abstract class HookInjectorMethodVisitor extends AdviceAdapter {
         }
     }
 
-    MethodVisitor getBasicVisitor() {
+    MethodVisitor getBasicVisitor()
+    {
         return mv;
     }
 
-    /**
-     * Вставляет хук в начале метода.
-     */
-    public static class MethodEnter extends HookInjectorMethodVisitor {
+    public static class MethodEnter extends HookInjectorMethodVisitor
+    {
 
-        public MethodEnter(MethodVisitor mv, int access, String name, String desc,
-                           AsmHook hook, HookInjectorClassVisitor cv) {
+        public MethodEnter(MethodVisitor mv, int access, String name, String desc, AsmHook hook,
+                HookInjectorClassVisitor cv)
+        {
             super(mv, access, name, desc, hook, cv);
         }
 
         @Override
-        protected void onMethodEnter() {
+        protected void onMethodEnter()
+        {
             visitHook();
         }
 
     }
 
-    /**
-     * Вставляет хук на каждом выходе из метода, кроме выходов через throw.
-     */
-    public static class MethodExit extends HookInjectorMethodVisitor {
+    public static class MethodExit extends HookInjectorMethodVisitor
+    {
 
-        public MethodExit(MethodVisitor mv, int access, String name, String desc,
-                          AsmHook hook, HookInjectorClassVisitor cv) {
+        public MethodExit(MethodVisitor mv, int access, String name, String desc, AsmHook hook,
+                HookInjectorClassVisitor cv)
+        {
             super(mv, access, name, desc, hook, cv);
         }
 
         @Override
-        protected void onMethodExit(int opcode) {
+        protected void onMethodExit(int opcode)
+        {
             if (opcode != Opcodes.ATHROW) {
                 visitHook();
             }
         }
     }
 
-    /**
-     * Вставляет хук по номеру строки.
-     */
-    public static class LineNumber extends HookInjectorMethodVisitor {
-
+    public static class LineNumber extends HookInjectorMethodVisitor
+    {
         private int lineNumber;
 
-        public LineNumber(MethodVisitor mv, int access, String name, String desc,
-                          AsmHook hook, HookInjectorClassVisitor cv, int lineNumber) {
+        public LineNumber(MethodVisitor mv, int access, String name, String desc, AsmHook hook,
+                HookInjectorClassVisitor cv, int lineNumber)
+        {
             super(mv, access, name, desc, hook, cv);
             this.lineNumber = lineNumber;
         }
 
         @Override
-        public void visitLineNumber(int line, Label start) {
+        public void visitLineNumber(int line, Label start)
+        {
             super.visitLineNumber(line, start);
-            if (this.lineNumber == line) visitHook();
+            if (this.lineNumber == line) {
+                visitHook();
+            }
         }
     }
-
 }

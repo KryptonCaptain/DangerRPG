@@ -16,12 +16,13 @@ import mixac1.hooklib.asm.HookClassTransformer;
 import mixac1.hooklib.asm.HookInjectorClassVisitor;
 import net.minecraft.launchwrapper.IClassTransformer;
 
-public class MinecraftClassTransformer extends HookClassTransformer implements IClassTransformer {
-
+public class MinecraftClassTransformer extends HookClassTransformer implements IClassTransformer
+{
     static MinecraftClassTransformer instance;
     private Map<Integer, String> methodNames;
 
-    public MinecraftClassTransformer() {
+    public MinecraftClassTransformer()
+    {
         instance = this;
 
         if (HookLibPlugin.getObfuscated()) {
@@ -30,7 +31,8 @@ public class MinecraftClassTransformer extends HookClassTransformer implements I
                 methodNames = loadMethodNames();
                 long time = System.currentTimeMillis() - timeStart;
                 DangerRPG.logger.debug("Methods dictionary loaded in " + time + " ms");
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 DangerRPG.logger.error("Can not load obfuscated method names", e);
             }
         }
@@ -40,7 +42,8 @@ public class MinecraftClassTransformer extends HookClassTransformer implements I
         PrimaryClassTransformer.instance.registeredSecondTransformer = true;
     }
 
-    private HashMap<Integer, String> loadMethodNames() throws IOException {
+    private HashMap<Integer, String> loadMethodNames() throws IOException
+    {
         InputStream resourceStream = getClass().getResourceAsStream("/methods.bin");
         if (resourceStream == null) {
             throw new IOException("Methods dictionary not found");
@@ -56,15 +59,19 @@ public class MinecraftClassTransformer extends HookClassTransformer implements I
     }
 
     @Override
-    public byte[] transform(String oldName, String newName, byte[] bytecode) {
+    public byte[] transform(String oldName, String newName, byte[] bytecode)
+    {
         return transform(newName, bytecode);
     }
 
     @Override
-    protected HookInjectorClassVisitor createInjectorClassVisitor(ClassWriter cw, List<AsmHook> hooks) {
-        return new HookInjectorClassVisitor(cw, hooks) {
+    protected HookInjectorClassVisitor createInjectorClassVisitor(ClassWriter cw, List<AsmHook> hooks)
+    {
+        return new HookInjectorClassVisitor(cw, hooks)
+        {
             @Override
-            protected boolean isTargetMethod(AsmHook hook, String name, String desc) {
+            protected boolean isTargetMethod(AsmHook hook, String name, String desc)
+            {
                 if (HookLibPlugin.getObfuscated() && name.startsWith("func_")) {
                     int first = name.indexOf('_');
                     int second = name.indexOf('_', first + 1);

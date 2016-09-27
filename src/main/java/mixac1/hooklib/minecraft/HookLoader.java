@@ -13,12 +13,8 @@ import mixac1.hooklib.asm.AsmHook;
 import mixac1.hooklib.asm.HookClassTransformer;
 import mixac1.hooklib.asm.ReadClassHelper;
 
-/**
- * Удобная базовая реализация IFMLLoadingPlugin для использования HookLib.
- * Регистрировать хуки и контейнеры нужно в registerHooks().
- */
-public abstract class HookLoader implements IFMLLoadingPlugin {
-
+public abstract class HookLoader implements IFMLLoadingPlugin
+{
     private static DeobfuscationTransformer deobfuscationTransformer;
 
     static {
@@ -27,22 +23,19 @@ public abstract class HookLoader implements IFMLLoadingPlugin {
         }
     }
 
-    public static HookClassTransformer getTransformer() {
-        return PrimaryClassTransformer.instance.registeredSecondTransformer ?
-                MinecraftClassTransformer.instance : PrimaryClassTransformer.instance;
+    public static HookClassTransformer getTransformer()
+    {
+        return PrimaryClassTransformer.instance.registeredSecondTransformer ? MinecraftClassTransformer.instance
+                : PrimaryClassTransformer.instance;
     }
 
-    /**
-     * Регистрирует вручную созданный хук
-     */
-    public static void registerHook(AsmHook hook) {
+    public static void registerHook(AsmHook hook)
+    {
         getTransformer().registerHook(hook);
     }
 
-    /**
-     * Деобфусцирует класс с хуками и регистрирует хуки из него
-     */
-    public static void registerHookContainer(String className) {
+    public static void registerHookContainer(String className)
+    {
         try {
             InputStream classData = ReadClassHelper.getClassData(className);
             byte[] bytes = IOUtils.toByteArray(classData);
@@ -52,39 +45,46 @@ public abstract class HookLoader implements IFMLLoadingPlugin {
             }
             ByteArrayInputStream newData = new ByteArrayInputStream(bytes);
             getTransformer().registerHookContainer(newData);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     // 1.6.x only
-    public String[] getLibraryRequestClass() {
+    public String[] getLibraryRequestClass()
+    {
         return null;
     }
 
     // 1.7.x only
     @Override
-    public String getAccessTransformerClass() {
+    public String getAccessTransformerClass()
+    {
         return null;
     }
 
     @Override
-    public String[] getASMTransformerClass() {
+    public String[] getASMTransformerClass()
+    {
         return null;
     }
 
     @Override
-    public String getModContainerClass() {
+    public String getModContainerClass()
+    {
         return null;
     }
 
     @Override
-    public String getSetupClass() {
+    public String getSetupClass()
+    {
         return null;
     }
 
     @Override
-    public void injectData(Map<String, Object> data) {
+    public void injectData(Map<String, Object> data)
+    {
         registerHooks();
     }
 

@@ -1,11 +1,10 @@
 package mixac1.hooklib.asm;
 
-public enum HookPriority {
-
-    HIGHEST, // Вызывается первым
+public enum HookPriority
+{
+    HIGHEST,
     HIGH,
     NORMAL,
     LOW,
-    LOWEST // Вызывается последним
-
+    LOWEST
 }
