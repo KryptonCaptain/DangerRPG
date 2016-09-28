@@ -57,17 +57,22 @@ public class EventHandlerItem
     public void addInformation(ItemTooltipEvent e)
     {
         if (RPGableItem.isRPGable(e.itemStack)) {
+
             e.toolTip.add("");
             e.toolTip.add(Utils.toString(EnumChatFormatting.GOLD,
                     ItemAttributes.LEVEL.getDispayName(), ": ", (int) ItemAttributes.LEVEL.get(e.itemStack)));
+
+
             if (ItemAttributes.LEVEL.isMax(e.itemStack)) {
                 e.toolTip.add(Utils.toString(EnumChatFormatting.GRAY,
                         DangerRPG.trans("rpgstr.max")));
             }
             else {
-                e.toolTip.add(Utils.toString(EnumChatFormatting.GRAY,
-                        ItemAttributes.CURR_EXP.getDispayName(), ": ",
-                        (int) ItemAttributes.CURR_EXP.get(e.itemStack), "/", (int) ItemAttributes.MAX_EXP.get(e.itemStack)));
+                if (ItemAttributes.MAX_EXP.hasIt(e.itemStack)) {
+                    e.toolTip.add(Utils.toString(EnumChatFormatting.GRAY,
+                            ItemAttributes.CURR_EXP.getDispayName(), ": ",
+                            (int) ItemAttributes.CURR_EXP.get(e.itemStack), "/", (int) ItemAttributes.MAX_EXP.get(e.itemStack)));
+                }
             }
         }
     }

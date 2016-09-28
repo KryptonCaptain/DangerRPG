@@ -23,8 +23,5 @@ public class IALevel extends IADynamic
     }
 
     @Override
-    public void init(ItemStack stack) {}
-
-    @Override
     public void lvlUp(ItemStack stack) {}
 }

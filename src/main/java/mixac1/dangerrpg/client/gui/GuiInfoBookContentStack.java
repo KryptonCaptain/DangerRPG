@@ -21,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
 @SideOnly(Side.CLIENT)
 public class GuiInfoBookContentStack extends GuiInfoBookContent
@@ -61,9 +62,19 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
 
             addString(String.format("%s: %d\n", ItemAttributes.LEVEL.getDispayName(),
                                                 (int) ItemAttributes.LEVEL.get(stack)));
-            addString(String.format("%s: %d/%d", ItemAttributes.CURR_EXP.getDispayName(),
-                                                 (int) ItemAttributes.CURR_EXP.get(stack),
-                                                 (int) ItemAttributes.MAX_EXP.get(stack)));
+
+            if (ItemAttributes.LEVEL.isMax(stack)) {
+                addString(Utils.toString(EnumChatFormatting.GRAY,
+                        DangerRPG.trans("rpgstr.max")));
+            }
+            else {
+                if (ItemAttributes.MAX_EXP.hasIt(stack)) {
+                    addString(String.format("%s: %d/%d", ItemAttributes.CURR_EXP.getDispayName(),
+                            (int) ItemAttributes.CURR_EXP.get(stack),
+                            (int) ItemAttributes.MAX_EXP.get(stack)));
+                }
+            }
+
             if (ItemAttributes.MAX_DURABILITY.hasIt(stack)) {
                 if (!stack.isItemStackDamageable()) {
                     addString(String.format("%s: %s", ItemAttributes.DURABILITY.getDispayName(),

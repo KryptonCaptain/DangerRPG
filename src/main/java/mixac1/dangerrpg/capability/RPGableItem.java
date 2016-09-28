@@ -92,12 +92,13 @@ public abstract class RPGableItem
 
     public static void registerParamsDefault(Item item, RPGItemData map)
     {
-        map.addDynamicItemAttribute(ItemAttributes.MAX_EXP, ItemConfig.d.startMaxExp, EXP_MUL);
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.DefaultIAEvent(item, map));
     }
 
     public static void registerParamsItemMod(Item item, RPGItemData map)
     {
+        map.addDynamicItemAttribute(ItemAttributes.MAX_EXP, ItemConfig.d.startMaxExp, EXP_MUL);
+
         float durab, ench;
         RPGItemComponent comp;
         if (item instanceof IRPGItemMod &&
@@ -259,11 +260,10 @@ public abstract class RPGableItem
 
     public static void initParams(ItemStack stack)
     {
-        ItemAttributes.LEVEL.set(stack, 1);
-        ItemAttributes.CURR_EXP.set(stack, 0);
-        ItemAttributes.MAX_EXP.init(stack);
-
         Set<ItemAttribute> itemAttributes = getAttributeValues(stack);
+        if (!itemAttributes.contains(ItemAttributes.LEVEL)) {
+            ItemAttributes.LEVEL.set(stack, 1);
+        }
         for (ItemAttribute it : itemAttributes) {
             it.init(stack);
         }
@@ -271,17 +271,10 @@ public abstract class RPGableItem
 
     public static void reinitParams(ItemStack stack)
     {
-        if (!ItemAttributes.LEVEL.hasIt(stack)) {
+        Set<ItemAttribute> itemAttributes = getAttributeValues(stack);
+        if (!itemAttributes.contains(ItemAttributes.LEVEL)) {
             ItemAttributes.LEVEL.set(stack, 1);
         }
-        if (!ItemAttributes.CURR_EXP.hasIt(stack)) {
-            ItemAttributes.CURR_EXP.set(stack, 0);
-        }
-        if (!ItemAttributes.MAX_EXP.hasIt(stack)) {
-            ItemAttributes.MAX_EXP.init(stack);
-        }
-
-        Set<ItemAttribute> itemAttributes = getAttributeValues(stack);
         for (ItemAttribute it : itemAttributes) {
             if (!it.hasIt(stack)) {
                 it.init(stack);
@@ -293,7 +286,10 @@ public abstract class RPGableItem
     {
         if (isRPGable(stack)) {
             ItemAttributes.LEVEL.add(stack, 1);
-            ItemAttributes.CURR_EXP.set(stack, 0F);
+
+            if (ItemAttributes.CURR_EXP.hasIt(stack)) {
+                ItemAttributes.CURR_EXP.set(stack, 0F);
+            }
 
             Set<ItemAttribute> itemAttributes = getAttributeValues(stack);
             for (ItemAttribute iterator : itemAttributes) {
@@ -308,7 +304,7 @@ public abstract class RPGableItem
 
     public static void addExp(ItemStack stack, float value)
     {
-        if (isRPGable(stack)) {
+        if (isRPGable(stack) && ItemAttributes.MAX_EXP.hasIt(stack)) {
             if (value <= 0) {
                 return;
             }
@@ -347,7 +343,9 @@ public abstract class RPGableItem
                     stack = player.getCurrentEquippedItem();
                 }
 
-                if (stack != null && isRPGable(stack) && !ItemAttributes.LEVEL.isMax(stack)) {
+                if (stack != null && isRPGable(stack)
+                    && !ItemAttributes.LEVEL.isMax(stack)
+                    && ItemAttributes.MAX_EXP.hasIt(stack)) {
                     stacks.add(stack);
                 }
             }
@@ -355,7 +353,9 @@ public abstract class RPGableItem
             if (!onlyCurr) {
                 ItemStack[] armors = player.inventory.armorInventory;
                 for (int i = 0; i < armors.length; ++i) {
-                    if (e.needUp[i + 1] && armors[i] != null && isRPGable(armors[i]) && !ItemAttributes.LEVEL.isMax(stack)) {
+                    if (e.needUp[i + 1] && armors[i] != null && isRPGable(armors[i])
+                        && !ItemAttributes.LEVEL.isMax(stack)
+                        && ItemAttributes.MAX_EXP.hasIt(stack)) {
                         stacks.add(armors[i]);
                     }
                 }

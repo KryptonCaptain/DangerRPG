@@ -12,7 +12,7 @@ public class ItemAttributes
 {
     public static final IALevel LEVEL = new IALevel("lvl");
     public static final IACurrExp CURR_EXP = new IACurrExp("curr_exp");
-    public static final IADynamic MAX_EXP = new IADynamic("max_exp");
+    public static final IAMaxExp MAX_EXP = new IAMaxExp("max_exp");
 
     public static final IAMeleeDamage MELEE_DAMAGE = new IAMeleeDamage("melee_damage")
     {
