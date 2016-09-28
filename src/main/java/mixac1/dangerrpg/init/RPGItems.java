@@ -12,7 +12,6 @@ import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
 import mixac1.dangerrpg.item.RPGToolMaterial;
 import mixac1.dangerrpg.item.armor.ItemMageArmor;
 import mixac1.dangerrpg.item.armor.ItemRPGArmor;
-import mixac1.dangerrpg.item.gem.GemWeaponWitherSkull;
 import mixac1.dangerrpg.item.tool.ItemRPGAxe;
 import mixac1.dangerrpg.item.tool.ItemRPGHoe;
 import mixac1.dangerrpg.item.tool.ItemRPGMultiTool;
@@ -168,8 +167,6 @@ public abstract class RPGItems
 
     public static Item shadowBow = new ItemRPGBow   (RPGItemComponent.SHADOW_BOW, RPGItemRarity.mythic);
     public static Item sniperBow = new ItemSniperBow(RPGItemComponent.SNIPER_BOW);
-
-    public static Item gemWitherSkull = new GemWeaponWitherSkull("gem_wither_skull");
 
     public static Item testWand = new ItemTestWand("test_wand");
 

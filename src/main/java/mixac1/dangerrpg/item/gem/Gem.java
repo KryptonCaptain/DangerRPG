@@ -1,7 +1,5 @@
 package mixac1.dangerrpg.item.gem;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.capability.GemType;
 import mixac1.dangerrpg.init.RPGOther.RPGCreativeTabs;
@@ -22,18 +20,11 @@ public abstract class Gem extends Item implements IHasBooksInfo
         this.setCreativeTab(RPGCreativeTabs.tabRPGAmunitions);
     }
 
-    @SideOnly(Side.CLIENT)
-    public String getInformationToInfoBook(ItemStack item, EntityPlayer player, ItemStack gem)
-    {
-        return Utils.toString(DangerRPG.trans("rpgstr.type"), ": ", getGemType().getDispayName(), "\n\n");
-    }
-
     public abstract GemType getGemType();
 
     @Override
-    @SideOnly(Side.CLIENT)
     public String getInformationToInfoBook(ItemStack item, EntityPlayer player)
     {
-        return getInformationToInfoBook(item, player, null);
+        return null;
     }
 }

@@ -1,8 +1,5 @@
 package mixac1.dangerrpg.tileentity;
 
-import mixac1.dangerrpg.capability.GemType;
-import mixac1.dangerrpg.capability.GemableItem;
-import mixac1.dangerrpg.item.gem.Gem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -18,15 +15,15 @@ public class TileEntityModifyTable extends TileEntity implements IInventory
 
     private ItemStack[] workPlace;
     private ItemStack[] craftTable;
-    
+
     public int[] guiIconIds = new int[WORK_SIZE - 1];
-    
+
     public TileEntityModifyTable()
     {
         this.workPlace = new ItemStack[WORK_SIZE];
         this.craftTable = new ItemStack[CRAFT_SIZE];
     }
-    
+
     @Override
     public int getSizeInventory()
     {
@@ -83,7 +80,7 @@ public class TileEntityModifyTable extends TileEntity implements IInventory
         if (index < 0 || index >= this.getSizeInventory()) {
             return;
         }
-        
+
         ItemStack temp;
         if (index == 0) {
             if (workPlace[0] == null) {
@@ -97,7 +94,7 @@ public class TileEntityModifyTable extends TileEntity implements IInventory
                 }
             }
         }
-        
+
         if (index < WORK_SIZE) {
             workPlace[index] = stack;
         }
@@ -106,32 +103,32 @@ public class TileEntityModifyTable extends TileEntity implements IInventory
         }
         this.markDirty();
     }
-    
+
     private void detachGems(ItemStack stack)
     {
-        GemType[] keys = GemableItem.getGemTypes(stack);
-        int count = (keys.length < WORK_SIZE) ? keys.length : WORK_SIZE - 1;
-        ItemStack temp;
-        for (int i = 0; i < count; ++i) {
-            if (keys[i] != null && keys[i].name() != "") {
-                temp = keys[i].detach(stack);
-                workPlace[i + 1] = temp;
-                guiIconIds[i] = keys[i].guiId;
-            }
-        }
+//        GemType[] keys = GemableItem.getGemTypes(stack);
+//        int count = (keys.length < WORK_SIZE) ? keys.length : WORK_SIZE - 1;
+//        ItemStack temp;
+//        for (int i = 0; i < count; ++i) {
+//            if (keys[i] != null && keys[i].name() != "") {
+//                temp = keys[i].detach(stack);
+//                workPlace[i + 1] = temp;
+//                guiIconIds[i] = keys[i].guiId;
+//            }
+//        }
     }
-    
+
     private void attachGems(ItemStack stack)
     {
-        GemType[] keys = GemableItem.getGemTypes(stack);
-        int count = (keys.length < WORK_SIZE) ? keys.length : WORK_SIZE - 1;
-        for (int i = 0; i < count; ++i) {
-            if (keys[i] != null && keys[i].name() != "") {
-                keys[i].attach(workPlace[i + 1], workPlace[0]);
-                workPlace[i + 1] = null;
-                guiIconIds[i] = 0;
-            }
-        }
+//        GemType[] keys = GemableItem.getGemTypes(stack);
+//        int count = (keys.length < WORK_SIZE) ? keys.length : WORK_SIZE - 1;
+//        for (int i = 0; i < count; ++i) {
+//            if (keys[i] != null && keys[i].name() != "") {
+//                keys[i].attach(workPlace[i + 1], workPlace[0]);
+//                workPlace[i + 1] = null;
+//                guiIconIds[i] = 0;
+//            }
+//        }
     }
 
     @Override
@@ -161,40 +158,40 @@ public class TileEntityModifyTable extends TileEntity implements IInventory
     @Override
     public void openInventory()
     {
-        
+
     }
 
     @Override
     public void closeInventory()
     {
-        
+
     }
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack)
     {
-        if (stack == null) {
-            return true;
-        }
-        
-        if (index == 0) {
-            if (GemableItem.isGemable(stack)) {
-                return true;
-            }    
-        }
-        else if (index > 0 && index < WORK_SIZE) {
-            if (workPlace[0] != null &&
-                stack.getItem() instanceof Gem) {
-                GemType[] gems = GemableItem.getGemTypes(workPlace[0]);
-                if (gems != null && gems.length > 0 &&
-                    ((Gem) stack.getItem()).getGemType() == gems[index - 1]) {
-                    return true;
-                }
-            }
-        }
+//        if (stack == null) {
+//            return true;
+//        }
+//
+//        if (index == 0) {
+//            if (GemableItem.isGemable(stack)) {
+//                return true;
+//            }
+//        }
+//        else if (index > 0 && index < WORK_SIZE) {
+//            if (workPlace[0] != null &&
+//                stack.getItem() instanceof Gem) {
+//                GemType[] gems = GemableItem.getGemTypes(workPlace[0]);
+//                if (gems != null && gems.length > 0 &&
+//                    ((Gem) stack.getItem()).getGemType() == gems[index - 1]) {
+//                    return true;
+//                }
+//            }
+//        }
         return false;
     }
-    
+
     @Override
     public void writeToNBT(NBTTagCompound nbt)
     {
@@ -224,7 +221,7 @@ public class TileEntityModifyTable extends TileEntity implements IInventory
             setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(stackTag));
         }
     }
-    
+
     public ItemStack[] getCraftStacks()
     {
         return craftTable;

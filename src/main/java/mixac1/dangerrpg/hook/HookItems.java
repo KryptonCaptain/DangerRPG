@@ -2,7 +2,6 @@ package mixac1.dangerrpg.hook;
 
 import com.google.common.collect.Multimap;
 
-import mixac1.dangerrpg.capability.GemableItem;
 import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.data.RPGUUID;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
@@ -33,7 +32,6 @@ public class HookItems
     {
         if (RPGableItem.isRPGable(stack)) {
             RPGableItem.initRPGItem(stack);
-            GemableItem.createGemableItem(stack);
         }
     }
 

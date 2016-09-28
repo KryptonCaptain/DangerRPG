@@ -1,9 +1,7 @@
 package mixac1.dangerrpg.item.weapon;
 
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.api.item.IGemableItem;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemTool;
-import mixac1.dangerrpg.capability.GemType;
 import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
 import mixac1.dangerrpg.init.RPGItems;
@@ -17,15 +15,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 
-public class ItemRPGWeapon extends ItemSword implements IRPGItemTool, IGemableItem, IHasBooksInfo
+public class ItemRPGWeapon extends ItemSword implements IRPGItemTool, IHasBooksInfo
 {
-    private static final GemType[] gemTypes = new GemType[] {
-            GemType.GEM_MODIFY_ATTACK_1,
-            GemType.GEM_MODIFY_ATTACK_2,
-            GemType.GEM_SPECIAL_ATTACK,
-            GemType.GEM_DEFENCE
-    };
-
     public RPGToolMaterial toolMaterial;
     public RPGToolComponent toolComponent;
 
@@ -45,12 +36,6 @@ public class ItemRPGWeapon extends ItemSword implements IRPGItemTool, IGemableIt
         this(toolMaterial, toolComponent);
         setUnlocalizedName(name);
         setTextureName(DangerRPG.MODID + ":weapons/melee/" + unlocalizedName);
-    }
-
-    @Override
-    public GemType[] getGemTypes(ItemStack stack)
-    {
-        return gemTypes;
     }
 
     @Override

@@ -7,13 +7,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.item.ItemAttribute;
-import mixac1.dangerrpg.capability.GemType;
-import mixac1.dangerrpg.capability.GemableItem;
 import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.item.IHasBooksInfo;
-import mixac1.dangerrpg.item.gem.Gem;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
@@ -165,26 +162,6 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
                          DangerRPG.trans("rpgstr.unbreakable")));
             }
             addString("");
-        }
-
-        if (GemableItem.isGemable(stack)) {
-            GemType[] gems = GemableItem.getGemTypes(stack);
-            boolean empty = true;
-            if (gems.length != 0) {
-                for (GemType gemType : gems) {
-                    ItemStack gem = gemType.get(stack);
-                    if (gem != null && gem.getItem() instanceof Gem) {
-                        if (empty) {
-                            empty = false;
-                            addCenteredString(DangerRPG.trans("rpgstr.gems").toUpperCase());
-                            addString("");
-                        }
-                        addString(Utils.toString(DangerRPG.trans("rpgstr.name"), ": ", gem.getDisplayName()));
-                        addString(Utils.toString(DangerRPG.trans("rpgstr.type"), ": ", ((Gem) gem.getItem()).getGemType().getDispayName()));
-                        addString("");
-                    }
-                }
-            }
         }
     }
 

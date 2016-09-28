@@ -10,7 +10,6 @@ import mixac1.dangerrpg.network.MsgSyncConfig;
 import mixac1.dangerrpg.network.MsgSyncEA;
 import mixac1.dangerrpg.network.MsgSyncEntityData;
 import mixac1.dangerrpg.network.MsgUseItemExtra;
-import mixac1.dangerrpg.network.MsgUseItemSpecial;
 
 public abstract class RPGNetwork
 {
@@ -19,8 +18,7 @@ public abstract class RPGNetwork
     public static void load(FMLPreInitializationEvent e)
     {
         int i = 0;
-        net.registerMessage(MsgUseItemSpecial.Handler.class, MsgUseItemSpecial.class, i, Side.SERVER);
-        net.registerMessage(MsgUseItemExtra.Handler.class, MsgUseItemExtra.class, ++i, Side.SERVER);
+        net.registerMessage(MsgUseItemExtra.Handler.class, MsgUseItemExtra.class, i, Side.SERVER);
         net.registerMessage(MsgSyncEA.Handler.class, MsgSyncEA.class, ++i, Side.CLIENT);
         net.registerMessage(MsgSyncEntityData.HandlerClient.class, MsgSyncEntityData.class, ++i, Side.CLIENT);
         net.registerMessage(MsgSyncEntityData.HandlerServer.class, MsgSyncEntityData.class, ++i, Side.SERVER);

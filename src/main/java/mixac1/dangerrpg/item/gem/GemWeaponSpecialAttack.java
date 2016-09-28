@@ -12,10 +12,10 @@ public abstract class GemWeaponSpecialAttack extends Gem
     }
 
     public abstract void upgrade(ItemStack stack, World world, EntityPlayer player);
-    
+
     @Override
     public GemType getGemType()
     {
-        return GemType.GEM_SPECIAL_ATTACK;
+        return GemType.GEM_PASSIVE_STAT;
     }
 }
