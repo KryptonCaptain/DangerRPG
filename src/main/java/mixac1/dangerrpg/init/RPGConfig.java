@@ -242,9 +242,9 @@ public class RPGConfig
         {
             public boolean isAllItemsRPGable = false;
             public boolean canUpInTable = true;
-            public int maxLevel = 100;
+            public int maxLevel = 15;
             public int startMaxExp = 100;
-            public float expMul = 1.15f;
+            public float expMul = 1.20f;
         }
 
         public static Data d = new Data();

@@ -3,6 +3,7 @@ package mixac1.dangerrpg.capability;
 import java.util.ArrayList;
 import java.util.Set;
 
+import mixac1.dangerrpg.api.event.ItemStackEvent.UpMaxLevelEvent;
 import mixac1.dangerrpg.api.event.RegIAEvent;
 import mixac1.dangerrpg.api.event.UpEquipmentEvent;
 import mixac1.dangerrpg.api.item.IRPGItem;
@@ -292,12 +293,15 @@ public abstract class RPGableItem
     {
         if (isRPGable(stack)) {
             ItemAttributes.LEVEL.add(stack, 1);
-            ItemAttributes.MAX_EXP.lvlUp(stack);
             ItemAttributes.CURR_EXP.set(stack, 0F);
 
             Set<ItemAttribute> itemAttributes = getAttributeValues(stack);
             for (ItemAttribute iterator : itemAttributes) {
                 iterator.lvlUp(stack);
+            }
+
+            if (ItemAttributes.LEVEL.isMax(stack)) {
+                MinecraftForge.EVENT_BUS.post(new UpMaxLevelEvent(stack));
             }
         }
     }
@@ -343,7 +347,7 @@ public abstract class RPGableItem
                     stack = player.getCurrentEquippedItem();
                 }
 
-                if (stack != null && isRPGable(stack)) {
+                if (stack != null && isRPGable(stack) && !ItemAttributes.LEVEL.isMax(stack)) {
                     stacks.add(stack);
                 }
             }
@@ -351,7 +355,7 @@ public abstract class RPGableItem
             if (!onlyCurr) {
                 ItemStack[] armors = player.inventory.armorInventory;
                 for (int i = 0; i < armors.length; ++i) {
-                    if (e.needUp[i + 1] && armors[i] != null && isRPGable(armors[i])) {
+                    if (e.needUp[i + 1] && armors[i] != null && isRPGable(armors[i]) && !ItemAttributes.LEVEL.isMax(stack)) {
                         stacks.add(armors[i]);
                     }
                 }

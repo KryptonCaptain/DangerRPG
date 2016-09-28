@@ -66,7 +66,7 @@ public class DangerRPG
     public static void infoLog(Object... objs)
     {
         if (MainConfig.d.mainEnableInfoLog) {
-            DangerRPG.logger.info(Utils.toString(objs));
+            DangerRPG.logger.info(Utils.toString(MODNAME, " ", Utils.toString(objs)));
         }
     }
 

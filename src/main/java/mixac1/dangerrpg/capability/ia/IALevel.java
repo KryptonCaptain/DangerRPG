@@ -17,6 +17,11 @@ public class IALevel extends IADynamic
         return super.isValid(value) && value <= ItemConfig.d.maxLevel;
     }
 
+    public boolean isMax(ItemStack stack)
+    {
+        return get(stack) >= ItemConfig.d.maxLevel;
+    }
+
     @Override
     public void init(ItemStack stack) {}
 

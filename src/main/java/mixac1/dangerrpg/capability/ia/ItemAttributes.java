@@ -10,11 +10,11 @@ import net.minecraft.item.ItemStack;
 
 public class ItemAttributes
 {
-    public static final IADynamic LEVEL = new IALevel("lvl");
-    public static final IADynamic CURR_EXP = new IACurrExp("curr_exp");
+    public static final IALevel LEVEL = new IALevel("lvl");
+    public static final IACurrExp CURR_EXP = new IACurrExp("curr_exp");
     public static final IADynamic MAX_EXP = new IADynamic("max_exp");
 
-    public static final IAStatic MELEE_DAMAGE = new IAMeleeDamage("melee_damage")
+    public static final IAMeleeDamage MELEE_DAMAGE = new IAMeleeDamage("melee_damage")
     {
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
@@ -23,7 +23,7 @@ public class ItemAttributes
         }
     };
 
-    public static final IAStatic SHOT_DAMAGE = new IADamage("shot_damage")
+    public static final IADamage SHOT_DAMAGE = new IADamage("shot_damage")
     {
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
@@ -46,7 +46,7 @@ public class ItemAttributes
 
     public static final IAStatic SHOT_POWER = new IAStatic("shot_power");
 
-    public static final IAStatic MELEE_SPEED = new IASpeed("melee_speed", 10F)
+    public static final IASpeed MELEE_SPEED = new IASpeed("melee_speed", 10F)
     {
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
@@ -55,7 +55,7 @@ public class ItemAttributes
         }
     };
 
-    public static final IAStatic SHOT_SPEED = new IASpeed("shot_speed", 20F)
+    public static final IASpeed SHOT_SPEED = new IASpeed("shot_speed", 20F)
     {
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
@@ -82,7 +82,7 @@ public class ItemAttributes
         }
     };
 
-    public static final IAStatic KNOCKBACK = new IAKnockback("knockback")
+    public static final IAKnockback KNOCKBACK = new IAKnockback("knockback")
     {
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
@@ -160,7 +160,7 @@ public class ItemAttributes
         }
     };
 
-    public static final IAStatic DURABILITY = new IADurability("durab")
+    public static final IADurability DURABILITY = new IADurability("durab")
     {
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
@@ -184,7 +184,7 @@ public class ItemAttributes
         }
     };
 
-    public static final IADynamic EFFICIENCY = new IAEfficiency("effic")
+    public static final IAEfficiency EFFICIENCY = new IAEfficiency("effic")
     {
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)

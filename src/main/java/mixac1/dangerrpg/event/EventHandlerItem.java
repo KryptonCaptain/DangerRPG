@@ -5,9 +5,11 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.event.DealtDamageEvent;
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
 import mixac1.dangerrpg.api.event.ItemStackEvent.StackChangedEvent;
+import mixac1.dangerrpg.api.event.ItemStackEvent.UpMaxLevelEvent;
 import mixac1.dangerrpg.capability.RPGableItem;
 import mixac1.dangerrpg.capability.data.RPGUUID;
 import mixac1.dangerrpg.capability.ea.PlayerAttributes;
@@ -57,10 +59,16 @@ public class EventHandlerItem
         if (RPGableItem.isRPGable(e.itemStack)) {
             e.toolTip.add("");
             e.toolTip.add(Utils.toString(EnumChatFormatting.GOLD,
-                       ItemAttributes.LEVEL.getDispayName(), ": ", (int) ItemAttributes.LEVEL.get(e.itemStack)));
-            e.toolTip.add(Utils.toString(EnumChatFormatting.GRAY,
-                       ItemAttributes.CURR_EXP.getDispayName(), ": ",
-                       (int) ItemAttributes.CURR_EXP.get(e.itemStack), "/", (int) ItemAttributes.MAX_EXP.get(e.itemStack)));
+                    ItemAttributes.LEVEL.getDispayName(), ": ", (int) ItemAttributes.LEVEL.get(e.itemStack)));
+            if (ItemAttributes.LEVEL.isMax(e.itemStack)) {
+                e.toolTip.add(Utils.toString(EnumChatFormatting.GRAY,
+                        DangerRPG.trans("rpgstr.max")));
+            }
+            else {
+                e.toolTip.add(Utils.toString(EnumChatFormatting.GRAY,
+                        ItemAttributes.CURR_EXP.getDispayName(), ": ",
+                        (int) ItemAttributes.CURR_EXP.get(e.itemStack), "/", (int) ItemAttributes.MAX_EXP.get(e.itemStack)));
+            }
         }
     }
 
@@ -114,11 +122,19 @@ public class EventHandlerItem
             if (mod != null) {
                 attr.removeModifier(mod);
             }
-            if (e.stack != null &&RPGableItem.isRPGable(e.stack)) {
+            if (e.stack != null && RPGableItem.isRPGable(e.stack) && ItemAttributes.STR_MUL.hasIt(e.stack)) {
                 AttributeModifier newMod = new AttributeModifier(RPGUUID.ADDITIONAL_STR_DAMAGE, "Strenght damage",
                         PlayerAttributes.STRENGTH.getValue(e.player) * ItemAttributes.STR_MUL.get(e.stack), 0).setSaved(true);
                 attr.applyModifier(newMod);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void onUpMaxLevel(UpMaxLevelEvent e)
+    {
+        if (ItemAttributes.MAX_DURABILITY.hasIt(e.stack)) {
+            e.stack.getTagCompound().setBoolean("Unbreakable", true);
         }
     }
 }

@@ -79,4 +79,12 @@ public class ItemStackEvent extends Event
             this.slot = slot;
         }
     }
+
+    public static class UpMaxLevelEvent extends ItemStackEvent
+    {
+        public UpMaxLevelEvent(ItemStack stack)
+        {
+            super(stack);
+        }
+    }
 }
