@@ -1,0 +1,50 @@
+    1.0.8
+    
+[FIXED] Crash when ghast spawned.
+[FIXED] Bug with slime damage.
+[FIXED] Bug with item experience.
+[FIXED] Returned unbreakable property for max lvl item
+    
+    1.0.7
+
+[ADDED] Customizaiton of player stats in config.
+[ADDED] Customizaiton of RPG mobs in config.
+[ADDED] Indicator of player's damage into HUD..
+[ADDED] Ability to decrease player stat.
+[ADDED] Gain of experience on destruction of the block.
+
+    1.0.6
+
+[CHANGED] Config system.
+[ADDED] Full customizaiton of all RPG items in config.
+
+    1.0.5
+
+[ADDED] Setting of default HUD mode in config.
+[FIXED] Crash in game, when you add item to list of RPG items, which has already created in game, but isn't RPGable before.
+[FIXED] Bug, when bows does not get the experience.
+
+    1.0.4
+
+[ADDED] New player stats: lava resist, fire resist.
+[MODIFIED] Armor system.
+[MODIFIED] Player's HUD. Now you can change HUD mode by pressing a button. Also added customisation in config.
+[FIXED] Recipe issues.
+[FIXED] Infinite attack speed in non-rpg items.
+[FIXED] Full reset of health by the player death.
+
+    1.0.3
+
+[ADDED] Lost craft for advanced workbench.
+[FIXED] Crash happens when click the workbench to start crafting on server.
+[FIXED] Infinite attack speed.
+[FIXED] Crash on start up.
+[TRYED FIX] Promlem with player HUD.
+
+    1.0.1
+    
+[FIXED] Crash on startup.
+
+    1.0.0
+
+[ADDED] First release.
