@@ -3,7 +3,7 @@ package mixac1.dangerrpg.client.render.entity;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import mixac1.dangerrpg.entity.projectile.EntityRPGArrow;
+import mixac1.dangerrpg.entity.projectile.core.EntityRPGArrow;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;

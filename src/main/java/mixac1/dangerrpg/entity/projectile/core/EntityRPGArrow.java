@@ -1,4 +1,4 @@
-package mixac1.dangerrpg.entity.projectile;
+package mixac1.dangerrpg.entity.projectile.core;
 
 import mixac1.dangerrpg.api.event.DealtDamageEvent;
 import net.minecraft.entity.EntityLivingBase;

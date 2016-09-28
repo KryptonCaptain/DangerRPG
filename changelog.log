@@ -3,7 +3,9 @@
 [FIXED] Crash when ghast spawned.
 [FIXED] Bug with slime damage.
 [FIXED] Bug with item experience.
-[FIXED] Returned unbreakable property for max lvl item
+[FIXED] Returned unbreakable property for max lvl item.
+[FIXED] Crash when change current equipped item from weapon to armor.
+[CHANGED] Max item level from 100 to 15
     
     1.0.7
 

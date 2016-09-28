@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.client.RPGRenderHelper;
-import mixac1.dangerrpg.entity.projectile.EntityMaterial;
+import mixac1.dangerrpg.entity.projectile.core.EntityMaterial;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.Entity;

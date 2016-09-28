@@ -1,4 +1,4 @@
-package mixac1.dangerrpg.entity.projectile;
+package mixac1.dangerrpg.entity.projectile.core;
 
 import java.util.List;
 

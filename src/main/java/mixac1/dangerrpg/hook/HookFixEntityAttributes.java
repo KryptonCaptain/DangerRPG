@@ -2,7 +2,7 @@ package mixac1.dangerrpg.hook;
 
 import java.util.List;
 
-import mixac1.dangerrpg.entity.projectile.EntityRPGArrow;
+import mixac1.dangerrpg.entity.projectile.core.EntityRPGArrow;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.util.RPGHelper;
 import mixac1.hooklib.asm.Hook;

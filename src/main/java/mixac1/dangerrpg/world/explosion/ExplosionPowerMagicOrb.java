@@ -1,6 +1,6 @@
 package mixac1.dangerrpg.world.explosion;
 
-import mixac1.dangerrpg.entity.projectile.EntityCommonMagic;
+import mixac1.dangerrpg.entity.projectile.core.EntityCommonMagic;
 
 public class ExplosionPowerMagicOrb extends ExplosionSpell
 {
