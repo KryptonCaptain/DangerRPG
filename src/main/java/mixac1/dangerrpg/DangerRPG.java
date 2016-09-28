@@ -19,7 +19,7 @@ import net.minecraft.util.StatCollector;
      name                      = DangerRPG.MODNAME,
      version                   = DangerRPG.VERSION,
      acceptedMinecraftVersions = DangerRPG.ACCEPTED_VERSION,
-     dependencies = "required-after:Forge")
+     dependencies              = "required-after:Forge")
 public class DangerRPG
 {
     public static final String MODNAME          = "DangerRPG";

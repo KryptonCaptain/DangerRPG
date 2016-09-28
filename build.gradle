@@ -34,6 +34,7 @@ archivesBaseName = "DangerRPG"
 minecraft {
     version = "${config.minecraft_version}-${config.forge_version}-${config.minecraft_version}"
     runDir = "eclipse"
+    replace '${version}', config.mod_version
 }
 
 dependencies {
@@ -59,11 +60,11 @@ jar {
 
 processResources
 {
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+    inputs.property "version", config.mod_version
+    inputs.property "mcversion", config.minecraft_version
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version':config.mod_version, 'mcversion':config.minecraft_version
     }
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
