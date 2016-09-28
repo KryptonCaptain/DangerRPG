@@ -36,7 +36,7 @@ public class EASlimeDamage extends EAWithIAttr
     {
         if (entity instanceof EntitySlime) {
             int size = ((EntitySlime) entity).getSlimeSize();
-            return size / 4;
+            return size / 4f;
         }
         return 1;
     }

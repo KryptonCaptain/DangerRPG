@@ -11,8 +11,9 @@ import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.RPGRegister;
 import mixac1.dangerrpg.api.entity.EntityAttribute;
 import mixac1.dangerrpg.api.entity.IRPGEntity;
-import mixac1.dangerrpg.api.entity.IRPGEntity.RPGCommonEntityMob;
-import mixac1.dangerrpg.api.entity.IRPGEntity.RPGEntityRangeMob;
+import mixac1.dangerrpg.api.entity.IRPGEntity.RPGCommonEntity;
+import mixac1.dangerrpg.api.entity.IRPGEntity.RPGCommonRangeEntity;
+import mixac1.dangerrpg.api.entity.IRPGEntity.RPGRangeEntityMob;
 import mixac1.dangerrpg.api.item.IRPGItem;
 import mixac1.dangerrpg.api.item.ItemAttribute;
 import mixac1.dangerrpg.capability.RPGableEntity;
@@ -191,17 +192,17 @@ public abstract class RPGCapability
         RPGRegister.registerRPGEntity(EntityEnderman.class, IRPGEntity.DEFAULT_MOB);
         RPGRegister.registerRPGEntity(EntityGiantZombie.class, IRPGEntity.DEFAULT_MOB);
 
-        RPGRegister.registerRPGEntity(EntityBlaze.class, new RPGEntityRangeMob(5f));
-        RPGRegister.registerRPGEntity(EntitySkeleton.class, new RPGEntityRangeMob(2f));
-        RPGRegister.registerRPGEntity(EntityGhast.class, new RPGEntityRangeMob(6f));
-        RPGRegister.registerRPGEntity(EntityWither.class, new RPGEntityRangeMob(8f));
+        RPGRegister.registerRPGEntity(EntityBlaze.class, new RPGRangeEntityMob(5f));
+        RPGRegister.registerRPGEntity(EntitySkeleton.class, new RPGRangeEntityMob(2f));
+        RPGRegister.registerRPGEntity(EntityGhast.class, new RPGCommonRangeEntity(6f));
+        RPGRegister.registerRPGEntity(EntityWither.class, new RPGRangeEntityMob(8f));
 
-        RPGRegister.registerRPGEntity(EntitySlime.class, new RPGCommonEntityMob(EntityAttributes.MELEE_DAMAGE_SLIME, 12f));
-        RPGRegister.registerRPGEntity(EntityMagmaCube.class, new RPGCommonEntityMob(EntityAttributes.MELEE_DAMAGE_SLIME, 16f));
+        RPGRegister.registerRPGEntity(EntitySlime.class, new RPGCommonEntity(EntityAttributes.MELEE_DAMAGE_SLIME, 12f));
+        RPGRegister.registerRPGEntity(EntityMagmaCube.class, new RPGCommonEntity(EntityAttributes.MELEE_DAMAGE_SLIME, 16f));
 
-        RPGRegister.registerRPGEntity(EntityWolf.class, new RPGCommonEntityMob(EntityAttributes.MELEE_DAMAGE_STAB, 3f));
-        RPGRegister.registerRPGEntity(EntityIronGolem.class, new RPGCommonEntityMob(EntityAttributes.MELEE_DAMAGE_STAB, 14f));
-        RPGRegister.registerRPGEntity(EntityDragon.class, new RPGCommonEntityMob(EntityAttributes.MELEE_DAMAGE_STAB, 10f));
+        RPGRegister.registerRPGEntity(EntityWolf.class, new RPGCommonEntity(3f));
+        RPGRegister.registerRPGEntity(EntityIronGolem.class, new RPGCommonEntity(14f));
+        RPGRegister.registerRPGEntity(EntityDragon.class, new RPGCommonEntity(10f));
     }
 
     private static void loadEntities()
