@@ -21,7 +21,4 @@ public class IALevel extends IADynamic
     {
         return get(stack) >= ItemConfig.d.maxLevel;
     }
-
-    @Override
-    public void lvlUp(ItemStack stack) {}
 }

@@ -97,7 +97,7 @@ public class RPGConfig
     {
         public static class Data implements Serializable
         {
-            public boolean mainEnableInfoLog = true;
+            public boolean mainEnableInfoLog        = true;
             public boolean mainEnableTransferConfig = false;
         }
 
@@ -150,21 +150,21 @@ public class RPGConfig
     {
         public static class Data implements Serializable
         {
-            public boolean guiIsEnableHUD = true;
-            public int guiPlayerHUDOffsetX = 10;
-            public int guiPlayerHUDOffsetY = 10;
-            public boolean guiPlayerHUDIsInvert = false;
-            public int guiEnemyHUDOffsetX = 10;
-            public int guiEnemyHUDOffsetY = 10;
-            public boolean guiEnemyHUDIsInvert = true;
-            public int guiChargeOffsetX = 0;
-            public int guiChargeOffsetY = 45;
-            public boolean guiChargeIsCentered = true;
-            public boolean guiTwiceHealthManaBar = true;
-            public int guiDafaultHUDMode = 1;
-            public int guiDamageForTestArmor = 25;
+            public boolean guiIsEnableHUD           = true;
+            public int guiPlayerHUDOffsetX          = 10;
+            public int guiPlayerHUDOffsetY          = 10;
+            public boolean guiPlayerHUDIsInvert     = false;
+            public int guiEnemyHUDOffsetX           = 10;
+            public int guiEnemyHUDOffsetY           = 10;
+            public boolean guiEnemyHUDIsInvert      = true;
+            public int guiChargeOffsetX             = 0;
+            public int guiChargeOffsetY             = 45;
+            public boolean guiChargeIsCentered      = true;
+            public boolean guiTwiceHealthManaBar    = true;
+            public int guiDafaultHUDMode            = 1;
+            public int guiDamageForTestArmor        = 25;
 
-            public boolean neiShowShapedRecipe = false;
+            public boolean neiShowShapedRecipe      = false;
         }
 
         public static Data d = new Data();
@@ -240,11 +240,14 @@ public class RPGConfig
     {
         public static class Data implements Serializable
         {
-            public boolean isAllItemsRPGable = false;
-            public boolean canUpInTable = true;
-            public int maxLevel = 15;
-            public int startMaxExp = 100;
-            public float expMul = 1.20f;
+            public boolean isAllItemsRPGable    = false;
+            public boolean canUpInTable         = true;
+            public int maxLevel                 = 15;
+            public int startMaxExp              = 100;
+            public float expMul                 = 1.20f;
+
+            public int gemStartLvl              = 5;
+            public int gemLvlUpStep             = 5;
         }
 
         public static Data d = new Data();
@@ -287,6 +290,12 @@ public class RPGConfig
 
             d.expMul = config.getFloat("expMul", category.getName(), d.expMul, 0f, Float.MAX_VALUE,
                     "Set expirience multiplier for RPG items");
+
+            d.gemStartLvl = config.getInt("gemStartLvl", category.getName(), d.gemStartLvl, 1, Integer.MAX_VALUE,
+                    "Set default start gem's level");
+
+            d.gemLvlUpStep = config.getInt("gemLvlUpStep", category.getName(), d.gemLvlUpStep, 1, Integer.MAX_VALUE,
+                    "Set default level up gem's step");
 
             save();
         }
@@ -398,12 +407,12 @@ public class RPGConfig
     {
         public static class Data implements Serializable
         {
-            public boolean isAllEntitiesRPGable = false;
-            public int entityLvlUpFrequency = 50;
-            public int playerLoseLvlCount = 3;
-            public int playerStartManaValue = 10;
-            public int playerStartManaRegenValue = 1;
-            public boolean playerCanLvlDownAttr = true;
+            public boolean isAllEntitiesRPGable     = false;
+            public int entityLvlUpFrequency         = 50;
+            public int playerLoseLvlCount           = 3;
+            public int playerStartManaValue         = 10;
+            public int playerStartManaRegenValue    = 1;
+            public boolean playerCanLvlDownAttr     = true;
             public float playerPercentLoseExpPoints = 0.5f;
         }
 

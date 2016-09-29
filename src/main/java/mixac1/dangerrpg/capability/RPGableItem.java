@@ -6,6 +6,7 @@ import java.util.Set;
 import mixac1.dangerrpg.api.event.ItemStackEvent.UpMaxLevelEvent;
 import mixac1.dangerrpg.api.event.RegIAEvent;
 import mixac1.dangerrpg.api.event.UpEquipmentEvent;
+import mixac1.dangerrpg.api.item.GemType;
 import mixac1.dangerrpg.api.item.IRPGItem;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemArmor;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemBow;
@@ -15,6 +16,7 @@ import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemStaff;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemTool;
 import mixac1.dangerrpg.api.item.ItemAttribute;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
+import mixac1.dangerrpg.capability.gt.GemTypes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.hook.HookArmorSystem;
 import mixac1.dangerrpg.init.RPGCapability;
@@ -92,6 +94,8 @@ public abstract class RPGableItem
 
     public static void registerParamsDefault(Item item, RPGItemData map)
     {
+        map.addDynamicItemAttribute(ItemAttributes.LEVEL, 1, IMultiplier.ADD_1);
+        map.addGemType(GemTypes.PA, 1);
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.DefaultIAEvent(item, map));
     }
 
@@ -235,9 +239,14 @@ public abstract class RPGableItem
         return RPGCapability.rpgItemRegistr.isActivated(stack.getItem());
     }
 
-    public static Set<ItemAttribute> getAttributeValues(ItemStack stack)
+    public static Set<ItemAttribute> getItemAttributes(ItemStack stack)
     {
         return RPGCapability.rpgItemRegistr.get(stack.getItem()).attributes.keySet();
+    }
+
+    public static Set<GemType> getGemTypes(ItemStack stack)
+    {
+        return RPGCapability.rpgItemRegistr.get(stack.getItem()).gems.keySet();
     }
 
     public static void initRPGItem(ItemStack stack)
@@ -260,10 +269,7 @@ public abstract class RPGableItem
 
     public static void initParams(ItemStack stack)
     {
-        Set<ItemAttribute> itemAttributes = getAttributeValues(stack);
-        if (!itemAttributes.contains(ItemAttributes.LEVEL)) {
-            ItemAttributes.LEVEL.set(stack, 1);
-        }
+        Set<ItemAttribute> itemAttributes = getItemAttributes(stack);
         for (ItemAttribute it : itemAttributes) {
             it.init(stack);
         }
@@ -271,10 +277,7 @@ public abstract class RPGableItem
 
     public static void reinitParams(ItemStack stack)
     {
-        Set<ItemAttribute> itemAttributes = getAttributeValues(stack);
-        if (!itemAttributes.contains(ItemAttributes.LEVEL)) {
-            ItemAttributes.LEVEL.set(stack, 1);
-        }
+        Set<ItemAttribute> itemAttributes = getItemAttributes(stack);
         for (ItemAttribute it : itemAttributes) {
             if (!it.hasIt(stack)) {
                 it.init(stack);
@@ -285,15 +288,13 @@ public abstract class RPGableItem
     public static void instantLvlUp(ItemStack stack)
     {
         if (isRPGable(stack)) {
-            ItemAttributes.LEVEL.add(stack, 1);
+            Set<ItemAttribute> itemAttributes = getItemAttributes(stack);
+            for (ItemAttribute iterator : itemAttributes) {
+                iterator.lvlUp(stack);
+            }
 
             if (ItemAttributes.CURR_EXP.hasIt(stack)) {
                 ItemAttributes.CURR_EXP.set(stack, 0F);
-            }
-
-            Set<ItemAttribute> itemAttributes = getAttributeValues(stack);
-            for (ItemAttribute iterator : itemAttributes) {
-                iterator.lvlUp(stack);
             }
 
             if (ItemAttributes.LEVEL.isMax(stack)) {

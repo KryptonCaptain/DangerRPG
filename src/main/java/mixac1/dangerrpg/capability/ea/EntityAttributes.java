@@ -7,7 +7,7 @@ import mixac1.dangerrpg.capability.data.RPGUUID;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttribute;
 
-public class EntityAttributes
+public abstract class EntityAttributes
 {
     public static final IAttribute rangeAttackDamage = new RPGAttribute("range_damage");
 

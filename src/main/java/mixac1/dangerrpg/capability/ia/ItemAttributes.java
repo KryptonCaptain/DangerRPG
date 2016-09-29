@@ -8,7 +8,7 @@ import mixac1.dangerrpg.init.RPGOther.RPGDamageSource;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
-public class ItemAttributes
+public abstract class ItemAttributes
 {
     public static final IALevel LEVEL = new IALevel("lvl");
     public static final IACurrExp CURR_EXP = new IACurrExp("curr_exp");

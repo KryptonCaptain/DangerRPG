@@ -38,9 +38,10 @@ public interface IRPGItem
 {
     public void registerAttributes(Item item, RPGItemData map);
 
-    public RPGItemComponent getItemComponent(Item item);
-
-    public interface IRPGItemMod extends IRPGItem {}
+    public interface IRPGItemMod extends IRPGItem
+    {
+        public RPGItemComponent getItemComponent(Item item);
+    }
 
     public interface IRPGItemTool extends IRPGItemMod
     {
@@ -50,7 +51,7 @@ public interface IRPGItem
         public RPGToolMaterial getToolMaterial(Item item);
     }
 
-    public interface IRPGItemArmor extends IRPGItem
+    public interface IRPGItemArmor extends IRPGItemMod
     {
         @Override
         public RPGArmorComponent getItemComponent(Item item);
@@ -88,12 +89,6 @@ public interface IRPGItem
     {
         @Override
         public void registerAttributes(Item item, RPGItemData map) {}
-
-        @Override
-        public RPGItemComponent getItemComponent(Item item)
-        {
-            return null;
-        }
     };
 
     public static final IRPGItem DEFAULT_ITEM_MOD = new IRPGItemMod()

@@ -5,7 +5,7 @@ import mixac1.dangerrpg.api.entity.EAWithIAttr.EAMotion;
 import mixac1.dangerrpg.api.entity.EAWithIAttr.EAPercent;
 import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
 
-public class PlayerAttributes extends EntityAttributes
+public abstract class PlayerAttributes extends EntityAttributes
 {
     public static final EAWithIAttr MANA          = new EAMana      ("mana");
     public static final EAWithIAttr STRENGTH      = new EAWithIAttr ("str");

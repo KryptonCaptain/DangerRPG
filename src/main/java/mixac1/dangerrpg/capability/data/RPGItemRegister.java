@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import mixac1.dangerrpg.api.item.GemType;
 import mixac1.dangerrpg.api.item.IADynamic;
 import mixac1.dangerrpg.api.item.IAStatic;
 import mixac1.dangerrpg.api.item.IRPGItem;
@@ -33,6 +34,7 @@ public class RPGItemRegister extends RPGDataRegister<Item, RPGItemData, Integer,
     public static class RPGItemData extends RPGDataRegister.ElementData<Item, HashMap<Integer, ItemAttrParams>>
     {
         public HashMap<ItemAttribute, ItemAttrParams> attributes = new LinkedHashMap<ItemAttribute, ItemAttrParams>();
+        public HashMap<GemType, Integer> gems = new LinkedHashMap<GemType, Integer>();
         public IRPGItem rpgComponent;
 
         public RPGItemData(IRPGItem lvlComponent, boolean isSupported)
@@ -49,6 +51,11 @@ public class RPGItemRegister extends RPGDataRegister<Item, RPGItemData, Integer,
         public void addDynamicItemAttribute(IADynamic attr, float value, IMulConfigurable mul)
         {
             attributes.put(attr, new ItemAttrParams(value, mul));
+        }
+
+        public void addGemType(GemType gemType, int count)
+        {
+            gems.put(gemType, count < 1 ? 1 : count);
         }
 
         @Override
