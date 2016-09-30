@@ -26,6 +26,7 @@ import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.init.RPGConfig.EntityConfig;
 import mixac1.dangerrpg.init.RPGConfig.ItemConfig;
 import mixac1.dangerrpg.init.RPGConfig.MainConfig;
+import mixac1.dangerrpg.item.gem.Gem;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
@@ -245,7 +246,7 @@ public abstract class RPGCapability
         for (Entry<Item, RPGItemData> it : rpgItemRegistr.entrySet()) {
             RPGableItem.registerParamsDefault(it.getKey(), it.getValue());
             it.getValue().rpgComponent.registerAttributes(it.getKey(), it.getValue());
-            if (ItemConfig.d.isAllItemsRPGable || ItemConfig.activeRPGItems.contains(it.getKey().delegate.name())) {
+            if (it.getKey() instanceof Gem || ItemConfig.d.isAllItemsRPGable || ItemConfig.activeRPGItems.contains(it.getKey().delegate.name())) {
                 rpgItemRegistr.get(it.getKey()).isActivated = true;
                 DangerRPG.infoLog(String.format("Register RPG item (sup from mod: %s): %s",
                                   it.getValue().isSupported ? " true" : "false", it.getKey().delegate.name()));

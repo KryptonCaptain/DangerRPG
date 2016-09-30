@@ -18,6 +18,7 @@ import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.item.IMaterialSpecial;
+import mixac1.dangerrpg.item.gem.Gem;
 import mixac1.dangerrpg.util.IMultiplier.IMulConfigurable;
 import mixac1.dangerrpg.util.IMultiplier.MultiplierAdd;
 import mixac1.dangerrpg.util.IMultiplier.MultiplierMul;
@@ -224,7 +225,9 @@ public abstract class RPGHelper
     {
         ArrayList<String> names = new ArrayList<String>();
         for (Item item : items) {
-            names.add(item.delegate.name());
+            if (!(item instanceof Gem)) {
+                names.add(item.delegate.name());
+            }
         }
         if (needSort) {
             Collections.sort(names);

@@ -1,6 +1,7 @@
 package mixac1.dangerrpg.api.item;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,8 +36,15 @@ public abstract class GemType
 
     public void attach(ItemStack dest, ItemStack... src)
     {
+        attach(dest, Arrays.asList(src));
+    }
+
+    public void attach(ItemStack dest, List<ItemStack> src)
+    {
         NBTTagList tagList = new NBTTagList();
-        for (ItemStack stack : src) {
+        int max = RPGCapability.rpgItemRegistr.get(dest.getItem()).gems.get(this);
+        for (int i = 0; i < src.size() && i < max; ++i) {
+            ItemStack stack = src.get(i);
             if (stack != null && isItGem(stack)) {
                 NBTTagCompound nbt = new NBTTagCompound();
                 stack.writeToNBT(nbt);
@@ -49,7 +57,7 @@ public abstract class GemType
     public List<ItemStack> detach(ItemStack dest)
     {
         List<ItemStack> stacks = get(dest);
-        attach(dest, (ItemStack[]) null);
+        attach(dest, Collections.EMPTY_LIST);
         return stacks;
     }
 
@@ -69,9 +77,10 @@ public abstract class GemType
 
     public List<ItemStack> getRaw(ItemStack stack)
     {
-        NBTTagList nbtList = stack.stackTagCompound.getTagList(name, 1);
+        NBTTagList nbtList = stack.stackTagCompound.getTagList(name, 10);
         List<ItemStack> stacks = new ArrayList<ItemStack>(nbtList.tagCount());
-        for (int i = 0; i < nbtList.tagCount(); ++i) {
+        int max = RPGCapability.rpgItemRegistr.get(stack.getItem()).gems.get(this);
+        for (int i = 0; i < nbtList.tagCount() && i < max; ++i) {
             stacks.add(i, ItemStack.loadItemStackFromNBT(nbtList.getCompoundTagAt(i)));
         }
         return stacks;

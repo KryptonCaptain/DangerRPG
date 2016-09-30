@@ -43,19 +43,19 @@ public class ContainerRPGWorkbench extends Container
         posY = y;
         posZ = z;
 
-        /* 0 - 26 */
+        /* 0 - 27 */
         for (int m = 0; m < 3; ++m) {
             for (int n = 0; n < 9; ++n) {
                 addSlotToContainer(new Slot(inv, m * 9 + n + 9, playerInvX + n * 18, playerInvY + m * 18));
             }
         }
 
-        /* 27 - 35 */
+        /* 27 - 36 */
         for (int m = 0; m < 9; ++m) {
             addSlotToContainer(new Slot(inv, m, fastInvX + m * 18, fastInvY));
         }
 
-        /* 36 - 60 */
+        /* 36 - 61 */
         for (int m = 0; m < craftSize; ++m) {
             for (int n = 0; n < craftSize; ++n) {
                 addSlotToContainer(new Slot(craftMatrix, craftSize * m + n, craftX + n * 18, craftY + m * 18));

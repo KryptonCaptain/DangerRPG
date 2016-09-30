@@ -13,7 +13,7 @@ import mixac1.dangerrpg.entity.projectile.core.EntityMaterial;
 import mixac1.dangerrpg.entity.projectile.core.EntityProjectile;
 import mixac1.dangerrpg.entity.projectile.core.EntityRPGArrow;
 import mixac1.dangerrpg.entity.projectile.core.EntityThrowRPGItem;
-import mixac1.dangerrpg.tileentity.TileEntityModifyTable;
+import mixac1.dangerrpg.tileentity.TileEntityLvlupTable;
 import net.minecraft.entity.Entity;
 
 public abstract class RPGEntities
@@ -28,7 +28,7 @@ public abstract class RPGEntities
 
     private static void loadTileEntities()
     {
-        GameRegistry.registerTileEntity(TileEntityModifyTable.class, TileEntityModifyTable.NAME);
+        GameRegistry.registerTileEntity(TileEntityLvlupTable.class, "qweqwe");
     }
 
     private static void loadProjectileEntities()

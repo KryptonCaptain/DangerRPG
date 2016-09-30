@@ -95,7 +95,7 @@ public abstract class RPGableItem
     public static void registerParamsDefault(Item item, RPGItemData map)
     {
         map.addDynamicItemAttribute(ItemAttributes.LEVEL, 1, IMultiplier.ADD_1);
-        map.addGemType(GemTypes.PA, 1);
+        map.addGemType(GemTypes.PA, 2);
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.DefaultIAEvent(item, map));
     }
 

@@ -186,7 +186,7 @@ item.sniper_bow.name=Sniper Bow
 
 item.gem_wither_skull.name=Wither Skull Gem
 
-tile.modify_table.name=Modify Table
+tile.modification_table.name=Modification Table
 tile.lvlup_table.name=LevelUp Table
 tile.rpg_workbench.name=Large Workbench
 tile.synthetic_bedrock.name=Synthetic Bedrock

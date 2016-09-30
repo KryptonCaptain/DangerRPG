@@ -16,7 +16,7 @@ public class BlockRPGWorkbench extends Block
 {
     public static final String NAME  = "rpg_workbench";
 
-    public IIcon[]             icons = new IIcon[3];
+    public IIcon[]             icons = new IIcon[2];
 
     public BlockRPGWorkbench()
     {
@@ -32,18 +32,18 @@ public class BlockRPGWorkbench extends Block
     @Override
     public void registerBlockIcons(IIconRegister reg)
     {
-        icons[0] = reg.registerIcon(getTextureName() + "_side");
-        icons[1] = reg.registerIcon(getTextureName() + "_top");
-        icons[2] = reg.registerIcon(getTextureName() + "_front");
+        blockIcon = reg.registerIcon(getTextureName() + "_side");
+        icons[0]  = reg.registerIcon(getTextureName() + "_top");
+        icons[1]  = reg.registerIcon(getTextureName() + "_front");
     }
 
     @Override
     public IIcon getIcon(int side, int meta)
     {
-        return side == 1 ? icons[1]
+        return side == 1 ? icons[0]
                 : side == 0 ? Blocks.iron_block.getBlockTextureFromSide(side)
-                        : side != 2 && side != 4 ? icons[0]
-                                : icons[2];
+                        : side != 2 && side != 4 ? blockIcon
+                                : icons[1];
     }
 
     @Override

@@ -12,6 +12,7 @@ import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
 import mixac1.dangerrpg.item.RPGToolMaterial;
 import mixac1.dangerrpg.item.armor.ItemMageArmor;
 import mixac1.dangerrpg.item.armor.ItemRPGArmor;
+import mixac1.dangerrpg.item.gem.GemPassiveStat;
 import mixac1.dangerrpg.item.tool.ItemRPGAxe;
 import mixac1.dangerrpg.item.tool.ItemRPGHoe;
 import mixac1.dangerrpg.item.tool.ItemRPGMultiTool;
@@ -170,6 +171,8 @@ public abstract class RPGItems
 
     public static Item testWand = new ItemTestWand("test_wand");
 
+    public static Item testGem = new GemPassiveStat("test_gem");
+
     public static void load(FMLPreInitializationEvent e)
     {
         registerItems();
@@ -305,12 +308,12 @@ public abstract class RPGItems
 //        registerItem(gemWitherSkull);
     }
 
-    private static void registerItem(Item item)
+    public static void registerItem(Item item)
     {
         GameRegistry.registerItem(item, item.unlocalizedName);
     }
 
-    private static void registerItemArray(Item[] array)
+    public static void registerItemArray(Item[] array)
     {
         for (Item item : array) {
             registerItem(item);
