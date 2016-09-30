@@ -24,6 +24,8 @@ public class BlockModificationTable extends Block
         setBlockName(NAME);
         setBlockTextureName(DangerRPG.MODID + ":" + NAME);
         setCreativeTab(RPGCreativeTabs.tabRPGBlocks);
+        setHardness(5.0F);
+        setResistance(2000.0F);
     }
 
     @Override

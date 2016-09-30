@@ -23,6 +23,14 @@ public abstract class RPGOther
             }
         });
 
+        public static CreativeTabs tabRPGGems = (new CreativeTabs("tabRPGGems")
+        {
+            @Override
+            public Item getTabIconItem() {
+                return RPGItems.scytheBlackMatter;
+            }
+        });
+
         public static CreativeTabs tabRPGBlocks = (new CreativeTabs("tabRPGBlocks")
         {
             @Override

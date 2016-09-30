@@ -14,12 +14,11 @@ import mixac1.dangerrpg.client.render.entity.RenderMagicOrb;
 import mixac1.dangerrpg.client.render.entity.RenderMaterial;
 import mixac1.dangerrpg.client.render.entity.RenderThrowKnife;
 import mixac1.dangerrpg.client.render.entity.RenderThrowTomahawk;
+import mixac1.dangerrpg.client.render.item.RenderItemModel;
 import mixac1.dangerrpg.client.render.item.RenderKatana;
 import mixac1.dangerrpg.client.render.item.RenderKnife;
 import mixac1.dangerrpg.client.render.item.RenderLongItem;
 import mixac1.dangerrpg.client.render.item.RenderNormalModel.RenderHammer;
-import mixac1.dangerrpg.client.render.item.RenderItemIcon;
-import mixac1.dangerrpg.client.render.item.RenderItemModel;
 import mixac1.dangerrpg.client.render.item.RenderShadowBow;
 import mixac1.dangerrpg.client.render.item.RenderSniperBow;
 import mixac1.dangerrpg.client.render.item.RenderStaff;
@@ -116,8 +115,6 @@ public abstract class RPGRenderers
 
         MinecraftForgeClient.registerItemRenderer(RPGItems.shadowBow, RenderShadowBow.INSTANCE);
         MinecraftForgeClient.registerItemRenderer(RPGItems.sniperBow, RenderSniperBow.INSTANCE);
-
-        MinecraftForgeClient.registerItemRenderer(RPGItems.testWand,  RenderItemIcon.INSTANCE);
     }
 
     private static void registerEntityRenderingHandler()

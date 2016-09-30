@@ -4,7 +4,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import mixac1.dangerrpg.init.RPGOther.RPGItemRarity;
 import mixac1.dangerrpg.item.ItemE;
-import mixac1.dangerrpg.item.ItemTestWand;
 import mixac1.dangerrpg.item.RPGArmorMaterial;
 import mixac1.dangerrpg.item.RPGItemComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGArmorComponent;
@@ -12,7 +11,6 @@ import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
 import mixac1.dangerrpg.item.RPGToolMaterial;
 import mixac1.dangerrpg.item.armor.ItemMageArmor;
 import mixac1.dangerrpg.item.armor.ItemRPGArmor;
-import mixac1.dangerrpg.item.gem.GemPassiveStat;
 import mixac1.dangerrpg.item.tool.ItemRPGAxe;
 import mixac1.dangerrpg.item.tool.ItemRPGHoe;
 import mixac1.dangerrpg.item.tool.ItemRPGMultiTool;
@@ -40,8 +38,6 @@ public abstract class RPGItems
     public static Item stickObsidian        = new ItemE("stick_obsidian");
     public static Item stickBlackMatter     = new ItemE("stick_black_matter");
     public static Item stickWhiteMatter     = new ItemE("stick_white_matter");
-
-    public static Item swordTraining = new ItemRPGWeapon(RPGToolMaterial.WOOD, RPGItemComponent.TRAINING, "sword_training");
 
     public static Item swordObsidian     = new ItemRPGWeapon(RPGToolMaterial.OBSIDIAN,     RPGItemComponent.SWORD);
     public static Item swordBedrock      = new ItemRPGWeapon(RPGToolMaterial.BEDROCK,      RPGItemComponent.SWORD);
@@ -169,10 +165,6 @@ public abstract class RPGItems
     public static Item shadowBow = new ItemRPGBow   (RPGItemComponent.SHADOW_BOW, RPGItemRarity.mythic);
     public static Item sniperBow = new ItemSniperBow(RPGItemComponent.SNIPER_BOW);
 
-    public static Item testWand = new ItemTestWand("test_wand");
-
-    public static Item testGem = new GemPassiveStat("test_gem");
-
     public static void load(FMLPreInitializationEvent e)
     {
         registerItems();
@@ -180,10 +172,6 @@ public abstract class RPGItems
 
     private static void registerItems()
     {
-//        registerItem(testWand);
-//
-//        registerItem(swordTraining);
-
         registerItem(knifeWood);
         registerItem(tomahawkWood);
         registerItem(katanaWood);
@@ -304,8 +292,6 @@ public abstract class RPGItems
         registerItemArray(mageArmorBedrock);
         registerItemArray(mageArmorBlackMatter);
         registerItemArray(mageArmorWhiteMatter);
-
-//        registerItem(gemWitherSkull);
     }
 
     public static void registerItem(Item item)

@@ -33,7 +33,7 @@ public class ItemRPGAxe extends ItemAxe implements IRPGItemTool, IHasBooksInfo
     @Override
     public String getInformationToInfoBook(ItemStack item, EntityPlayer player)
     {
-        return DangerRPG.trans("rpgstr.no_info_yet");
+        return null;
     }
 
     @Override

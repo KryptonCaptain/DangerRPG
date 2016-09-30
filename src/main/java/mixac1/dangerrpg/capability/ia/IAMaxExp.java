@@ -13,7 +13,7 @@ public class IAMaxExp extends IADynamic
     @Override
     public void init(ItemStack stack)
     {
+        super.init(stack);
         ItemAttributes.CURR_EXP.init(stack);
-        set(stack, 0);
     }
 }

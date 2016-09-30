@@ -41,7 +41,7 @@ public class ItemRPGWeapon extends ItemSword implements IRPGItemTool, IHasBooksI
     @Override
     public String getInformationToInfoBook(ItemStack item, EntityPlayer player)
     {
-        return DangerRPG.trans("rpgstr.no_info_yet");
+        return null;
     }
 
     @Override

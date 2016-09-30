@@ -25,7 +25,7 @@ public abstract class Gem extends Item implements IRPGItem, IHasBooksInfo
         this.setTextureName(Utils.toString(DangerRPG.MODID, ":gems/", name));
         this.setUnlocalizedName(name);
         this.setMaxStackSize(1);
-        this.setCreativeTab(RPGCreativeTabs.tabRPGAmunitions);
+        this.setCreativeTab(RPGCreativeTabs.tabRPGGems);
 
         RPGItems.registerItem(this);
     }

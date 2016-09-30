@@ -107,6 +107,7 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
             }
 
             Set<ItemAttribute> itemAttributes = new LinkedHashSet<ItemAttribute>(RPGableItem.getItemAttributes(stack));
+            itemAttributes.remove(ItemAttributes.LEVEL);
             itemAttributes.remove(ItemAttributes.MAX_EXP);
             itemAttributes.remove(ItemAttributes.DURABILITY);
             itemAttributes.remove(ItemAttributes.MAX_DURABILITY);
