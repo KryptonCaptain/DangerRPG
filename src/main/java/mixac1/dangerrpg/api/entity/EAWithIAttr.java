@@ -53,14 +53,10 @@ public class EAWithIAttr extends EAFloat
         return false;
     }
 
+    @Override
     public Float getBaseValue(EntityLivingBase entity)
     {
         return (float) entity.getEntityAttribute(attribute).getBaseValue();
-    }
-
-    public Float getModifierValue(EntityLivingBase entity)
-    {
-        return getValue(entity) - getBaseValue(entity);
     }
 
     public Float getModifierValue(EntityLivingBase entity, UUID ID)

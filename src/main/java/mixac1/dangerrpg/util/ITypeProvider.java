@@ -15,16 +15,11 @@ public interface ITypeProvider<Type>
 
     public Type getEmpty();
 
-    /**
-     * Default validator for Type
-     */
     public boolean isValid(Type value);
 
-    /**
-     * Add value2 to value1
-     * @return value1
-     */
-    public Type concat(Type value1, Type value2);
+    public Type sum(Type value1, Type value2);
+
+    public Type dif(Type value1, Type value2);
 
     public String toString(Type value);
 
@@ -51,9 +46,15 @@ public interface ITypeProvider<Type>
         }
 
         @Override
-        public Boolean concat(Boolean value1, Boolean value2)
+        public Boolean sum(Boolean value1, Boolean value2)
         {
             return value1 || value2;
+        }
+
+        @Override
+        public Boolean dif(Boolean value1, Boolean value2)
+        {
+            return value2 ? false : value1;
         }
 
         @Override
@@ -90,9 +91,15 @@ public interface ITypeProvider<Type>
         }
 
         @Override
-        public Integer concat(Integer value1, Integer value2)
+        public Integer sum(Integer value1, Integer value2)
         {
             return value1 + value2;
+        }
+
+        @Override
+        public Integer dif(Integer value1, Integer value2)
+        {
+            return value1 - value2;
         }
 
         @Override
@@ -129,9 +136,15 @@ public interface ITypeProvider<Type>
         }
 
         @Override
-        public Float concat(Float value1, Float value2)
+        public Float sum(Float value1, Float value2)
         {
             return value1 + value2;
+        }
+
+        @Override
+        public Float dif(Float value1, Float value2)
+        {
+            return value1 - value2;
         }
 
         @Override
@@ -168,10 +181,15 @@ public interface ITypeProvider<Type>
         }
 
         @Override
-        public String concat(String value1, String value2)
+        public String sum(String value1, String value2)
         {
-            value1 = value1.concat(value2);
-            return value1;
+            return value1.concat(value2);
+        }
+
+        @Override
+        public String dif(String value1, String value2)
+        {
+            return value1.replaceFirst(value2, "");
         }
 
         @Override
@@ -212,7 +230,14 @@ public interface ITypeProvider<Type>
          */
         @Deprecated
         @Override
-        public NBTTagCompound concat(NBTTagCompound value1, NBTTagCompound value2)
+        public NBTTagCompound sum(NBTTagCompound value1, NBTTagCompound value2)
+        {
+            return value1;
+        }
+
+        @Deprecated
+        @Override
+        public NBTTagCompound dif(NBTTagCompound value1, NBTTagCompound value2)
         {
             return value1;
         }
@@ -255,7 +280,14 @@ public interface ITypeProvider<Type>
          */
         @Deprecated
         @Override
-        public ItemStack concat(ItemStack value1, ItemStack value2)
+        public ItemStack sum(ItemStack value1, ItemStack value2)
+        {
+            return value1;
+        }
+
+        @Deprecated
+        @Override
+        public ItemStack dif(ItemStack value1, ItemStack value2)
         {
             return value1;
         }

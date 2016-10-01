@@ -1,5 +1,6 @@
 package mixac1.dangerrpg.item.tool;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,6 +16,7 @@ import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
 import mixac1.dangerrpg.item.RPGToolMaterial;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -31,6 +33,11 @@ public class ItemRPGMultiTool extends ItemTool implements IRPGItemTool, IHasBook
         add("pickaxe");
         add("axe");
         add("shovel");
+    }};
+
+    private static final Set<Material> HARVEST_MATERIALS = new HashSet<Material>()
+    {{
+        addAll(Arrays.asList(new Material[] {Material.ground, Material.wood, Material.rock, Material.iron, Material.anvil, Material.sand, Material.web}));
     }};
 
     public ItemRPGMultiTool(RPGToolMaterial toolMaterial)
@@ -64,7 +71,7 @@ public class ItemRPGMultiTool extends ItemTool implements IRPGItemTool, IHasBook
     @Override
     public boolean canHarvestBlock(Block block, ItemStack stack)
     {
-        return true;
+        return HARVEST_MATERIALS.contains(block.getMaterial());
     }
 
     @Override

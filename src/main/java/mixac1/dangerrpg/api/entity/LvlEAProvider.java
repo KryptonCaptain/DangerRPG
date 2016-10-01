@@ -109,7 +109,7 @@ public class LvlEAProvider<Type>
                 if (lvl < maxLvl) {
                     setLvl(lvl + 1, target);
                     EntityAttributes.LVL.addValue(1, target);
-                    attr.setValue(mulValue.up(attr.getValue(target), target), target);
+                    attr.setValue(mulValue.up(attr.getBaseValue(target), target), target);
                     return true;
                 }
             }
@@ -117,7 +117,7 @@ public class LvlEAProvider<Type>
                 if (lvl > 0) {
                     setLvl(lvl - 1, target);
                     EntityAttributes.LVL.addValue(-1, target);
-                    attr.setValue(mulValue.down(attr.getValue(target), target), target);
+                    attr.setValue(mulValue.down(attr.getBaseValue(target), target), target);
                     return true;
                 }
             }

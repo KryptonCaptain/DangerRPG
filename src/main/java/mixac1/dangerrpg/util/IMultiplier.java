@@ -33,6 +33,15 @@ public interface IMultiplier<Type> extends Serializable
             }
         },
 
+        SQRT
+        {
+            @Override
+            public IMulConfigurable getMul(Float d)
+            {
+                return new MultiplierSQRT(d);
+            }
+        },
+
         HARD
         {
             @Override
@@ -121,6 +130,41 @@ public interface IMultiplier<Type> extends Serializable
         public String toString()
         {
             return MulType.MUL.toString(mul);
+        }
+    }
+
+    public static class MultiplierSQRT implements IMulConfigurable
+    {
+        public final Float mul;
+
+        public MultiplierSQRT(Float mul)
+        {
+            this.mul = mul;
+        }
+
+        @Override
+        public Float up(Float value, Object... objs)
+        {
+            return (float) (value + Math.sqrt(value * mul));
+        }
+
+        @Override
+        public Float down(Float value, Object... objs)
+        {
+
+            float a = -1;
+            float b = 2 * value + mul;
+            float c = -value * value;
+            float d = (float) Math.sqrt((Math.pow(b, 2) - 4 * a * c));
+            float tmp1 = (-b - d) / 2 * a;
+            float tmp2 = (-b + d) / 2 * a;
+            return up(tmp1) == value ? tmp1 : tmp2;
+        }
+
+        @Override
+        public String toString()
+        {
+            return MulType.SQRT.toString(mul);
         }
     }
 

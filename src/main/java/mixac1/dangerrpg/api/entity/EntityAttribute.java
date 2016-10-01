@@ -20,9 +20,9 @@ public class EntityAttribute<Type>
 {
     public final String name;
     public final int    hash;
-    public final ITypeProvider<? super Type> typeProvider;
+    public final ITypeProvider<Type> typeProvider;
 
-    public EntityAttribute(ITypeProvider<? super Type> typeProvider, String name)
+    public EntityAttribute(ITypeProvider<Type> typeProvider, String name)
     {
         this.name = name;
         this.hash = name.hashCode();
@@ -32,7 +32,7 @@ public class EntityAttribute<Type>
 
     public void init(EntityLivingBase entity)
     {
-        getEntityData(entity).attributeMap.put(hash, new Stub<Type>((Type) typeProvider.getEmpty()));
+        getEntityData(entity).attributeMap.put(hash, new Stub<Type>(typeProvider.getEmpty()));
         LvlEAProvider lvlProvider = getLvlProvider(entity);
         if (lvlProvider != null) {
             lvlProvider.init(entity);
@@ -118,7 +118,7 @@ public class EntityAttribute<Type>
     public void setValue(Type value, EntityLivingBase entity)
     {
         if (isValid(value, entity)) {
-            if (setValueRaw(value, entity)) {
+            if (setValueRaw(value, entity) || getLvlProvider(entity) != null) {
                 sync(entity);
             }
         }
@@ -129,7 +129,17 @@ public class EntityAttribute<Type>
      */
     public void addValue(Type value, EntityLivingBase entity)
     {
-        setValue((Type) typeProvider.concat(getValue(entity), value), entity);
+        setValue(typeProvider.sum(getValue(entity), value), entity);
+    }
+
+    public Type getBaseValue(EntityLivingBase entity)
+    {
+        return getValue(entity);
+    }
+
+    public Type getModifierValue(EntityLivingBase entity)
+    {
+        return typeProvider.dif(getValue(entity), getBaseValue(entity));
     }
 
     public void sync(EntityLivingBase entity)
@@ -154,7 +164,7 @@ public class EntityAttribute<Type>
     {
         NBTTagCompound tmp = (NBTTagCompound) nbt.getTag(name);
         if (tmp != null) {
-            setValueRaw((Type) typeProvider.fromNBT("value", tmp), entity);
+            setValueRaw(typeProvider.fromNBT("value", tmp), entity);
             LvlEAProvider lvlProvider = getLvlProvider(entity);
             if (lvlProvider != null) {
                 lvlProvider.setLvl(tmp.getInteger("lvl"), entity);
