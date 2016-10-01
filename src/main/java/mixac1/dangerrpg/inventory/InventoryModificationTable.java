@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import mixac1.dangerrpg.api.item.GemType;
-import mixac1.dangerrpg.capability.RPGableItem;
+import mixac1.dangerrpg.capability.RPGItemHelper;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.item.gem.Gem;
 import mixac1.dangerrpg.util.Tuple.Pair;
@@ -105,12 +105,12 @@ public class InventoryModificationTable implements IInventory
     {
         if (index == 0) {
             if (main == null) {
-                if (stack != null && RPGableItem.isRPGable(stack)) {
+                if (stack != null && RPGItemHelper.isRPGable(stack)) {
                     detachGems(stack);
                 }
             }
             else {
-                if (stack == null && RPGableItem.isRPGable(main)) {
+                if (stack == null && RPGItemHelper.isRPGable(main)) {
                     attachGems(main);
                 }
             }
@@ -147,7 +147,7 @@ public class InventoryModificationTable implements IInventory
     private void attachGems(ItemStack stack)
     {
         int i = 0;
-        for (GemType gemType : RPGableItem.getGemTypes(stack)) {
+        for (GemType gemType : RPGItemHelper.getGemTypes(stack)) {
             gemType.attach(stack, inv[i]);
             ++i;
         }
@@ -205,7 +205,7 @@ public class InventoryModificationTable implements IInventory
     private GemType getGemType(int row)
     {
         int i = 0;
-        for (GemType it : RPGableItem.getGemTypes(main)) {
+        for (GemType it : RPGItemHelper.getGemTypes(main)) {
             if (i++ == row) {
                 return it;
             }
@@ -231,7 +231,7 @@ public class InventoryModificationTable implements IInventory
 
     public GemType getGemTypeSlot(int index)
     {
-        if (index > 0 && main != null && RPGableItem.isRPGable(main)) {
+        if (index > 0 && main != null && RPGItemHelper.isRPGable(main)) {
             Pair<Integer, Integer> coords = getRowColumn(index - 1);
             if (coords != null) {
                 return getGemType(coords.value1);

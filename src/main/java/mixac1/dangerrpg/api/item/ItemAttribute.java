@@ -69,7 +69,10 @@ public abstract class ItemAttribute
     /**
      * Warning: Check {@link #hasIt(ItemStack)} before use this method
      */
-    public abstract void add(ItemStack stack, float value);
+    public void add(ItemStack stack, float value)
+    {
+        set(stack, value + get(stack));
+    }
 
     public abstract void init(ItemStack stack);
 
@@ -86,6 +89,11 @@ public abstract class ItemAttribute
     }
 
     public boolean isVisibleInInfoBook(ItemStack stack)
+    {
+        return true;
+    }
+
+    public boolean isConfigurable()
     {
         return true;
     }

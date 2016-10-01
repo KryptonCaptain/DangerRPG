@@ -16,8 +16,6 @@ import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemStaff;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemTool;
 import mixac1.dangerrpg.api.item.ItemAttribute;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
-import mixac1.dangerrpg.capability.gt.GemTypes;
-import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.hook.HookArmorSystem;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGConfig.ItemConfig;
@@ -31,8 +29,9 @@ import mixac1.dangerrpg.item.RPGItemComponent.RPGStaffComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
 import mixac1.dangerrpg.item.RPGToolMaterial;
 import mixac1.dangerrpg.util.IMultiplier;
-import mixac1.dangerrpg.util.IMultiplier.IMulConfigurable;
+import mixac1.dangerrpg.util.IMultiplier.Multiplier;
 import mixac1.dangerrpg.util.IMultiplier.MultiplierMul;
+import mixac1.dangerrpg.util.IMultiplier.MultiplierSQRT;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -45,30 +44,11 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 
-public abstract class RPGableItem
+public abstract class RPGItemHelper
 {
-    public static final MultiplierMul EXP_MUL = new MultiplierMul(ItemConfig.d.expMul);
+    public static final Multiplier EXP_MUL = new MultiplierMul(ItemConfig.d.expMul);
 
-    public static final IMulConfigurable DUR_MUL = new IMulConfigurable()
-    {
-        @Override
-        public Float down(Float value, Object... objs)
-        {
-            return value;
-        }
-
-        @Override
-        public Float up(Float value, Object... objs)
-        {
-            return value > 500 ? value * 1.1f : value + 50;
-        }
-
-        @Override
-        public String toString()
-        {
-            return MulType.HARD.toString();
-        }
-    };
+    public static final Multiplier DUR_MUL = new MultiplierSQRT(2f);
 
     public static boolean registerRPGItem(Item item)
     {
@@ -94,13 +74,13 @@ public abstract class RPGableItem
 
     public static void registerParamsDefault(Item item, RPGItemData map)
     {
-        map.addDynamicItemAttribute(ItemAttributes.LEVEL, 1, IMultiplier.ADD_1);
+        map.registerIADynamic(ItemAttributes.LEVEL, 1, IMultiplier.ADD_1);
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.DefaultIAEvent(item, map));
     }
 
     public static void registerParamsItemMod(Item item, RPGItemData map)
     {
-        map.addDynamicItemAttribute(ItemAttributes.MAX_EXP, ItemConfig.d.startMaxExp, EXP_MUL);
+        map.registerIADynamic(ItemAttributes.MAX_EXP, ItemConfig.d.startMaxExp, EXP_MUL);
 
         float durab, ench;
         RPGItemComponent comp;
@@ -114,12 +94,12 @@ public abstract class RPGableItem
             durab = item.isDamageable() ? item.getMaxDamage() : -1;
         }
 
-        map.addDynamicItemAttribute(ItemAttributes.ENCHANTABILITY, ench, IMultiplier.ADD_1);
+        map.registerIADynamic(ItemAttributes.ENCHANTABILITY, ench, IMultiplier.ADD_1);
         if (durab != -1) {
-            map.addDynamicItemAttribute(ItemAttributes.MAX_DURABILITY, durab, DUR_MUL);
+            map.registerIADynamic(ItemAttributes.MAX_DURABILITY, durab, DUR_MUL);
         }
 
-        map.addGemType(GemTypes.PA, 2);
+        map.registerGT(GemTypes.PA, 2);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemModIAEvent(item, map));
     }
@@ -131,14 +111,14 @@ public abstract class RPGableItem
         RPGToolComponent comp = iRPG.getItemComponent(item);
         RPGToolMaterial mat = iRPG.getToolMaterial(item);
 
-        map.addStaticItemAttribute(ItemAttributes.MELEE_DAMAGE, comp.meleeDamage + mat.material.getDamageVsEntity() * comp.strMul * 2);
-        map.addStaticItemAttribute(ItemAttributes.MELEE_SPEED,  comp.meleeSpeed);
-        map.addStaticItemAttribute(ItemAttributes.STR_MUL,      comp.strMul);
-        map.addStaticItemAttribute(ItemAttributes.AGI_MUL,      comp.agiMul);
-        map.addStaticItemAttribute(ItemAttributes.INT_MUL,      comp.intMul);
-        map.addStaticItemAttribute(ItemAttributes.KNOCKBACK,    comp.knBack);
-        map.addStaticItemAttribute(ItemAttributes.KNBACK_MUL,   comp.knbMul);
-        map.addStaticItemAttribute(ItemAttributes.REACH,        comp.reach);
+        map.registerIAStatic(ItemAttributes.MELEE_DAMAGE, comp.meleeDamage + mat.material.getDamageVsEntity() * comp.strMul * 2);
+        map.registerIAStatic(ItemAttributes.MELEE_SPEED,  comp.meleeSpeed);
+        map.registerIAStatic(ItemAttributes.STR_MUL,      comp.strMul);
+        map.registerIAStatic(ItemAttributes.AGI_MUL,      comp.agiMul);
+        map.registerIAStatic(ItemAttributes.INT_MUL,      comp.intMul);
+        map.registerIAStatic(ItemAttributes.KNOCKBACK,    comp.knBack);
+        map.registerIAStatic(ItemAttributes.KNBACK_MUL,   comp.knbMul);
+        map.registerIAStatic(ItemAttributes.REACH,        comp.reach);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemSwordIAEvent(item, map));
     }
@@ -150,16 +130,16 @@ public abstract class RPGableItem
         RPGToolComponent comp = iRPG.getItemComponent(item);
         RPGToolMaterial mat = iRPG.getToolMaterial(item);
 
-        map.addStaticItemAttribute(ItemAttributes.MELEE_DAMAGE, comp.meleeDamage + mat.material.getDamageVsEntity() * comp.strMul * 2);
-        map.addStaticItemAttribute(ItemAttributes.MELEE_SPEED,  comp.meleeSpeed);
-        map.addStaticItemAttribute(ItemAttributes.STR_MUL,      comp.strMul);
-        map.addStaticItemAttribute(ItemAttributes.AGI_MUL,      comp.agiMul);
-        map.addStaticItemAttribute(ItemAttributes.INT_MUL,      comp.intMul);
-        map.addStaticItemAttribute(ItemAttributes.KNOCKBACK,    comp.knBack);
-        map.addStaticItemAttribute(ItemAttributes.KNBACK_MUL,   comp.knbMul);
-        map.addStaticItemAttribute(ItemAttributes.REACH,        comp.reach);
+        map.registerIAStatic(ItemAttributes.MELEE_DAMAGE, comp.meleeDamage + mat.material.getDamageVsEntity() * comp.strMul * 2);
+        map.registerIAStatic(ItemAttributes.MELEE_SPEED,  comp.meleeSpeed);
+        map.registerIAStatic(ItemAttributes.STR_MUL,      comp.strMul);
+        map.registerIAStatic(ItemAttributes.AGI_MUL,      comp.agiMul);
+        map.registerIAStatic(ItemAttributes.INT_MUL,      comp.intMul);
+        map.registerIAStatic(ItemAttributes.KNOCKBACK,    comp.knBack);
+        map.registerIAStatic(ItemAttributes.KNBACK_MUL,   comp.knbMul);
+        map.registerIAStatic(ItemAttributes.REACH,        comp.reach);
 
-        map.addDynamicItemAttribute(ItemAttributes.EFFICIENCY,  mat.material.getEfficiencyOnProperMaterial(), IMultiplier.ADD_1);
+        map.registerIADynamic(ItemAttributes.EFFICIENCY,  mat.material.getEfficiencyOnProperMaterial(), IMultiplier.ADD_1);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemToolIAEvent(item, map));
     }
@@ -172,8 +152,8 @@ public abstract class RPGableItem
         RPGArmorComponent com = iRPG.getItemComponent(item);
 
         float armor = mat.material.getDamageReductionAmount(((ItemArmor) item).armorType) * com.phisicalResMul;
-        map.addStaticItemAttribute(ItemAttributes.PHISIC_ARMOR, HookArmorSystem.convertPhisicArmor(armor));
-        map.addStaticItemAttribute(ItemAttributes.MAGIC_ARMOR,  mat.magicRes * com.magicResMul);
+        map.registerIAStatic(ItemAttributes.PHISIC_ARMOR, HookArmorSystem.convertPhisicArmor(armor));
+        map.registerIAStatic(ItemAttributes.MAGIC_ARMOR,  mat.magicRes * com.magicResMul);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemArmorIAEvent(item, map));
     }
@@ -184,18 +164,18 @@ public abstract class RPGableItem
         IRPGItemBow iRPG = (IRPGItemBow) (item instanceof IRPGItemBow ? item : IRPGItem.DEFAULT_BOW);
         RPGBowComponent comp = iRPG.getItemComponent(item);
 
-        map.addStaticItemAttribute(ItemAttributes.MELEE_DAMAGE,   comp.meleeDamage);
-        map.addStaticItemAttribute(ItemAttributes.MELEE_SPEED,    comp.meleeSpeed);
-        map.addStaticItemAttribute(ItemAttributes.STR_MUL,        comp.strMul);
-        map.addStaticItemAttribute(ItemAttributes.AGI_MUL,        comp.agiMul);
-        map.addStaticItemAttribute(ItemAttributes.INT_MUL,        comp.intMul);
-        map.addStaticItemAttribute(ItemAttributes.KNOCKBACK,      comp.knBack);
-        map.addStaticItemAttribute(ItemAttributes.KNBACK_MUL,     comp.knbMul);
+        map.registerIAStatic(ItemAttributes.MELEE_DAMAGE,   comp.meleeDamage);
+        map.registerIAStatic(ItemAttributes.MELEE_SPEED,    comp.meleeSpeed);
+        map.registerIAStatic(ItemAttributes.STR_MUL,        comp.strMul);
+        map.registerIAStatic(ItemAttributes.AGI_MUL,        comp.agiMul);
+        map.registerIAStatic(ItemAttributes.INT_MUL,        comp.intMul);
+        map.registerIAStatic(ItemAttributes.KNOCKBACK,      comp.knBack);
+        map.registerIAStatic(ItemAttributes.KNBACK_MUL,     comp.knbMul);
 
-        map.addStaticItemAttribute(ItemAttributes.SHOT_DAMAGE,    comp.shotDamage);
-        map.addStaticItemAttribute(ItemAttributes.SHOT_POWER,     comp.shotPower);
-        map.addStaticItemAttribute(ItemAttributes.MIN_CUST_TIME,  comp.shotMinCastTime);
-        map.addStaticItemAttribute(ItemAttributes.SHOT_SPEED,     comp.shotSpeed);
+        map.registerIAStatic(ItemAttributes.SHOT_DAMAGE,    comp.shotDamage);
+        map.registerIAStatic(ItemAttributes.SHOT_POWER,     comp.shotPower);
+        map.registerIAStatic(ItemAttributes.MIN_CUST_TIME,  comp.shotMinCastTime);
+        map.registerIAStatic(ItemAttributes.SHOT_SPEED,     comp.shotSpeed);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemBowIAEvent(item, map));
     }
@@ -207,18 +187,18 @@ public abstract class RPGableItem
         RPGGunComponent comp = iRPG.getItemComponent(item);
         RPGToolMaterial mat = iRPG.getToolMaterial(item);
 
-        map.addStaticItemAttribute(ItemAttributes.MELEE_DAMAGE, comp.meleeDamage + mat.material.getDamageVsEntity() * comp.strMul * 2);
-        map.addStaticItemAttribute(ItemAttributes.MELEE_SPEED,  comp.meleeSpeed);
-        map.addStaticItemAttribute(ItemAttributes.STR_MUL,      comp.strMul);
-        map.addStaticItemAttribute(ItemAttributes.AGI_MUL,      comp.agiMul);
-        map.addStaticItemAttribute(ItemAttributes.INT_MUL,      comp.intMul);
-        map.addStaticItemAttribute(ItemAttributes.KNOCKBACK,    comp.knBack);
-        map.addStaticItemAttribute(ItemAttributes.KNBACK_MUL,   comp.knbMul);
-        map.addStaticItemAttribute(ItemAttributes.REACH,        comp.reach);
+        map.registerIAStatic(ItemAttributes.MELEE_DAMAGE, comp.meleeDamage + mat.material.getDamageVsEntity() * comp.strMul * 2);
+        map.registerIAStatic(ItemAttributes.MELEE_SPEED,  comp.meleeSpeed);
+        map.registerIAStatic(ItemAttributes.STR_MUL,      comp.strMul);
+        map.registerIAStatic(ItemAttributes.AGI_MUL,      comp.agiMul);
+        map.registerIAStatic(ItemAttributes.INT_MUL,      comp.intMul);
+        map.registerIAStatic(ItemAttributes.KNOCKBACK,    comp.knBack);
+        map.registerIAStatic(ItemAttributes.KNBACK_MUL,   comp.knbMul);
+        map.registerIAStatic(ItemAttributes.REACH,        comp.reach);
 
-        map.addStaticItemAttribute(ItemAttributes.SHOT_DAMAGE,    comp.shotDamage + mat.material.getDamageVsEntity() * comp.intMul * 2);
-        map.addStaticItemAttribute(ItemAttributes.MIN_CUST_TIME,  comp.shotMinCastTime);
-        map.addStaticItemAttribute(ItemAttributes.SHOT_SPEED,     comp.shotSpeed);
+        map.registerIAStatic(ItemAttributes.SHOT_DAMAGE,    comp.shotDamage + mat.material.getDamageVsEntity() * comp.intMul * 2);
+        map.registerIAStatic(ItemAttributes.MIN_CUST_TIME,  comp.shotMinCastTime);
+        map.registerIAStatic(ItemAttributes.SHOT_SPEED,     comp.shotSpeed);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemGunIAEvent(item, map));
     }
@@ -230,7 +210,7 @@ public abstract class RPGableItem
         RPGStaffComponent comp = iRPG.getItemComponent(item);
         RPGToolMaterial mat = iRPG.getToolMaterial(item);
 
-        map.addStaticItemAttribute(ItemAttributes.MANA_COST, comp.needMana);
+        map.registerIAStatic(ItemAttributes.MANA_COST, comp.needMana);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemStaffIAEvent(item, map));
     }

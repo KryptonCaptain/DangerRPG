@@ -18,12 +18,12 @@ public abstract class RPGNetwork
     public static void load(FMLPreInitializationEvent e)
     {
         int i = 0;
-        net.registerMessage(MsgUseItemExtra.Handler.class, MsgUseItemExtra.class, i, Side.SERVER);
-        net.registerMessage(MsgSyncEA.Handler.class, MsgSyncEA.class, ++i, Side.CLIENT);
-        net.registerMessage(MsgSyncEntityData.HandlerClient.class, MsgSyncEntityData.class, ++i, Side.CLIENT);
-        net.registerMessage(MsgSyncEntityData.HandlerServer.class, MsgSyncEntityData.class, ++i, Side.SERVER);
-        net.registerMessage(MsgReqUpEA.Handler.class, MsgReqUpEA.class, ++i, Side.SERVER);
-        net.registerMessage(MsgSyncConfig.Handler.class, MsgSyncConfig.class, ++i, Side.CLIENT);
-        net.registerMessage(MsgExplosion.Handler.class, MsgExplosion.class, ++i, Side.CLIENT);
+        net.registerMessage(MsgUseItemExtra.Handler.class, MsgUseItemExtra.class, i++, Side.SERVER);
+        net.registerMessage(MsgSyncEA.Handler.class, MsgSyncEA.class, i++, Side.CLIENT);
+        net.registerMessage(MsgSyncEntityData.HandlerClient.class, MsgSyncEntityData.class, i++, Side.CLIENT);
+        net.registerMessage(MsgSyncEntityData.HandlerServer.class, MsgSyncEntityData.class, i++, Side.SERVER);
+        net.registerMessage(MsgReqUpEA.Handler.class, MsgReqUpEA.class, i++, Side.SERVER);
+        net.registerMessage(MsgSyncConfig.Handler.class, MsgSyncConfig.class, i++, Side.CLIENT);
+        net.registerMessage(MsgExplosion.Handler.class, MsgExplosion.class, i++, Side.CLIENT);
     }
 }

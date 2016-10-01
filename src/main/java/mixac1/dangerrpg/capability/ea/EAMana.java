@@ -1,6 +1,7 @@
 package mixac1.dangerrpg.capability.ea;
 
 import mixac1.dangerrpg.api.entity.EAWithIAttr;
+import mixac1.dangerrpg.capability.PlayerAttributes;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 

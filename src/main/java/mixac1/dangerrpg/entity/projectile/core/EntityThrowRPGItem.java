@@ -2,7 +2,7 @@ package mixac1.dangerrpg.entity.projectile.core;
 
 import mixac1.dangerrpg.api.event.DealtDamageEvent;
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
-import mixac1.dangerrpg.capability.ia.ItemAttributes;
+import mixac1.dangerrpg.capability.ItemAttributes;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

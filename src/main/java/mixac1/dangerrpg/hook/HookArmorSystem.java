@@ -5,8 +5,8 @@ import java.util.Arrays;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import mixac1.dangerrpg.capability.ea.PlayerAttributes;
-import mixac1.dangerrpg.capability.ia.ItemAttributes;
+import mixac1.dangerrpg.capability.ItemAttributes;
+import mixac1.dangerrpg.capability.PlayerAttributes;
 import mixac1.dangerrpg.init.RPGConfig.ClientConfig;
 import mixac1.dangerrpg.init.RPGOther.RPGDamageSource;
 import mixac1.dangerrpg.util.Utils;

@@ -31,7 +31,7 @@ public class EventHandlerClient
         if (!event.isCancelable() &&
              event.type == ElementType.ALL &&
              ClientConfig.d.guiIsEnableHUD) {
-            RPGGuiIngame.INSTANCE.renderGameOverlay(event.resolution);
+             RPGGuiIngame.INSTANCE.renderGameOverlay(event.resolution);
         }
     }
 

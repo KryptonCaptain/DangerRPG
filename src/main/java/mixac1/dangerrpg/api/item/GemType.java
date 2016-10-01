@@ -22,6 +22,8 @@ public abstract class GemType
     {
         this.name = name;
         hash = name.hashCode();
+
+        RPGCapability.mapIntToGemType.put(hash, this);
     }
 
     public boolean hasIt(ItemStack stack)
@@ -86,13 +88,23 @@ public abstract class GemType
         return stacks;
     }
 
-    public abstract void activate(Gem gem, EntityPlayer player);
+    public abstract void activate(ItemStack stack, EntityPlayer player);
 
-    public void activate(ItemStack stack, EntityPlayer player)
+    public abstract void deactivate(ItemStack stack, EntityPlayer player);
+
+    public void activateAll(ItemStack stack, EntityPlayer player)
     {
         List<ItemStack> stacks = get(stack);
         for (ItemStack it : stacks) {
-            activate((Gem) it.getItem(), player);
+            activate(it, player);
+        }
+    }
+
+    public void deactivateAll(ItemStack stack, EntityPlayer player)
+    {
+        List<ItemStack> stacks = get(stack);
+        for (ItemStack it : stacks) {
+            deactivate(it, player);
         }
     }
 

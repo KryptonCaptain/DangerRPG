@@ -42,10 +42,7 @@ public abstract class RPGDataRegister<Key, Data extends ElementData<Key, Transfe
         for (Entry<Key, Data> entry : getActiveElements().entrySet()) {
             TransferKey key = codingKey(entry.getKey());
             if (key != null) {
-                list.add(new Pair<TransferKey, TransferData>(key, entry.getValue().getTransferData(entry.getKey())));
-            }
-            else {
-                throw new NullPointerException();
+                list.add(new Pair<TransferKey, TransferData>(key, entry.getValue() != null ? entry.getValue().getTransferData(entry.getKey()) : null));
             }
         }
 
@@ -71,9 +68,6 @@ public abstract class RPGDataRegister<Key, Data extends ElementData<Key, Transfe
                     get(key).unpackTransferData(data.value2);
                 }
                 get(key).isActivated = true;
-            }
-            else {
-                throw new NullPointerException();
             }
         }
     }

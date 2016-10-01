@@ -1,7 +1,6 @@
 package mixac1.dangerrpg.capability.data;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -11,7 +10,7 @@ import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.EntityAttribute;
 import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import mixac1.dangerrpg.api.event.InitRPGEntityEvent;
-import mixac1.dangerrpg.capability.ea.EntityAttributes;
+import mixac1.dangerrpg.capability.EntityAttributes;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGConfig.EntityConfig;
 import mixac1.dangerrpg.init.RPGNetwork;
@@ -28,7 +27,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class RPGEntityProperties implements IExtendedEntityProperties
 {
-    protected static final String ID = "RPGCommonEntityData";
+    protected static final String ID = "RPGEntityProperties";
 
     public final EntityLivingBase entity;
 
@@ -136,16 +135,6 @@ public class RPGEntityProperties implements IExtendedEntityProperties
                 iter.fromNBT(tmp, entity);
             }
         }
-    }
-
-    private Object getObject(int hash, Collection list)
-    {
-        for (Object it : list) {
-            if (it.hashCode() == hash) {
-                return it;
-            }
-        }
-        return null;
     }
 
     public EntityAttribute getEntityAttribute(int hash)

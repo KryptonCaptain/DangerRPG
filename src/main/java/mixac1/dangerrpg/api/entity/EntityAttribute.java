@@ -65,13 +65,13 @@ public class EntityAttribute<Type>
         return isValid(value);
     }
 
-    public RPGEntityProperties getEntityData(EntityLivingBase entity)
+    protected RPGEntityProperties getEntityData(EntityLivingBase entity)
     {
         return RPGEntityProperties.get(entity);
     }
 
     /**
-     * Get value without check<br>
+     * Get value without check on valid<br>
      * Warning: Check {@link EntityAttribute#hasIt(EntityLivingBase)} before use this method
      */
     @Deprecated
@@ -81,7 +81,7 @@ public class EntityAttribute<Type>
     }
 
     /**
-     * Set value without check<br>
+     * Set value without check on valid<br>
      * Warning: Check {@link EntityAttribute#hasIt(EntityLivingBase)} before use this method
      */
     @Deprecated
@@ -129,14 +129,20 @@ public class EntityAttribute<Type>
      */
     public void addValue(Type value, EntityLivingBase entity)
     {
-        setValue(typeProvider.sum(getValue(entity), value), entity);
+        setValue(typeProvider.sum(getBaseValue(entity), value), entity);
     }
 
+    /**
+     * Warning: Check {@link EntityAttribute#hasIt(EntityLivingBase)} before use this method
+     */
     public Type getBaseValue(EntityLivingBase entity)
     {
         return getValue(entity);
     }
 
+    /**
+     * Warning: Check {@link EntityAttribute#hasIt(EntityLivingBase)} before use this method
+     */
     public Type getModifierValue(EntityLivingBase entity)
     {
         return typeProvider.dif(getValue(entity), getBaseValue(entity));
@@ -152,7 +158,7 @@ public class EntityAttribute<Type>
     public void toNBT(NBTTagCompound nbt, EntityLivingBase entity)
     {
         NBTTagCompound tmp = new NBTTagCompound();
-        typeProvider.toNBT(getValue(entity), "value", tmp);
+        typeProvider.toNBT(getBaseValue(entity), "value", tmp);
         LvlEAProvider lvlProvider = getLvlProvider(entity);
         if (lvlProvider != null) {
             tmp.setInteger("lvl", lvlProvider.getLvl(entity));
@@ -198,6 +204,11 @@ public class EntityAttribute<Type>
     public String getInfo()
     {
         return DangerRPG.trans(Utils.toString("ea.", name, ".info"));
+    }
+
+    public boolean isConfigurable()
+    {
+        return true;
     }
 
     @Override

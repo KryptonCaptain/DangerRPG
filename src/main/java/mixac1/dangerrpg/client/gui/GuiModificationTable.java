@@ -6,7 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.item.GemType;
-import mixac1.dangerrpg.capability.gt.GemTypes;
+import mixac1.dangerrpg.capability.GemTypes;
 import mixac1.dangerrpg.init.RPGBlocks;
 import mixac1.dangerrpg.inventory.ContainerModificationTable;
 import mixac1.dangerrpg.inventory.InventoryModificationTable;

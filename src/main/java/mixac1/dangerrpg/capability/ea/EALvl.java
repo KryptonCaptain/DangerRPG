@@ -20,4 +20,10 @@ public class EALvl extends EAInteger
     {
         return value >= 0;
     }
+
+    @Override
+    public boolean isConfigurable()
+    {
+        return false;
+    }
 }

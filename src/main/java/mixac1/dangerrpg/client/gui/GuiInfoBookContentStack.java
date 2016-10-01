@@ -7,8 +7,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.item.ItemAttribute;
-import mixac1.dangerrpg.capability.RPGableItem;
-import mixac1.dangerrpg.capability.ia.ItemAttributes;
+import mixac1.dangerrpg.capability.RPGItemHelper;
+import mixac1.dangerrpg.capability.ItemAttributes;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.util.Utils;
@@ -54,7 +54,7 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
         addCenteredString(stack.getDisplayName().toUpperCase());
         addString("");
 
-        boolean isLvlable = RPGableItem.isRPGable(stack);
+        boolean isLvlable = RPGItemHelper.isRPGable(stack);
         if (isLvlable) {
 
             addString(String.format("%s: %d\n", ItemAttributes.LEVEL.getDispayName(),
@@ -106,7 +106,7 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
                 addString("");
             }
 
-            Set<ItemAttribute> itemAttributes = new LinkedHashSet<ItemAttribute>(RPGableItem.getItemAttributes(stack));
+            Set<ItemAttribute> itemAttributes = new LinkedHashSet<ItemAttribute>(RPGItemHelper.getItemAttributes(stack));
             itemAttributes.remove(ItemAttributes.LEVEL);
             itemAttributes.remove(ItemAttributes.MAX_EXP);
             itemAttributes.remove(ItemAttributes.DURABILITY);

@@ -17,9 +17,9 @@ import net.minecraft.world.World;
 public abstract class RPGGuiHandlers implements IGuiHandler
 {
     public static final int GUI_MODIFICATION_TABLE  = 0;
-    public static final int GUI_LVLUP_TABLE   = 1;
-    public static final int GUI_INFO_BOOK     = 2;
-    public static final int GUI_RPG_WORKBENCH = 3;
+    public static final int GUI_LVLUP_TABLE         = 1;
+    public static final int GUI_INFO_BOOK           = 2;
+    public static final int GUI_RPG_WORKBENCH       = 3;
 
     public static void load(FMLInitializationEvent e)
     {

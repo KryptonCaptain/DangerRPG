@@ -5,6 +5,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
+/**
+ * It is fires whenever target dealt damage
+ */
 public class DealtDamageEvent extends Event
 {
     public EntityPlayer player;

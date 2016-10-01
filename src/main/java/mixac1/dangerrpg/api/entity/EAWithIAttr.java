@@ -59,7 +59,7 @@ public class EAWithIAttr extends EAFloat
         return (float) entity.getEntityAttribute(attribute).getBaseValue();
     }
 
-    public Float getModifierValue(EntityLivingBase entity, UUID ID)
+    public Float getModificatorValue(EntityLivingBase entity, UUID ID)
     {
         IAttributeInstance attr = entity.getEntityAttribute(attribute);
         AttributeModifier mod = attr.getModifier(ID);

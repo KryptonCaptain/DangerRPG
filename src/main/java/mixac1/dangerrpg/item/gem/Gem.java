@@ -3,8 +3,8 @@ package mixac1.dangerrpg.item.gem;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.item.GemType;
 import mixac1.dangerrpg.api.item.IRPGItem;
+import mixac1.dangerrpg.capability.ItemAttributes;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
-import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.init.RPGConfig.ItemConfig;
 import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGOther.RPGCreativeTabs;
@@ -35,7 +35,7 @@ public abstract class Gem extends Item implements IRPGItem, IHasBooksInfo
     @Override
     public void registerAttributes(Item item, RPGItemData map)
     {
-        map.addDynamicItemAttribute(ItemAttributes.LEVEL, ItemConfig.d.gemStartLvl, LVL_STEP);
+        map.registerIADynamic(ItemAttributes.LEVEL, ItemConfig.d.gemStartLvl, LVL_STEP);
     }
 
     @Override

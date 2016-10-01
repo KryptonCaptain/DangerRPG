@@ -1,9 +1,12 @@
-package mixac1.dangerrpg.capability.ea;
+package mixac1.dangerrpg.capability;
 
 import mixac1.dangerrpg.api.entity.EAWithIAttr;
 import mixac1.dangerrpg.api.entity.EAWithIAttr.EAMotion;
 import mixac1.dangerrpg.api.entity.EAWithIAttr.EAPercent;
 import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
+import mixac1.dangerrpg.capability.ea.EACurrMana;
+import mixac1.dangerrpg.capability.ea.EAMana;
+import mixac1.dangerrpg.capability.ea.EASpeedCounter;
 
 public abstract class PlayerAttributes extends EntityAttributes
 {

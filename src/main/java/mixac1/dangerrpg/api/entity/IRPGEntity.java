@@ -1,9 +1,9 @@
 package mixac1.dangerrpg.api.entity;
 
 import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
-import mixac1.dangerrpg.capability.RPGableEntity;
+import mixac1.dangerrpg.capability.EntityAttributes;
+import mixac1.dangerrpg.capability.RPGEntityHelper;
 import mixac1.dangerrpg.capability.data.RPGEntityRegister.RPGEntityData;
-import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
@@ -34,7 +34,7 @@ public interface IRPGEntity
         @Override
         public void registerAttributes(Class<? extends EntityLivingBase> entityClass, RPGEntityData set)
         {
-            RPGableEntity.registerEntityPlayer((Class<? extends EntityPlayer>) entityClass, set);
+            RPGEntityHelper.registerEntityPlayer((Class<? extends EntityPlayer>) entityClass, set);
         }
     };
 
@@ -59,7 +59,7 @@ public interface IRPGEntity
         @Override
         public void registerAttributes(Class<? extends EntityLivingBase> entityClass, RPGEntityData set)
         {
-            RPGableEntity.registerEntityLiving((Class<? extends EntityLiving>) entityClass, set);
+            RPGEntityHelper.registerEntityLiving((Class<? extends EntityLiving>) entityClass, set);
         }
     };
 
@@ -75,7 +75,7 @@ public interface IRPGEntity
         public void registerAttributes(Class<? extends EntityLivingBase> entityClass, RPGEntityData set)
         {
             super.registerAttributes(entityClass, set);
-            RPGableEntity.registerEntityMob((Class<? extends EntityMob>) entityClass, set);
+            RPGEntityHelper.registerEntityMob((Class<? extends EntityMob>) entityClass, set);
         }
     };
 
@@ -106,7 +106,7 @@ public interface IRPGEntity
         {
             super.registerAttributes(entityClass, set);
             if (rangeAttr != null) {
-                set.addEntityAttribute(rangeAttr, rangeValue);
+                set.registerEA(rangeAttr, rangeValue);
             }
         }
     };
@@ -155,10 +155,10 @@ public interface IRPGEntity
             super.registerAttributes(entityClass, set);
 
             if (meleeAttr != null) {
-                set.addEntityAttribute(meleeAttr, meleeValue);
+                set.registerEA(meleeAttr, meleeValue);
             }
             if (rangeAttr != null) {
-                set.addEntityAttribute(rangeAttr, rangeValue);
+                set.registerEA(rangeAttr, rangeValue);
             }
         }
     };

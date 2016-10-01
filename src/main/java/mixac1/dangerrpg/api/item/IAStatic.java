@@ -40,12 +40,6 @@ public class IAStatic extends ItemAttribute
     }
 
     @Override
-    public final void add(ItemStack stack, float value)
-    {
-
-    }
-
-    @Override
     public final void init(ItemStack stack)
     {
 

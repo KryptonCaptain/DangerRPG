@@ -3,7 +3,7 @@ package mixac1.dangerrpg.client.gui;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.capability.RPGableItem;
+import mixac1.dangerrpg.capability.RPGItemHelper;
 import mixac1.dangerrpg.init.RPGBlocks;
 import mixac1.dangerrpg.inventory.ContainerLvlupTable;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -87,7 +87,7 @@ public class GuiLvlupTable extends GuiContainer
         ItemStack stack;
         stack = inventorySlots.getSlot(0).getStack();
         int exp;
-        if (stack != null && RPGableItem.isRPGable(stack)) {
+        if (stack != null && RPGItemHelper.isRPGable(stack)) {
             for (int i = 0; i < 2; ++i) {
                 if ((exp = ((ContainerLvlupTable) inventorySlots).expToUp) != 0 && exp != -1 &&
                     (i == 0 && (((ContainerLvlupTable) inventorySlots).expToUp <= mc.thePlayer.experienceTotal) ||

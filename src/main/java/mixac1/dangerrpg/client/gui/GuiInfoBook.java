@@ -9,7 +9,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.LvlEAProvider;
-import mixac1.dangerrpg.capability.RPGableEntity;
+import mixac1.dangerrpg.capability.RPGEntityHelper;
 import mixac1.dangerrpg.capability.data.RPGEntityProperties;
 import mixac1.dangerrpg.client.gui.GuiInfoBookContentEntity.LevelUpButton;
 import mixac1.dangerrpg.init.RPGKeyBinds;
@@ -69,7 +69,7 @@ public class GuiInfoBook extends GuiScreen
         this.player = player;
 
         MovingObjectPosition mop = RPGHelper.getMouseOver(0, 10);
-        if (mop != null && mop.entityHit != null && mop.entityHit instanceof EntityPlayer && RPGableEntity.isRPGable((EntityLivingBase) mop.entityHit)) {
+        if (mop != null && mop.entityHit != null && mop.entityHit instanceof EntityPlayer && RPGEntityHelper.isRPGable((EntityLivingBase) mop.entityHit)) {
             target = (EntityLivingBase) mop.entityHit;
             isTargetPlayer = true;
         }

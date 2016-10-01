@@ -171,12 +171,10 @@ public class ContainerModificationTable extends Container
         super.onContainerClosed(player);
 
         if (!worldObj.isRemote) {
-            for (ItemStack[] element : invTable.inv) {
-                for (ItemStack element1 : element) {
-                    if (element1 != null) {
-                        player.dropPlayerItemWithRandomChoice(element1, false);
-                    }
-                }
+            if (invTable.main != null) {
+                ItemStack stack = invTable.main;
+                invTable.setInventorySlotContents(0, null);
+                player.dropPlayerItemWithRandomChoice(stack, false);
             }
         }
     }

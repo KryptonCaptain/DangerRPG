@@ -6,7 +6,7 @@ import java.util.Set;
 
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemTool;
-import mixac1.dangerrpg.capability.RPGableItem;
+import mixac1.dangerrpg.capability.RPGItemHelper;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
 import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGOther.RPGCreativeTabs;
@@ -101,6 +101,6 @@ public class ItemRPGMultiTool extends ItemTool implements IRPGItemTool, IHasBook
     @Override
     public void registerAttributes(Item item, RPGItemData map)
     {
-        RPGableItem.registerParamsItemTool(item, map);
+        RPGItemHelper.registerParamsItemTool(item, map);
     }
 }

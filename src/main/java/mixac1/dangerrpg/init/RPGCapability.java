@@ -14,18 +14,18 @@ import mixac1.dangerrpg.api.entity.IRPGEntity;
 import mixac1.dangerrpg.api.entity.IRPGEntity.RPGCommonEntity;
 import mixac1.dangerrpg.api.entity.IRPGEntity.RPGCommonRangeEntity;
 import mixac1.dangerrpg.api.entity.IRPGEntity.RPGRangeEntityMob;
+import mixac1.dangerrpg.api.item.GemType;
 import mixac1.dangerrpg.api.item.IRPGItem;
 import mixac1.dangerrpg.api.item.ItemAttribute;
-import mixac1.dangerrpg.capability.RPGableEntity;
-import mixac1.dangerrpg.capability.RPGableItem;
+import mixac1.dangerrpg.capability.EntityAttributes;
+import mixac1.dangerrpg.capability.RPGEntityHelper;
+import mixac1.dangerrpg.capability.RPGItemHelper;
 import mixac1.dangerrpg.capability.data.RPGEntityRegister;
 import mixac1.dangerrpg.capability.data.RPGEntityRegister.RPGEntityData;
 import mixac1.dangerrpg.capability.data.RPGItemRegister;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
-import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.init.RPGConfig.EntityConfig;
 import mixac1.dangerrpg.init.RPGConfig.ItemConfig;
-import mixac1.dangerrpg.init.RPGConfig.MainConfig;
 import mixac1.dangerrpg.item.gem.Gem;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -68,6 +68,7 @@ public abstract class RPGCapability
     public static RPGEntityRegister rpgEntityRegistr = new RPGEntityRegister();
 
     public static HashMap<Integer, ItemAttribute>   mapIntToItemAttribute   = new HashMap<Integer, ItemAttribute>();
+    public static HashMap<Integer, GemType>         mapIntToGemType         = new HashMap<Integer, GemType>();
     public static HashMap<Integer, EntityAttribute> mapIntToEntityAttribute = new HashMap<Integer, EntityAttribute>();
     public static HashSet<Class<? extends EntityLivingBase>> blackListEntities = new HashSet<Class<? extends EntityLivingBase>>()
     {{
@@ -91,10 +92,8 @@ public abstract class RPGCapability
 
     public static void postLoad(FMLPostInitializationEvent e)
     {
-        if (MainConfig.d.mainEnableTransferConfig) {
-            rpgItemRegistr.createTransferData();
-            rpgEntityRegistr.createTransferData();
-        }
+        rpgItemRegistr.createTransferData();
+        rpgEntityRegistr.createTransferData();
     }
 
     private static void registerDefaultRPGItems()
@@ -211,7 +210,7 @@ public abstract class RPGCapability
         for (Object obj : EntityList.classToStringMapping.entrySet()) {
             Entry<Class, String> entry = (Entry<Class, String>) obj;
             if (entry.getKey() != null && entry.getValue() != null) {
-                RPGableEntity.registerEntity(entry.getKey());
+                RPGEntityHelper.registerEntity(entry.getKey());
             }
         }
 
@@ -221,10 +220,10 @@ public abstract class RPGCapability
             }
         }
 
-        RPGableEntity.registerEntity(EntityPlayer.class);
+        RPGEntityHelper.registerEntity(EntityPlayer.class);
 
         for (Entry<Class<? extends EntityLivingBase>, RPGEntityData> it : rpgEntityRegistr.entrySet()) {
-            RPGableEntity.registerEntityDefault(it.getKey(), it.getValue());
+            RPGEntityHelper.registerEntityDefault(it.getKey(), it.getValue());
             it.getValue().rpgComponent.registerAttributes(it.getKey(), it.getValue());
             if (EntityConfig.d.isAllEntitiesRPGable || EntityConfig.activeRPGEntities.contains(EntityList.classToStringMapping.get(it.getKey()))) {
                 rpgEntityRegistr.get(it.getKey()).isActivated = true;
@@ -240,11 +239,11 @@ public abstract class RPGCapability
     {
         Iterator iterator = GameData.getItemRegistry().iterator();
         while(iterator.hasNext()) {
-            RPGableItem.registerRPGItem((Item) iterator.next());
+            RPGItemHelper.registerRPGItem((Item) iterator.next());
         }
 
         for (Entry<Item, RPGItemData> it : rpgItemRegistr.entrySet()) {
-            RPGableItem.registerParamsDefault(it.getKey(), it.getValue());
+            RPGItemHelper.registerParamsDefault(it.getKey(), it.getValue());
             it.getValue().rpgComponent.registerAttributes(it.getKey(), it.getValue());
             if (it.getKey() instanceof Gem || ItemConfig.d.isAllItemsRPGable || ItemConfig.activeRPGItems.contains(it.getKey().delegate.name())) {
                 rpgItemRegistr.get(it.getKey()).isActivated = true;

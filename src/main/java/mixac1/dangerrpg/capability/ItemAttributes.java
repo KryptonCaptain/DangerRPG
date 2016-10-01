@@ -1,8 +1,16 @@
-package mixac1.dangerrpg.capability.ia;
+package mixac1.dangerrpg.capability;
 
 import mixac1.dangerrpg.api.item.IADynamic;
 import mixac1.dangerrpg.api.item.IAStatic;
+import mixac1.dangerrpg.capability.ia.IACurrExp;
+import mixac1.dangerrpg.capability.ia.IADamage;
 import mixac1.dangerrpg.capability.ia.IADamage.IAMeleeDamage;
+import mixac1.dangerrpg.capability.ia.IADurability;
+import mixac1.dangerrpg.capability.ia.IAEfficiency;
+import mixac1.dangerrpg.capability.ia.IAKnockback;
+import mixac1.dangerrpg.capability.ia.IALevel;
+import mixac1.dangerrpg.capability.ia.IAMaxExp;
+import mixac1.dangerrpg.capability.ia.IASpeed;
 import mixac1.dangerrpg.hook.HookArmorSystem;
 import mixac1.dangerrpg.init.RPGOther.RPGDamageSource;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +27,7 @@ public abstract class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringPlus(getSafe(stack, player, 0));
+            return getStringPlus(get(stack, player));
         }
     };
 
@@ -28,9 +36,9 @@ public abstract class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            float value = getSafe(stack, player, 0);
+            float value = get(stack, player);
             float power;
-            if ((power = ItemAttributes.SHOT_POWER.getSafe(stack, player, 0)) != 1F) {
+            if ((power = ItemAttributes.SHOT_POWER.get(stack, player)) != 1F) {
                 if (power > 1) {
                     return String.format("%.2f - %.2f", value, value * power);
                 }
@@ -51,7 +59,7 @@ public abstract class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringSpeed(getSafe(stack, player, 0), normalValue);
+            return getStringSpeed(get(stack, player), normalValue);
         }
     };
 
@@ -60,7 +68,7 @@ public abstract class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringSpeed(getSafe(stack, player, 0), normalValue);
+            return getStringSpeed(get(stack, player), normalValue);
         }
     };
 
@@ -78,7 +86,7 @@ public abstract class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringPlus(getSafe(stack, player, 0));
+            return getStringPlus(get(stack, player));
         }
     };
 
@@ -87,7 +95,7 @@ public abstract class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringPlus(getSafe(stack, player, 0));
+            return getStringPlus(get(stack, player));
         }
     };
 
@@ -118,7 +126,7 @@ public abstract class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringProcentage(getSafe(stack, player, 0));
+            return getStringProcentage(get(stack, player));
         }
     };
 
@@ -127,7 +135,7 @@ public abstract class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringProcentage(getSafe(stack, player, 0));
+            return getStringProcentage(get(stack, player));
         }
     };
 
@@ -136,7 +144,7 @@ public abstract class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringProcentage(getSafe(stack, player, 0));
+            return getStringProcentage(get(stack, player));
         }
     };
 
@@ -145,7 +153,7 @@ public abstract class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringProcentage(getSafe(stack, player, 0));
+            return getStringProcentage(get(stack, player));
         }
     };
 
@@ -156,7 +164,7 @@ public abstract class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringInteger(getSafe(stack, player, 0));
+            return getStringInteger(get(stack, player));
         }
     };
 
@@ -165,7 +173,7 @@ public abstract class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringInteger(getSafe(stack, player, 0));
+            return getStringInteger(get(stack, player));
         }
     };
 
@@ -174,7 +182,7 @@ public abstract class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringInteger(getSafe(stack, player, 0));
+            return getStringInteger(get(stack, player));
         }
 
         @Override
@@ -189,28 +197,28 @@ public abstract class ItemAttributes
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)
         {
-            return getStringInteger(getSafe(stack, player, 0));
+            return getStringInteger(get(stack, player));
         }
     };
 
     /*********************************************************************************/
 
-    private static String getStringPlus(float value)
+    public static String getStringPlus(float value)
     {
         return String.format("+%.2f", value);
     }
 
-    private static String getStringInteger(float value)
+    public static String getStringInteger(float value)
     {
         return String.format("%d", (int) value);
     }
 
-    private static String getStringProcentage(float value)
+    public static String getStringProcentage(float value)
     {
         return String.format("%d%c", Math.round(value * 100), '%');
     }
 
-    private static String getStringSpeed(float value, float normalValue)
+    public static String getStringSpeed(float value, float normalValue)
     {
         value = - (value - normalValue);
         if (value > 0) {

@@ -1,8 +1,8 @@
 package mixac1.dangerrpg.api.item;
 
-import mixac1.dangerrpg.capability.RPGableItem;
+import mixac1.dangerrpg.capability.RPGItemHelper;
+import mixac1.dangerrpg.capability.ItemAttributes;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
-import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.entity.projectile.core.EntityMaterial;
 import mixac1.dangerrpg.entity.projectile.core.EntityRPGArrow;
 import mixac1.dangerrpg.init.RPGOther;
@@ -32,7 +32,7 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.world.World;
 
 /**
- * Implements this interface for creating LvlableItem
+ * Implements this interface for creating RPGableItem
  */
 public interface IRPGItem
 {
@@ -96,7 +96,7 @@ public interface IRPGItem
         @Override
         public void registerAttributes(Item item, RPGItemData map)
         {
-            RPGableItem.registerParamsItemMod(item, map);
+            RPGItemHelper.registerParamsItemMod(item, map);
         }
 
         @Override
@@ -111,7 +111,7 @@ public interface IRPGItem
         @Override
         public void registerAttributes(Item item, RPGItemData map)
         {
-            RPGableItem.registerParamsItemSword(item, map);
+            RPGItemHelper.registerParamsItemSword(item, map);
         }
 
         @Override
@@ -132,7 +132,7 @@ public interface IRPGItem
         @Override
         public void registerAttributes(Item item, RPGItemData map)
         {
-            RPGableItem.registerParamsItemTool(item, map);
+            RPGItemHelper.registerParamsItemTool(item, map);
         }
 
         @Override
@@ -171,7 +171,7 @@ public interface IRPGItem
         @Override
         public void registerAttributes(Item item, RPGItemData map)
         {
-            RPGableItem.registerParamsItemArmor(item, map);
+            RPGItemHelper.registerParamsItemArmor(item, map);
         }
 
         @Override
@@ -192,7 +192,7 @@ public interface IRPGItem
         @Override
         public void registerAttributes(Item item, RPGItemData map)
         {
-            RPGableItem.registerParamsItemBow(item, map);
+            RPGItemHelper.registerParamsItemBow(item, map);
         }
 
         @Override

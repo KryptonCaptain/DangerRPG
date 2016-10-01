@@ -2,7 +2,7 @@ package mixac1.dangerrpg.item.weapon;
 
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemTool;
-import mixac1.dangerrpg.capability.RPGableItem;
+import mixac1.dangerrpg.capability.RPGItemHelper;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
 import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGOther.RPGCreativeTabs;
@@ -59,6 +59,6 @@ public class ItemRPGWeapon extends ItemSword implements IRPGItemTool, IHasBooksI
     @Override
     public void registerAttributes(Item item, RPGItemData map)
     {
-        RPGableItem.registerParamsItemSword(item, map);
+        RPGItemHelper.registerParamsItemSword(item, map);
     }
 }
