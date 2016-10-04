@@ -184,7 +184,21 @@ item.mage_armor_white_matter_boots.name=White Matter Mage Boots
 item.shadow_bow.name=Shadow Bow
 item.sniper_bow.name=Sniper Bow
 
-item.gem_wither_skull.name=Wither Skull Gem
+item.gem_pa_health.name=Gem of Health
+item.gem_pa_mana.name=Gem of Mana
+item.gem_pa_str.name=Gem of Strenght
+item.gem_pa_agi.name=Gem of Agility
+item.gem_pa_int.name=Gem of Intelligence
+item.gem_pa_effic.name=Gem of Efficiency
+item.gem_pa_mana_regen.name=Gem of Mana Regen
+item.gem_pa_health_regen.name=Gem of Health Regen
+item.gem_pa_motion_speed.name=Gem of Motion Speed
+item.gem_pa_jump_str.name=Gem of Jump Strenght
+item.gem_pa_phisic_resist.name=Gem of Phisic Resist
+item.gem_pa_magic_resist.name=Gem of Magic Resist
+item.gem_pa_fall_resist.name=Gem of Fall Resist
+item.gem_pa_fire_resist.name=Gem of Fire Resist
+item.gem_pa_lava_resist.name=Gem of Lava Resist
 
 tile.modification_table.name=Modification Table
 tile.lvlup_table.name=LevelUp Table
@@ -194,7 +208,6 @@ tile.synthetic_bedrock.name=Synthetic Bedrock
 recipe.large_shaped=Shaped Crafting
 recipe.large_shapeless=Shapeless Crafting
 
-rpgkey.special_use=Special use of item
 rpgkey.extra_use=Extra use of item
 rpgkey.info_book=Player's Menu
 rpgkey.gui_mode=HUD Mode
@@ -222,6 +235,10 @@ ia.str_mul=Str to Damage
 ia.agi_mul=Agi to Speed
 ia.int_mul=Int to Magic damage
 ia.knb_mul=Str to KnockBack
+
+ia.amount=Amount
+ia.percent=Percent
+ia.chance=Chance
 
 ea.health=Health
 ea.health.info=Increases maximum level of health
@@ -262,14 +279,7 @@ ea.fire_resist.info=Increases fire resistance
 ea.lava_resist=Lava resist
 ea.lava_resist.info=Increases lava resistance
 
-gem_type.wpn_gem_sa=Special Attack Gem
-gem_type.wpn_gem_ma1=Modify Attack Gem
-gem_type.wpn_gem_ma2=Modify Attack Gem
-gem_type.wpn_gem_def=Defence Gem
-gem_type.helmet_gem=Helmet Gem
-gem_type.chestplate_gem=Chestplate Gem
-gem_type.leggings_gem=Leggings Gem
-gem_type.boots_gem=Boots Gem
+gt.pa=Passive Stat Gem
 
 rpgstr.lvlup_table.1button=Level Up
 rpgstr.lvlup_table.2button=Put all exp
@@ -278,15 +288,16 @@ rpgstr.info_book.lvlup_but=Level Up
 rpgstr.info_about=Info about
 rpgstr.stats=Stats
 rpgstr.item_info=Item Info
-rpgstr.item_description=Item Description
 rpgstr.parametres=Parametres
 rpgstr.description=Description
-rpgstr.gems=Gems
+rpgstr.gem=Gem
 rpgstr.name=Name
 rpgstr.type=Type
 rpgstr.value=Value
 rpgstr.max=Max
 rpgstr.unbreakable=Unbreakable
+
+rpgstr.gpa.info=It adds additional amount of player stat points.
 
 rpgstr.no_item=There is no item.
 rpgstr.no_info=There is no information.

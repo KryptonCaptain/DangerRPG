@@ -3,11 +3,13 @@ package mixac1.dangerrpg.api.item;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.item.gem.Gem;
+import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,9 +33,9 @@ public abstract class GemType
         return RPGCapability.rpgItemRegistr.isActivated(stack.getItem()) && stack.stackTagCompound.hasKey(name);
     }
 
-    public boolean isItGem(ItemStack stack)
+    public boolean isTrueGem(Gem gem, ItemStack stack)
     {
-        return stack.getItem() instanceof Gem && getClass().isInstance(((Gem) stack.getItem()).getGemType());
+        return gem.itemTypes.isEmpty() || gem.itemTypes.contains(RPGCapability.rpgItemRegistr.get(stack.getItem()).itemType);
     }
 
     public void attach(ItemStack dest, ItemStack... src)
@@ -47,7 +49,7 @@ public abstract class GemType
         int max = RPGCapability.rpgItemRegistr.get(dest.getItem()).gems.get(this);
         for (int i = 0; i < src.size() && i < max; ++i) {
             ItemStack stack = src.get(i);
-            if (stack != null && isItGem(stack)) {
+            if (stack != null && stack.getItem() instanceof Gem && isTrueGem((Gem) stack.getItem(), dest)) {
                 NBTTagCompound nbt = new NBTTagCompound();
                 stack.writeToNBT(nbt);
                 tagList.appendTag(nbt);
@@ -67,9 +69,11 @@ public abstract class GemType
     {
         if (hasIt(stack)) {
             List<ItemStack> stacks = getRaw(stack);
-            for (ItemStack it : stacks) {
-                if (!isItGem(it)) {
-                    stacks.remove(it);
+
+            for(Iterator<ItemStack> it = stacks.iterator(); it.hasNext();) {
+                ItemStack itStack = it.next();
+                if (itStack == null || !(itStack.getItem() instanceof Gem) || !isTrueGem((Gem) itStack.getItem(), stack)) {
+                    it.remove();
                 }
             }
             return stacks;
@@ -110,7 +114,7 @@ public abstract class GemType
 
     public String getDispayName()
     {
-        return DangerRPG.trans("gem.".concat(name));
+        return DangerRPG.trans(Utils.toString("gt.", name));
     }
 
     @Override

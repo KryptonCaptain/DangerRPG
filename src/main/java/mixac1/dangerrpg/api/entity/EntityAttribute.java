@@ -191,9 +191,14 @@ public class EntityAttribute<Type>
         fromNBT(nbt, entity);
     }
 
+    public String getValueToString(Type value, EntityLivingBase entity)
+    {
+        return typeProvider.toString(value);
+    }
+
     public String getDisplayValue(EntityLivingBase entity)
     {
-        return typeProvider.toString(getValue(entity));
+        return getValueToString(getValue(entity), entity);
     }
 
     public String getDisplayName()

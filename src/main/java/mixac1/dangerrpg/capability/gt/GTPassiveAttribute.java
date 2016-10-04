@@ -7,9 +7,9 @@ import net.minecraft.item.ItemStack;
 
 public class GTPassiveAttribute extends GemType
 {
-    public GTPassiveAttribute(String name)
+    public GTPassiveAttribute()
     {
-        super(name);
+        super("pa");
     }
 
     @Override
@@ -25,22 +25,6 @@ public class GTPassiveAttribute extends GemType
     {
         if (stack.getItem() instanceof GemPassiveAttribute) {
             ((GemPassiveAttribute) stack.getItem()).deactivate(stack, player);
-        }
-    }
-
-    public static class GTPAWeapon extends GTPassiveAttribute
-    {
-        public GTPAWeapon(String name)
-        {
-            super(name);
-        }
-    }
-
-    public static class GTPAArmor extends GTPassiveAttribute
-    {
-        public GTPAArmor(String name)
-        {
-            super(name);
         }
     }
 }

@@ -15,6 +15,7 @@ import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemMod;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemStaff;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemTool;
 import mixac1.dangerrpg.api.item.ItemAttribute;
+import mixac1.dangerrpg.capability.data.RPGItemRegister.ItemType;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
 import mixac1.dangerrpg.hook.HookArmorSystem;
 import mixac1.dangerrpg.init.RPGCapability;
@@ -99,14 +100,14 @@ public abstract class RPGItemHelper
             map.registerIADynamic(ItemAttributes.MAX_DURABILITY, durab, DUR_MUL);
         }
 
-        map.registerGT(GemTypes.PA, 2);
-
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemModIAEvent(item, map));
     }
 
     public static void registerParamsItemSword(Item item, RPGItemData map)
     {
         registerParamsItemMod(item, map);
+        map.itemType = ItemType.SWORD;
+
         IRPGItemTool iRPG = (IRPGItemTool) (item instanceof IRPGItemTool ? item : IRPGItem.DEFAULT_SWORD);
         RPGToolComponent comp = iRPG.getItemComponent(item);
         RPGToolMaterial mat = iRPG.getToolMaterial(item);
@@ -120,12 +121,16 @@ public abstract class RPGItemHelper
         map.registerIAStatic(ItemAttributes.KNBACK_MUL,   comp.knbMul);
         map.registerIAStatic(ItemAttributes.REACH,        comp.reach);
 
+        map.registerGT(GemTypes.PA, 2);
+
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemSwordIAEvent(item, map));
     }
 
     public static void registerParamsItemTool(Item item, RPGItemData map)
     {
         registerParamsItemMod(item, map);
+        map.itemType = ItemType.TOOL;
+
         IRPGItemTool iRPG = (IRPGItemTool) (item instanceof IRPGItemTool ? item : IRPGItem.DEFAULT_TOOL);
         RPGToolComponent comp = iRPG.getItemComponent(item);
         RPGToolMaterial mat = iRPG.getToolMaterial(item);
@@ -141,12 +146,16 @@ public abstract class RPGItemHelper
 
         map.registerIADynamic(ItemAttributes.EFFICIENCY,  mat.material.getEfficiencyOnProperMaterial(), IMultiplier.ADD_1);
 
+        map.registerGT(GemTypes.PA, 1);
+
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemToolIAEvent(item, map));
     }
 
     public static void registerParamsItemArmor(Item item, RPGItemData map)
     {
         registerParamsItemMod(item, map);
+        map.itemType = ItemType.ARMOR;
+
         IRPGItemArmor iRPG = (IRPGItemArmor) (item instanceof IRPGItemArmor ? item : IRPGItem.DEFAULT_ARMOR);
         RPGArmorMaterial mat = iRPG.getArmorMaterial(item);
         RPGArmorComponent com = iRPG.getItemComponent(item);
@@ -155,12 +164,16 @@ public abstract class RPGItemHelper
         map.registerIAStatic(ItemAttributes.PHISIC_ARMOR, HookArmorSystem.convertPhisicArmor(armor));
         map.registerIAStatic(ItemAttributes.MAGIC_ARMOR,  mat.magicRes * com.magicResMul);
 
+        map.registerGT(GemTypes.PA, 2);
+
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemArmorIAEvent(item, map));
     }
 
     public static void registerParamsItemBow(Item item, RPGItemData map)
     {
         registerParamsItemMod(item, map);
+        map.itemType = ItemType.BOW;
+
         IRPGItemBow iRPG = (IRPGItemBow) (item instanceof IRPGItemBow ? item : IRPGItem.DEFAULT_BOW);
         RPGBowComponent comp = iRPG.getItemComponent(item);
 
@@ -177,12 +190,16 @@ public abstract class RPGItemHelper
         map.registerIAStatic(ItemAttributes.MIN_CUST_TIME,  comp.shotMinCastTime);
         map.registerIAStatic(ItemAttributes.SHOT_SPEED,     comp.shotSpeed);
 
+        map.registerGT(GemTypes.PA, 2);
+
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemBowIAEvent(item, map));
     }
 
     public static void registerParamsItemGun(Item item, RPGItemData map)
     {
         registerParamsItemMod(item, map);
+        map.itemType = ItemType.GUN;
+
         IRPGItemGun iRPG = (IRPGItemGun) item;
         RPGGunComponent comp = iRPG.getItemComponent(item);
         RPGToolMaterial mat = iRPG.getToolMaterial(item);
@@ -200,12 +217,16 @@ public abstract class RPGItemHelper
         map.registerIAStatic(ItemAttributes.MIN_CUST_TIME,  comp.shotMinCastTime);
         map.registerIAStatic(ItemAttributes.SHOT_SPEED,     comp.shotSpeed);
 
+        map.registerGT(GemTypes.PA, 2);
+
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemGunIAEvent(item, map));
     }
 
     public static void registerParamsItemStaff(Item item, RPGItemData map)
     {
         registerParamsItemGun(item, map);
+        map.itemType = ItemType.STAFF;
+
         IRPGItemStaff iRPG = (IRPGItemStaff) item;
         RPGStaffComponent comp = iRPG.getItemComponent(item);
         RPGToolMaterial mat = iRPG.getToolMaterial(item);

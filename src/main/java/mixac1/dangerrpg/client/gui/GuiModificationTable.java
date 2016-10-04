@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 @SideOnly(Side.CLIENT)
 public class GuiModificationTable extends GuiContainer
 {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(DangerRPG.MODID, "textures/gui/container/gui_modify_table.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(DangerRPG.MODID, "textures/gui/container/gui_modification_table.png");
 
     public static int slotU = 176;
     public static int slotV = 0;
@@ -34,8 +34,6 @@ public class GuiModificationTable extends GuiContainer
     private static HashMap<GemType, Integer> iconMap = new HashMap<GemType, Integer>()
     {{
         put(GemTypes.PA, 1);
-        put(GemTypes.PAA, 1);
-        put(GemTypes.PAW, 1);
     }};
 
     public GuiModificationTable(InventoryPlayer inventory, World world, int x, int y, int z)

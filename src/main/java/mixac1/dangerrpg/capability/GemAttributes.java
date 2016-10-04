@@ -9,7 +9,14 @@ public abstract class GemAttributes
 {
     public static final IAStrUUID UUID = new IAStrUUID("uuid");
 
-    public static final IADynamic VALUE = new IADynamic("value");
+    public static final IADynamic AMOUNT = new IADynamic("amount")
+    {
+        @Override
+        public String getDispayValue(ItemStack stack, EntityPlayer player)
+        {
+            return String.format("%.3f", getSafe(stack, player, 0));
+        }
+    };
 
     public static final IADynamic PERCENT = new IADynamic("percent")
     {

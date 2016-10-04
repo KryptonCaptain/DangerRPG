@@ -63,7 +63,6 @@ public abstract class RPGEntityHelper
         Multiplier ADD_2     = new MultiplierAdd(2F);
         Multiplier ADD_0d001 = new MultiplierAdd(0.001F);
         Multiplier ADD_0d01  = new MultiplierAdd(0.01F);
-        Multiplier ADD_0d014 = new MultiplierAdd(0.014F);
         Multiplier ADD_0d025 = new MultiplierAdd(0.025F);
         Multiplier ADD_0d2   = new MultiplierAdd(0.2F);
 
@@ -83,7 +82,7 @@ public abstract class RPGEntityHelper
         map.registerEALvlable(PlayerAttributes.SNEAK_SPEED,   0f,  new DafailtLvlEAProvider(2, 20,   ADD_0d001));
         map.registerEALvlable(PlayerAttributes.FLY_SPEED,     0f,  new DafailtLvlEAProvider(2, 20,   ADD_0d001));
         map.registerEALvlable(PlayerAttributes.SWIM_SPEED,    0f,  new DafailtLvlEAProvider(2, 20,   ADD_0d001));
-        map.registerEALvlable(PlayerAttributes.JUMP_HEIGHT,   0f,  new DafailtLvlEAProvider(2, 20,   ADD_0d014));
+        map.registerEALvlable(PlayerAttributes.JUMP_HEIGHT,   0f,  new DafailtLvlEAProvider(2, 20,   ADD_0d001));
         map.registerEALvlable(PlayerAttributes.JUMP_RANGE,    0f,  new DafailtLvlEAProvider(2, 20,   ADD_0d001));
 
         map.registerEALvlable(PlayerAttributes.PHISIC_RESIST, 0f,  new DafailtLvlEAProvider(2, 20,   ADD_0d01));

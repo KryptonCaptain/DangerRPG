@@ -94,13 +94,19 @@ public class EAWithIAttr extends EAFloat
     public String getDisplayValue(EntityLivingBase entity)
     {
         float mod = getModifierValue(entity);
-        if (mod > 0f) {
-            return String.format("%.2f + %.2f", getBaseValue(entity), mod);
+        String baseStr = getValueToString(getBaseValue(entity), entity);
+        if (mod == 0) {
+            return String.format("%s", baseStr);
         }
-        else if (mod < 0f) {
-            return String.format("%.2f - %.2f", getBaseValue(entity), mod);
+        else {
+            String modStr = getValueToString(mod, entity);
+            if (mod > 0f) {
+                return String.format("%s + %s", baseStr, modStr);
+            }
+            else {
+                return String.format("%s - %s", baseStr, modStr);
+            }
         }
-        return String.format("%.2f", getBaseValue(entity));
     }
 
     @Override
@@ -153,9 +159,9 @@ public class EAWithIAttr extends EAFloat
         }
 
         @Override
-        public String getDisplayValue(EntityLivingBase entity)
+        public String getValueToString(Float value, EntityLivingBase entity)
         {
-            return null;
+            return String.format("%d", value.intValue() * 1000);
         }
     }
 
@@ -167,9 +173,9 @@ public class EAWithIAttr extends EAFloat
         }
 
         @Override
-        public String getDisplayValue(EntityLivingBase entity)
+        public String getValueToString(Float value, EntityLivingBase entity)
         {
-            return String.format("%d%c", Math.round(getValue(entity) * 100), '%');
+            return String.format("%d%c", Math.round(value * 100), '%');
         }
     }
 }

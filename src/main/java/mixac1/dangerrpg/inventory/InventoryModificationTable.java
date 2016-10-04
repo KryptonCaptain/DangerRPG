@@ -220,10 +220,10 @@ public class InventoryModificationTable implements IInventory
             return true;
         }
 
-        if (stack.getItem() instanceof Gem) {
+        if (main != null && stack.getItem() instanceof Gem) {
             GemType gemType = getGemTypeSlot(index);
             if (gemType != null) {
-                return gemType.isItGem(stack);
+                return gemType.isTrueGem((Gem) stack.getItem(), main);
             }
         }
         return false;

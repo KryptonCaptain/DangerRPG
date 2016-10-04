@@ -1,9 +1,13 @@
 package mixac1.dangerrpg.item.gem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.item.GemType;
 import mixac1.dangerrpg.api.item.IRPGItem;
 import mixac1.dangerrpg.capability.ItemAttributes;
+import mixac1.dangerrpg.capability.data.RPGItemRegister.ItemType;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
 import mixac1.dangerrpg.init.RPGConfig.ItemConfig;
 import mixac1.dangerrpg.init.RPGItems;
@@ -14,10 +18,16 @@ import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import scala.actors.threadpool.Arrays;
 
 public abstract class Gem extends Item implements IRPGItem, IHasBooksInfo
 {
     protected static final MultiplierAdd LVL_STEP = new MultiplierAdd((float) ItemConfig.d.gemLvlUpStep);
+
+    /**
+     * If empty, then it can be insert in all RPG items
+     */
+    public List<ItemType> itemTypes = new ArrayList<ItemType>();
 
     public Gem(String name)
     {
@@ -31,6 +41,12 @@ public abstract class Gem extends Item implements IRPGItem, IHasBooksInfo
     }
 
     public abstract GemType getGemType();
+
+    public Gem addItemTypes(ItemType... types)
+    {
+        itemTypes.addAll(Arrays.asList(types));
+        return this;
+    }
 
     @Override
     public void registerAttributes(Item item, RPGItemData map)

@@ -37,17 +37,12 @@ public class RPGItemRegister extends RPGDataRegister<Item, RPGItemData, Integer,
         public HashMap<ItemAttribute, ItemAttrParams> attributes = new LinkedHashMap<ItemAttribute, ItemAttrParams>();
         public HashMap<GemType, Integer> gems = new LinkedHashMap<GemType, Integer>();
         public IRPGItem rpgComponent;
+        public ItemType itemType = ItemType.SWORD;
 
         public RPGItemData(IRPGItem lvlComponent, boolean isSupported)
         {
             this.rpgComponent = lvlComponent;
             this.isSupported = isSupported;
-        }
-
-        @Deprecated
-        public void registerIA(ItemAttribute attr)
-        {
-            attributes.put(attr, null);
         }
 
         public void registerIAStatic(IAStatic attr, float value)
@@ -129,5 +124,15 @@ public class RPGItemRegister extends RPGDataRegister<Item, RPGItemData, Integer,
         {
             return mul.up(value);
         }
+    }
+
+    public enum ItemType
+    {
+        SWORD,
+        TOOL,
+        ARMOR,
+        BOW,
+        GUN,
+        STAFF
     }
 }

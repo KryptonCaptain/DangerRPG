@@ -1,16 +1,19 @@
 package mixac1.dangerrpg.client.gui;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
+import mixac1.dangerrpg.api.item.GemType;
 import mixac1.dangerrpg.api.item.ItemAttribute;
-import mixac1.dangerrpg.capability.RPGItemHelper;
 import mixac1.dangerrpg.capability.ItemAttributes;
+import mixac1.dangerrpg.capability.RPGItemHelper;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.item.IHasBooksInfo;
+import mixac1.dangerrpg.item.gem.Gem;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
@@ -54,8 +57,8 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
         addCenteredString(stack.getDisplayName().toUpperCase());
         addString("");
 
-        boolean isLvlable = RPGItemHelper.isRPGable(stack);
-        if (isLvlable) {
+        boolean isRPGable = RPGItemHelper.isRPGable(stack);
+        if (isRPGable) {
 
             addString(String.format("%s: %d\n", ItemAttributes.LEVEL.getDispayName(),
                                                 (int) ItemAttributes.LEVEL.get(stack)));
@@ -87,69 +90,73 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
         }
 
         if (stack.getItem() instanceof IHasBooksInfo) {
-            addCenteredString(DangerRPG.trans("rpgstr.item_description").toUpperCase());
-            addString("");
-
             String s = ((IHasBooksInfo) stack.getItem()).getInformationToInfoBook(stack, player);
             if (s != null) {
+                addCenteredString(DangerRPG.trans("rpgstr.description").toUpperCase());
+                addString("");
                 addString(s);
+                addString("");
             }
-            else {
-                addString(DangerRPG.trans("rpgstr.no_info_yet"));
-            }
-            addString("");
         }
 
-        if (isLvlable) {
+        if (isRPGable) {
             if (!RPGCapability.rpgItemRegistr.get(stack.getItem()).isSupported) {
                 addString(DangerRPG.trans("rpgstr.item_not_supported"));
                 addString("");
             }
 
-            Set<ItemAttribute> itemAttributes = new LinkedHashSet<ItemAttribute>(RPGItemHelper.getItemAttributes(stack));
-            itemAttributes.remove(ItemAttributes.LEVEL);
-            itemAttributes.remove(ItemAttributes.MAX_EXP);
-            itemAttributes.remove(ItemAttributes.DURABILITY);
-            itemAttributes.remove(ItemAttributes.MAX_DURABILITY);
-            if (itemAttributes.size() != 0) {
+            Set<ItemAttribute> attrs = new LinkedHashSet<ItemAttribute>(RPGItemHelper.getItemAttributes(stack));
+            attrs.remove(ItemAttributes.LEVEL);
+            attrs.remove(ItemAttributes.MAX_EXP);
+            attrs.remove(ItemAttributes.DURABILITY);
+            attrs.remove(ItemAttributes.MAX_DURABILITY);
+            if (!attrs.isEmpty()) {
                 addCenteredString(DangerRPG.trans("rpgstr.parametres").toUpperCase());
                 addString("");
                 boolean flag = false;
 
-                flag |= addAttribute(ItemAttributes.PHISIC_ARMOR, itemAttributes);
-                flag |= addAttribute(ItemAttributes.MAGIC_ARMOR, itemAttributes);
-                flag |= addAttribute(ItemAttributes.MELEE_DAMAGE, itemAttributes);
-                flag |= addAttribute(ItemAttributes.SHOT_DAMAGE, itemAttributes);
-                flag |= addAttribute(ItemAttributes.SHOT_POWER, itemAttributes);
-                flag |= addAttribute(ItemAttributes.MELEE_SPEED, itemAttributes);
-                flag |= addAttribute(ItemAttributes.SHOT_SPEED, itemAttributes);
-                flag |= addAttribute(ItemAttributes.MANA_COST, itemAttributes);
-                flag |= addAttribute(ItemAttributes.REACH, itemAttributes);
-                flag |= addAttribute(ItemAttributes.KNOCKBACK, itemAttributes);
+                flag |= addAttribute(ItemAttributes.PHISIC_ARMOR, attrs);
+                flag |= addAttribute(ItemAttributes.MAGIC_ARMOR, attrs);
+                flag |= addAttribute(ItemAttributes.MELEE_DAMAGE, attrs);
+                flag |= addAttribute(ItemAttributes.SHOT_DAMAGE, attrs);
+                flag |= addAttribute(ItemAttributes.SHOT_POWER, attrs);
+                flag |= addAttribute(ItemAttributes.MELEE_SPEED, attrs);
+                flag |= addAttribute(ItemAttributes.SHOT_SPEED, attrs);
+                flag |= addAttribute(ItemAttributes.MANA_COST, attrs);
+                flag |= addAttribute(ItemAttributes.REACH, attrs);
+                flag |= addAttribute(ItemAttributes.KNOCKBACK, attrs);
 
                 if (flag) {
                     addString("");
                     flag = false;
                 }
 
-                flag |= addAttribute(ItemAttributes.STR_MUL, itemAttributes);
-                flag |= addAttribute(ItemAttributes.AGI_MUL, itemAttributes);
-                flag |= addAttribute(ItemAttributes.INT_MUL, itemAttributes);
-                flag |= addAttribute(ItemAttributes.KNBACK_MUL, itemAttributes);
+                flag |= addAttribute(ItemAttributes.STR_MUL, attrs);
+                flag |= addAttribute(ItemAttributes.AGI_MUL, attrs);
+                flag |= addAttribute(ItemAttributes.INT_MUL, attrs);
+                flag |= addAttribute(ItemAttributes.KNBACK_MUL, attrs);
 
                 if (flag) {
                     addString("");
                     flag = false;
                 }
 
-                flag |= addAttribute(ItemAttributes.EFFICIENCY, itemAttributes);
-                flag |= addAttribute(ItemAttributes.ENCHANTABILITY, itemAttributes);
-                for(ItemAttribute iter : itemAttributes) {
+                flag |= addAttribute(ItemAttributes.EFFICIENCY, attrs);
+                flag |= addAttribute(ItemAttributes.ENCHANTABILITY, attrs);
+                for(ItemAttribute iter : attrs) {
                     if (iter.isVisibleInInfoBook(stack)) {
                         addString(String.format("%s : %s", iter.getDispayName(), iter.getDispayValue(stack, player)));
                     }
                 }
                 addString("");
+            }
+
+            Set<GemType> set = RPGCapability.rpgItemRegistr.get(item).gems.keySet();
+            for (GemType gemType : set) {
+                List<ItemStack> list = gemType.get(stack);
+                for (ItemStack it : list) {
+                    initGem(it, gemType);
+                }
             }
         }
         else if (!(item instanceof ItemBlock)) {
@@ -161,6 +168,49 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
             else {
                  addString(String.format("%s: %s", ItemAttributes.DURABILITY.getDispayName(),
                          DangerRPG.trans("rpgstr.unbreakable")));
+            }
+            addString("");
+        }
+    }
+
+    private void initGem(ItemStack stack, GemType gemType)
+    {
+        if (stack == null || !(stack.getItem() instanceof Gem) || !RPGItemHelper.isRPGable(stack)) {
+            return;
+        }
+
+        Gem gem = (Gem) stack.getItem();
+        String tmp;
+
+        addCenteredString("----------------------------------------------------------------");
+        addCenteredString(DangerRPG.trans("rpgstr.gem").toUpperCase());
+        addString("");
+        addString(Utils.toString(DangerRPG.trans("rpgstr.name"), ": ", stack.getDisplayName()));
+        addString(Utils.toString(DangerRPG.trans("rpgstr.type"), ": ", gemType.getDispayName()));
+
+        tmp = ItemAttributes.LEVEL.isMax(stack) ? Utils.toString(" (", DangerRPG.trans("rpgstr.max"), ")") : "";
+        addString(Utils.toString(ItemAttributes.LEVEL.getDispayName(), ": ", (int) ItemAttributes.LEVEL.get(stack), tmp));
+
+        if (stack.getItem() instanceof IHasBooksInfo) {
+            String s = ((IHasBooksInfo) stack.getItem()).getInformationToInfoBook(stack, player);
+            if (s != null) {
+                addCenteredString(DangerRPG.trans("rpgstr.description").toUpperCase());
+                addString("");
+                addString(s);
+                addString("");
+            }
+        }
+
+        Set<ItemAttribute> attrs = new LinkedHashSet<ItemAttribute>(RPGItemHelper.getItemAttributes(stack));
+        attrs.remove(ItemAttributes.LEVEL);
+        if (!attrs.isEmpty()) {
+            addCenteredString(DangerRPG.trans("rpgstr.parametres").toUpperCase());
+            addString("");
+
+            for(ItemAttribute iter : attrs) {
+                if (iter.isVisibleInInfoBook(stack)) {
+                    addString(String.format("%s : %s", iter.getDispayName(), iter.getDispayValue(stack, player)));
+                }
             }
             addString("");
         }

@@ -1,5 +1,10 @@
 package mixac1.dangerrpg.event;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -10,10 +15,12 @@ import mixac1.dangerrpg.api.event.DealtDamageEvent;
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
 import mixac1.dangerrpg.api.event.ItemStackEvent.StackChangedEvent;
 import mixac1.dangerrpg.api.event.ItemStackEvent.UpMaxLevelEvent;
+import mixac1.dangerrpg.api.item.GemType;
 import mixac1.dangerrpg.capability.GemTypes;
-import mixac1.dangerrpg.capability.RPGItemHelper;
 import mixac1.dangerrpg.capability.ItemAttributes;
 import mixac1.dangerrpg.capability.PlayerAttributes;
+import mixac1.dangerrpg.capability.RPGItemHelper;
+import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGOther.RPGUUIDs;
 import mixac1.dangerrpg.util.RPGHelper;
 import mixac1.dangerrpg.util.Utils;
@@ -22,6 +29,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
@@ -58,6 +66,7 @@ public class EventHandlerItem
     public void addInformation(ItemTooltipEvent e)
     {
         if (RPGItemHelper.isRPGable(e.itemStack)) {
+            Item item = e.itemStack.getItem();
 
             e.toolTip.add("");
             e.toolTip.add(Utils.toString(EnumChatFormatting.GOLD,
@@ -73,6 +82,26 @@ public class EventHandlerItem
                     e.toolTip.add(Utils.toString(EnumChatFormatting.GRAY,
                             ItemAttributes.CURR_EXP.getDispayName(), ": ",
                             (int) ItemAttributes.CURR_EXP.get(e.itemStack), "/", (int) ItemAttributes.MAX_EXP.get(e.itemStack)));
+                }
+            }
+
+            HashMap<GemType, List<ItemStack>> map = new HashMap<GemType, List<ItemStack>>();
+
+            Set<GemType> set = RPGCapability.rpgItemRegistr.get(item).gems.keySet();
+            for (GemType gemType : set) {
+                List<ItemStack> list = gemType.get(e.itemStack);
+                if (!list.isEmpty()) {
+                    map.put(gemType, list);
+                }
+            }
+
+            if (!map.isEmpty()) {
+                e.toolTip.add("");
+                for (Entry<GemType, List<ItemStack>> entry : map.entrySet()) {
+                    e.toolTip.add(Utils.toString(entry.getKey().getDispayName(), ":"));
+                    for (ItemStack it : entry.getValue()) {
+                        e.toolTip.add(Utils.toString(" - ", it.getDisplayName()));
+                    }
                 }
             }
         }
