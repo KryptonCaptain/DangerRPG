@@ -43,23 +43,23 @@ public class GuiInfoBook extends GuiScreen
     private int offsetX;
     private int offsetY;
 
-    public static int bookImageWidth  = 186;
-    public static int bookImageHeight = 254;
+    public static int bookImageW  = 186;
+    public static int bookImageH  = 254;
     public static int titleHeight = 16;
 
-    public static int butContentOffsetX = 31;
-    public static int butContentOffsetY = 16;
-    public static int butContentOffsetU = 186;
-    public static int butContentOffsetV = 0;
-    public static int butContentIndent = 1;
-    public static int butContentSize = 20;
+    public static int butContentX = 31;
+    public static int butContentY = 16;
+    public static int butContentU = 186;
+    public static int butContentV = 0;
+    public static int butContentI = 1;
+    public static int butContentS = 20;
 
-    public static int emptyIconOffsetU = 206;
-    public static int emptyIconOffsetV = 0;
+    public static int emptyIconU = 206;
+    public static int emptyIconV = 0;
 
-    public static int contentOffsetX = 5;
-    public static int contentOffsetY = 55;
-    public static int contentSize = 190;
+    public static int contentX = 5;
+    public static int contentY = 55;
+    public static int contentS = 190;
 
     private LevelUpButton buttonUp;
     private LevelUpButton buttonDown;
@@ -102,15 +102,15 @@ public class GuiInfoBook extends GuiScreen
             stacks = new ItemStack[5];
         }
 
-        offsetX = (width  - bookImageWidth)  / 2;
-        offsetY = (height - bookImageHeight) / 2;
+        offsetX = (width  - bookImageW)  / 2;
+        offsetY = (height - bookImageH) / 2;
 
-        content[0] = new GuiInfoBookContentEntity(mc, bookImageWidth - contentOffsetX * 2, 0, offsetY + contentOffsetY, contentSize, offsetX + contentOffsetX, this);
+        content[0] = new GuiInfoBookContentEntity(mc, bookImageW - contentX * 2, 0, offsetY + contentY, contentS, offsetX + contentX, this);
         for (int i = 1; i < content.length; ++i) {
-            content[i] = new GuiInfoBookContentStack(mc, bookImageWidth - contentOffsetX * 2, 0, offsetY + contentOffsetY, contentSize, offsetX + contentOffsetX, this, stacks[i - 1]);
+            content[i] = new GuiInfoBookContentStack(mc, bookImageW - contentX * 2, 0, offsetY + contentY, contentS, offsetX + contentX, this, stacks[i - 1]);
         }
-        buttonList.add(buttonDown = new LevelUpButton(100, false, offsetX + contentOffsetX + GuiInfoBookContentEntity.butOffsetX, offsetY + contentOffsetY + contentSize + GuiInfoBookContentEntity.butOffsetY - GuiInfoBookContentEntity.imageHeight, (GuiInfoBookContentEntity) content[0]));
-        buttonList.add(buttonUp   = new LevelUpButton(101, true,  offsetX + contentOffsetX + GuiInfoBookContentEntity.butOffsetX + GuiInfoBookContentEntity.butSizeX, offsetY + contentOffsetY + contentSize + GuiInfoBookContentEntity.butOffsetY - GuiInfoBookContentEntity.imageHeight, (GuiInfoBookContentEntity) content[0]));
+        buttonList.add(buttonDown = new LevelUpButton(100, false, offsetX + contentX + GuiInfoBookContentEntity.butX, offsetY + contentY + contentS + GuiInfoBookContentEntity.butY - GuiInfoBookContentEntity.imageH, (GuiInfoBookContentEntity) content[0]));
+        buttonList.add(buttonUp   = new LevelUpButton(101, true,  offsetX + contentX + GuiInfoBookContentEntity.butX + GuiInfoBookContentEntity.butW, offsetY + contentY + contentS + GuiInfoBookContentEntity.butY - GuiInfoBookContentEntity.imageH, (GuiInfoBookContentEntity) content[0]));
     }
 
     @Override
@@ -118,13 +118,13 @@ public class GuiInfoBook extends GuiScreen
     {
         buttonList.clear();
 
-        offsetX = (width  - bookImageWidth)  / 2;
-        offsetY = (height - bookImageHeight) / 2;
+        offsetX = (width  - bookImageW)  / 2;
+        offsetY = (height - bookImageH) / 2;
 
         int i = 0;
         butContent = new GuiInfoBook.SelectContentButton[6];
         for (int k = 0; k < 6; ++k) {
-            buttonList.add(butContent[k] = new GuiInfoBook.SelectContentButton(i++, offsetX + butContentOffsetX + (butContentSize + butContentIndent) * k, offsetY + butContentOffsetY));
+            buttonList.add(butContent[k] = new GuiInfoBook.SelectContentButton(i++, offsetX + butContentX + (butContentS + butContentI) * k, offsetY + butContentY));
         }
     }
 
@@ -148,15 +148,17 @@ public class GuiInfoBook extends GuiScreen
     {
         GL11.glPushMatrix();
 
-        offsetX = (width  - bookImageWidth)  / 2;
-        offsetY = (height - bookImageHeight) / 2;
+        GL11.glDisable(GL11.GL_LIGHTING);
+
+        offsetX = (width  - bookImageW)  / 2;
+        offsetY = (height - bookImageH) / 2;
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         mc.getTextureManager().bindTexture(TEXTURE);
-        drawTexturedModalRect(offsetX, offsetY, 0, 0, bookImageWidth, bookImageHeight);
+        drawTexturedModalRect(offsetX, offsetY, 0, 0, bookImageW, bookImageH);
 
         String title = Utils.toString(DangerRPG.trans("rpgstr.info_about"), " ", target.getCommandSenderName());
-        fontRendererObj.drawStringWithShadow(title, offsetX + (bookImageWidth - fontRendererObj.getStringWidth(title)) / 2, offsetY + (titleHeight - fontRendererObj.FONT_HEIGHT) / 2 + 2, 0xffffff);
+        fontRendererObj.drawStringWithShadow(title, offsetX + (bookImageW - fontRendererObj.getStringWidth(title)) / 2, offsetY + (titleHeight - fontRendererObj.FONT_HEIGHT) / 2 + 2, 0xffffff);
 
         content[currContent].drawScreen(mouseX, mouseY, par3);
 
@@ -169,7 +171,7 @@ public class GuiInfoBook extends GuiScreen
     {
         public SelectContentButton(int id, int x, int y)
         {
-            super(id, x, y, butContentSize, butContentSize, "");
+            super(id, x, y, butContentS, butContentS, "");
         }
 
         @Override
@@ -183,10 +185,10 @@ public class GuiInfoBook extends GuiScreen
                 mc.getTextureManager().bindTexture(TEXTURE);
 
                 if (id == currContent) {
-                    this.drawTexturedModalRect(xPosition, yPosition, butContentOffsetU, butContentOffsetV + butContentSize, butContentSize, butContentSize);
+                    this.drawTexturedModalRect(xPosition, yPosition, butContentU, butContentV + butContentS, butContentS, butContentS);
                 }
                 else if (flag && this.enabled) {
-                    this.drawTexturedModalRect(xPosition, yPosition, butContentOffsetU, butContentOffsetV, butContentSize, butContentSize);
+                    this.drawTexturedModalRect(xPosition, yPosition, butContentU, butContentV, butContentS, butContentS);
                 }
 
                 if (id != 0 && stacks[id - 1] != null) {
@@ -196,7 +198,7 @@ public class GuiInfoBook extends GuiScreen
                     GL11.glEnable(GL11.GL_BLEND);
                 }
                 else {
-                    drawTexturedModalRect(xPosition + 2, yPosition + 2, emptyIconOffsetU + (isTargetPlayer ? 0 : 16), emptyIconOffsetV + id * 16, 16, 16);
+                    drawTexturedModalRect(xPosition + 2, yPosition + 2, emptyIconU + (isTargetPlayer ? 0 : 16), emptyIconV + id * 16, 16, 16);
                 }
             }
         }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import mixac1.dangerrpg.api.item.GemType;
+import mixac1.dangerrpg.capability.ItemAttributes;
 import mixac1.dangerrpg.capability.RPGItemHelper;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.item.gem.Gem;
@@ -15,10 +16,10 @@ import net.minecraft.item.ItemStack;
 
 public class InventoryModificationTable implements IInventory
 {
-    public static final String NAME = "modify_table";
+    public static final String NAME = "modification_table";
 
-    ItemStack main;
-    ItemStack[][] inv = new ItemStack[0][];
+    public ItemStack main;
+    public ItemStack[][] inv = new ItemStack[0][];
     private ContainerModificationTable eventHandler;
 
     public InventoryModificationTable(ContainerModificationTable eventHandler)
@@ -216,14 +217,19 @@ public class InventoryModificationTable implements IInventory
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack)
     {
-        if (stack == null || index == 0) {
+        if (stack == null) {
             return true;
+        }
+
+        if (index == 0 && RPGItemHelper.isRPGable(stack)) {
+            return main == null;
         }
 
         if (main != null && stack.getItem() instanceof Gem) {
             GemType gemType = getGemTypeSlot(index);
             if (gemType != null) {
-                return gemType.isTrueGem((Gem) stack.getItem(), main);
+                return gemType.isTrueGem((Gem) stack.getItem(), main)
+                        && ItemAttributes.LEVEL.get(main) >= ItemAttributes.LEVEL.get(stack);
             }
         }
         return false;

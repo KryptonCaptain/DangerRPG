@@ -16,8 +16,8 @@ public class GuiRPGWorkbench extends GuiContainer
 {
     public static final ResourceLocation TEXTURE = new ResourceLocation(DangerRPG.MODID, "textures/gui/container/gui_rpg_workbench.png");
 
-    public static int textureWidth = 176;
-    public static int textureHeight = 227;
+    public static int textureW = 176;
+    public static int textureH = 227;
 
     public static int nameStrY = 5;
 
@@ -28,8 +28,8 @@ public class GuiRPGWorkbench extends GuiContainer
     {
         super(new ContainerRPGWorkbench(inventory, world, x, y, z));
 
-        xSize = textureWidth;
-        ySize = textureHeight;
+        xSize = textureW;
+        ySize = textureH;
     }
 
     @Override

@@ -29,6 +29,9 @@ public class GuiModificationTable extends GuiContainer
     public static int iconU = 194;
     public static int iconV = 0;
 
+    public static int invStrX = 8;
+    public static int invStrY = 133;
+
     private IInventory playerInv;
 
     private static HashMap<GemType, Integer> iconMap = new HashMap<GemType, Integer>()
@@ -53,11 +56,13 @@ public class GuiModificationTable extends GuiContainer
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
         ContainerModificationTable cmt = (ContainerModificationTable) inventorySlots;
-        for (int i = cmt.staticSize; i < cmt.inventorySlots.size(); ++i) {
+        for (int i = cmt.staticSize + 1; i < cmt.inventorySlots.size(); ++i) {
             Slot slot = (Slot) cmt.inventorySlots.get(i);
             drawTexturedModalRect(guiLeft + slot.xDisplayPosition - 1, guiTop + slot.yDisplayPosition - 1, slotU, slotV, 18, 18);
-            int iconIndex = getGemTypeIconIndex(((InventoryModificationTable) slot.inventory).getGemTypeSlot(slot.getSlotIndex()));
-            drawTexturedModalRect(guiLeft + slot.xDisplayPosition, guiTop + slot.yDisplayPosition, iconU, iconV + 16 * iconIndex, 16, 16);
+            if (!slot.getHasStack()) {
+                int iconIndex = getGemTypeIconIndex(((InventoryModificationTable) slot.inventory).getGemTypeSlot(slot.getSlotIndex()));
+                drawTexturedModalRect(guiLeft + slot.xDisplayPosition, guiTop + slot.yDisplayPosition, iconU, iconV + 16 * iconIndex, 16, 16);
+            }
         }
     }
 
@@ -67,7 +72,7 @@ public class GuiModificationTable extends GuiContainer
         String s1 = StatCollector.translateToLocal(RPGBlocks.modificationTable.getLocalizedName());
         String s2 = StatCollector.translateToLocal("key.inventory");
         fontRendererObj.drawString(s1, (xSize - fontRendererObj.getStringWidth(s1)) / 2, 5, 0x404040);
-        fontRendererObj.drawString(s2, 8, 133, 0x404040);
+        fontRendererObj.drawString(s2, invStrX, invStrY, 0x404040);
     }
 
     private int getGemTypeIconIndex(GemType gemType)

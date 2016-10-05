@@ -281,10 +281,6 @@ ea.lava_resist.info=Increases lava resistance
 
 gt.pa=Passive Stat Gem
 
-rpgstr.lvlup_table.1button=Level Up
-rpgstr.lvlup_table.2button=Put all exp
-rpgstr.info_book.lvlup_but=Level Up
-
 rpgstr.info_about=Info about
 rpgstr.stats=Stats
 rpgstr.item_info=Item Info
@@ -296,6 +292,7 @@ rpgstr.type=Type
 rpgstr.value=Value
 rpgstr.max=Max
 rpgstr.unbreakable=Unbreakable
+rpgstr.upgrade=Upgrade
 
 rpgstr.gpa.info=It adds additional amount of player stat points.
 

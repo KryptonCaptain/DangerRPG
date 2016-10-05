@@ -49,9 +49,9 @@ public class ContainerModificationTable extends Container
             addSlotToContainer(new Slot(playerInv, i, fastInvX + i * 18, fastInvY));
         }
 
-        staticSize = inventorySlots.size() + 1;
+        staticSize = inventorySlots.size();
 
-        addSlotToContainer(new SlotModifyTable(invTable, 0, staticSize, mainX, mainY));
+        addSlotToContainer(new SlotE(invTable, 0, staticSize, mainX, mainY));
 
         onCraftMatrixChanged(invTable);
     }
@@ -78,7 +78,7 @@ public class ContainerModificationTable extends Container
 
     public void onMainSlotChanged(InventoryModificationTable inv)
     {
-        int size = inv.getSizeInventory() - 1;
+        int size = inv.getSizeInventory();
         int[] sizes = inv.getSizes();
 
         int tmp = inventorySlots.size() - staticSize - size;
@@ -89,7 +89,7 @@ public class ContainerModificationTable extends Container
         for (int i = 0, k = 0; i < sizes.length; ++i) {
             int dynamicX = mainX - (sizes[i] - 1) * 9;
             for (int j = 0; j < sizes[i]; ++j, ++k) {
-                setSlotToContainer(k + staticSize, new SlotModifyTable(invTable, k + 1, staticSize, dynamicX + j * 18, dynamicY + i * 18));
+                setSlotToContainer(k + staticSize + 1, new SlotE(invTable, k + 1, staticSize, dynamicX + j * 18, dynamicY + i * 18));
             }
         }
     }
@@ -111,7 +111,7 @@ public class ContainerModificationTable extends Container
             stack = stack1.copy();
 
             if (fromSlot >= 0 && fromSlot < 27) {
-                if (tryTransfer(staticSize - 1, inventoryItemStacks.size(), slot)) {
+                if (tryTransfer(staticSize, inventoryItemStacks.size(), slot)) {
                     return null;
                 }
                 else if (!mergeItemStack(stack1, 27, 36, false)) {
@@ -119,14 +119,14 @@ public class ContainerModificationTable extends Container
                 }
             }
             else if (fromSlot >= 27 && fromSlot < 36) {
-                if (tryTransfer(staticSize - 1, inventoryItemStacks.size(), slot)) {
+                if (tryTransfer(staticSize, inventoryItemStacks.size(), slot)) {
                     return null;
                 }
                 else if (!mergeItemStack(stack1, 0, 27, false)) {
                     return null;
                 }
             }
-            else if (fromSlot >= staticSize - 1 &&  fromSlot < inventoryItemStacks.size()) {
+            else if (fromSlot >= staticSize &&  fromSlot < inventoryItemStacks.size()) {
                 if (tryTransfer(0, 36, slot)) {
                     return null;
                 }
@@ -179,38 +179,14 @@ public class ContainerModificationTable extends Container
         }
     }
 
-    public static class SlotModifyTable extends Slot
+    @Override
+    public ItemStack slotClick(int index, int par2, int par3, EntityPlayer player)
     {
-        int offset;
-
-        public SlotModifyTable(IInventory inv, int index, int offset, int x, int y)
-        {
-            super(inv, index, x, y);
-            this.offset = offset - 1;
+        if (index >= staticSize) {
+            if (!invTable.isItemValidForSlot(staticSize - index, null)) {
+                return null;
+            }
         }
-
-        @Override
-        public int getSlotIndex()
-        {
-            return slotNumber - offset;
-        }
-
-        @Override
-        public int getSlotStackLimit()
-        {
-            return 1;
-        }
-
-        @Override
-        public void putStack(ItemStack stack)
-        {
-            inventory.setInventorySlotContents(getSlotIndex(), stack);
-        }
-
-        @Override
-        public boolean isItemValid(ItemStack stack)
-        {
-            return inventory.isItemValidForSlot(getSlotIndex(), stack);
-        }
+        return super.slotClick(index, par2, par3, player);
     }
 }

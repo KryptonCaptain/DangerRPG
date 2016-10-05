@@ -6,6 +6,7 @@ import java.util.List;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.item.GemType;
 import mixac1.dangerrpg.api.item.IRPGItem;
+import mixac1.dangerrpg.capability.GemAttributes;
 import mixac1.dangerrpg.capability.ItemAttributes;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.ItemType;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
@@ -58,5 +59,24 @@ public abstract class Gem extends Item implements IRPGItem, IHasBooksInfo
     public String getInformationToInfoBook(ItemStack item, EntityPlayer player)
     {
         return null;
+    }
+
+    public static boolean areGemsEqual(ItemStack stack1, ItemStack stack2)
+    {
+        if (stack1 == null || stack2 == null || !(stack1.getItem() instanceof Gem) || !(stack2.getItem() instanceof Gem)) {
+            return false;
+        }
+
+        ItemStack gem1 = stack1.copy();
+        ItemStack gem2 = stack2.copy();
+
+        if (GemAttributes.UUID.hasIt(gem1)) {
+            GemAttributes.UUID.clear(gem1 = gem1.copy());
+        }
+        if (GemAttributes.UUID.hasIt(gem2)) {
+            GemAttributes.UUID.clear(gem2 = gem2.copy());
+        }
+
+        return ItemStack.areItemStacksEqual(gem1, gem2);
     }
 }

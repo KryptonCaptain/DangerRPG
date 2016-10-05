@@ -100,7 +100,7 @@ public class EventHandlerItem
                 for (Entry<GemType, List<ItemStack>> entry : map.entrySet()) {
                     e.toolTip.add(Utils.toString(entry.getKey().getDispayName(), ":"));
                     for (ItemStack it : entry.getValue()) {
-                        e.toolTip.add(Utils.toString(" - ", it.getDisplayName()));
+                        e.toolTip.add(Utils.toString(" - ", it.getDisplayName(), " (", (int) ItemAttributes.LEVEL.get(it), ")"));
                     }
                 }
             }

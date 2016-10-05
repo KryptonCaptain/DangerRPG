@@ -37,4 +37,9 @@ public class IAStrUUID
     {
         setUUID(stack, UUID.randomUUID());
     }
+
+    public void clear(ItemStack stack)
+    {
+        stack.stackTagCompound.removeTag(name);
+    }
 }
