@@ -27,9 +27,9 @@ public class EASlimeDamage extends EAWithIAttr
     }
 
     @Override
-    public Float getModifierValue(EntityLivingBase entity, UUID ID)
+    public Float getModificatorValue(EntityLivingBase entity, UUID ID)
     {
-        return super.getModifierValue(entity, ID) * getSlimeMul(entity);
+        return super.getModificatorValue(entity, ID) * getSlimeMul(entity);
     }
 
     private float getSlimeMul(EntityLivingBase entity)

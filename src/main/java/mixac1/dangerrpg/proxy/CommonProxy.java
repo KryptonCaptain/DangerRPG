@@ -11,6 +11,7 @@ import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGConfig;
 import mixac1.dangerrpg.init.RPGEntities;
 import mixac1.dangerrpg.init.RPGEvents;
+import mixac1.dangerrpg.init.RPGGems;
 import mixac1.dangerrpg.init.RPGGuiHandlers;
 import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGNetwork;
@@ -33,6 +34,8 @@ public class CommonProxy
         RPGNetwork.load(e);
 
         RPGItems.load(e);
+
+        RPGGems.load();
 
         RPGBlocks.load(e);
 

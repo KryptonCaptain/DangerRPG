@@ -4,8 +4,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.api.item.IRPGItem;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemBow;
-import mixac1.dangerrpg.capability.RPGableItem;
-import mixac1.dangerrpg.capability.ia.ItemAttributes;
+import mixac1.dangerrpg.capability.RPGItemHelper;
+import mixac1.dangerrpg.capability.ItemAttributes;
 import mixac1.hooklib.asm.Hook;
 import mixac1.hooklib.asm.ReturnCondition;
 import mixac1.hooklib.asm.Hook.ReturnValue;
@@ -31,7 +31,7 @@ public class HookItemBow
     @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
     public static IIcon getItemIcon(EntityPlayer player, ItemStack stack, int par, @ReturnValue IIcon returnValue)
     {
-        if (RPGableItem.isRPGable(stack) && player.getItemInUse() != null &&
+        if (RPGItemHelper.isRPGable(stack) && player.getItemInUse() != null &&
             stack.getItem() instanceof ItemBow && ItemAttributes.SHOT_SPEED.hasIt(stack)) {
             int ticks = stack.getMaxItemUseDuration() - player.getItemInUseCount();
             float speed = ItemAttributes.SHOT_SPEED.get(stack, player);
@@ -99,7 +99,7 @@ public class HookItemBow
         }
         useDuration = event.charge;
 
-        if (RPGableItem.isRPGable(stack)) {
+        if (RPGItemHelper.isRPGable(stack)) {
             if (bow instanceof IRPGItemBow) {
                 ((IRPGItemBow) bow).onStoppedUsing(stack, world, player, useDuration);
             }

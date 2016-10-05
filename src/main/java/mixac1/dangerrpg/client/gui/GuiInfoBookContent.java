@@ -35,8 +35,8 @@ public abstract class GuiInfoBookContent extends GuiScrollingList
     {
         super.drawScreen(mouseX, mouseY, par3);
 
-        int offsetX = (parent.width  - parent.bookImageWidth)  / 2;
-        int offsetY = (parent.height - parent.bookImageHeight) / 2;
+        int offsetX = (parent.width  - parent.bookImageW)  / 2;
+        int offsetY = (parent.height - parent.bookImageH) / 2;
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         mc.getTextureManager().bindTexture(parent.TEXTURE);

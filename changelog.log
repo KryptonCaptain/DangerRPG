@@ -1,3 +1,14 @@
+    1.1.0
+
+[ADDED] Different 'gems' of player stats for weapons, tools and armors.
+[ADDED] Modification Table - place, where you can insert gem to the item. You can insert only those gems, which level is less than the level of the target item.
+[ADDED] LvlUp Table - place, where you can instant rise item's level. For rising gems level, you must put identical gems to the matrix.
+[FIXED] Bug with 'Player info' window, when you keep enchantment item.
+[TRIED FIX] Crash, when attack entity.
+[FIXED] Bug with enchantments, when item level up.
+[FIXED] Bug with attack speed.
+
+
     1.0.8
     
 [FIXED] Crash when ghast spawned.
@@ -5,13 +16,13 @@
 [FIXED] Bug with item experience.
 [FIXED] Returned unbreakable property for max lvl item.
 [FIXED] Crash when change current equipped item from weapon to armor.
-[CHANGED] Max item level from 100 to 15
+[CHANGED] Max item level from 100 to 15.
     
     1.0.7
 
 [ADDED] Customizaiton of player stats in config.
 [ADDED] Customizaiton of RPG mobs in config.
-[ADDED] Indicator of player's damage into HUD..
+[ADDED] Indicator of player's damage into HUD.
 [ADDED] Ability to decrease player stat.
 [ADDED] Gain of experience on destruction of the block.
 
@@ -41,7 +52,7 @@
 [FIXED] Crash happens when click the workbench to start crafting on server.
 [FIXED] Infinite attack speed.
 [FIXED] Crash on start up.
-[TRYED FIX] Promlem with player HUD.
+[TRIED FIX] Promlem with player HUD.
 
     1.0.1
     

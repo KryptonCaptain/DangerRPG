@@ -2,9 +2,9 @@ package mixac1.dangerrpg.item.weapon;
 
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemStaff;
-import mixac1.dangerrpg.capability.RPGableItem;
+import mixac1.dangerrpg.capability.RPGItemHelper;
+import mixac1.dangerrpg.capability.ItemAttributes;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
-import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.entity.projectile.EntityMagicOrb;
 import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGOther.RPGCreativeTabs;
@@ -44,7 +44,7 @@ public class ItemRPGStaff extends ItemSword implements IRPGItemStaff, IHasBooksI
     @Override
     public void registerAttributes(Item item, RPGItemData map)
     {
-        RPGableItem.registerParamsItemStaff(item, map);
+        RPGItemHelper.registerParamsItemStaff(item, map);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class ItemRPGStaff extends ItemSword implements IRPGItemStaff, IHasBooksI
     @Override
     public String getInformationToInfoBook(ItemStack item, EntityPlayer player)
     {
-        return DangerRPG.trans("rpgstr.no_info_yet");
+        return null;
     }
 
     @Override

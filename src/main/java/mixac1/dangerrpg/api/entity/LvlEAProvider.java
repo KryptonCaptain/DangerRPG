@@ -1,13 +1,13 @@
 package mixac1.dangerrpg.api.entity;
 
+import mixac1.dangerrpg.capability.EntityAttributes;
 import mixac1.dangerrpg.capability.data.RPGEntityProperties;
-import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.init.RPGConfig.EntityConfig;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgReqUpEA;
 import mixac1.dangerrpg.util.IMultiplier;
-import mixac1.dangerrpg.util.IMultiplier.IMulConfigurable;
 import mixac1.dangerrpg.util.IMultiplier.IMultiplierE;
+import mixac1.dangerrpg.util.IMultiplier.Multiplier;
 import mixac1.dangerrpg.util.RPGHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,9 +22,9 @@ public class LvlEAProvider<Type>
     public IMultiplierE<Type> mulValue;
     public int maxLvl;
     public int startExpCost;
-    public IMulConfigurable mulExpCost;
+    public Multiplier mulExpCost;
 
-    public LvlEAProvider(int startExpCost, int maxLvl, IMultiplierE<Type> mulValue, IMulConfigurable mulExpCost)
+    public LvlEAProvider(int startExpCost, int maxLvl, IMultiplierE<Type> mulValue, Multiplier mulExpCost)
     {
         this.mulValue = mulValue;
         this.maxLvl = maxLvl;
@@ -97,9 +97,6 @@ public class LvlEAProvider<Type>
         return false;
     }
 
-    /**
-     * @param flag - if true, then lvl up, else down
-     */
     @Deprecated
     public boolean up(EntityLivingBase target, EntityPlayer upper, boolean isUp)
     {
@@ -109,7 +106,7 @@ public class LvlEAProvider<Type>
                 if (lvl < maxLvl) {
                     setLvl(lvl + 1, target);
                     EntityAttributes.LVL.addValue(1, target);
-                    attr.setValue(mulValue.up(attr.getValue(target), target), target);
+                    attr.setValue(mulValue.up(attr.getBaseValue(target), target), target);
                     return true;
                 }
             }
@@ -117,7 +114,7 @@ public class LvlEAProvider<Type>
                 if (lvl > 0) {
                     setLvl(lvl - 1, target);
                     EntityAttributes.LVL.addValue(-1, target);
-                    attr.setValue(mulValue.down(attr.getValue(target), target), target);
+                    attr.setValue(mulValue.down(attr.getBaseValue(target), target), target);
                     return true;
                 }
             }
@@ -137,7 +134,7 @@ public class LvlEAProvider<Type>
 
     public static class DafailtLvlEAProvider extends LvlEAProvider<Float>
     {
-        public DafailtLvlEAProvider(int startExpCost, int maxLvl, IMulConfigurable mulValue)
+        public DafailtLvlEAProvider(int startExpCost, int maxLvl, Multiplier mulValue)
         {
             super(startExpCost, maxLvl, mulValue, IMultiplier.ADD_1);
         }

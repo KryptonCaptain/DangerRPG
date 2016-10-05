@@ -6,7 +6,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.event.GuiModeChangeEvent;
-import mixac1.dangerrpg.capability.GemType;
 import mixac1.dangerrpg.client.gui.GuiMode;
 import mixac1.dangerrpg.client.gui.RPGGuiIngame;
 import mixac1.dangerrpg.init.RPGConfig.ClientConfig;
@@ -15,7 +14,6 @@ import mixac1.dangerrpg.init.RPGKeyBinds;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.item.IUseItemExtra;
 import mixac1.dangerrpg.network.MsgUseItemExtra;
-import mixac1.dangerrpg.network.MsgUseItemSpecial;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -33,7 +31,7 @@ public class EventHandlerClient
         if (!event.isCancelable() &&
              event.type == ElementType.ALL &&
              ClientConfig.d.guiIsEnableHUD) {
-            RPGGuiIngame.INSTANCE.renderGameOverlay(event.resolution);
+             RPGGuiIngame.INSTANCE.renderGameOverlay(event.resolution);
         }
     }
 
@@ -61,12 +59,7 @@ public class EventHandlerClient
             }
 
             ItemStack stack = player.getCurrentEquippedItem();
-            if (RPGKeyBinds.specialItemKey.getIsKeyPressed() &&
-                stack != null &&
-                GemType.GEM_SPECIAL_ATTACK.hasIt(stack)) {
-                RPGNetwork.net.sendToServer(new MsgUseItemSpecial());
-            }
-            else if (RPGKeyBinds.extraItemKey.getIsKeyPressed() &&
+            if (RPGKeyBinds.extraItemKey.getIsKeyPressed() &&
                      stack != null &&
                      stack.getItem() instanceof IUseItemExtra) {
                 RPGNetwork.net.sendToServer(new MsgUseItemExtra());

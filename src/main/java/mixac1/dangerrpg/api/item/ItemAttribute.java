@@ -29,6 +29,12 @@ public abstract class ItemAttribute
 
     public abstract boolean hasIt(ItemStack stack);
 
+    public abstract void checkIt(ItemStack stack);
+
+    /**
+     * Warning: Check {@link #hasIt(ItemStack)} before use this method
+     */
+    @Deprecated
     public abstract float getRaw(ItemStack stack);
 
     /**
@@ -44,9 +50,12 @@ public abstract class ItemAttribute
         return value;
     }
 
+    /**
+     * Warning: Check {@link #hasIt(ItemStack)} before use this method
+     */
     public float get(ItemStack stack, EntityPlayer player)
     {
-        return get(stack);
+        return getChecked(stack);
     }
 
     public float getSafe(ItemStack stack, EntityPlayer player, float defaultValue)
@@ -54,6 +63,16 @@ public abstract class ItemAttribute
         return hasIt(stack) ? get(stack, player) : defaultValue;
     }
 
+    /**
+     * Warning: Check {@link #hasIt(ItemStack)} before use this method
+     */
+    public float getChecked(ItemStack stack)
+    {
+        checkIt(stack);
+        return get(stack);
+    }
+
+    @Deprecated
     public abstract void setRaw(ItemStack stack, float value);
 
     /**
@@ -69,7 +88,19 @@ public abstract class ItemAttribute
     /**
      * Warning: Check {@link #hasIt(ItemStack)} before use this method
      */
-    public abstract void add(ItemStack stack, float value);
+    public void setChecked(ItemStack stack, float value)
+    {
+        checkIt(stack);
+        setChecked(stack, value);
+    }
+
+    /**
+     * Warning: Check {@link #hasIt(ItemStack)} before use this method
+     */
+    public void add(ItemStack stack, float value)
+    {
+        set(stack, value + get(stack));
+    }
 
     public abstract void init(ItemStack stack);
 
@@ -82,10 +113,15 @@ public abstract class ItemAttribute
 
     public String getDispayValue(ItemStack stack, EntityPlayer player)
     {
-        return String.format("%.2f", getSafe(stack, player, 0));
+        return String.format("%.2f", get(stack, player));
     }
 
     public boolean isVisibleInInfoBook(ItemStack stack)
+    {
+        return true;
+    }
+
+    public boolean isConfigurable()
     {
         return true;
     }

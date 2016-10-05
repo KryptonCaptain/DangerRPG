@@ -216,7 +216,7 @@ public abstract class RecipeCreator
         @Override
         protected String[] getPattern()
         {
-            return new String[] {" 111 ", "11011", "1 0 1", "  0  ", "  0  "};
+            return new String[] {"111", "101", " 0 ", " 0 "};
         }
     };
 

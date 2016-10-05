@@ -27,10 +27,7 @@ public class EAWithExistIAttr extends EAWithIAttr
     }
 
     @Override
-    public void serverInit(EntityLivingBase entity)
-    {
-
-    }
+    public void serverInit(EntityLivingBase entity) {}
 
     @Override
     @Deprecated
@@ -60,6 +57,6 @@ public class EAWithExistIAttr extends EAWithIAttr
     @Override
     public Float getBaseValue(EntityLivingBase entity)
     {
-        return (float) entity.getEntityAttribute(attribute).getBaseValue() + getModifierValue(entity, IDBase);
+        return (float) entity.getEntityAttribute(attribute).getBaseValue() + getModificatorValue(entity, IDBase);
     }
 }

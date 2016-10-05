@@ -12,13 +12,14 @@ import com.google.common.collect.Multimap;
 import mixac1.dangerrpg.api.item.IRPGItem;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemArmor;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemTool;
-import mixac1.dangerrpg.capability.RPGableEntity;
-import mixac1.dangerrpg.capability.RPGableItem;
-import mixac1.dangerrpg.capability.ea.PlayerAttributes;
-import mixac1.dangerrpg.capability.ia.ItemAttributes;
+import mixac1.dangerrpg.capability.ItemAttributes;
+import mixac1.dangerrpg.capability.PlayerAttributes;
+import mixac1.dangerrpg.capability.RPGEntityHelper;
+import mixac1.dangerrpg.capability.RPGItemHelper;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.item.IMaterialSpecial;
-import mixac1.dangerrpg.util.IMultiplier.IMulConfigurable;
+import mixac1.dangerrpg.item.gem.Gem;
+import mixac1.dangerrpg.util.IMultiplier.Multiplier;
 import mixac1.dangerrpg.util.IMultiplier.MultiplierAdd;
 import mixac1.dangerrpg.util.IMultiplier.MultiplierMul;
 import net.minecraft.client.Minecraft;
@@ -67,31 +68,6 @@ public abstract class RPGHelper
         player.experienceLevel = 0;
         player.addExperience(exp);
     }
-
-//    @SideOnly(Side.CLIENT)
-//    public static void wheelScroll(int value)
-//    {
-//        if (value == 0) {
-//            return;
-//        }
-//
-//        if (value > 0) {
-//            value = 1;
-//        }
-//
-//        if (value < 0) {
-//            value = -1;
-//        }
-//
-//        for (i -= value; i < 0; i += 9) {
-//            ;
-//        }
-//
-//        while (i >= 9)
-//        {
-//            i -= 9;
-//        }
-//    }
 
     public static MovingObjectPosition getMouseOver(float frame, float dist)
     {
@@ -168,7 +144,7 @@ public abstract class RPGHelper
 
     public static IMaterialSpecial getMaterialSpecial(ItemStack stack)
     {
-        if (stack != null && RPGableItem.isRPGable(stack)) {
+        if (stack != null && RPGItemHelper.isRPGable(stack)) {
             IRPGItem ilvl = RPGCapability.rpgItemRegistr.get(stack.getItem()).rpgComponent;
             if (ilvl instanceof IRPGItemArmor) {
                 return ((IRPGItemArmor) ilvl).getArmorMaterial(stack.getItem());
@@ -224,7 +200,9 @@ public abstract class RPGHelper
     {
         ArrayList<String> names = new ArrayList<String>();
         for (Item item : items) {
-            names.add(item.delegate.name());
+            if (!(item instanceof Gem)) {
+                names.add(item.delegate.name());
+            }
         }
         if (needSort) {
             Collections.sort(names);
@@ -250,7 +228,7 @@ public abstract class RPGHelper
 
     public static float getMeleeDamageHook(EntityLivingBase entity, float defaultDamage)
     {
-        if (RPGableEntity.isRPGable(entity)) {
+        if (RPGEntityHelper.isRPGable(entity)) {
             return RPGCapability.rpgEntityRegistr.get(entity).rpgComponent.getEAMeleeDamage(entity).getValue(entity);
         }
         return defaultDamage;
@@ -258,7 +236,7 @@ public abstract class RPGHelper
 
     public static float getRangeDamageHook(EntityLivingBase entity, float defaultDamage)
     {
-        if (RPGableEntity.isRPGable(entity)) {
+        if (RPGEntityHelper.isRPGable(entity)) {
             return RPGCapability.rpgEntityRegistr.get(entity).rpgComponent.getEARangeDamage(entity).getValue(entity);
         }
         return defaultDamage;
@@ -284,10 +262,10 @@ public abstract class RPGHelper
         return getItemDamage(stack, player) + PlayerAttributes.STRENGTH.getValue(player) * ItemAttributes.STR_MUL.get(stack);
     }
 
-    public static float multyMul(float value, int count, IMulConfigurable mul)
+    public static float multyMul(float value, int count, Multiplier mul)
     {
         if (mul instanceof MultiplierAdd) {
-            return ((MultiplierAdd) mul).add * count + value;
+            return ((MultiplierAdd) mul).mul * count + value;
         }
         else if (mul instanceof MultiplierMul) {
             return ((MultiplierMul) mul).mul * count * value + value;

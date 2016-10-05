@@ -1,6 +1,7 @@
 package mixac1.dangerrpg.capability.ia;
 
 import mixac1.dangerrpg.api.item.IAStatic;
+import mixac1.dangerrpg.capability.ItemAttributes;
 import net.minecraft.item.ItemStack;
 
 public class IADurability extends IAStatic
@@ -14,6 +15,12 @@ public class IADurability extends IAStatic
     public boolean hasIt(ItemStack stack)
     {
         return ItemAttributes.MAX_DURABILITY.hasIt(stack);
+    }
+
+    @Override
+    public void checkIt(ItemStack stack)
+    {
+
     }
 
     @Override

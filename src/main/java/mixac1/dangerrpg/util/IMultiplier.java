@@ -11,14 +11,12 @@ public interface IMultiplier<Type> extends Serializable
         public Type down(Type value, Object... objs);
     }
 
-    public interface IMulConfigurable extends IMultiplierE<Float> {}
-
     enum MulType
     {
         ADD
         {
             @Override
-            public IMulConfigurable getMul(Float d)
+            public Multiplier getMul(Float d)
             {
                 return new MultiplierAdd(d);
             }
@@ -27,9 +25,18 @@ public interface IMultiplier<Type> extends Serializable
         MUL
         {
             @Override
-            public IMulConfigurable getMul(Float d)
+            public Multiplier getMul(Float d)
             {
                 return new MultiplierMul(d);
+            }
+        },
+
+        SQRT
+        {
+            @Override
+            public Multiplier getMul(Float d)
+            {
+                return new MultiplierSQRT(d);
             }
         },
 
@@ -44,7 +51,7 @@ public interface IMultiplier<Type> extends Serializable
 
         ;
 
-        public IMulConfigurable getMul(Float value)
+        public Multiplier getMul(Float value)
         {
             return null;
         }
@@ -54,7 +61,7 @@ public interface IMultiplier<Type> extends Serializable
             return Utils.toString(name(), " ", value);
         }
 
-        public static IMulConfigurable getMul(String str)
+        public static Multiplier getMul(String str)
         {
             String[] strs = str.split(" ");
             if (strs.length == 2) {
@@ -68,41 +75,49 @@ public interface IMultiplier<Type> extends Serializable
         }
     }
 
-    public static class MultiplierAdd implements IMulConfigurable
+    public static abstract class Multiplier implements IMultiplierE<Float>
     {
-        public final Float add;
+        public final Float mul;
+        public final MulType mulType;
 
-        public MultiplierAdd(Float add)
+        public Multiplier(Float mul, MulType mulType)
         {
-            this.add = add;
-        }
-
-        @Override
-        public Float up(Float value, Object... objs)
-        {
-            return value + add;
-        }
-
-        @Override
-        public Float down(Float value, Object... objs)
-        {
-            return value - add;
+            this.mul = mul;
+            this.mulType = mulType;
         }
 
         @Override
         public String toString()
         {
-            return MulType.ADD.toString(add);
+            return mulType.toString(mul);
         }
     }
 
-    public static class MultiplierMul implements IMulConfigurable
+    public static class MultiplierAdd extends Multiplier
     {
-        public final Float mul;
+        public MultiplierAdd(Float mul)
+        {
+            super(mul, MulType.ADD);
+        }
 
+        @Override
+        public Float up(Float value, Object... objs)
+        {
+            return value + mul;
+        }
+
+        @Override
+        public Float down(Float value, Object... objs)
+        {
+            return value - mul;
+        }
+    }
+
+    public static class MultiplierMul extends Multiplier
+    {
         public MultiplierMul(Float mul)
         {
-            this.mul = mul;
+            super(mul, MulType.MUL);
         }
 
         @Override
@@ -116,11 +131,31 @@ public interface IMultiplier<Type> extends Serializable
         {
             return value / mul;
         }
+    }
+
+    public static class MultiplierSQRT extends Multiplier
+    {
+        public MultiplierSQRT(Float mul)
+        {
+            super(mul, MulType.SQRT);
+        }
 
         @Override
-        public String toString()
+        public Float up(Float value, Object... objs)
         {
-            return MulType.MUL.toString(mul);
+            return (float) (value + Math.sqrt(value * mul));
+        }
+
+        @Override
+        public Float down(Float value, Object... objs)
+        {
+            float a = -1;
+            float b = 2 * value + mul;
+            float c = -value * value;
+            float d = (float) Math.sqrt((Math.pow(b, 2) - 4 * a * c));
+            float tmp1 = (-b - d) / 2 * a;
+            float tmp2 = (-b + d) / 2 * a;
+            return up(tmp1) == value ? tmp1 : tmp2;
         }
     }
 

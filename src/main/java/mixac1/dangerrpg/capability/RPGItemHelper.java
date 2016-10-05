@@ -6,6 +6,7 @@ import java.util.Set;
 import mixac1.dangerrpg.api.event.ItemStackEvent.UpMaxLevelEvent;
 import mixac1.dangerrpg.api.event.RegIAEvent;
 import mixac1.dangerrpg.api.event.UpEquipmentEvent;
+import mixac1.dangerrpg.api.item.GemType;
 import mixac1.dangerrpg.api.item.IRPGItem;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemArmor;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemBow;
@@ -14,8 +15,8 @@ import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemMod;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemStaff;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemTool;
 import mixac1.dangerrpg.api.item.ItemAttribute;
+import mixac1.dangerrpg.capability.data.RPGItemRegister.ItemType;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
-import mixac1.dangerrpg.capability.ia.ItemAttributes;
 import mixac1.dangerrpg.hook.HookArmorSystem;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGConfig.ItemConfig;
@@ -29,8 +30,9 @@ import mixac1.dangerrpg.item.RPGItemComponent.RPGStaffComponent;
 import mixac1.dangerrpg.item.RPGItemComponent.RPGToolComponent;
 import mixac1.dangerrpg.item.RPGToolMaterial;
 import mixac1.dangerrpg.util.IMultiplier;
-import mixac1.dangerrpg.util.IMultiplier.IMulConfigurable;
+import mixac1.dangerrpg.util.IMultiplier.Multiplier;
 import mixac1.dangerrpg.util.IMultiplier.MultiplierMul;
+import mixac1.dangerrpg.util.IMultiplier.MultiplierSQRT;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -43,30 +45,11 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 
-public abstract class RPGableItem
+public abstract class RPGItemHelper
 {
-    public static final MultiplierMul EXP_MUL = new MultiplierMul(ItemConfig.d.expMul);
+    public static final Multiplier EXP_MUL = new MultiplierMul(ItemConfig.d.expMul);
 
-    public static final IMulConfigurable DUR_MUL = new IMulConfigurable()
-    {
-        @Override
-        public Float down(Float value, Object... objs)
-        {
-            return value;
-        }
-
-        @Override
-        public Float up(Float value, Object... objs)
-        {
-            return value > 500 ? value * 1.1f : value + 50;
-        }
-
-        @Override
-        public String toString()
-        {
-            return MulType.HARD.toString();
-        }
-    };
+    public static final Multiplier DUR_MUL = new MultiplierSQRT(2f);
 
     public static boolean registerRPGItem(Item item)
     {
@@ -92,12 +75,14 @@ public abstract class RPGableItem
 
     public static void registerParamsDefault(Item item, RPGItemData map)
     {
-        map.addDynamicItemAttribute(ItemAttributes.MAX_EXP, ItemConfig.d.startMaxExp, EXP_MUL);
+        map.registerIADynamic(ItemAttributes.LEVEL, 1, IMultiplier.ADD_1);
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.DefaultIAEvent(item, map));
     }
 
     public static void registerParamsItemMod(Item item, RPGItemData map)
     {
+        map.registerIADynamic(ItemAttributes.MAX_EXP, ItemConfig.d.startMaxExp, EXP_MUL);
+
         float durab, ench;
         RPGItemComponent comp;
         if (item instanceof IRPGItemMod &&
@@ -110,9 +95,9 @@ public abstract class RPGableItem
             durab = item.isDamageable() ? item.getMaxDamage() : -1;
         }
 
-        map.addDynamicItemAttribute(ItemAttributes.ENCHANTABILITY, ench, IMultiplier.ADD_1);
+        map.registerIADynamic(ItemAttributes.ENCHANTABILITY, ench, IMultiplier.ADD_1);
         if (durab != -1) {
-            map.addDynamicItemAttribute(ItemAttributes.MAX_DURABILITY, durab, DUR_MUL);
+            map.registerIADynamic(ItemAttributes.MAX_DURABILITY, durab, DUR_MUL);
         }
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemModIAEvent(item, map));
@@ -121,18 +106,22 @@ public abstract class RPGableItem
     public static void registerParamsItemSword(Item item, RPGItemData map)
     {
         registerParamsItemMod(item, map);
+        map.itemType = ItemType.SWORD;
+
         IRPGItemTool iRPG = (IRPGItemTool) (item instanceof IRPGItemTool ? item : IRPGItem.DEFAULT_SWORD);
         RPGToolComponent comp = iRPG.getItemComponent(item);
         RPGToolMaterial mat = iRPG.getToolMaterial(item);
 
-        map.addStaticItemAttribute(ItemAttributes.MELEE_DAMAGE, comp.meleeDamage + mat.material.getDamageVsEntity() * comp.strMul * 2);
-        map.addStaticItemAttribute(ItemAttributes.MELEE_SPEED,  comp.meleeSpeed);
-        map.addStaticItemAttribute(ItemAttributes.STR_MUL,      comp.strMul);
-        map.addStaticItemAttribute(ItemAttributes.AGI_MUL,      comp.agiMul);
-        map.addStaticItemAttribute(ItemAttributes.INT_MUL,      comp.intMul);
-        map.addStaticItemAttribute(ItemAttributes.KNOCKBACK,    comp.knBack);
-        map.addStaticItemAttribute(ItemAttributes.KNBACK_MUL,   comp.knbMul);
-        map.addStaticItemAttribute(ItemAttributes.REACH,        comp.reach);
+        map.registerIAStatic(ItemAttributes.MELEE_DAMAGE, comp.meleeDamage + mat.material.getDamageVsEntity() * comp.strMul * 2);
+        map.registerIAStatic(ItemAttributes.MELEE_SPEED,  comp.meleeSpeed);
+        map.registerIAStatic(ItemAttributes.STR_MUL,      comp.strMul);
+        map.registerIAStatic(ItemAttributes.AGI_MUL,      comp.agiMul);
+        map.registerIAStatic(ItemAttributes.INT_MUL,      comp.intMul);
+        map.registerIAStatic(ItemAttributes.KNOCKBACK,    comp.knBack);
+        map.registerIAStatic(ItemAttributes.KNBACK_MUL,   comp.knbMul);
+        map.registerIAStatic(ItemAttributes.REACH,        comp.reach);
+
+        map.registerGT(GemTypes.PA, 2);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemSwordIAEvent(item, map));
     }
@@ -140,20 +129,24 @@ public abstract class RPGableItem
     public static void registerParamsItemTool(Item item, RPGItemData map)
     {
         registerParamsItemMod(item, map);
+        map.itemType = ItemType.TOOL;
+
         IRPGItemTool iRPG = (IRPGItemTool) (item instanceof IRPGItemTool ? item : IRPGItem.DEFAULT_TOOL);
         RPGToolComponent comp = iRPG.getItemComponent(item);
         RPGToolMaterial mat = iRPG.getToolMaterial(item);
 
-        map.addStaticItemAttribute(ItemAttributes.MELEE_DAMAGE, comp.meleeDamage + mat.material.getDamageVsEntity() * comp.strMul * 2);
-        map.addStaticItemAttribute(ItemAttributes.MELEE_SPEED,  comp.meleeSpeed);
-        map.addStaticItemAttribute(ItemAttributes.STR_MUL,      comp.strMul);
-        map.addStaticItemAttribute(ItemAttributes.AGI_MUL,      comp.agiMul);
-        map.addStaticItemAttribute(ItemAttributes.INT_MUL,      comp.intMul);
-        map.addStaticItemAttribute(ItemAttributes.KNOCKBACK,    comp.knBack);
-        map.addStaticItemAttribute(ItemAttributes.KNBACK_MUL,   comp.knbMul);
-        map.addStaticItemAttribute(ItemAttributes.REACH,        comp.reach);
+        map.registerIAStatic(ItemAttributes.MELEE_DAMAGE, comp.meleeDamage + mat.material.getDamageVsEntity() * comp.strMul * 2);
+        map.registerIAStatic(ItemAttributes.MELEE_SPEED,  comp.meleeSpeed);
+        map.registerIAStatic(ItemAttributes.STR_MUL,      comp.strMul);
+        map.registerIAStatic(ItemAttributes.AGI_MUL,      comp.agiMul);
+        map.registerIAStatic(ItemAttributes.INT_MUL,      comp.intMul);
+        map.registerIAStatic(ItemAttributes.KNOCKBACK,    comp.knBack);
+        map.registerIAStatic(ItemAttributes.KNBACK_MUL,   comp.knbMul);
+        map.registerIAStatic(ItemAttributes.REACH,        comp.reach);
 
-        map.addDynamicItemAttribute(ItemAttributes.EFFICIENCY,  mat.material.getEfficiencyOnProperMaterial(), IMultiplier.ADD_1);
+        map.registerIADynamic(ItemAttributes.EFFICIENCY,  mat.material.getEfficiencyOnProperMaterial(), IMultiplier.ADD_1);
+
+        map.registerGT(GemTypes.PA, 1);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemToolIAEvent(item, map));
     }
@@ -161,13 +154,17 @@ public abstract class RPGableItem
     public static void registerParamsItemArmor(Item item, RPGItemData map)
     {
         registerParamsItemMod(item, map);
+        map.itemType = ItemType.ARMOR;
+
         IRPGItemArmor iRPG = (IRPGItemArmor) (item instanceof IRPGItemArmor ? item : IRPGItem.DEFAULT_ARMOR);
         RPGArmorMaterial mat = iRPG.getArmorMaterial(item);
         RPGArmorComponent com = iRPG.getItemComponent(item);
 
         float armor = mat.material.getDamageReductionAmount(((ItemArmor) item).armorType) * com.phisicalResMul;
-        map.addStaticItemAttribute(ItemAttributes.PHISIC_ARMOR, HookArmorSystem.convertPhisicArmor(armor));
-        map.addStaticItemAttribute(ItemAttributes.MAGIC_ARMOR,  mat.magicRes * com.magicResMul);
+        map.registerIAStatic(ItemAttributes.PHISIC_ARMOR, HookArmorSystem.convertPhisicArmor(armor));
+        map.registerIAStatic(ItemAttributes.MAGIC_ARMOR,  mat.magicRes * com.magicResMul);
+
+        map.registerGT(GemTypes.PA, 2);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemArmorIAEvent(item, map));
     }
@@ -175,21 +172,25 @@ public abstract class RPGableItem
     public static void registerParamsItemBow(Item item, RPGItemData map)
     {
         registerParamsItemMod(item, map);
+        map.itemType = ItemType.BOW;
+
         IRPGItemBow iRPG = (IRPGItemBow) (item instanceof IRPGItemBow ? item : IRPGItem.DEFAULT_BOW);
         RPGBowComponent comp = iRPG.getItemComponent(item);
 
-        map.addStaticItemAttribute(ItemAttributes.MELEE_DAMAGE,   comp.meleeDamage);
-        map.addStaticItemAttribute(ItemAttributes.MELEE_SPEED,    comp.meleeSpeed);
-        map.addStaticItemAttribute(ItemAttributes.STR_MUL,        comp.strMul);
-        map.addStaticItemAttribute(ItemAttributes.AGI_MUL,        comp.agiMul);
-        map.addStaticItemAttribute(ItemAttributes.INT_MUL,        comp.intMul);
-        map.addStaticItemAttribute(ItemAttributes.KNOCKBACK,      comp.knBack);
-        map.addStaticItemAttribute(ItemAttributes.KNBACK_MUL,     comp.knbMul);
+        map.registerIAStatic(ItemAttributes.MELEE_DAMAGE,   comp.meleeDamage);
+        map.registerIAStatic(ItemAttributes.MELEE_SPEED,    comp.meleeSpeed);
+        map.registerIAStatic(ItemAttributes.STR_MUL,        comp.strMul);
+        map.registerIAStatic(ItemAttributes.AGI_MUL,        comp.agiMul);
+        map.registerIAStatic(ItemAttributes.INT_MUL,        comp.intMul);
+        map.registerIAStatic(ItemAttributes.KNOCKBACK,      comp.knBack);
+        map.registerIAStatic(ItemAttributes.KNBACK_MUL,     comp.knbMul);
 
-        map.addStaticItemAttribute(ItemAttributes.SHOT_DAMAGE,    comp.shotDamage);
-        map.addStaticItemAttribute(ItemAttributes.SHOT_POWER,     comp.shotPower);
-        map.addStaticItemAttribute(ItemAttributes.MIN_CUST_TIME,  comp.shotMinCastTime);
-        map.addStaticItemAttribute(ItemAttributes.SHOT_SPEED,     comp.shotSpeed);
+        map.registerIAStatic(ItemAttributes.SHOT_DAMAGE,    comp.shotDamage);
+        map.registerIAStatic(ItemAttributes.SHOT_POWER,     comp.shotPower);
+        map.registerIAStatic(ItemAttributes.MIN_CUST_TIME,  comp.shotMinCastTime);
+        map.registerIAStatic(ItemAttributes.SHOT_SPEED,     comp.shotSpeed);
+
+        map.registerGT(GemTypes.PA, 2);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemBowIAEvent(item, map));
     }
@@ -197,22 +198,26 @@ public abstract class RPGableItem
     public static void registerParamsItemGun(Item item, RPGItemData map)
     {
         registerParamsItemMod(item, map);
+        map.itemType = ItemType.GUN;
+
         IRPGItemGun iRPG = (IRPGItemGun) item;
         RPGGunComponent comp = iRPG.getItemComponent(item);
         RPGToolMaterial mat = iRPG.getToolMaterial(item);
 
-        map.addStaticItemAttribute(ItemAttributes.MELEE_DAMAGE, comp.meleeDamage + mat.material.getDamageVsEntity() * comp.strMul * 2);
-        map.addStaticItemAttribute(ItemAttributes.MELEE_SPEED,  comp.meleeSpeed);
-        map.addStaticItemAttribute(ItemAttributes.STR_MUL,      comp.strMul);
-        map.addStaticItemAttribute(ItemAttributes.AGI_MUL,      comp.agiMul);
-        map.addStaticItemAttribute(ItemAttributes.INT_MUL,      comp.intMul);
-        map.addStaticItemAttribute(ItemAttributes.KNOCKBACK,    comp.knBack);
-        map.addStaticItemAttribute(ItemAttributes.KNBACK_MUL,   comp.knbMul);
-        map.addStaticItemAttribute(ItemAttributes.REACH,        comp.reach);
+        map.registerIAStatic(ItemAttributes.MELEE_DAMAGE, comp.meleeDamage + mat.material.getDamageVsEntity() * comp.strMul * 2);
+        map.registerIAStatic(ItemAttributes.MELEE_SPEED,  comp.meleeSpeed);
+        map.registerIAStatic(ItemAttributes.STR_MUL,      comp.strMul);
+        map.registerIAStatic(ItemAttributes.AGI_MUL,      comp.agiMul);
+        map.registerIAStatic(ItemAttributes.INT_MUL,      comp.intMul);
+        map.registerIAStatic(ItemAttributes.KNOCKBACK,    comp.knBack);
+        map.registerIAStatic(ItemAttributes.KNBACK_MUL,   comp.knbMul);
+        map.registerIAStatic(ItemAttributes.REACH,        comp.reach);
 
-        map.addStaticItemAttribute(ItemAttributes.SHOT_DAMAGE,    comp.shotDamage + mat.material.getDamageVsEntity() * comp.intMul * 2);
-        map.addStaticItemAttribute(ItemAttributes.MIN_CUST_TIME,  comp.shotMinCastTime);
-        map.addStaticItemAttribute(ItemAttributes.SHOT_SPEED,     comp.shotSpeed);
+        map.registerIAStatic(ItemAttributes.SHOT_DAMAGE,    comp.shotDamage + mat.material.getDamageVsEntity() * comp.intMul * 2);
+        map.registerIAStatic(ItemAttributes.MIN_CUST_TIME,  comp.shotMinCastTime);
+        map.registerIAStatic(ItemAttributes.SHOT_SPEED,     comp.shotSpeed);
+
+        map.registerGT(GemTypes.PA, 2);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemGunIAEvent(item, map));
     }
@@ -220,11 +225,13 @@ public abstract class RPGableItem
     public static void registerParamsItemStaff(Item item, RPGItemData map)
     {
         registerParamsItemGun(item, map);
+        map.itemType = ItemType.STAFF;
+
         IRPGItemStaff iRPG = (IRPGItemStaff) item;
         RPGStaffComponent comp = iRPG.getItemComponent(item);
         RPGToolMaterial mat = iRPG.getToolMaterial(item);
 
-        map.addStaticItemAttribute(ItemAttributes.MANA_COST, comp.needMana);
+        map.registerIAStatic(ItemAttributes.MANA_COST, comp.needMana);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemStaffIAEvent(item, map));
     }
@@ -234,70 +241,72 @@ public abstract class RPGableItem
         return RPGCapability.rpgItemRegistr.isActivated(stack.getItem());
     }
 
-    public static Set<ItemAttribute> getAttributeValues(ItemStack stack)
-    {
-        return RPGCapability.rpgItemRegistr.get(stack.getItem()).attributes.keySet();
-    }
-
-    public static void initRPGItem(ItemStack stack)
+    public static void checkNBT(ItemStack stack)
     {
         if (!stack.hasTagCompound()) {
             stack.setTagCompound(new NBTTagCompound());
         }
+    }
+
+    public static Set<ItemAttribute> getItemAttributes(ItemStack stack)
+    {
+        return RPGCapability.rpgItemRegistr.get(stack.getItem()).attributes.keySet();
+    }
+
+    public static Set<GemType> getGemTypes(ItemStack stack)
+    {
+        return RPGCapability.rpgItemRegistr.get(stack.getItem()).gems.keySet();
+    }
+
+    public static void initRPGItem(ItemStack stack)
+    {
+        checkNBT(stack);
 
         initParams(stack);
     }
 
     public static void reinitRPGItem(ItemStack stack)
     {
-        if (!stack.hasTagCompound()) {
-            stack.setTagCompound(new NBTTagCompound());
-        }
+        checkNBT(stack);
 
         reinitParams(stack);
     }
 
     public static void initParams(ItemStack stack)
     {
-        ItemAttributes.LEVEL.set(stack, 1);
-        ItemAttributes.CURR_EXP.set(stack, 0);
-        ItemAttributes.MAX_EXP.init(stack);
-
-        Set<ItemAttribute> itemAttributes = getAttributeValues(stack);
+        Set<ItemAttribute> itemAttributes = getItemAttributes(stack);
         for (ItemAttribute it : itemAttributes) {
             it.init(stack);
+        }
+
+        if (!itemAttributes.contains(ItemAttributes.LEVEL)) {
+            ItemAttributes.LEVEL.init(stack);
         }
     }
 
     public static void reinitParams(ItemStack stack)
     {
-        if (!ItemAttributes.LEVEL.hasIt(stack)) {
-            ItemAttributes.LEVEL.set(stack, 1);
-        }
-        if (!ItemAttributes.CURR_EXP.hasIt(stack)) {
-            ItemAttributes.CURR_EXP.set(stack, 0);
-        }
-        if (!ItemAttributes.MAX_EXP.hasIt(stack)) {
-            ItemAttributes.MAX_EXP.init(stack);
+        Set<ItemAttribute> itemAttributes = getItemAttributes(stack);
+        for (ItemAttribute it : itemAttributes) {
+            it.checkIt(stack);
         }
 
-        Set<ItemAttribute> itemAttributes = getAttributeValues(stack);
-        for (ItemAttribute it : itemAttributes) {
-            if (!it.hasIt(stack)) {
-                it.init(stack);
-            }
+        if (!itemAttributes.contains(ItemAttributes.LEVEL)) {
+            ItemAttributes.LEVEL.checkIt(stack);
         }
     }
 
     public static void instantLvlUp(ItemStack stack)
     {
         if (isRPGable(stack)) {
-            ItemAttributes.LEVEL.add(stack, 1);
-            ItemAttributes.CURR_EXP.set(stack, 0F);
-
-            Set<ItemAttribute> itemAttributes = getAttributeValues(stack);
+            Set<ItemAttribute> itemAttributes = getItemAttributes(stack);
             for (ItemAttribute iterator : itemAttributes) {
+                iterator.checkIt(stack);
                 iterator.lvlUp(stack);
+            }
+
+            if (ItemAttributes.CURR_EXP.hasIt(stack)) {
+                ItemAttributes.CURR_EXP.set(stack, 0F);
             }
 
             if (ItemAttributes.LEVEL.isMax(stack)) {
@@ -308,14 +317,15 @@ public abstract class RPGableItem
 
     public static void addExp(ItemStack stack, float value)
     {
-        if (isRPGable(stack)) {
+        if (isRPGable(stack) && ItemAttributes.MAX_EXP.hasIt(stack)) {
             if (value <= 0) {
                 return;
             }
-            int level = (int) ItemAttributes.LEVEL.get(stack);
+            int level = (int) ItemAttributes.LEVEL.getChecked(stack);
 
             if (level < ItemConfig.d.maxLevel) {
-                float currEXP = ItemAttributes.CURR_EXP.get(stack);
+                ItemAttributes.CURR_EXP.checkIt(stack);
+                float currEXP = ItemAttributes.CURR_EXP.getChecked(stack);
                 float maxEXP  = ItemAttributes.MAX_EXP.get(stack);
 
                 currEXP += value;
@@ -347,7 +357,9 @@ public abstract class RPGableItem
                     stack = player.getCurrentEquippedItem();
                 }
 
-                if (stack != null && isRPGable(stack) && !ItemAttributes.LEVEL.isMax(stack)) {
+                if (stack != null && isRPGable(stack)
+                    && !ItemAttributes.LEVEL.isMax(stack)
+                    && ItemAttributes.MAX_EXP.hasIt(stack)) {
                     stacks.add(stack);
                 }
             }
@@ -355,7 +367,9 @@ public abstract class RPGableItem
             if (!onlyCurr) {
                 ItemStack[] armors = player.inventory.armorInventory;
                 for (int i = 0; i < armors.length; ++i) {
-                    if (e.needUp[i + 1] && armors[i] != null && isRPGable(armors[i]) && !ItemAttributes.LEVEL.isMax(stack)) {
+                    if (e.needUp[i + 1] && armors[i] != null && isRPGable(armors[i])
+                        && !ItemAttributes.LEVEL.isMax(stack)
+                        && ItemAttributes.MAX_EXP.hasIt(stack)) {
                         stacks.add(armors[i]);
                     }
                 }

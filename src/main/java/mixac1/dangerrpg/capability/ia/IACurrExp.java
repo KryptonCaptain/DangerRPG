@@ -9,10 +9,13 @@ public class IACurrExp extends IADynamic
     {
         super(name);
     }
-    
+
     @Override
-    public void init(ItemStack stack) {}
-    
+    public void init(ItemStack stack)
+    {
+        set(stack, 0);
+    }
+
     @Override
     public void lvlUp(ItemStack stack) {}
 }

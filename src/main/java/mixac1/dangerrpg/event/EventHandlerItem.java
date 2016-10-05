@@ -1,5 +1,10 @@
 package mixac1.dangerrpg.event;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -10,10 +15,13 @@ import mixac1.dangerrpg.api.event.DealtDamageEvent;
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
 import mixac1.dangerrpg.api.event.ItemStackEvent.StackChangedEvent;
 import mixac1.dangerrpg.api.event.ItemStackEvent.UpMaxLevelEvent;
-import mixac1.dangerrpg.capability.RPGableItem;
-import mixac1.dangerrpg.capability.data.RPGUUID;
-import mixac1.dangerrpg.capability.ea.PlayerAttributes;
-import mixac1.dangerrpg.capability.ia.ItemAttributes;
+import mixac1.dangerrpg.api.item.GemType;
+import mixac1.dangerrpg.capability.GemTypes;
+import mixac1.dangerrpg.capability.ItemAttributes;
+import mixac1.dangerrpg.capability.PlayerAttributes;
+import mixac1.dangerrpg.capability.RPGItemHelper;
+import mixac1.dangerrpg.init.RPGCapability;
+import mixac1.dangerrpg.init.RPGOther.RPGUUIDs;
 import mixac1.dangerrpg.util.RPGHelper;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -21,6 +29,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
@@ -37,7 +46,7 @@ public class EventHandlerItem
         if (e.attacker instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) e.attacker;
 
-            if (RPGableItem.isRPGable(e.stack)) {
+            if (RPGItemHelper.isRPGable(e.stack)) {
                 if (!e.isRangeed) {
                     float speed = ItemAttributes.MELEE_SPEED.getSafe(e.stack, player, 10f);
                     PlayerAttributes.SPEED_COUNTER.setValue(speed < 0 ? 0 : speed, player);
@@ -56,18 +65,44 @@ public class EventHandlerItem
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemTooltipEvent e)
     {
-        if (RPGableItem.isRPGable(e.itemStack)) {
+        if (RPGItemHelper.isRPGable(e.itemStack)) {
+            Item item = e.itemStack.getItem();
+
             e.toolTip.add("");
             e.toolTip.add(Utils.toString(EnumChatFormatting.GOLD,
                     ItemAttributes.LEVEL.getDispayName(), ": ", (int) ItemAttributes.LEVEL.get(e.itemStack)));
+
+
             if (ItemAttributes.LEVEL.isMax(e.itemStack)) {
                 e.toolTip.add(Utils.toString(EnumChatFormatting.GRAY,
                         DangerRPG.trans("rpgstr.max")));
             }
             else {
-                e.toolTip.add(Utils.toString(EnumChatFormatting.GRAY,
-                        ItemAttributes.CURR_EXP.getDispayName(), ": ",
-                        (int) ItemAttributes.CURR_EXP.get(e.itemStack), "/", (int) ItemAttributes.MAX_EXP.get(e.itemStack)));
+                if (ItemAttributes.MAX_EXP.hasIt(e.itemStack)) {
+                    e.toolTip.add(Utils.toString(EnumChatFormatting.GRAY,
+                            ItemAttributes.CURR_EXP.getDispayName(), ": ",
+                            (int) ItemAttributes.CURR_EXP.get(e.itemStack), "/", (int) ItemAttributes.MAX_EXP.get(e.itemStack)));
+                }
+            }
+
+            HashMap<GemType, List<ItemStack>> map = new HashMap<GemType, List<ItemStack>>();
+
+            Set<GemType> set = RPGCapability.rpgItemRegistr.get(item).gems.keySet();
+            for (GemType gemType : set) {
+                List<ItemStack> list = gemType.get(e.itemStack);
+                if (!list.isEmpty()) {
+                    map.put(gemType, list);
+                }
+            }
+
+            if (!map.isEmpty()) {
+                e.toolTip.add("");
+                for (Entry<GemType, List<ItemStack>> entry : map.entrySet()) {
+                    e.toolTip.add(Utils.toString(entry.getKey().getDispayName(), ":"));
+                    for (ItemStack it : entry.getValue()) {
+                        e.toolTip.add(Utils.toString(" - ", it.getDisplayName(), " (", (int) ItemAttributes.LEVEL.get(it), ")"));
+                    }
+                }
             }
         }
     }
@@ -103,14 +138,14 @@ public class EventHandlerItem
     public void onDealtDamage(DealtDamageEvent e)
     {
         if (e.damage > 0) {
-            RPGableItem.upEquipment(e.player, e.stack, e.damage, false);
+            RPGItemHelper.upEquipment(e.player, e.stack, e.damage, false);
         }
     }
 
     @SubscribeEvent
     public void onBreak(BreakEvent e)
     {
-        RPGableItem.upEquipment(e.getPlayer(), e.getPlayer().getCurrentEquippedItem(), e.block.getBlockHardness(e.world, e.x, e.y, e.z), true);
+        RPGItemHelper.upEquipment(e.getPlayer(), e.getPlayer().getCurrentEquippedItem(), e.block.getBlockHardness(e.world, e.x, e.y, e.z), true);
     }
 
     @SubscribeEvent
@@ -118,15 +153,22 @@ public class EventHandlerItem
     {
         if (e.slot == 0) {
             IAttributeInstance attr = e.player.getEntityAttribute(SharedMonsterAttributes.attackDamage);
-            AttributeModifier mod = attr.getModifier(RPGUUID.ADDITIONAL_STR_DAMAGE);
+            AttributeModifier mod = attr.getModifier(RPGUUIDs.ADD_STR_DAMAGE);
             if (mod != null) {
                 attr.removeModifier(mod);
             }
-            if (e.stack != null && RPGableItem.isRPGable(e.stack) && ItemAttributes.STR_MUL.hasIt(e.stack)) {
-                AttributeModifier newMod = new AttributeModifier(RPGUUID.ADDITIONAL_STR_DAMAGE, "Strenght damage",
+            if (e.stack != null && RPGItemHelper.isRPGable(e.stack) && ItemAttributes.STR_MUL.hasIt(e.stack)) {
+                AttributeModifier newMod = new AttributeModifier(RPGUUIDs.ADD_STR_DAMAGE, "Strenght damage",
                         PlayerAttributes.STRENGTH.getValue(e.player) * ItemAttributes.STR_MUL.get(e.stack), 0).setSaved(true);
                 attr.applyModifier(newMod);
             }
+        }
+
+        if (e.oldStack != null) {
+            GemTypes.PA.deactivateAll(e.oldStack, e.player);
+        }
+        if (e.stack != null) {
+            GemTypes.PA.activateAll(e.stack, e.player);
         }
     }
 

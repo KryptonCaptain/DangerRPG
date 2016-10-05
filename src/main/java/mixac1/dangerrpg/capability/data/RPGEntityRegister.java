@@ -12,8 +12,8 @@ import mixac1.dangerrpg.api.entity.LvlEAProvider;
 import mixac1.dangerrpg.capability.data.RPGEntityRegister.EntityTransferData;
 import mixac1.dangerrpg.capability.data.RPGEntityRegister.RPGEntityData;
 import mixac1.dangerrpg.init.RPGCapability;
-import mixac1.dangerrpg.util.IMultiplier.IMulConfigurable;
 import mixac1.dangerrpg.util.IMultiplier.IMultiplierE;
+import mixac1.dangerrpg.util.IMultiplier.Multiplier;
 import mixac1.dangerrpg.util.IMultiplier.MultiplierMul;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -71,14 +71,14 @@ public class RPGEntityRegister extends RPGDataRegister<Class<? extends EntityLiv
             this.isSupported = isSupported;
         }
 
-        public <T> void addLvlableEntityAttribute(EntityAttribute<T> attr, T startvalue, LvlEAProvider<T> lvlProvider)
+        public <T> void registerEALvlable(EntityAttribute<T> attr, T startvalue, LvlEAProvider<T> lvlProvider)
         {
             lvlProvider.attr = attr;
             attributes.put(attr, new EntityAttrParams(startvalue, lvlProvider));
             lvlProviders.add(lvlProvider);
         }
 
-        public <T> void addEntityAttribute(EntityAttribute<T> attr, T startvalue)
+        public <T> void registerEA(EntityAttribute<T> attr, T startvalue)
         {
             attributes.put(attr, new EntityAttrParams(startvalue, null));
         }
@@ -121,7 +121,7 @@ public class RPGEntityRegister extends RPGDataRegister<Class<? extends EntityLiv
         public IMultiplierE mulValue;
         public int maxLvl;
         public int startExpCost;
-        public IMulConfigurable mulExpCost;
+        public Multiplier mulExpCost;
 
         public EntityTransferData(LvlEAProvider lvlProv)
         {
@@ -140,16 +140,16 @@ public class RPGEntityRegister extends RPGDataRegister<Class<? extends EntityLiv
         /**
          * Used for static level up entity
          */
-        public IMulConfigurable mulValue;
+        public Multiplier mulValue;
 
-        private static final IMulConfigurable MUL_0d1 = new MultiplierMul(0.1f);
+        private static final Multiplier MUL_0d1 = new MultiplierMul(0.1f);
 
         public EntityAttrParams(Type startValue, LvlEAProvider<Type> lvlProvider)
         {
             this(startValue, lvlProvider, MUL_0d1);
         }
 
-        public EntityAttrParams(Type startValue, LvlEAProvider<Type> lvlProvider, IMulConfigurable mulValue)
+        public EntityAttrParams(Type startValue, LvlEAProvider<Type> lvlProvider, Multiplier mulValue)
         {
             this.startValue = startValue;
             this.lvlProvider = lvlProvider;

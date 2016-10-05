@@ -6,15 +6,15 @@ import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
 import mixac1.dangerrpg.api.event.InitRPGEntityEvent;
 import mixac1.dangerrpg.api.event.ItemStackEvent.StackChangedEvent;
-import mixac1.dangerrpg.capability.RPGableEntity;
+import mixac1.dangerrpg.capability.EntityAttributes;
+import mixac1.dangerrpg.capability.PlayerAttributes;
+import mixac1.dangerrpg.capability.RPGEntityHelper;
 import mixac1.dangerrpg.capability.data.RPGEntityProperties;
-import mixac1.dangerrpg.capability.ea.EntityAttributes;
-import mixac1.dangerrpg.capability.ea.PlayerAttributes;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGConfig.EntityConfig;
 import mixac1.dangerrpg.init.RPGNetwork;
 import mixac1.dangerrpg.network.MsgSyncEntityData;
-import mixac1.dangerrpg.util.IMultiplier.IMulConfigurable;
+import mixac1.dangerrpg.util.IMultiplier.Multiplier;
 import mixac1.dangerrpg.util.RPGHelper;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.EntityLivingBase;
@@ -34,7 +34,7 @@ public class EventHandlerEntity
     @SubscribeEvent
     public void onEntityConstructing(EntityConstructing e)
     {
-        if (e.entity instanceof EntityLivingBase && RPGableEntity.isRPGable((EntityLivingBase) e.entity)) {
+        if (e.entity instanceof EntityLivingBase && RPGEntityHelper.isRPGable((EntityLivingBase) e.entity)) {
             RPGEntityProperties.register((EntityLivingBase) e.entity);
         }
     }
@@ -42,7 +42,7 @@ public class EventHandlerEntity
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent e)
     {
-        if (e.entity instanceof EntityLivingBase && RPGableEntity.isRPGable((EntityLivingBase) e.entity)) {
+        if (e.entity instanceof EntityLivingBase && RPGEntityHelper.isRPGable((EntityLivingBase) e.entity)) {
             if (e.entity.worldObj.isRemote) {
                 RPGNetwork.net.sendToServer(new MsgSyncEntityData((EntityLivingBase) e.entity));
             }
@@ -74,7 +74,7 @@ public class EventHandlerEntity
             EntityAttributes.LVL.setValue(lvl + 1, e.entity);
         }
 
-        IMulConfigurable mul;
+        Multiplier mul;
         if (EntityAttributes.HEALTH.hasIt(e.entity)) {
             float health = e.entity.getHealth();
             mul = RPGCapability.rpgEntityRegistr.get(e.entity).attributes.get(EntityAttributes.HEALTH).mulValue;

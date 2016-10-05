@@ -1,6 +1,7 @@
 package mixac1.dangerrpg.init;
 
 import java.util.Random;
+import java.util.UUID;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
@@ -13,9 +14,17 @@ public abstract class RPGOther
 {
     public static Random rand = new Random();
 
-    public static class RPGCreativeTabs
+    public static abstract class RPGCreativeTabs
     {
         public static CreativeTabs tabRPGAmunitions = (new CreativeTabs("tabRPGAmunitions")
+        {
+            @Override
+            public Item getTabIconItem() {
+                return RPGItems.scytheBlackMatter;
+            }
+        });
+
+        public static CreativeTabs tabRPGGems = (new CreativeTabs("tabRPGGems")
         {
             @Override
             public Item getTabIconItem() {
@@ -40,7 +49,7 @@ public abstract class RPGOther
         });
     }
 
-    public static class RPGDamageSource
+    public static abstract class RPGDamageSource
     {
         public static DamageSource phisic = (new DamageSource("phisicRPG"));
 
@@ -49,7 +58,7 @@ public abstract class RPGOther
         public static DamageSource clear = (new DamageSource("clearRPG")).setDamageBypassesArmor();
     }
 
-    public static class RPGItemRarity
+    public static abstract class RPGItemRarity
     {
         public static EnumRarity common     = EnumHelper.addRarity("common", EnumChatFormatting.WHITE, "Common");
 
@@ -62,5 +71,13 @@ public abstract class RPGOther
         public static EnumRarity epic       = EnumHelper.addRarity("epic", EnumChatFormatting.DARK_RED, "Epic");
 
         public static EnumRarity legendary  = EnumHelper.addRarity("legendary", EnumChatFormatting.GOLD, "Legendary");
+    }
+
+    public static abstract class RPGUUIDs
+    {
+        public static final UUID DEFAULT_DAMAGE  = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
+        public static final UUID EA_HEALTH       = UUID.fromString("fd6315bf-9f57-46cb-bb38-4aacb5d2967a");
+        public static final UUID EA_DAMAGE       = UUID.fromString("04a931c2-b0bf-44de-bbed-1a8f0d56c584");
+        public static final UUID ADD_STR_DAMAGE  = UUID.fromString("ad9d9874-d96d-47ce-8cd6-cb337eebc9bd");
     }
 }

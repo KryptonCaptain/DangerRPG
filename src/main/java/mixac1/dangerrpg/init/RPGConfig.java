@@ -21,10 +21,9 @@ import mixac1.dangerrpg.capability.data.RPGEntityRegister.EntityAttrParams;
 import mixac1.dangerrpg.capability.data.RPGEntityRegister.RPGEntityData;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.ItemAttrParams;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
-import mixac1.dangerrpg.capability.ea.EntityAttributes;
 import mixac1.dangerrpg.client.gui.GuiMode;
-import mixac1.dangerrpg.util.IMultiplier.IMulConfigurable;
 import mixac1.dangerrpg.util.IMultiplier.MulType;
+import mixac1.dangerrpg.util.IMultiplier.Multiplier;
 import mixac1.dangerrpg.util.RPGHelper;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.EntityList;
@@ -97,7 +96,7 @@ public class RPGConfig
     {
         public static class Data implements Serializable
         {
-            public boolean mainEnableInfoLog = true;
+            public boolean mainEnableInfoLog        = true;
             public boolean mainEnableTransferConfig = false;
         }
 
@@ -112,9 +111,11 @@ public class RPGConfig
         protected void init()
         {
             category.setComment("GENERAL INFO:\n" + "\n" + "How do config multipliers ('.mul')\n"
-                    + "You can use two types of multiplier:\n" + "ADD 'value' - adding value to the input parameter.\n"
-                    + "MUL 'value' - multiplication the input parameter by the value.\n"
-                    + "HARD - not for using. There is a hard expression, but you can change it using ADD or MUL\n"
+                    + "You can use tree types of multiplier:\n"
+                    + "ADD  'value'    - 'input parameter' + 'value'\n"
+                    + "MUL  'value'    - 'input parameter' * 'value'\n"
+                    + "SQRT 'value'    - 'input parameter' + sqrt('input parameter' * 'value')\n"
+                    + "HARD - not for using. There is a hard expression, but you can change it using other multipliers\n"
                     + "\n");
 
             save();
@@ -150,21 +151,21 @@ public class RPGConfig
     {
         public static class Data implements Serializable
         {
-            public boolean guiIsEnableHUD = true;
-            public int guiPlayerHUDOffsetX = 10;
-            public int guiPlayerHUDOffsetY = 10;
-            public boolean guiPlayerHUDIsInvert = false;
-            public int guiEnemyHUDOffsetX = 10;
-            public int guiEnemyHUDOffsetY = 10;
-            public boolean guiEnemyHUDIsInvert = true;
-            public int guiChargeOffsetX = 0;
-            public int guiChargeOffsetY = 45;
-            public boolean guiChargeIsCentered = true;
-            public boolean guiTwiceHealthManaBar = true;
-            public int guiDafaultHUDMode = 1;
-            public int guiDamageForTestArmor = 25;
+            public boolean guiIsEnableHUD           = true;
+            public int guiPlayerHUDOffsetX          = 10;
+            public int guiPlayerHUDOffsetY          = 10;
+            public boolean guiPlayerHUDIsInvert     = false;
+            public int guiEnemyHUDOffsetX           = 10;
+            public int guiEnemyHUDOffsetY           = 10;
+            public boolean guiEnemyHUDIsInvert      = true;
+            public int guiChargeOffsetX             = 0;
+            public int guiChargeOffsetY             = 45;
+            public boolean guiChargeIsCentered      = true;
+            public boolean guiTwiceHealthManaBar    = true;
+            public int guiDafaultHUDMode            = 1;
+            public int guiDamageForTestArmor        = 25;
 
-            public boolean neiShowShapedRecipe = false;
+            public boolean neiShowShapedRecipe      = false;
         }
 
         public static Data d = new Data();
@@ -240,11 +241,14 @@ public class RPGConfig
     {
         public static class Data implements Serializable
         {
-            public boolean isAllItemsRPGable = false;
-            public boolean canUpInTable = true;
-            public int maxLevel = 15;
-            public int startMaxExp = 100;
-            public float expMul = 1.20f;
+            public boolean isAllItemsRPGable    = false;
+            public boolean canUpInTable         = true;
+            public int maxLevel                 = 15;
+            public int startMaxExp              = 100;
+            public float expMul                 = 1.20f;
+
+            public int gemStartLvl              = 5;
+            public int gemLvlUpStep             = 5;
         }
 
         public static Data d = new Data();
@@ -287,6 +291,12 @@ public class RPGConfig
 
             d.expMul = config.getFloat("expMul", category.getName(), d.expMul, 0f, Float.MAX_VALUE,
                     "Set expirience multiplier for RPG items");
+
+            d.gemStartLvl = config.getInt("gemStartLvl", category.getName(), d.gemStartLvl, 1, Integer.MAX_VALUE,
+                    "Set default start gem's level");
+
+            d.gemLvlUpStep = config.getInt("gemLvlUpStep", category.getName(), d.gemLvlUpStep, 1, Integer.MAX_VALUE,
+                    "Set default level up gem's step");
 
             save();
         }
@@ -339,9 +349,11 @@ public class RPGConfig
                             cat.setComment("Warning: it isn't support from mod");
                         }
                         for (Entry<ItemAttribute, ItemAttrParams> ia : item.getValue().attributes.entrySet()) {
-                            ia.getValue().value = getRPGAttributeValue(cat.getQualifiedName(), ia);
-                            if (ia.getValue().mul != null) {
-                                ia.getValue().mul = getRPGMultiplier(cat.getQualifiedName(), ia);
+                            if (ia.getKey().isConfigurable()) {
+                                ia.getValue().value = getRPGAttributeValue(cat.getQualifiedName(), ia);
+                                if (ia.getValue().mul != null) {
+                                    ia.getValue().mul = getRPGMultiplier(cat.getQualifiedName(), ia);
+                                }
                             }
                         }
                     }
@@ -363,7 +375,7 @@ public class RPGConfig
             }
         }
 
-        protected IMulConfigurable getRPGMultiplier(String category, Entry<ItemAttribute, ItemAttrParams> attr)
+        protected Multiplier getRPGMultiplier(String category, Entry<ItemAttribute, ItemAttrParams> attr)
         {
             String defStr = attr.getValue().mul.toString();
             Property prop = config.get(category, attr.getKey().name.concat(".mul"), defStr);
@@ -371,7 +383,7 @@ public class RPGConfig
             String str = prop.getString();
 
             if (!defStr.equals(str)) {
-                IMulConfigurable mul = MulType.getMul(str);
+                Multiplier mul = MulType.getMul(str);
                 if (mul != null) {
                     return mul;
                 }
@@ -398,12 +410,12 @@ public class RPGConfig
     {
         public static class Data implements Serializable
         {
-            public boolean isAllEntitiesRPGable = false;
-            public int entityLvlUpFrequency = 50;
-            public int playerLoseLvlCount = 3;
-            public int playerStartManaValue = 10;
-            public int playerStartManaRegenValue = 1;
-            public boolean playerCanLvlDownAttr = true;
+            public boolean isAllEntitiesRPGable     = false;
+            public int entityLvlUpFrequency         = 50;
+            public int playerLoseLvlCount           = 3;
+            public int playerStartManaValue         = 10;
+            public int playerStartManaRegenValue    = 1;
+            public boolean playerCanLvlDownAttr     = true;
             public float playerPercentLoseExpPoints = 0.5f;
         }
 
@@ -495,15 +507,16 @@ public class RPGConfig
             String str = "customPlayerSetting";
 
             for (LvlEAProvider lvlProv : RPGCapability.rpgEntityRegistr.get(EntityPlayer.class).lvlProviders) {
-                String catStr = Utils.toString(str, ".", lvlProv.attr.name);
-                lvlProv.maxLvl = config.getInt("maxLvl", catStr, lvlProv.maxLvl, 0, Integer.MAX_VALUE, "");
-                lvlProv.startExpCost = config.getInt("startExpCost", catStr, lvlProv.startExpCost, 0, Integer.MAX_VALUE,
-                        "");
-                if (lvlProv.mulValue instanceof IMulConfigurable) {
-                    lvlProv.mulValue = getRPGMultiplier(catStr, "value", lvlProv.attr,
-                            (IMulConfigurable) lvlProv.mulValue);
+                if (lvlProv.attr.isConfigurable()) {
+                    String catStr = Utils.toString(str, ".", lvlProv.attr.name);
+                    lvlProv.maxLvl = config.getInt("maxLvl", catStr, lvlProv.maxLvl, 0, Integer.MAX_VALUE, "");
+                    lvlProv.startExpCost = config.getInt("startExpCost", catStr, lvlProv.startExpCost, 0, Integer.MAX_VALUE,
+                            "");
+                    if (lvlProv.mulValue instanceof Multiplier) {
+                        lvlProv.mulValue = getRPGMultiplier(catStr, "value", lvlProv.attr, (Multiplier) lvlProv.mulValue);
+                    }
+                    lvlProv.mulExpCost = getRPGMultiplier(catStr, "expCost", lvlProv.attr, lvlProv.mulExpCost);
                 }
-                lvlProv.mulExpCost = getRPGMultiplier(catStr, "expCost", lvlProv.attr, lvlProv.mulExpCost);
             }
         }
 
@@ -526,7 +539,7 @@ public class RPGConfig
                             cat.setComment("Warning: it isn't support from mod");
                         }
                         for (Entry<EntityAttribute, EntityAttrParams> ea : entity.getValue().attributes.entrySet()) {
-                            if (ea.getKey() != EntityAttributes.LVL) {
+                            if (ea.getKey().isConfigurable()) {
                                 ea.getValue().mulValue = getRPGMultiplier(cat.getQualifiedName(), ea.getKey().name, ea.getKey(),
                                         ea.getValue().mulValue);
                             }
@@ -536,8 +549,8 @@ public class RPGConfig
             }
         }
 
-        protected IMulConfigurable getRPGMultiplier(String category, String name, EntityAttribute attr,
-                IMulConfigurable mul)
+        protected Multiplier getRPGMultiplier(String category, String name, EntityAttribute attr,
+                Multiplier mul)
         {
             String defStr = mul.toString();
             Property prop = config.get(category, name.concat(".mul"), defStr);
@@ -545,7 +558,7 @@ public class RPGConfig
             String str = prop.getString();
 
             if (!defStr.equals(str)) {
-                IMulConfigurable mul1 = MulType.getMul(str);
+                Multiplier mul1 = MulType.getMul(str);
                 if (mul1 != null) {
                     return mul1;
                 }

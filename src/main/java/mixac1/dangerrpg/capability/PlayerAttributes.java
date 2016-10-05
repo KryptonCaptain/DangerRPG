@@ -1,11 +1,15 @@
-package mixac1.dangerrpg.capability.ea;
+package mixac1.dangerrpg.capability;
 
 import mixac1.dangerrpg.api.entity.EAWithIAttr;
 import mixac1.dangerrpg.api.entity.EAWithIAttr.EAMotion;
 import mixac1.dangerrpg.api.entity.EAWithIAttr.EAPercent;
 import mixac1.dangerrpg.api.entity.EntityAttribute.EAFloat;
+import mixac1.dangerrpg.capability.ea.EACurrMana;
+import mixac1.dangerrpg.capability.ea.EAJumpHeight;
+import mixac1.dangerrpg.capability.ea.EAMana;
+import mixac1.dangerrpg.capability.ea.EASpeedCounter;
 
-public class PlayerAttributes extends EntityAttributes
+public abstract class PlayerAttributes extends EntityAttributes
 {
     public static final EAWithIAttr MANA          = new EAMana      ("mana");
     public static final EAWithIAttr STRENGTH      = new EAWithIAttr ("str");
@@ -19,7 +23,7 @@ public class PlayerAttributes extends EntityAttributes
     public static final EAWithIAttr SNEAK_SPEED   = new EAMotion    ("sneak_speed");
     public static final EAWithIAttr FLY_SPEED     = new EAMotion    ("fly_speed");
     public static final EAWithIAttr SWIM_SPEED    = new EAMotion    ("swim_speed");
-    public static final EAWithIAttr JUMP_HEIGHT   = new EAMotion    ("jump_height");
+    public static final EAWithIAttr JUMP_HEIGHT   = new EAJumpHeight("jump_height");
     public static final EAWithIAttr JUMP_RANGE    = new EAMotion    ("jump_range");
 
     public static final EAWithIAttr FALL_RESIST   = new EAPercent   ("fall_resist");

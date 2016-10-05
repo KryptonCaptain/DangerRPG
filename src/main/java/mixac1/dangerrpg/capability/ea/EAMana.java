@@ -1,6 +1,9 @@
 package mixac1.dangerrpg.capability.ea;
 
+import java.util.UUID;
+
 import mixac1.dangerrpg.api.entity.EAWithIAttr;
+import mixac1.dangerrpg.capability.PlayerAttributes;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -12,13 +15,24 @@ public class EAMana extends EAWithIAttr
     }
 
     @Override
-    public void setValue(Float value, EntityLivingBase entity)
+    @Deprecated
+    public boolean setValueRaw(Float value, EntityLivingBase entity)
     {
-        if (isValid(value, entity)) {
-            float max = getValue(entity);
-            setValueRaw(value, entity);
-            sync(entity);
-            PlayerAttributes.CURR_MANA.setValue(value * PlayerAttributes.CURR_MANA.getValue(entity) / max, entity);
+        float tmp = PlayerAttributes.CURR_MANA.getValue(entity) / getValue(entity);
+        if (super.setValueRaw(value, entity)) {
+            PlayerAttributes.CURR_MANA.setValue(getValue(entity) * tmp, entity);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void setModificatorValue(Float value, EntityLivingBase entity, UUID ID)
+    {
+        if (!entity.worldObj.isRemote) {
+            float tmp = PlayerAttributes.CURR_MANA.getValue(entity) / getValue(entity);
+            super.setModificatorValue(value, entity, ID);
+            PlayerAttributes.CURR_MANA.setValue(getValue(entity) * tmp, entity);
         }
     }
 

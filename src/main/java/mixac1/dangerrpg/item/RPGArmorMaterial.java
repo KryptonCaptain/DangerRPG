@@ -16,10 +16,10 @@ public class RPGArmorMaterial implements IMaterialSpecial
     public static final RPGArmorMaterial IRON            = new RPGArmorMaterial("iron",           ArmorMaterial.IRON);
     public static final RPGArmorMaterial GOLD            = new RPGArmorMaterial("gold",           ArmorMaterial.GOLD);
     public static final RPGArmorMaterial DIAMOND         = new RPGArmorMaterial("diamond",        ArmorMaterial.DIAMOND);
-    public static final RPGArmorMaterial OBSIDIAN        = new RPGArmorMaterial("obsidian",       EnumHelper.addArmorMaterial("OBSIDIAN",     41,   new int[] {4,  8,  6,  4}, 12), 0xEAAC00, RPGItemRarity.rare);
-    public static final RPGArmorMaterial BEDROCK         = new RPGArmorMaterial("bedrock",        EnumHelper.addArmorMaterial("BEDROCK",      82,   new int[] {7,  9,  8,  6}, 14), 0x004400, RPGItemRarity.mythic);
-    public static final RPGArmorMaterial BLACK_MATTER    = new RPGArmorMaterial("black_matter",   EnumHelper.addArmorMaterial("BLACK_MATTER", 164,  new int[] {8,  10, 10, 8}, 19), 0x111111, RPGItemRarity.epic);
-    public static final RPGArmorMaterial WHITE_MATTER    = new RPGArmorMaterial("white_matter",   EnumHelper.addArmorMaterial("WHITE_MATTER", 206,  new int[] {9,  10, 10, 9}, 22), 0xffffff, RPGItemRarity.legendary);
+    public static final RPGArmorMaterial OBSIDIAN        = new RPGArmorMaterial("obsidian",       EnumHelper.addArmorMaterial("OBSIDIAN",     51,   new int[] {4,  8,  6,  4}, 12), 0xEAAC00, RPGItemRarity.rare);
+    public static final RPGArmorMaterial BEDROCK         = new RPGArmorMaterial("bedrock",        EnumHelper.addArmorMaterial("BEDROCK",      102,   new int[] {7,  9,  8,  6}, 14), 0x004400, RPGItemRarity.mythic);
+    public static final RPGArmorMaterial BLACK_MATTER    = new RPGArmorMaterial("black_matter",   EnumHelper.addArmorMaterial("BLACK_MATTER", 204,  new int[] {8,  10, 10, 8}, 19), 0x111111, RPGItemRarity.epic);
+    public static final RPGArmorMaterial WHITE_MATTER    = new RPGArmorMaterial("white_matter",   EnumHelper.addArmorMaterial("WHITE_MATTER", 286,  new int[] {10,  12, 12, 10}, 22), 0xffffff, RPGItemRarity.legendary);
 
     static
     {

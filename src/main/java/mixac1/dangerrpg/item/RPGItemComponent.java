@@ -4,8 +4,6 @@ public class RPGItemComponent
 {
     public static final RPGItemComponent  NULL        = new RPGItemComponent();
 
-    public static final RPGToolComponent  TRAINING    = new RPGToolComponent("training");
-
     public static final RPGToolComponent  SWORD       = new RPGToolComponent("sword");
     public static final RPGToolComponent  NAGINATA    = new RPGToolComponent("naginata");
     public static final RPGToolComponent  KATANA      = new RPGToolComponent("katana");
@@ -33,8 +31,6 @@ public class RPGItemComponent
     static
     {
      /* TOOLS             mDmg    mSpeed   strMul  agiMul  intMul   knBack  knbMul    reach */
-
-        TRAINING.init    (0.0F,   10.0F,   0.5F,   0.10F,   0.25F,   10.0F,  0.00F,    2.5F);
 
         SWORD.init       (4.0F,   10.0F,   0.5F,   0.10F,   0.25F,   0.0F,   0.05F,    0.0F);
         NAGINATA.init    (4.0F,   12.0F,   0.5F,   0.08F,   0.25F,   0.5F,   0.075F,   1.5F);

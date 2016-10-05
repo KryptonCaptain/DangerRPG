@@ -65,6 +65,9 @@ public class ItemStackEvent extends Event
         }
     }
 
+    /**
+     * It is fires whenever changed stack in slot
+     */
     public static class StackChangedEvent extends ItemStackEvent
     {
         public ItemStack oldStack;
@@ -80,6 +83,9 @@ public class ItemStackEvent extends Event
         }
     }
 
+    /**
+     * It is fires whenever stack was up in max lvl
+     */
     public static class UpMaxLevelEvent extends ItemStackEvent
     {
         public UpMaxLevelEvent(ItemStack stack)

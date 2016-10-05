@@ -1,10 +1,8 @@
 package mixac1.dangerrpg.item.weapon;
 
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.api.item.IGemableItem;
 import mixac1.dangerrpg.api.item.IRPGItem.IRPGItemTool;
-import mixac1.dangerrpg.capability.GemType;
-import mixac1.dangerrpg.capability.RPGableItem;
+import mixac1.dangerrpg.capability.RPGItemHelper;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
 import mixac1.dangerrpg.init.RPGItems;
 import mixac1.dangerrpg.init.RPGOther.RPGCreativeTabs;
@@ -17,15 +15,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 
-public class ItemRPGWeapon extends ItemSword implements IRPGItemTool, IGemableItem, IHasBooksInfo
+public class ItemRPGWeapon extends ItemSword implements IRPGItemTool, IHasBooksInfo
 {
-    private static final GemType[] gemTypes = new GemType[] {
-            GemType.GEM_MODIFY_ATTACK_1,
-            GemType.GEM_MODIFY_ATTACK_2,
-            GemType.GEM_SPECIAL_ATTACK,
-            GemType.GEM_DEFENCE
-    };
-
     public RPGToolMaterial toolMaterial;
     public RPGToolComponent toolComponent;
 
@@ -48,15 +39,9 @@ public class ItemRPGWeapon extends ItemSword implements IRPGItemTool, IGemableIt
     }
 
     @Override
-    public GemType[] getGemTypes(ItemStack stack)
-    {
-        return gemTypes;
-    }
-
-    @Override
     public String getInformationToInfoBook(ItemStack item, EntityPlayer player)
     {
-        return DangerRPG.trans("rpgstr.no_info_yet");
+        return null;
     }
 
     @Override
@@ -74,6 +59,6 @@ public class ItemRPGWeapon extends ItemSword implements IRPGItemTool, IGemableIt
     @Override
     public void registerAttributes(Item item, RPGItemData map)
     {
-        RPGableItem.registerParamsItemSword(item, map);
+        RPGItemHelper.registerParamsItemSword(item, map);
     }
 }
