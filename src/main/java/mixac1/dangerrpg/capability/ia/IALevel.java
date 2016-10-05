@@ -21,7 +21,7 @@ public class IALevel extends IADynamic
 
     public boolean isMax(ItemStack stack)
     {
-        return get(stack) >= ItemConfig.d.maxLevel;
+        return getChecked(stack) >= ItemConfig.d.maxLevel;
     }
 
     @Override

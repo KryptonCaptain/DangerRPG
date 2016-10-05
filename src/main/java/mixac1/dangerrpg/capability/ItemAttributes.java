@@ -159,7 +159,7 @@ public abstract class ItemAttributes
 
     /*********************************************************************************/
 
-    public static final IADynamic ENCHANTABILITY = new IADynamic("ench")
+    public static final IADynamic ENCHANTABILITY = new IADynamic("enchab")
     {
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)

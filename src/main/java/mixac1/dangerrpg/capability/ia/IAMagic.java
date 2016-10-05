@@ -16,6 +16,6 @@ public class IAMagic extends IAStatic
     @Override
     public float get(ItemStack stack, EntityPlayer player)
     {
-        return get(stack) + PlayerAttributes.INTELLIGENCE.getValue(player) * ItemAttributes.INT_MUL.get(stack);
+        return getChecked(stack) + PlayerAttributes.INTELLIGENCE.getValue(player) * ItemAttributes.INT_MUL.get(stack, player);
     }
 }

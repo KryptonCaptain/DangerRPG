@@ -2,9 +2,9 @@ package mixac1.dangerrpg.hook;
 
 import com.google.common.collect.Multimap;
 
-import mixac1.dangerrpg.capability.RPGItemHelper;
 import mixac1.dangerrpg.capability.ItemAttributes;
 import mixac1.dangerrpg.capability.PlayerAttributes;
+import mixac1.dangerrpg.capability.RPGItemHelper;
 import mixac1.dangerrpg.init.RPGOther.RPGItemRarity;
 import mixac1.dangerrpg.init.RPGOther.RPGUUIDs;
 import mixac1.dangerrpg.item.IMaterialSpecial;
@@ -82,7 +82,7 @@ public class HookItems
     public static boolean onEntitySwing(Item item, EntityLivingBase entity, ItemStack stack)
     {
         if (entity instanceof EntityPlayer && RPGItemHelper.isRPGable(stack)) {
-            return PlayerAttributes.SPEED_COUNTER.getValue(entity) != 0;
+            return PlayerAttributes.SPEED_COUNTER.getValue(entity) <= 0;
         }
         return false;
     }

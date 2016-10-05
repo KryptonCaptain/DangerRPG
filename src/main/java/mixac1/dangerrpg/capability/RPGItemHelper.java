@@ -241,6 +241,13 @@ public abstract class RPGItemHelper
         return RPGCapability.rpgItemRegistr.isActivated(stack.getItem());
     }
 
+    public static void checkNBT(ItemStack stack)
+    {
+        if (!stack.hasTagCompound()) {
+            stack.setTagCompound(new NBTTagCompound());
+        }
+    }
+
     public static Set<ItemAttribute> getItemAttributes(ItemStack stack)
     {
         return RPGCapability.rpgItemRegistr.get(stack.getItem()).attributes.keySet();
@@ -253,18 +260,14 @@ public abstract class RPGItemHelper
 
     public static void initRPGItem(ItemStack stack)
     {
-        if (!stack.hasTagCompound()) {
-            stack.setTagCompound(new NBTTagCompound());
-        }
+        checkNBT(stack);
 
         initParams(stack);
     }
 
     public static void reinitRPGItem(ItemStack stack)
     {
-        if (!stack.hasTagCompound()) {
-            stack.setTagCompound(new NBTTagCompound());
-        }
+        checkNBT(stack);
 
         reinitParams(stack);
     }
@@ -275,15 +278,21 @@ public abstract class RPGItemHelper
         for (ItemAttribute it : itemAttributes) {
             it.init(stack);
         }
+
+        if (!itemAttributes.contains(ItemAttributes.LEVEL)) {
+            ItemAttributes.LEVEL.init(stack);
+        }
     }
 
     public static void reinitParams(ItemStack stack)
     {
         Set<ItemAttribute> itemAttributes = getItemAttributes(stack);
         for (ItemAttribute it : itemAttributes) {
-            if (!it.hasIt(stack)) {
-                it.init(stack);
-            }
+            it.checkIt(stack);
+        }
+
+        if (!itemAttributes.contains(ItemAttributes.LEVEL)) {
+            ItemAttributes.LEVEL.checkIt(stack);
         }
     }
 
@@ -292,6 +301,7 @@ public abstract class RPGItemHelper
         if (isRPGable(stack)) {
             Set<ItemAttribute> itemAttributes = getItemAttributes(stack);
             for (ItemAttribute iterator : itemAttributes) {
+                iterator.checkIt(stack);
                 iterator.lvlUp(stack);
             }
 
@@ -311,10 +321,11 @@ public abstract class RPGItemHelper
             if (value <= 0) {
                 return;
             }
-            int level = (int) ItemAttributes.LEVEL.get(stack);
+            int level = (int) ItemAttributes.LEVEL.getChecked(stack);
 
             if (level < ItemConfig.d.maxLevel) {
-                float currEXP = ItemAttributes.CURR_EXP.get(stack);
+                ItemAttributes.CURR_EXP.checkIt(stack);
+                float currEXP = ItemAttributes.CURR_EXP.getChecked(stack);
                 float maxEXP  = ItemAttributes.MAX_EXP.get(stack);
 
                 currEXP += value;

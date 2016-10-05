@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import mixac1.dangerrpg.DangerRPG;
+import mixac1.dangerrpg.capability.RPGItemHelper;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.item.gem.Gem;
 import mixac1.dangerrpg.util.Utils;
@@ -30,7 +31,22 @@ public abstract class GemType
 
     public boolean hasIt(ItemStack stack)
     {
-        return RPGCapability.rpgItemRegistr.isActivated(stack.getItem()) && stack.stackTagCompound.hasKey(name);
+        boolean res = RPGCapability.rpgItemRegistr.isActivated(stack.getItem())
+                && RPGCapability.rpgItemRegistr.get(stack.getItem()).gems.containsKey(this);
+
+        if (res) {
+            checkIt(stack);
+        }
+
+        return res;
+    }
+
+    public void checkIt(ItemStack stack)
+    {
+        RPGItemHelper.checkNBT(stack);
+        if (!stack.stackTagCompound.hasKey(name)) {
+            attach(stack, Collections.EMPTY_LIST);
+        }
     }
 
     public boolean isTrueGem(Gem gem, ItemStack stack)

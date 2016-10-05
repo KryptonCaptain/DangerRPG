@@ -15,6 +15,6 @@ public class IAEfficiency extends IADynamic
     @Override
     public float get(ItemStack stack, EntityPlayer player)
     {
-        return get(stack) + PlayerAttributes.EFFICIENCY.getValue(player);
+        return getChecked(stack) + PlayerAttributes.EFFICIENCY.getValue(player);
     }
 }

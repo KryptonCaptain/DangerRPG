@@ -18,6 +18,12 @@ public class IADurability extends IAStatic
     }
 
     @Override
+    public void checkIt(ItemStack stack)
+    {
+
+    }
+
+    @Override
     public float get(ItemStack stack)
     {
         return stack.getItemDamage();

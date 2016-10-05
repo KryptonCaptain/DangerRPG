@@ -148,10 +148,16 @@ public class GuiInfoBook extends GuiScreen
     {
         GL11.glPushMatrix();
 
-        GL11.glDisable(GL11.GL_LIGHTING);
-
         offsetX = (width  - bookImageW)  / 2;
         offsetY = (height - bookImageH) / 2;
+
+        for (int k = 0; k < stacks.length; ++k) {
+            if (stacks[k] != null) {
+                RenderHelper.enableGUIStandardItemLighting();
+                GuiScreen.itemRender.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.getTextureManager(), stacks[k], butContent[k + 1].xPosition + 2, butContent[k + 1].yPosition + 2);
+                GuiScreen.itemRender.renderItemOverlayIntoGUI(mc.fontRenderer, mc.getTextureManager(), stacks[k], butContent[k + 1].xPosition + 2, butContent[k + 1].yPosition + 2);
+            }
+        }
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         mc.getTextureManager().bindTexture(TEXTURE);
@@ -191,13 +197,7 @@ public class GuiInfoBook extends GuiScreen
                     this.drawTexturedModalRect(xPosition, yPosition, butContentU, butContentV, butContentS, butContentS);
                 }
 
-                if (id != 0 && stacks[id - 1] != null) {
-                    RenderHelper.enableGUIStandardItemLighting();
-                    GuiScreen.itemRender.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.getTextureManager(), stacks[id - 1], xPosition + 2, yPosition + 2);
-                    GuiScreen.itemRender.renderItemOverlayIntoGUI(mc.fontRenderer, mc.getTextureManager(), stacks[id - 1], xPosition + 2, yPosition + 2);
-                    GL11.glEnable(GL11.GL_BLEND);
-                }
-                else {
+                if (!(id != 0 && stacks[id - 1] != null)) {
                     drawTexturedModalRect(xPosition + 2, yPosition + 2, emptyIconU + (isTargetPlayer ? 0 : 16), emptyIconV + id * 16, 16, 16);
                 }
             }

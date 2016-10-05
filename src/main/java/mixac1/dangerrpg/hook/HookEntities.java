@@ -2,8 +2,8 @@ package mixac1.dangerrpg.hook;
 
 import mixac1.dangerrpg.api.event.DealtDamageEvent;
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
-import mixac1.dangerrpg.capability.RPGItemHelper;
 import mixac1.dangerrpg.capability.PlayerAttributes;
+import mixac1.dangerrpg.capability.RPGItemHelper;
 import mixac1.hooklib.asm.Hook;
 import mixac1.hooklib.asm.Hook.ReturnValue;
 import mixac1.hooklib.asm.ReturnCondition;
@@ -48,7 +48,7 @@ public class HookEntities
 
         if (entity.canAttackWithItem() && !entity.hitByEntity(player)) {
             if (entity instanceof EntityLivingBase && stack != null && RPGItemHelper.isRPGable(stack)) {
-                if (PlayerAttributes.SPEED_COUNTER.getValue(player) != 0) {
+                if (PlayerAttributes.SPEED_COUNTER.getValue(player) > 0) {
                     return;
                 }
             }

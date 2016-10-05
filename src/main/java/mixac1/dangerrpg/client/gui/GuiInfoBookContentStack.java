@@ -21,7 +21,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 
 @SideOnly(Side.CLIENT)
 public class GuiInfoBookContentStack extends GuiInfoBookContent
@@ -64,8 +63,7 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
                                                 (int) ItemAttributes.LEVEL.get(stack)));
 
             if (ItemAttributes.LEVEL.isMax(stack)) {
-                addString(Utils.toString(EnumChatFormatting.GRAY,
-                        DangerRPG.trans("rpgstr.max")));
+                addString(DangerRPG.trans("rpgstr.max"));
             }
             else {
                 if (ItemAttributes.MAX_EXP.hasIt(stack)) {

@@ -224,7 +224,7 @@ ia.knockback=Knockback
 ia.reach=Reach
 ia.mana_cost=Mana Cost
 
-ia.ench=Enchantability
+ia.enchab=Enchantability
 ia.durab=Durability
 ia.max_durab=Max Durability
 ia.effic=Efficiency

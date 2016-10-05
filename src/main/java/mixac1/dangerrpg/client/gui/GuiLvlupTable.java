@@ -118,7 +118,7 @@ public class GuiLvlupTable extends GuiContainer
                 mc.fontRenderer.drawStringWithShadow(displayString, xPosition + (width - mc.fontRenderer.getStringWidth(displayString)) / 2, yPosition + (height - mc.fontRenderer.FONT_HEIGHT) / 2, color);
 
 
-                if (!mc.thePlayer.capabilities.isCreativeMode || true) {
+                if (!mc.thePlayer.capabilities.isCreativeMode) {
                     ItemStack stack = ((ContainerLvlupTable) inventorySlots).invTable.inv[0];
                     if (stack != null && ((ContainerLvlupTable) inventorySlots).expToUp >= 0) {
                         String str = "";

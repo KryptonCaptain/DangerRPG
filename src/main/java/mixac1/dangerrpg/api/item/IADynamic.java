@@ -1,5 +1,6 @@
 package mixac1.dangerrpg.api.item;
 
+import mixac1.dangerrpg.capability.RPGItemHelper;
 import mixac1.dangerrpg.init.RPGCapability;
 import net.minecraft.item.ItemStack;
 
@@ -17,13 +18,29 @@ public class IADynamic extends ItemAttribute
     @Override
     public boolean hasIt(ItemStack stack)
     {
-        return RPGCapability.rpgItemRegistr.isActivated(stack.getItem())
-               && stack.stackTagCompound.hasKey(name);
+        boolean res = RPGCapability.rpgItemRegistr.isActivated(stack.getItem())
+               && RPGCapability.rpgItemRegistr.get(stack.getItem()).attributes.containsKey(this);
+
+        if (res) {
+            checkIt(stack);
+        }
+
+        return res;
+    }
+
+    @Override
+    public void checkIt(ItemStack stack)
+    {
+        RPGItemHelper.checkNBT(stack);
+        if (!stack.stackTagCompound.hasKey(name)) {
+            init(stack);
+        }
     }
 
     @Override
     public float getRaw(ItemStack stack)
     {
+        RPGItemHelper.checkNBT(stack);
         return stack.stackTagCompound.getFloat(name);
     }
 

@@ -26,7 +26,7 @@ public class IASpeed extends IAStatic
     @Override
     public float get(ItemStack stack, EntityPlayer player)
     {
-        float value = get(stack) - PlayerAttributes.AGILITY.getValue(player) * ItemAttributes.AGI_MUL.get(stack) * normalValue / 10F;
+        float value = getChecked(stack) - PlayerAttributes.AGILITY.getValue(player) * ItemAttributes.AGI_MUL.get(stack, player) * normalValue / 10F;
         return value >= 1 ? value : 1F;
     }
 }

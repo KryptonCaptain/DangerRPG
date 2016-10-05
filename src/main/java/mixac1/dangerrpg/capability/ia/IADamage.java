@@ -17,7 +17,7 @@ public class IADamage extends IAStatic
     @Override
     public float get(ItemStack stack, EntityPlayer player)
     {
-        return get(stack) + PlayerAttributes.STRENGTH.getValue(player) * ItemAttributes.STR_MUL.get(stack);
+        return getChecked(stack) + PlayerAttributes.STRENGTH.getValue(player) * ItemAttributes.STR_MUL.get(stack, player);
     }
 
     public static class IAMeleeDamage extends IADamage
