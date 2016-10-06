@@ -37,6 +37,16 @@ public class EAMana extends EAWithIAttr
     }
 
     @Override
+    public void removeModificator(EntityLivingBase entity, UUID ID)
+    {
+        if (!entity.worldObj.isRemote) {
+            float tmp = PlayerAttributes.CURR_MANA.getValue(entity) / getValue(entity);
+            super.removeModificator(entity, ID);
+            PlayerAttributes.CURR_MANA.setValue(getValue(entity) * tmp, entity);
+        }
+    }
+
+    @Override
     public void toNBTforMsg(NBTTagCompound nbt, EntityLivingBase entity)
     {
         toNBT(nbt, entity);

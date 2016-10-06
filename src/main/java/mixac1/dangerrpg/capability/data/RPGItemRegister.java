@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.item.GemType;
 import mixac1.dangerrpg.api.item.IADynamic;
 import mixac1.dangerrpg.api.item.IAStatic;
@@ -37,7 +38,7 @@ public class RPGItemRegister extends RPGDataRegister<Item, RPGItemData, Integer,
         public HashMap<ItemAttribute, ItemAttrParams> attributes = new LinkedHashMap<ItemAttribute, ItemAttrParams>();
         public HashMap<GemType, Integer> gems = new LinkedHashMap<GemType, Integer>();
         public IRPGItem rpgComponent;
-        public ItemType itemType = ItemType.SWORD;
+        public ItemType itemType = ItemType.MELEE_WPN;
 
         public RPGItemData(IRPGItem lvlComponent, boolean isSupported)
         {
@@ -128,11 +129,23 @@ public class RPGItemRegister extends RPGDataRegister<Item, RPGItemData, Integer,
 
     public enum ItemType
     {
-        SWORD,
+        MELEE_WPN,
         TOOL,
         ARMOR,
         BOW,
-        GUN,
+        RANGE_WPN,
         STAFF
+
+        ;
+
+        public String getDisplayName()
+        {
+            return DangerRPG.trans("it.".concat(name().toLowerCase()));
+        }
+
+        public static String getDisplayNameAll()
+        {
+            return DangerRPG.trans("it.all");
+        }
     }
 }

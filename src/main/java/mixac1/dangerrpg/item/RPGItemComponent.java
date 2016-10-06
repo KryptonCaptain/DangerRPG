@@ -34,7 +34,7 @@ public class RPGItemComponent
 
         SWORD.init       (4.0F,   10.0F,   0.5F,   0.10F,   0.25F,   0.0F,   0.05F,    0.0F);
         NAGINATA.init    (4.0F,   12.0F,   0.5F,   0.08F,   0.25F,   0.5F,   0.075F,   1.5F);
-        KATANA.init      (3.5F,   9.0F,    0.5F,   0.11F,   0.25F,   0.0F,   0.025F,   0.0F);
+        KATANA.init      (3.5F,   9.0F,    0.45F,  0.11F,   0.25F,   0.0F,   0.025F,   0.0F);
         SCYTHE.init      (5.0F,   15.0F,   0.65F,  0.07F,   0.25F,   0.5F,   0.075F,   1.0F);
         HAMMER.init      (6.0F,   20.0F,   0.8F,   0.03F,   0.25F,   1.0F,   0.12F,    0.0F);
         TOMAHAWK.init    (3.5F,   9.5F,    0.30F,  0.11F,   0.25F,   0.0F,   0.00F,    0.0F);

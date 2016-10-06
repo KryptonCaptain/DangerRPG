@@ -106,7 +106,7 @@ public abstract class RPGItemHelper
     public static void registerParamsItemSword(Item item, RPGItemData map)
     {
         registerParamsItemMod(item, map);
-        map.itemType = ItemType.SWORD;
+        map.itemType = ItemType.MELEE_WPN;
 
         IRPGItemTool iRPG = (IRPGItemTool) (item instanceof IRPGItemTool ? item : IRPGItem.DEFAULT_SWORD);
         RPGToolComponent comp = iRPG.getItemComponent(item);
@@ -198,7 +198,7 @@ public abstract class RPGItemHelper
     public static void registerParamsItemGun(Item item, RPGItemData map)
     {
         registerParamsItemMod(item, map);
-        map.itemType = ItemType.GUN;
+        map.itemType = ItemType.RANGE_WPN;
 
         IRPGItemGun iRPG = (IRPGItemGun) item;
         RPGGunComponent comp = iRPG.getItemComponent(item);

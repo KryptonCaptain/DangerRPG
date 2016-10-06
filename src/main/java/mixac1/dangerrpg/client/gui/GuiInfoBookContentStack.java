@@ -11,6 +11,7 @@ import mixac1.dangerrpg.api.item.GemType;
 import mixac1.dangerrpg.api.item.ItemAttribute;
 import mixac1.dangerrpg.capability.ItemAttributes;
 import mixac1.dangerrpg.capability.RPGItemHelper;
+import mixac1.dangerrpg.capability.data.RPGItemRegister.ItemType;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.item.IHasBooksInfo;
 import mixac1.dangerrpg.item.gem.Gem;
@@ -95,6 +96,20 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
                 addString(s);
                 addString("");
             }
+        }
+
+        if (item instanceof Gem) {
+            Gem gem = (Gem) item;
+            addString(Utils.toString(DangerRPG.trans("rpgstr.target_it"), ":"));
+            if (!gem.itemTypes.isEmpty()) {
+                for (ItemType it : gem.itemTypes) {
+                    addString(Utils.toString("- ", it.getDisplayName()));
+                }
+            }
+            else {
+                addString(Utils.toString("- ", ItemType.getDisplayNameAll()));
+            }
+            addString("");
         }
 
         if (isRPGable) {
@@ -185,9 +200,11 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
         addString("");
         addString(Utils.toString(DangerRPG.trans("rpgstr.name"), ": ", stack.getDisplayName()));
         addString(Utils.toString(DangerRPG.trans("rpgstr.type"), ": ", gemType.getDispayName()));
+        addString("");
 
         tmp = ItemAttributes.LEVEL.isMax(stack) ? Utils.toString(" (", DangerRPG.trans("rpgstr.max"), ")") : "";
         addString(Utils.toString(ItemAttributes.LEVEL.getDispayName(), ": ", (int) ItemAttributes.LEVEL.get(stack), tmp));
+        addString("");
 
         if (stack.getItem() instanceof IHasBooksInfo) {
             String s = ((IHasBooksInfo) stack.getItem()).getInformationToInfoBook(stack, player);

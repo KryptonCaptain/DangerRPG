@@ -281,6 +281,14 @@ ea.lava_resist.info=Increases lava resistance
 
 gt.pa=Passive Stat Gem
 
+it.all=All
+it.melee_wpn=Melee Weapon
+it.range_wpn=Range Weapon
+it.tool=Tool
+it.armor=Armor
+it.bow=Bow
+it.staff=Staff
+
 rpgstr.info_about=Info about
 rpgstr.stats=Stats
 rpgstr.item_info=Item Info
@@ -293,6 +301,7 @@ rpgstr.value=Value
 rpgstr.max=Max
 rpgstr.unbreakable=Unbreakable
 rpgstr.upgrade=Upgrade
+rpgstr.target_it=Target item types
 
 rpgstr.gpa.info=It adds additional amount of player stat points.
 

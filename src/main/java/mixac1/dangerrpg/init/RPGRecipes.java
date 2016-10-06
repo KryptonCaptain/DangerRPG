@@ -42,6 +42,8 @@ public abstract class RPGRecipes
 
         addShapedRecipe(RPGBlocks.modificationTable, "101", "000", '0', Blocks.obsidian, '1', Items.emerald);
 
+        addShapedRecipe(RPGBlocks.lvlupTable, "101", "000", '0', Blocks.obsidian, '1', Blocks.redstone_block);
+
         addShapedRecipe(RPGItems.magicLeather, "010", '1', Items.leather, '0', new ItemStack(Items.dye, 1, 4));
 
         RecipeCreator.RECIPE_FULL_2X2.addRecipe(RPGItems.compressedObsidian, Blocks.obsidian);

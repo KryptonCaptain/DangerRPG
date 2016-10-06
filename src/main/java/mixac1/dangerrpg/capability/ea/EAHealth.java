@@ -47,4 +47,14 @@ public class EAHealth extends EAWithExistIAttr
             entity.setHealth(entity.getMaxHealth() * tmp);
         }
     }
+
+    @Override
+    public void removeModificator(EntityLivingBase entity, UUID ID)
+    {
+        if (!entity.worldObj.isRemote) {
+            float tmp = entity.getHealth() / entity.getMaxHealth();
+            super.removeModificator(entity, ID);
+            entity.setHealth(entity.getMaxHealth() * tmp);
+        }
+    }
 }

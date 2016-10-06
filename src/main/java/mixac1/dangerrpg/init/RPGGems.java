@@ -27,6 +27,9 @@ public abstract class RPGGems
     public static void load()
     {
         gemPAEffic.addItemTypes(ItemType.TOOL);
+
+        gemPAHealth.addItemTypes(ItemType.ARMOR);
+        gemPAMana.addItemTypes(ItemType.ARMOR);
         gemPAManaRegen.addItemTypes(ItemType.ARMOR);
         gemPAHealthRegen.addItemTypes(ItemType.ARMOR);
         gemPAMotionSpeed.addItemTypes(ItemType.ARMOR);
