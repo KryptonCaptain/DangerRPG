@@ -31,14 +31,8 @@ public abstract class GemType
 
     public boolean hasIt(ItemStack stack)
     {
-        boolean res = RPGCapability.rpgItemRegistr.isActivated(stack.getItem())
-                && RPGCapability.rpgItemRegistr.get(stack.getItem()).gems.containsKey(this);
-
-        if (res) {
-            checkIt(stack);
-        }
-
-        return res;
+        return RPGCapability.rpgItemRegistr.isActivated(stack.getItem())
+               && RPGCapability.rpgItemRegistr.get(stack.getItem()).gems.containsKey(this);
     }
 
     public void checkIt(ItemStack stack)

@@ -1,6 +1,7 @@
 package mixac1.dangerrpg.item.gem;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import mixac1.dangerrpg.DangerRPG;
@@ -19,7 +20,6 @@ import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import scala.actors.threadpool.Arrays;
 
 public abstract class Gem extends Item implements IRPGItem, IHasBooksInfo
 {

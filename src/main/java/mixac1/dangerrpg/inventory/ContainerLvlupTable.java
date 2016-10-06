@@ -4,7 +4,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.capability.ItemAttributes;
 import mixac1.dangerrpg.capability.RPGItemHelper;
-import mixac1.dangerrpg.init.RPGConfig.ItemConfig;
 import mixac1.dangerrpg.item.gem.Gem;
 import mixac1.dangerrpg.util.RPGHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -249,21 +248,32 @@ public class ContainerLvlupTable extends Container
                 }
                 return true;
             }
-            else if (ItemConfig.d.canUpInTable && expToUp <= player.experienceTotal) {
-                if (!worldPointer.isRemote) {
-                    if (stack.getItem() instanceof Gem) {
-                        player.addExperienceLevel(-expToUp);
-                        RPGItemHelper.instantLvlUp(stack);
-                        burnItems();
+            else {
+                RPGHelper.rebuildPlayerExp(player);
+
+                if (stack.getItem() instanceof Gem) {
+                    if (player.experienceLevel >= expToUp) {
+                        if (!worldPointer.isRemote) {
+                            player.addExperienceLevel(-expToUp);
+                            RPGHelper.rebuildPlayerExp(player);
+                            RPGItemHelper.instantLvlUp(stack);
+                            burnItems();
+                            onCraftMatrixChanged(invTable);
+                        }
+                        return true;
                     }
-                    else {
-                        player.addExperience(-expToUp);
-                        RPGItemHelper.instantLvlUp(stack);
-                        RPGHelper.rebuildPlayerLvl(player);
-                    }
-                    onCraftMatrixChanged(invTable);
                 }
-                return true;
+                else {
+                    if (player.experienceTotal >= expToUp) {
+                        if (!worldPointer.isRemote) {
+                            player.addExperience(-expToUp);
+                            RPGHelper.rebuildPlayerLvl(player);
+                            RPGItemHelper.instantLvlUp(stack);
+                            onCraftMatrixChanged(invTable);
+                        }
+                        return true;
+                    }
+                }
             }
         }
         return false;

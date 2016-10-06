@@ -18,14 +18,8 @@ public class IADynamic extends ItemAttribute
     @Override
     public boolean hasIt(ItemStack stack)
     {
-        boolean res = RPGCapability.rpgItemRegistr.isActivated(stack.getItem())
+        return RPGCapability.rpgItemRegistr.isActivated(stack.getItem())
                && RPGCapability.rpgItemRegistr.get(stack.getItem()).attributes.containsKey(this);
-
-        if (res) {
-            checkIt(stack);
-        }
-
-        return res;
     }
 
     @Override

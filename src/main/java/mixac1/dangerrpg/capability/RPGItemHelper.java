@@ -306,7 +306,7 @@ public abstract class RPGItemHelper
             }
 
             if (ItemAttributes.CURR_EXP.hasIt(stack)) {
-                ItemAttributes.CURR_EXP.set(stack, 0F);
+                ItemAttributes.CURR_EXP.setChecked(stack, 0F);
             }
 
             if (ItemAttributes.LEVEL.isMax(stack)) {
@@ -324,9 +324,8 @@ public abstract class RPGItemHelper
             int level = (int) ItemAttributes.LEVEL.getChecked(stack);
 
             if (level < ItemConfig.d.maxLevel) {
-                ItemAttributes.CURR_EXP.checkIt(stack);
                 float currEXP = ItemAttributes.CURR_EXP.getChecked(stack);
-                float maxEXP  = ItemAttributes.MAX_EXP.get(stack);
+                float maxEXP  = ItemAttributes.MAX_EXP.getChecked(stack);
 
                 currEXP += value;
 
