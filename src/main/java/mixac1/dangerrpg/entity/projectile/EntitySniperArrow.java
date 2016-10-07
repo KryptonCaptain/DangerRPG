@@ -1,7 +1,7 @@
 package mixac1.dangerrpg.entity.projectile;
 
-import mixac1.dangerrpg.entity.projectile.core.EntityRPGArrow;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class EntitySniperArrow extends EntityRPGArrow
@@ -11,33 +11,38 @@ public class EntitySniperArrow extends EntityRPGArrow
         super(world);
     }
 
-    public EntitySniperArrow(World world, double x, double y, double z)
+    public EntitySniperArrow(World world, ItemStack stack)
     {
-        super(world, x, y, z);
-    }
-    
-    public EntitySniperArrow(World world, EntityLivingBase thrower, float speed, float deviation)
-    {
-        super(world, thrower, speed, deviation);
+        super(world, stack);
     }
 
-    public EntitySniperArrow(World world, EntityLivingBase thrower, EntityLivingBase target, float speed, float deviation)
+    public EntitySniperArrow(World world, ItemStack stack, double x, double y, double z)
     {
-        super(world, thrower, target, speed, deviation);
+        super(world, stack, x, y, z);
     }
-    
+
+    public EntitySniperArrow(World world, ItemStack stack, EntityLivingBase thrower, float speed, float deviation)
+    {
+        super(world, stack, thrower, speed, deviation);
+    }
+
+    public EntitySniperArrow(World world, ItemStack stack, EntityLivingBase thrower, EntityLivingBase target, float speed, float deviation)
+    {
+        super(world, stack, thrower, target, speed, deviation);
+    }
+
     @Override
     public float getAirResistance()
     {
         return beenInGround ? 0.95F : 1F;
     }
-    
+
     @Override
     public float getWaterResistance()
     {
         return beenInGround ? 0.8F : 1F;
     }
-    
+
     @Override
     public float getGravity()
     {

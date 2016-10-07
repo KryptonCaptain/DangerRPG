@@ -46,16 +46,26 @@ public abstract class EntityWithStack extends EntityProjectile
         dataWatcher.addObject(DW_INDEX_STACK, new ItemStack(Items.apple, 0));
     }
 
-    public void setStack(ItemStack stack)
-    {
-        if (stack != null) {
-            dataWatcher.updateObject(DW_INDEX_STACK, stack);
-        }
-    }
-
     public ItemStack getStack()
     {
-        return dataWatcher.getWatchableObjectItemStack(DW_INDEX_STACK);
+        return getStack(DW_INDEX_STACK);
+    }
+
+    public ItemStack getStack(int index)
+    {
+        return dataWatcher.getWatchableObjectItemStack(index);
+    }
+
+    public void setStack(ItemStack stack)
+    {
+        setStack(stack, DW_INDEX_STACK);
+    }
+
+    public void setStack(ItemStack stack, int index)
+    {
+        if (stack != null) {
+            dataWatcher.updateObject(index, stack);
+        }
     }
 
     @Override

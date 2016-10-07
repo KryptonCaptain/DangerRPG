@@ -34,14 +34,7 @@ public class ItemSniperBow extends ItemRPGBow
 
             float powerMul = ItemAttributes.SHOT_POWER.hasIt(stack) ?
                     ItemAttributes.SHOT_POWER.get(stack, player) : 1F;
-            EntitySniperArrow entity = new EntitySniperArrow(world, player, power * powerMul, 0F);
-
-            entity.phisicDamage = ItemAttributes.SHOT_DAMAGE.hasIt(stack) ? ItemAttributes.SHOT_DAMAGE.get(stack, player) : 2F;
-
-            int k = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, stack);
-            if (k > 0) {
-                entity.phisicDamage += k * 0.5F + 0.5F;
-            }
+            EntitySniperArrow entity = new EntitySniperArrow(world, stack, player, power * powerMul, 0F);
 
             if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, stack) > 0) {
                 entity.setFire(100);

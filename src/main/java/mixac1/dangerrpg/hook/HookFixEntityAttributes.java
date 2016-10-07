@@ -2,7 +2,7 @@ package mixac1.dangerrpg.hook;
 
 import java.util.List;
 
-import mixac1.dangerrpg.entity.projectile.core.EntityRPGArrow;
+import mixac1.dangerrpg.entity.projectile.EntityRPGArrow;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.util.RPGHelper;
 import mixac1.hooklib.asm.Hook;
@@ -84,7 +84,7 @@ public class HookFixEntityAttributes
     @Hook(returnCondition = ReturnCondition.ALWAYS)
     public static void attackEntityWithRangedAttack(EntitySkeleton that, EntityLivingBase entity, float value)
     {
-        EntityRPGArrow entityarrow = new EntityRPGArrow(that.worldObj, that, entity, 1.6F, 14 - that.worldObj.difficultySetting.getDifficultyId() * 4);
+        EntityRPGArrow entityarrow = new EntityRPGArrow(that.worldObj, null, that, entity, 1.6F, 14 - that.worldObj.difficultySetting.getDifficultyId() * 4);
         int j = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, that.getHeldItem());
 
 

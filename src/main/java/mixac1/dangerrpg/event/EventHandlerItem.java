@@ -6,12 +6,13 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.api.event.DealtDamageEvent;
+import mixac1.dangerrpg.api.event.ItemStackEvent.DealtDamageEvent;
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
 import mixac1.dangerrpg.api.event.ItemStackEvent.StackChangedEvent;
 import mixac1.dangerrpg.api.event.ItemStackEvent.UpMaxLevelEvent;
@@ -23,6 +24,7 @@ import mixac1.dangerrpg.capability.RPGItemHelper;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGOther.RPGUUIDs;
 import mixac1.dangerrpg.util.RPGHelper;
+import mixac1.dangerrpg.util.Tuple.Stub;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -40,8 +42,8 @@ import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 
 public class EventHandlerItem
 {
-    @SubscribeEvent
-    public void onHitEntity(HitEntityEvent e)
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onHitEntityPre(HitEntityEvent e)
     {
         if (e.attacker instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) e.attacker;
@@ -57,6 +59,20 @@ public class EventHandlerItem
 
                 e.entity.hurtResistantTime = 0;
                 e.knockback += ItemAttributes.KNOCKBACK.getSafe(e.stack, player, 0);
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onHitEntityPost(HitEntityEvent e)
+    {
+        if (e.attacker instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) e.attacker;
+
+            if (RPGItemHelper.isRPGable(e.stack)) {
+                Stub<Float> damage = Stub.create(e.newDamage);
+                GemTypes.AM.activate1All(e.stack, player, e.entity, damage);
+                e.newDamage = damage.value1;
             }
         }
     }
@@ -134,8 +150,18 @@ public class EventHandlerItem
         }
     }
 
-    @SubscribeEvent
-    public void onDealtDamage(DealtDamageEvent e)
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onDealtDamagePre(DealtDamageEvent e)
+    {
+        if (e.stack != null && RPGItemHelper.isRPGable(e.stack)) {
+            Stub<Float> damage = Stub.create(e.damage);
+            GemTypes.AM.activate2All(e.stack, e.player, e.target, damage);
+            e.damage = damage.value1;
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onDealtDamagePost(DealtDamageEvent e)
     {
         if (e.damage > 0) {
             RPGItemHelper.upEquipment(e.player, e.stack, e.damage, false);
@@ -165,10 +191,10 @@ public class EventHandlerItem
         }
 
         if (e.oldStack != null) {
-            GemTypes.PA.deactivateAll(e.oldStack, e.player);
+            GemTypes.PA.activate2All(e.oldStack, e.player);
         }
         if (e.stack != null) {
-            GemTypes.PA.activateAll(e.stack, e.player);
+            GemTypes.PA.activate1All(e.stack, e.player);
         }
     }
 

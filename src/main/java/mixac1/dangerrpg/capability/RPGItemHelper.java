@@ -122,6 +122,7 @@ public abstract class RPGItemHelper
         map.registerIAStatic(ItemAttributes.REACH,        comp.reach);
 
         map.registerGT(GemTypes.PA, 2);
+        map.registerGT(GemTypes.AM, 2);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemSwordIAEvent(item, map));
     }
@@ -146,7 +147,8 @@ public abstract class RPGItemHelper
 
         map.registerIADynamic(ItemAttributes.EFFICIENCY,  mat.material.getEfficiencyOnProperMaterial(), IMultiplier.ADD_1);
 
-        map.registerGT(GemTypes.PA, 1);
+        map.registerGT(GemTypes.PA, 2);
+        map.registerGT(GemTypes.AM, 2);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemToolIAEvent(item, map));
     }
@@ -191,6 +193,7 @@ public abstract class RPGItemHelper
         map.registerIAStatic(ItemAttributes.SHOT_SPEED,     comp.shotSpeed);
 
         map.registerGT(GemTypes.PA, 2);
+        map.registerGT(GemTypes.AM, 2);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemBowIAEvent(item, map));
     }
@@ -218,6 +221,7 @@ public abstract class RPGItemHelper
         map.registerIAStatic(ItemAttributes.SHOT_SPEED,     comp.shotSpeed);
 
         map.registerGT(GemTypes.PA, 2);
+        map.registerGT(GemTypes.AM, 2);
 
         MinecraftForge.EVENT_BUS.post(new RegIAEvent.ItemGunIAEvent(item, map));
     }

@@ -1,6 +1,6 @@
 package mixac1.dangerrpg.entity.projectile.core;
 
-import mixac1.dangerrpg.api.event.DealtDamageEvent;
+import mixac1.dangerrpg.api.event.ItemStackEvent.DealtDamageEvent;
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
 import mixac1.dangerrpg.capability.ItemAttributes;
 import net.minecraft.entity.EntityLivingBase;
@@ -50,6 +50,8 @@ public class EntityThrowRPGItem extends EntityMaterial
             return;
         }
 
+        float points = entity.getHealth();
+
         ItemStack stack = this.getStack();
         if (stack != null) {
             if (ItemAttributes.SHOT_DAMAGE.hasIt(stack)) {
@@ -62,8 +64,6 @@ public class EntityThrowRPGItem extends EntityMaterial
             MinecraftForge.EVENT_BUS.post(event);
             phisicDamage = event.newDamage;
         }
-
-        float points = entity.getHealth();
 
         super.applyEntityHitEffects(entity, dmgMul);
 

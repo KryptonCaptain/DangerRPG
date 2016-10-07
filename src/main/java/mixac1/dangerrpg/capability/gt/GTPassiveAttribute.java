@@ -12,16 +12,22 @@ public class GTPassiveAttribute extends GemType
         super("pa");
     }
 
+    /**
+     * Activate
+     */
     @Override
-    public void activate(ItemStack stack, EntityPlayer player)
+    public void activate1(ItemStack stack, EntityPlayer player, Object... meta)
     {
         if (stack.getItem() instanceof GemPassiveAttribute) {
             ((GemPassiveAttribute) stack.getItem()).activate(stack, player);
         }
     }
 
+    /**
+     * Deactivate
+     */
     @Override
-    public void deactivate(ItemStack stack, EntityPlayer player)
+    public void activate2(ItemStack stack, EntityPlayer player, Object... meta)
     {
         if (stack.getItem() instanceof GemPassiveAttribute) {
             ((GemPassiveAttribute) stack.getItem()).deactivate(stack, player);

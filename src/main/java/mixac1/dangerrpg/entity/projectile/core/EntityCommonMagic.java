@@ -2,7 +2,7 @@ package mixac1.dangerrpg.entity.projectile.core;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import mixac1.dangerrpg.api.event.DealtDamageEvent;
+import mixac1.dangerrpg.api.event.ItemStackEvent.DealtDamageEvent;
 import mixac1.dangerrpg.api.event.ItemStackEvent.HitEntityEvent;
 import mixac1.dangerrpg.capability.ItemAttributes;
 import mixac1.dangerrpg.util.RPGHelper;
@@ -44,6 +44,8 @@ public class EntityCommonMagic extends EntityWithStack
     @Override
     public void applyEntityHitEffects(EntityLivingBase entity, float dmgMul)
     {
+        float points = entity.getHealth();
+
         ItemStack stack = this.getStack();
         if (stack != null) {
             if (ItemAttributes.SHOT_DAMAGE.hasIt(stack)) {
@@ -53,8 +55,6 @@ public class EntityCommonMagic extends EntityWithStack
             MinecraftForge.EVENT_BUS.post(event);
             damage = event.newDamage;
         }
-
-        float points = entity.getHealth();
 
         super.applyEntityHitEffects(entity, dmgMul);
 

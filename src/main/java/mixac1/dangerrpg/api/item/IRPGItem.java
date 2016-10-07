@@ -1,10 +1,10 @@
 package mixac1.dangerrpg.api.item;
 
-import mixac1.dangerrpg.capability.RPGItemHelper;
 import mixac1.dangerrpg.capability.ItemAttributes;
+import mixac1.dangerrpg.capability.RPGItemHelper;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
+import mixac1.dangerrpg.entity.projectile.EntityRPGArrow;
 import mixac1.dangerrpg.entity.projectile.core.EntityMaterial;
-import mixac1.dangerrpg.entity.projectile.core.EntityRPGArrow;
 import mixac1.dangerrpg.init.RPGOther;
 import mixac1.dangerrpg.item.RPGArmorMaterial;
 import mixac1.dangerrpg.item.RPGItemComponent;
@@ -220,14 +220,8 @@ public interface IRPGItem
                 }
 
                 float powerMul = ItemAttributes.SHOT_POWER.getSafe(stack, player, 1F);
-                EntityRPGArrow entity = new EntityRPGArrow(world, player, power * powerMul, 1F);
+                EntityRPGArrow entity = new EntityRPGArrow(world, stack, player, power * powerMul, 1F);
 
-                entity.phisicDamage = ItemAttributes.SHOT_DAMAGE.getSafe(stack, player, 2F);
-
-                int k = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, stack);
-                if (k > 0) {
-                    entity.phisicDamage += k * 0.5F + 0.5F;
-                }
 
                 if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, stack) > 0) {
                     entity.setFire(100);

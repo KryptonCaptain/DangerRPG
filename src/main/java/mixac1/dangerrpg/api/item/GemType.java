@@ -102,23 +102,23 @@ public abstract class GemType
         return stacks;
     }
 
-    public abstract void activate(ItemStack stack, EntityPlayer player);
+    public abstract void activate1(ItemStack stack, EntityPlayer player, Object... meta);
 
-    public abstract void deactivate(ItemStack stack, EntityPlayer player);
+    public abstract void activate2(ItemStack stack, EntityPlayer player, Object... meta);
 
-    public void activateAll(ItemStack stack, EntityPlayer player)
+    public void activate1All(ItemStack stack, EntityPlayer player, Object... meta)
     {
         List<ItemStack> stacks = get(stack);
         for (ItemStack it : stacks) {
-            activate(it, player);
+            activate1(it, player, meta);
         }
     }
 
-    public void deactivateAll(ItemStack stack, EntityPlayer player)
+    public void activate2All(ItemStack stack, EntityPlayer player, Object... meta)
     {
         List<ItemStack> stacks = get(stack);
         for (ItemStack it : stacks) {
-            deactivate(it, player);
+            activate2(it, player, meta);
         }
     }
 

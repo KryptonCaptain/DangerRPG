@@ -46,6 +46,24 @@ public class ItemStackEvent extends Event
     }
 
     /**
+     * It is fires whenever target dealt damage
+     */
+    public static class DealtDamageEvent extends ItemStackEvent
+    {
+        public EntityPlayer player;
+        public EntityLivingBase target;
+        public float damage;
+
+        public DealtDamageEvent(EntityPlayer player, EntityLivingBase target, ItemStack stack, float damage)
+        {
+            super(stack);
+            this.player = player;
+            this.target = target;
+            this.damage = damage;
+        }
+    }
+
+    /**
      * It is fires whenever a {@link Item#addInformation(ItemStack, EntityPlayer, List, boolean)} is processed
      * and stack is lvlable item
      */
