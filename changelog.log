@@ -1,3 +1,10 @@
+    1.1.1
+
+[FIXED] Crash on startup.
+[FIXED] Bug in LevelUp Table, with calculate experience.
+[ADDED] Recipe for LevelUp table.
+[FIXED] Bugs with health and mana gems.
+
     1.1.0
 
 [ADDED] Different 'gems' of player stats for weapons, tools and armors.

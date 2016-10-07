@@ -106,7 +106,7 @@ public interface IRPGEntity
         {
             super.registerAttributes(entityClass, set);
             if (rangeAttr != null) {
-                set.registerEA(rangeAttr, rangeValue);
+                set.registerEA(rangeAttr, rangeValue, RPGEntityHelper.DAMAGE_MUL);
             }
         }
     };
@@ -155,10 +155,10 @@ public interface IRPGEntity
             super.registerAttributes(entityClass, set);
 
             if (meleeAttr != null) {
-                set.registerEA(meleeAttr, meleeValue);
+                set.registerEA(meleeAttr, meleeValue, RPGEntityHelper.DAMAGE_MUL);
             }
             if (rangeAttr != null) {
-                set.registerEA(rangeAttr, rangeValue);
+                set.registerEA(rangeAttr, rangeValue, RPGEntityHelper.DAMAGE_MUL);
             }
         }
     };

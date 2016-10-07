@@ -111,7 +111,7 @@ public class RPGConfig
         protected void init()
         {
             category.setComment("GENERAL INFO:\n" + "\n" + "How do config multipliers ('.mul')\n"
-                    + "You can use tree types of multiplier:\n"
+                    + "You can use three types of multiplier:\n"
                     + "ADD  'value'    - 'input parameter' + 'value'\n"
                     + "MUL  'value'    - 'input parameter' * 'value'\n"
                     + "SQRT 'value'    - 'input parameter' + sqrt('input parameter' * 'value')\n"
@@ -151,21 +151,21 @@ public class RPGConfig
     {
         public static class Data implements Serializable
         {
-            public boolean guiIsEnableHUD           = true;
-            public int guiPlayerHUDOffsetX          = 10;
-            public int guiPlayerHUDOffsetY          = 10;
-            public boolean guiPlayerHUDIsInvert     = false;
-            public int guiEnemyHUDOffsetX           = 10;
-            public int guiEnemyHUDOffsetY           = 10;
-            public boolean guiEnemyHUDIsInvert      = true;
-            public int guiChargeOffsetX             = 0;
-            public int guiChargeOffsetY             = 45;
-            public boolean guiChargeIsCentered      = true;
-            public boolean guiTwiceHealthManaBar    = true;
-            public int guiDafaultHUDMode            = 1;
-            public int guiDamageForTestArmor        = 25;
+            public boolean  guiIsEnableHUD           = true;
+            public int      guiPlayerHUDOffsetX      = 10;
+            public int      guiPlayerHUDOffsetY      = 10;
+            public boolean  guiPlayerHUDIsInvert     = false;
+            public int      guiEnemyHUDOffsetX       = 10;
+            public int      guiEnemyHUDOffsetY       = 10;
+            public boolean  guiEnemyHUDIsInvert      = true;
+            public int      guiChargeOffsetX         = 0;
+            public int      guiChargeOffsetY         = 45;
+            public boolean  guiChargeIsCentered      = true;
+            public boolean  guiTwiceHealthManaBar    = true;
+            public int      guiDafaultHUDMode        = 1;
+            public int      guiDamageForTestArmor    = 25;
 
-            public boolean neiShowShapedRecipe      = false;
+            public boolean  neiShowShapedRecipe      = false;
         }
 
         public static Data d = new Data();
@@ -241,14 +241,14 @@ public class RPGConfig
     {
         public static class Data implements Serializable
         {
-            public boolean isAllItemsRPGable    = false;
-            public boolean canUpInTable         = true;
-            public int maxLevel                 = 15;
-            public int startMaxExp              = 100;
-            public float expMul                 = 1.20f;
+            public boolean  isAllItemsRPGable    = false;
+            public boolean  canUpInTable         = true;
+            public int      maxLevel             = 15;
+            public int      startMaxExp          = 100;
+            public float    expMul               = 1.20f;
 
-            public int gemStartLvl              = 5;
-            public int gemLvlUpStep             = 5;
+            public int      gemStartLvl          = 5;
+            public int      gemLvlUpStep         = 5;
         }
 
         public static Data d = new Data();
@@ -410,13 +410,17 @@ public class RPGConfig
     {
         public static class Data implements Serializable
         {
-            public boolean isAllEntitiesRPGable     = false;
-            public int entityLvlUpFrequency         = 50;
-            public int playerLoseLvlCount           = 3;
-            public int playerStartManaValue         = 10;
-            public int playerStartManaRegenValue    = 1;
-            public boolean playerCanLvlDownAttr     = true;
-            public float playerPercentLoseExpPoints = 0.5f;
+            public boolean  isAllEntitiesRPGable       = false;
+
+            public int      playerLoseLvlCount         = 3;
+            public int      playerStartManaValue       = 10;
+            public int      playerStartManaRegenValue  = 1;
+            public boolean  playerCanLvlDownAttr       = true;
+            public float    playerPercentLoseExpPoints = 0.5f;
+
+            public int      entityLvlUpFrequency       = 50;
+            public float    entityLvlUpHealthMul       = 1.1f;
+            public float    entityLvlUpDamageMul       = 1.1f;
         }
 
         public static Data d = new Data();
@@ -448,9 +452,6 @@ public class RPGConfig
             d.isAllEntitiesRPGable = config.getBoolean("isAllEntitiesRPGable", category.getName(), d.isAllEntitiesRPGable,
                     "All entities are RPGable (true/false)");
 
-            d.entityLvlUpFrequency = config.getInt("entityLvlUpFrequency", category.getName(), d.entityLvlUpFrequency, 1, Integer.MAX_VALUE,
-                    "Set frequency of RPG entity level up");
-
             d.playerLoseLvlCount = config.getInt("playerLoseLvlCount", category.getName(), d.playerLoseLvlCount, 0, Integer.MAX_VALUE,
                     "Set number of lost points of level when player die");
 
@@ -465,6 +466,15 @@ public class RPGConfig
 
             d.playerPercentLoseExpPoints = config.getFloat("playerPercentLoseExpPoints", category.getName(), d.playerPercentLoseExpPoints, 0f, 1f,
                     "Set percent of lose experience points when level down player's stat");
+
+            d.entityLvlUpFrequency = config.getInt("entityLvlUpFrequency", category.getName(), d.entityLvlUpFrequency, 1, Integer.MAX_VALUE,
+                    "Set frequency of RPG entity level up");
+
+            d.entityLvlUpHealthMul = config.getFloat("entityLvlUpHealthMul", category.getName(), d.entityLvlUpHealthMul, 1, Float.MAX_VALUE,
+                    "Set multiplier of health per level");
+
+            d.entityLvlUpDamageMul = config.getFloat("entityLvlUpDamageMul", category.getName(), d.entityLvlUpDamageMul, 1, Float.MAX_VALUE,
+                    "Set multiplier of damage per level");
 
             save();
         }

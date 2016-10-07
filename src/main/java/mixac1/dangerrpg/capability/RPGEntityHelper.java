@@ -9,6 +9,7 @@ import mixac1.dangerrpg.init.RPGConfig.EntityConfig;
 import mixac1.dangerrpg.util.IMultiplier;
 import mixac1.dangerrpg.util.IMultiplier.Multiplier;
 import mixac1.dangerrpg.util.IMultiplier.MultiplierAdd;
+import mixac1.dangerrpg.util.IMultiplier.MultiplierMul;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
@@ -17,6 +18,10 @@ import net.minecraftforge.common.MinecraftForge;
 
 public abstract class RPGEntityHelper
 {
+    public static final Multiplier HEALTH_MUL = new MultiplierMul(EntityConfig.d.entityLvlUpHealthMul);
+
+    public static final Multiplier DAMAGE_MUL = new MultiplierMul(EntityConfig.d.entityLvlUpHealthMul);
+
     public static boolean isRPGable(EntityLivingBase entity)
     {
         return RPGCapability.rpgEntityRegistr.isActivated(entity);
@@ -47,13 +52,13 @@ public abstract class RPGEntityHelper
 
     public static void registerEntityLiving(Class<? extends EntityLiving> entityClass, RPGEntityData map)
     {
-        map.registerEA(EntityAttributes.HEALTH, 0f);
+        map.registerEA(EntityAttributes.HEALTH, 0f, HEALTH_MUL);
         MinecraftForge.EVENT_BUS.post(new RegEAEvent.EntytyLivingEAEvent(entityClass, map));
     }
 
     public static void registerEntityMob(Class<? extends EntityMob> entityClass, RPGEntityData map)
     {
-        map.registerEA(EntityAttributes.MELEE_DAMAGE, 0f);
+        map.registerEA(EntityAttributes.MELEE_DAMAGE, 0f, DAMAGE_MUL);
         MinecraftForge.EVENT_BUS.post(new RegEAEvent.EntytyMobEAEvent(entityClass, map));
     }
 

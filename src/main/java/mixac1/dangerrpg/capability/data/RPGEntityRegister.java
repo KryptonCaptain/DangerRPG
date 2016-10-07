@@ -71,16 +71,26 @@ public class RPGEntityRegister extends RPGDataRegister<Class<? extends EntityLiv
             this.isSupported = isSupported;
         }
 
-        public <T> void registerEALvlable(EntityAttribute<T> attr, T startvalue, LvlEAProvider<T> lvlProvider)
+        public <T> void registerEALvlable(EntityAttribute<T> attr, T startValue, LvlEAProvider<T> lvlProvider)
+        {
+            registerEALvlable(attr, startValue, lvlProvider, null);
+        }
+
+        public <T> void registerEALvlable(EntityAttribute<T> attr, T startValue, LvlEAProvider<T> lvlProvider, Multiplier staticMul)
         {
             lvlProvider.attr = attr;
-            attributes.put(attr, new EntityAttrParams(startvalue, lvlProvider));
+            attributes.put(attr, new EntityAttrParams(startValue, lvlProvider, staticMul));
             lvlProviders.add(lvlProvider);
         }
 
-        public <T> void registerEA(EntityAttribute<T> attr, T startvalue)
+        public <T> void registerEA(EntityAttribute<T> attr, T startValue)
         {
-            attributes.put(attr, new EntityAttrParams(startvalue, null));
+            registerEA(attr, startValue, null);
+        }
+
+        public <T> void registerEA(EntityAttribute<T> attr, T startValue, Multiplier staticMul)
+        {
+            attributes.put(attr, new EntityAttrParams(startValue, null, staticMul));
         }
 
         @Override
@@ -144,17 +154,12 @@ public class RPGEntityRegister extends RPGDataRegister<Class<? extends EntityLiv
 
         private static final Multiplier MUL_0d1 = new MultiplierMul(0.1f);
 
-        public EntityAttrParams(Type startValue, LvlEAProvider<Type> lvlProvider)
-        {
-            this(startValue, lvlProvider, MUL_0d1);
-        }
-
         public EntityAttrParams(Type startValue, LvlEAProvider<Type> lvlProvider, Multiplier mulValue)
         {
             this.startValue = startValue;
             this.lvlProvider = lvlProvider;
 
-            this.mulValue = mulValue;
+            this.mulValue = mulValue == null ? MUL_0d1 : mulValue;
         }
     }
 }
