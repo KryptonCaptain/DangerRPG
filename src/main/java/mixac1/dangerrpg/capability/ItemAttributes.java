@@ -101,7 +101,7 @@ public abstract class ItemAttributes
 
     public static final IAStatic MANA_COST = new IAStatic("mana_cost");
 
-    public static final IAStatic PHISIC_ARMOR = new IAStatic("phisic_armor")
+    public static final IAStatic PHYSIC_ARMOR = new IAStatic("physic_armor")
     {
         @Override
         public String getDispayValue(ItemStack stack, EntityPlayer player)

@@ -26,7 +26,7 @@ public class ItemRPGSpade extends ItemSpade implements IRPGItemTool, IHasBooksIn
         this.toolMaterial = toolMaterial;
         setUnlocalizedName(RPGItems.getRPGName(getItemComponent(this), getToolMaterial(this)));
         setTextureName(Utils.toString(DangerRPG.MODID, ":tools/", unlocalizedName));
-        setCreativeTab(RPGCreativeTabs.tabRPGAmunitions);
+        setCreativeTab(RPGCreativeTabs.tabRPGAmmunitions);
         setMaxStackSize(1);
     }
 

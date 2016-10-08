@@ -163,7 +163,7 @@ public abstract class RPGItemHelper
         RPGArmorComponent com = iRPG.getItemComponent(item);
 
         float armor = mat.material.getDamageReductionAmount(((ItemArmor) item).armorType) * com.phisicalResMul;
-        map.registerIAStatic(ItemAttributes.PHISIC_ARMOR, HookArmorSystem.convertPhisicArmor(armor));
+        map.registerIAStatic(ItemAttributes.PHYSIC_ARMOR, HookArmorSystem.convertPhisicArmor(armor));
         map.registerIAStatic(ItemAttributes.MAGIC_ARMOR,  mat.magicRes * com.magicResMul);
 
         map.registerGT(GemTypes.PA, 2);
@@ -371,8 +371,8 @@ public abstract class RPGItemHelper
                 ItemStack[] armors = player.inventory.armorInventory;
                 for (int i = 0; i < armors.length; ++i) {
                     if (e.needUp[i + 1] && armors[i] != null && isRPGable(armors[i])
-                        && !ItemAttributes.LEVEL.isMax(stack)
-                        && ItemAttributes.MAX_EXP.hasIt(stack)) {
+                        && !ItemAttributes.LEVEL.isMax(armors[i])
+                        && ItemAttributes.MAX_EXP.hasIt(armors[i])) {
                         stacks.add(armors[i]);
                     }
                 }

@@ -16,7 +16,7 @@ public abstract class RPGOther
 
     public static abstract class RPGCreativeTabs
     {
-        public static CreativeTabs tabRPGAmunitions = (new CreativeTabs("tabRPGAmunitions")
+        public static CreativeTabs tabRPGAmmunitions = (new CreativeTabs("tabRPGAmunitions")
         {
             @Override
             public Item getTabIconItem() {
@@ -28,7 +28,7 @@ public abstract class RPGOther
         {
             @Override
             public Item getTabIconItem() {
-                return RPGItems.scytheBlackMatter;
+                return RPGGems.gemAMVampirism;
             }
         });
 

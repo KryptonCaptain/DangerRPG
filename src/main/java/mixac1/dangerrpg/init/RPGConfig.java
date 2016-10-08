@@ -96,8 +96,9 @@ public class RPGConfig
     {
         public static class Data implements Serializable
         {
-            public boolean mainEnableInfoLog        = true;
-            public boolean mainEnableTransferConfig = false;
+            public boolean mainEnableInfoLog         = true;
+            public boolean mainEnableTransferConfig  = false;
+            public boolean mainEnableGemEventsToChat = true;
         }
 
         public static Data d = new Data();
@@ -125,10 +126,13 @@ public class RPGConfig
         public void load()
         {
             d.mainEnableInfoLog = config.getBoolean("mainEnableInfoLog", category.getName(), d.mainEnableInfoLog,
-                    "Enable writing info message to log (true/false)");
+                    "Enable printing info message to log (true/false)");
 
             d.mainEnableTransferConfig = config.getBoolean("mainEnableTransferConfig", category.getName(), d.mainEnableTransferConfig,
                     "Enable transfer config data from server to client (true/false)\nCan be errors. Synchronize the configuration better by other means.");
+
+            d.mainEnableGemEventsToChat = config.getBoolean("mainEnableGemEventsToChat", category.getName(), d.mainEnableGemEventsToChat,
+                    "Enable printing gem's events to chat");
 
             save();
         }
@@ -419,8 +423,8 @@ public class RPGConfig
             public float    playerPercentLoseExpPoints = 0.5f;
 
             public int      entityLvlUpFrequency       = 50;
-            public float    entityLvlUpHealthMul       = 1.1f;
-            public float    entityLvlUpDamageMul       = 1.1f;
+            public float    entityLvlUpHealthMul       = 0.1f;
+            public float    entityLvlUpDamageMul       = 0.1f;
         }
 
         public static Data d = new Data();

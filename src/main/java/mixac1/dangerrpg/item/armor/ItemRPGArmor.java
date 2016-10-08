@@ -38,7 +38,7 @@ public class ItemRPGArmor extends ItemArmor implements IRPGItemArmor, IHasBooksI
         modelTexture = Utils.toString("DangerRPG:textures/models/armors/", name, "_layer_");
         setUnlocalizedName(name.concat(ARMOR_TYPES[armorType]));
         setTextureName(Utils.toString(DangerRPG.MODID, ":armors/", unlocalizedName));
-        setCreativeTab(RPGCreativeTabs.tabRPGAmunitions);
+        setCreativeTab(RPGCreativeTabs.tabRPGAmmunitions);
     }
 
     public static ItemRPGArmor[] createFullSet(RPGArmorMaterial armorMaterial, RPGArmorComponent armorComponent)

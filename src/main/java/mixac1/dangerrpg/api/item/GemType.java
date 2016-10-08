@@ -45,7 +45,7 @@ public abstract class GemType
 
     public boolean isTrueGem(Gem gem, ItemStack stack)
     {
-        return gem.itemTypes.isEmpty() || gem.itemTypes.contains(RPGCapability.rpgItemRegistr.get(stack.getItem()).itemType);
+        return this == gem.getGemType() && (gem.itemTypes.isEmpty() || gem.itemTypes.contains(RPGCapability.rpgItemRegistr.get(stack.getItem()).itemType));
     }
 
     public void attach(ItemStack dest, ItemStack... src)

@@ -14,9 +14,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class GemAMVampirism extends GemAttackModifier
+public class GemAMPureDamage extends GemAttackModifier
 {
-    public GemAMVampirism(String name)
+    public GemAMPureDamage(String name)
     {
         super(name);
     }
@@ -35,13 +35,13 @@ public class GemAMVampirism extends GemAttackModifier
     public void onDealtDamage(ItemStack gem, EntityPlayer player, EntityLivingBase target, Stub<Float> damage, HashSet<Class<? extends GemAttackModifier>> disableSet)
     {
         if (GemAttributes.PERCENT.hasIt(gem)) {
-            float tmp = player.getMaxHealth() - player.getHealth();
+            float tmp = target.getHealth();
             if (tmp > 0) {
                 float value = Utils.alignment(damage.value1 * GemAttributes.PERCENT.get(gem, player), 0, tmp);
-                player.heal(value);
+                target.setHealth(tmp - value);
 
                 if (MainConfig.d.mainEnableGemEventsToChat) {
-                    RPGHelper.msgToChat(player, String.format("%s: get %.2f hp", gem.getDisplayName(), value));
+                    RPGHelper.msgToChat(player, String.format("%s: additional damage %.2f", gem.getDisplayName(), value));
                 }
             }
         }

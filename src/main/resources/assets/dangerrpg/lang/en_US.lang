@@ -1,6 +1,7 @@
-itemGroup.tabRPGAmunitions=RPG Amunitions
+itemGroup.tabRPGAmmunitions=RPG Ammunitions
 itemGroup.tabRPGBlocks=RPG Blocks
 itemGroup.tabRPGItems=RPG Items
+itemGroup.tabRPGGems=RPG Gems
 
 item.magic_leather.name=Magic Leather
 item.compressed_obsidian.name=Compressed Obsidian
@@ -200,8 +201,12 @@ item.gem_pa_fall_resist.name=Gem of Fall Resist
 item.gem_pa_fire_resist.name=Gem of Fire Resist
 item.gem_pa_lava_resist.name=Gem of Lava Resist
 
+item.gem_am_vampirism.name=Gem of Vampirism
+item.gem_am_crit.name=Gem of Critical attack
+item.gem_am_pure_dmg.name=Gem of Pure damage
+
 tile.modification_table.name=Modification Table
-tile.lvlup_table.name=LevelUp Table
+tile.lvlup_table.name=Level Up Table
 tile.rpg_workbench.name=Large Workbench
 tile.synthetic_bedrock.name=Synthetic Bedrock
 
@@ -228,7 +233,7 @@ ia.enchab=Enchantability
 ia.durab=Durability
 ia.max_durab=Max Durability
 ia.effic=Efficiency
-ia.phisic_armor=Phisical Resistance
+ia.physic_armor=Physical Resistance
 ia.magic_armor=Magical Resistance
  
 ia.str_mul=Str to Damage
@@ -270,8 +275,8 @@ ea.jump_range=Jump range
 ea.jump_range.info=Increases jump range
 ea.fall_resist=Steel muscles
 ea.fall_resist.info=Decreases falling damage
-ea.phisic_resist=Phisic resist
-ea.phisic_resist.info=Increases phisical damage resistance
+ea.physic_resist=Physic resist
+ea.physic_resist.info=Increases physical damage resistance
 ea.magic_resist=Magic resist
 ea.magic_resist.info=Increases magic damage resistance
 ea.fire_resist=Fire resist
@@ -280,6 +285,7 @@ ea.lava_resist=Lava resist
 ea.lava_resist.info=Increases lava resistance
 
 gt.pa=Passive Stat Gem
+gt.am=Attack Modifier Gem
 
 it.all=All
 it.melee_wpn=Melee Weapon
@@ -304,6 +310,9 @@ rpgstr.upgrade=Upgrade
 rpgstr.target_it=Target item types
 
 rpgstr.gpa.info=It adds additional amount of player stat points.
+gem_am_vampirism.info=It adds vampirism. Percent of damage dealt is converted into health.
+gem_am_crit.info=It adds chance of critical attack.
+gem_am_pure_dmg.info=It adds percent of pure additional damage to attack.
 
 rpgstr.no_item=There is no item.
 rpgstr.no_info=There is no information.

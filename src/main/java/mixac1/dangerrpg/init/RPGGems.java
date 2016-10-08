@@ -2,6 +2,10 @@ package mixac1.dangerrpg.init;
 
 import mixac1.dangerrpg.capability.PlayerAttributes;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.ItemType;
+import mixac1.dangerrpg.item.gem.GemAMCrit;
+import mixac1.dangerrpg.item.gem.GemAMPureDamage;
+import mixac1.dangerrpg.item.gem.GemAMVampirism;
+import mixac1.dangerrpg.item.gem.GemAttackModifier;
 import mixac1.dangerrpg.item.gem.GemPassiveAttribute;
 import mixac1.dangerrpg.util.IMultiplier.MultiplierAdd;
 import mixac1.dangerrpg.util.IMultiplier.MultiplierMul;
@@ -18,11 +22,15 @@ public abstract class RPGGems
     public static GemPassiveAttribute gemPAHealthRegen     = new GemPassiveAttribute("gem_pa_health_regen",    0.5f,   new MultiplierAdd(0.5f),     PlayerAttributes.HEALTH_REGEN);
     public static GemPassiveAttribute gemPAMotionSpeed     = new GemPassiveAttribute("gem_pa_motion_speed",    0.002f, new MultiplierAdd(0.002f),   PlayerAttributes.SNEAK_SPEED, PlayerAttributes.MOVE_SPEED, PlayerAttributes.SWIM_SPEED, PlayerAttributes.FLY_SPEED);
     public static GemPassiveAttribute gemPAJumpStrenght    = new GemPassiveAttribute("gem_pa_jump_str",        0.002f, new MultiplierAdd(0.002f),   PlayerAttributes.JUMP_HEIGHT, PlayerAttributes.JUMP_RANGE);
-    public static GemPassiveAttribute gemPAPhisicResist    = new GemPassiveAttribute("gem_pa_phisic_resist",   0.01f,  new MultiplierAdd(0.01f),    PlayerAttributes.PHISIC_RESIST);
+    public static GemPassiveAttribute gemPAPhisicResist    = new GemPassiveAttribute("gem_pa_phisic_resist",   0.01f,  new MultiplierAdd(0.01f),    PlayerAttributes.PHYSIC_RESIST);
     public static GemPassiveAttribute gemPAMagicResist     = new GemPassiveAttribute("gem_pa_magic_resist",    0.01f,  new MultiplierAdd(0.01f),    PlayerAttributes.MAGIC_RESIST);
     public static GemPassiveAttribute gemPAFallResist      = new GemPassiveAttribute("gem_pa_fall_resist",     0.02f,  new MultiplierAdd(0.02f),    PlayerAttributes.FALL_RESIST);
     public static GemPassiveAttribute gemPAFireResist      = new GemPassiveAttribute("gem_pa_fire_resist",     0.02f,  new MultiplierAdd(0.02f),    PlayerAttributes.FIRE_RESIST);
     public static GemPassiveAttribute gemPALavaResist      = new GemPassiveAttribute("gem_pa_lava_resist",     0.02f,  new MultiplierAdd(0.02f),    PlayerAttributes.LAVA_RESIST);
+
+    public static GemAttackModifier   gemAMVampirism       = new GemAMVampirism ("gem_am_vampirism");
+    public static GemAttackModifier   gemAMCrit            = new GemAMCrit      ("gem_am_crit");
+    public static GemAttackModifier   gemAMPureDmg         = new GemAMPureDamage("gem_am_pure_dmg");
 
     public static void load()
     {

@@ -183,7 +183,7 @@ public class ContainerModificationTable extends Container
     public ItemStack slotClick(int index, int par2, int par3, EntityPlayer player)
     {
         if (index >= staticSize) {
-            if (!invTable.isItemValidForSlot(staticSize - index, null)) {
+            if (!invTable.isItemValidForSlot(index - staticSize, null)) {
                 return null;
             }
         }

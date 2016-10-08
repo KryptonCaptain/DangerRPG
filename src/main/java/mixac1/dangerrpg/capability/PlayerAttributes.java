@@ -27,7 +27,7 @@ public abstract class PlayerAttributes extends EntityAttributes
     public static final EAWithIAttr JUMP_RANGE    = new EAMotion    ("jump_range");
 
     public static final EAWithIAttr FALL_RESIST   = new EAPercent   ("fall_resist");
-    public static final EAWithIAttr PHISIC_RESIST = new EAPercent   ("phisic_resist");
+    public static final EAWithIAttr PHYSIC_RESIST = new EAPercent   ("physic_resist");
     public static final EAWithIAttr MAGIC_RESIST  = new EAPercent   ("magic_resist");
     public static final EAWithIAttr FIRE_RESIST   = new EAPercent   ("fire_resist");
     public static final EAWithIAttr LAVA_RESIST   = new EAPercent   ("lava_resist");

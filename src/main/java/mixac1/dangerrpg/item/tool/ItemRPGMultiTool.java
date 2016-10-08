@@ -46,7 +46,7 @@ public class ItemRPGMultiTool extends ItemTool implements IRPGItemTool, IHasBook
         this.toolMaterial = toolMaterial;
         setUnlocalizedName(RPGItems.getRPGName(getItemComponent(this), getToolMaterial(this)));
         setTextureName(Utils.toString(DangerRPG.MODID, ":tools/", unlocalizedName));
-        setCreativeTab(RPGCreativeTabs.tabRPGAmunitions);
+        setCreativeTab(RPGCreativeTabs.tabRPGAmmunitions);
         setMaxStackSize(1);
     }
 

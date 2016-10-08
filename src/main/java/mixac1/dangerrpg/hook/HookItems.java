@@ -82,7 +82,7 @@ public class HookItems
     public static boolean onEntitySwing(Item item, EntityLivingBase entity, ItemStack stack)
     {
         if (entity instanceof EntityPlayer && RPGItemHelper.isRPGable(stack)) {
-            return PlayerAttributes.SPEED_COUNTER.getValue(entity) <= 0;
+            return PlayerAttributes.SPEED_COUNTER.getValue(entity) > 0;
         }
         return false;
     }

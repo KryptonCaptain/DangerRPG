@@ -27,7 +27,7 @@ public class ItemRPGWeapon extends ItemSword implements IRPGItemTool, IHasBooksI
         this.toolComponent = toolComponent;
         setUnlocalizedName(RPGItems.getRPGName(getItemComponent(this), getToolMaterial(this)));
         setTextureName(Utils.toString(DangerRPG.MODID, ":weapons/melee/", unlocalizedName));
-        setCreativeTab(RPGCreativeTabs.tabRPGAmunitions);
+        setCreativeTab(RPGCreativeTabs.tabRPGAmmunitions);
         setMaxStackSize(1);
     }
 

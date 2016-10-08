@@ -128,6 +128,7 @@ public class InventoryModificationTable implements IInventory
             }
             else {
                 it[index] = stack;
+                return;
             }
         }
     }
@@ -141,7 +142,7 @@ public class InventoryModificationTable implements IInventory
         for (Entry<GemType, Integer> entry : map.entrySet()) {
             List<ItemStack> list = entry.getKey().detach(stack);
 
-            inv[i] = list.toArray(new ItemStack[entry.getValue()]);
+            inv[i++] = list.toArray(new ItemStack[entry.getValue()]);
         }
     }
 

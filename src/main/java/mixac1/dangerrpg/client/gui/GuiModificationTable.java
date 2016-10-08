@@ -37,6 +37,7 @@ public class GuiModificationTable extends GuiContainer
     private static HashMap<GemType, Integer> iconMap = new HashMap<GemType, Integer>()
     {{
         put(GemTypes.PA, 1);
+        put(GemTypes.AM, 2);
     }};
 
     public GuiModificationTable(InventoryPlayer inventory, World world, int x, int y, int z)

@@ -37,7 +37,7 @@ public class HookArmorSystem
                 return ItemAttributes.MAGIC_ARMOR.hasIt(stack) ? ItemAttributes.MAGIC_ARMOR.get(stack) : 0;
             }
             else {
-                return ItemAttributes.PHISIC_ARMOR.hasIt(stack) ? ItemAttributes.PHISIC_ARMOR.get(stack) :
+                return ItemAttributes.PHYSIC_ARMOR.hasIt(stack) ? ItemAttributes.PHYSIC_ARMOR.get(stack) :
                     stack.getItem() instanceof ItemArmor ? convertPhisicArmor(((ItemArmor) stack.getItem()).damageReduceAmount) : 0;
             }
         }
@@ -96,7 +96,7 @@ public class HookArmorSystem
                 return PlayerAttributes.MAGIC_RESIST.getSafe(entity, 0f);
             }
             else if (!source.isUnblockable()) {
-                return PlayerAttributes.PHISIC_RESIST.getSafe(entity, 0f);
+                return PlayerAttributes.PHYSIC_RESIST.getSafe(entity, 0f);
             }
         }
         return 0;

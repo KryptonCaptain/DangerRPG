@@ -26,7 +26,7 @@ public class ItemRPGBow extends ItemBow implements IRPGItemBow, IHasBooksInfo
     {
         setUnlocalizedName(bowComponent.name);
         setTextureName(Utils.toString(DangerRPG.MODID, ":weapons/range/", unlocalizedName));
-        setCreativeTab(RPGCreativeTabs.tabRPGAmunitions);
+        setCreativeTab(RPGCreativeTabs.tabRPGAmmunitions);
         this.bowComponent = bowComponent;
         this.rarity = rarity;
     }

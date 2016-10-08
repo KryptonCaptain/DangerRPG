@@ -37,7 +37,7 @@ public class ItemRPGStaff extends ItemSword implements IRPGItemStaff, IHasBooksI
         this.staffComponent = staffComponent;
         setUnlocalizedName(RPGItems.getRPGName(getItemComponent(this), getToolMaterial(this)));
         setTextureName(Utils.toString(DangerRPG.MODID, ":weapons/range/", unlocalizedName));
-        setCreativeTab(RPGCreativeTabs.tabRPGAmunitions);
+        setCreativeTab(RPGCreativeTabs.tabRPGAmmunitions);
         setMaxStackSize(1);
     }
 

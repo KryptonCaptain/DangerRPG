@@ -128,7 +128,7 @@ public class GuiInfoBookContentStack extends GuiInfoBookContent
                 addString("");
                 boolean flag = false;
 
-                flag |= addAttribute(ItemAttributes.PHISIC_ARMOR, attrs);
+                flag |= addAttribute(ItemAttributes.PHYSIC_ARMOR, attrs);
                 flag |= addAttribute(ItemAttributes.MAGIC_ARMOR, attrs);
                 flag |= addAttribute(ItemAttributes.MELEE_DAMAGE, attrs);
                 flag |= addAttribute(ItemAttributes.SHOT_DAMAGE, attrs);

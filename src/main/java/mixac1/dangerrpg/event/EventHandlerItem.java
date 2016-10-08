@@ -66,7 +66,7 @@ public class EventHandlerItem
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onHitEntityPost(HitEntityEvent e)
     {
-        if (e.attacker instanceof EntityPlayer) {
+        if (!e.attacker.worldObj.isRemote && e.attacker instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) e.attacker;
 
             if (RPGItemHelper.isRPGable(e.stack)) {
@@ -153,7 +153,7 @@ public class EventHandlerItem
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onDealtDamagePre(DealtDamageEvent e)
     {
-        if (e.stack != null && RPGItemHelper.isRPGable(e.stack)) {
+        if (!e.player.worldObj.isRemote && e.stack != null && RPGItemHelper.isRPGable(e.stack)) {
             Stub<Float> damage = Stub.create(e.damage);
             GemTypes.AM.activate2All(e.stack, e.player, e.target, damage);
             e.damage = damage.value1;
@@ -163,7 +163,7 @@ public class EventHandlerItem
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onDealtDamagePost(DealtDamageEvent e)
     {
-        if (e.damage > 0) {
+        if (!e.player.worldObj.isRemote && e.damage > 0) {
             RPGItemHelper.upEquipment(e.player, e.stack, e.damage, false);
         }
     }

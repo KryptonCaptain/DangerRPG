@@ -32,6 +32,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -276,5 +277,10 @@ public abstract class RPGHelper
             }
         }
         return value;
+    }
+
+    public static void msgToChat(EntityPlayer player, Object... objs)
+    {
+        player.addChatMessage(new ChatComponentText(Utils.toString(objs)));
     }
 }
