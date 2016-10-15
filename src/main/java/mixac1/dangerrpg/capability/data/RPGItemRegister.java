@@ -15,6 +15,7 @@ import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.util.IMultiplier.Multiplier;
 import mixac1.dangerrpg.util.Tuple.Pair;
+import mixac1.dangerrpg.util.Tuple.Stub;
 import net.minecraft.item.Item;
 
 public class RPGItemRegister extends RPGDataRegister<Item, RPGItemData, Integer, Pair<HashMap<Integer, ItemAttrParams>, HashMap<Integer, Integer>>>
@@ -36,7 +37,7 @@ public class RPGItemRegister extends RPGDataRegister<Item, RPGItemData, Integer,
     public static class RPGItemData extends RPGDataRegister.ElementData<Item, Pair<HashMap<Integer, ItemAttrParams>, HashMap<Integer, Integer>>>
     {
         public HashMap<ItemAttribute, ItemAttrParams> attributes = new LinkedHashMap<ItemAttribute, ItemAttrParams>();
-        public HashMap<GemType, Integer> gems = new LinkedHashMap<GemType, Integer>();
+        public HashMap<GemType, Stub<Integer>> gems = new LinkedHashMap<GemType, Stub<Integer>>();
         public IRPGItem rpgComponent;
         public ItemType itemType = ItemType.MELEE_WPN;
 
@@ -65,7 +66,7 @@ public class RPGItemRegister extends RPGDataRegister<Item, RPGItemData, Integer,
                 }
             }
 
-            gems.put(gemType, count < 1 ? 1 : count);
+            gems.put(gemType, Stub.create(count < 1 ? 1 : count));
         }
 
         @Override
@@ -77,8 +78,8 @@ public class RPGItemRegister extends RPGDataRegister<Item, RPGItemData, Integer,
             }
 
             HashMap<Integer, Integer> tmp2 = new HashMap<Integer, Integer>();
-            for (Entry<GemType, Integer> entry : gems.entrySet()) {
-                tmp2.put(entry.getKey().hash, entry.getValue());
+            for (Entry<GemType, Stub<Integer>> entry : gems.entrySet()) {
+                tmp2.put(entry.getKey().hash, entry.getValue().value1);
             }
 
             return new Pair<HashMap<Integer, ItemAttrParams>, HashMap<Integer, Integer>>(tmp1, tmp2);
@@ -102,8 +103,7 @@ public class RPGItemRegister extends RPGDataRegister<Item, RPGItemData, Integer,
                 if (RPGCapability.mapIntToGemType.containsKey(entry.getKey())) {
                     GemType gemType = RPGCapability.mapIntToGemType.get(entry.getKey());
                     if (gems.containsKey(gemType)) {
-                        gems.remove(gemType);
-                        gems.put(gemType, entry.getValue());
+                        gems.get(gemType).value1 = entry.getValue();
                     }
                 }
             }

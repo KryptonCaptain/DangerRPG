@@ -25,9 +25,7 @@ public abstract class RPGRegister
     @SideOnly(Side.CLIENT)
     public static void registerItemRendererModel(Item item, RenderItemModel model, String resDomain, String resPath)
     {
-        MinecraftForgeClient.registerItemRenderer(item, model);
-        RPGRenderers.modelTextures.put(item,
-                new ResourceLocation(resDomain, Utils.toString(resPath, item.unlocalizedName, ".png")));
+        registerItemRendererModel(item, model, Utils.toString(resDomain, ":", resPath));
     }
 
     /**

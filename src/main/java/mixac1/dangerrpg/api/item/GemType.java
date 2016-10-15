@@ -56,7 +56,7 @@ public abstract class GemType
     public void attach(ItemStack dest, List<ItemStack> src)
     {
         NBTTagList tagList = new NBTTagList();
-        int max = RPGCapability.rpgItemRegistr.get(dest.getItem()).gems.get(this);
+        int max = RPGCapability.rpgItemRegistr.get(dest.getItem()).gems.get(this).value1;
         for (int i = 0; i < src.size() && i < max; ++i) {
             ItemStack stack = src.get(i);
             if (stack != null && stack.getItem() instanceof Gem && isTrueGem((Gem) stack.getItem(), dest)) {
@@ -95,7 +95,7 @@ public abstract class GemType
     {
         NBTTagList nbtList = stack.stackTagCompound.getTagList(name, 10);
         List<ItemStack> stacks = new ArrayList<ItemStack>(nbtList.tagCount());
-        int max = RPGCapability.rpgItemRegistr.get(stack.getItem()).gems.get(this);
+        int max = RPGCapability.rpgItemRegistr.get(stack.getItem()).gems.get(this).value1;
         for (int i = 0; i < nbtList.tagCount() && i < max; ++i) {
             stacks.add(i, ItemStack.loadItemStackFromNBT(nbtList.getCompoundTagAt(i)));
         }
@@ -131,5 +131,10 @@ public abstract class GemType
     public final int hashCode()
     {
         return hash;
+    }
+
+    public boolean isConfigurable()
+    {
+        return true;
     }
 }

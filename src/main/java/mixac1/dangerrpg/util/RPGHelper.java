@@ -197,11 +197,11 @@ public abstract class RPGHelper
         return true;
     }
 
-    public static ArrayList<String> getItemNames(Collection<Item> items, boolean needSort)
+    public static ArrayList<String> getItemNames(Collection<Item> items, boolean needSort, boolean withGems)
     {
         ArrayList<String> names = new ArrayList<String>();
         for (Item item : items) {
-            if (!(item instanceof Gem)) {
+            if (withGems || !(item instanceof Gem)) {
                 names.add(item.delegate.name());
             }
         }

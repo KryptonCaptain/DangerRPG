@@ -35,7 +35,7 @@ public class GuiInfoBook extends GuiScreen
     public boolean isTargetPlayer;
     public List<LvlEAProvider> attributes;
     private ItemStack[] stacks;
-    public int currContent;
+    public static int currContent = 0;
 
     private GuiInfoBook.SelectContentButton[] butContent;
     public GuiInfoBookContent[] content = new GuiInfoBookContent[6];
@@ -85,11 +85,13 @@ public class GuiInfoBook extends GuiScreen
     public void setWorldAndResolution(Minecraft mc, int width, int height)
     {
         super.setWorldAndResolution(mc, width, height);
-        currContent = 0;
 
-        EntityPlayer tmp = null;
+        if (target != mc.thePlayer) {
+            currContent = 0;
+        }
+
         if (isTargetPlayer) {
-            tmp = (EntityPlayer) target;
+            EntityPlayer tmp = (EntityPlayer) target;
             stacks = new ItemStack[] {
                 tmp.getCurrentEquippedItem(),
                 tmp.getCurrentArmor(3),
@@ -184,7 +186,6 @@ public class GuiInfoBook extends GuiScreen
         public void drawButton(Minecraft mc, int par1, int par2)
         {
             if (this.visible) {
-                enabled = id == 0 || id != 0 && stacks[id - 1] != null;
                 boolean flag = par1 >= xPosition && par2 >= yPosition && par1 < xPosition + width && par2 < yPosition + height;
 
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

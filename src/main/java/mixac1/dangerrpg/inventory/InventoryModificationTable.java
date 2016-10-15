@@ -10,6 +10,7 @@ import mixac1.dangerrpg.capability.RPGItemHelper;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.item.gem.Gem;
 import mixac1.dangerrpg.util.Tuple.Pair;
+import mixac1.dangerrpg.util.Tuple.Stub;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -135,14 +136,14 @@ public class InventoryModificationTable implements IInventory
 
     private void detachGems(ItemStack stack)
     {
-        HashMap<GemType, Integer> map = RPGCapability.rpgItemRegistr.get(stack.getItem()).gems;
+        HashMap<GemType, Stub<Integer>> map = RPGCapability.rpgItemRegistr.get(stack.getItem()).gems;
         inv = new ItemStack[map.size()][];
 
         int i = 0;
-        for (Entry<GemType, Integer> entry : map.entrySet()) {
+        for (Entry<GemType, Stub<Integer>> entry : map.entrySet()) {
             List<ItemStack> list = entry.getKey().detach(stack);
 
-            inv[i++] = list.toArray(new ItemStack[entry.getValue()]);
+            inv[i++] = list.toArray(new ItemStack[entry.getValue().value1]);
         }
     }
 

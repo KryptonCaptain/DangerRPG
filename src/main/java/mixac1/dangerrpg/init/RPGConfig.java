@@ -16,6 +16,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.EntityAttribute;
 import mixac1.dangerrpg.api.entity.LvlEAProvider;
+import mixac1.dangerrpg.api.item.GemType;
 import mixac1.dangerrpg.api.item.ItemAttribute;
 import mixac1.dangerrpg.capability.data.RPGEntityRegister.EntityAttrParams;
 import mixac1.dangerrpg.capability.data.RPGEntityRegister.RPGEntityData;
@@ -25,6 +26,7 @@ import mixac1.dangerrpg.client.gui.GuiMode;
 import mixac1.dangerrpg.util.IMultiplier.MulType;
 import mixac1.dangerrpg.util.IMultiplier.Multiplier;
 import mixac1.dangerrpg.util.RPGHelper;
+import mixac1.dangerrpg.util.Tuple.Stub;
 import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -312,7 +314,7 @@ public class RPGConfig
         @Override
         public void postLoadPre()
         {
-            ArrayList<String> names = RPGHelper.getItemNames(RPGCapability.rpgItemRegistr.keySet(), true);
+            ArrayList<String> names = RPGHelper.getItemNames(RPGCapability.rpgItemRegistr.keySet(), true, false);
             Property prop = getPropertyStrings("activeRPGItems", names.toArray(new String[names.size()]),
                     "Set active RPG items (activated if 'isAllItemsRPGable' is false) (true/false)", false);
             if (!d.isAllItemsRPGable) {
@@ -329,11 +331,11 @@ public class RPGConfig
 
             customConfig(map);
 
-            ArrayList<String> names = RPGHelper.getItemNames(map.keySet(), true);
+            ArrayList<String> names = RPGHelper.getItemNames(map.keySet(), true, false);
             getPropertyStrings("activeRPGItems", names.toArray(new String[names.size()]),
                     "Set active RPG items (activated if 'isAllItemsRPGable' is false) (true/false)", true);
 
-            names = RPGHelper.getItemNames(RPGCapability.rpgItemRegistr.keySet(), true);
+            names = RPGHelper.getItemNames(RPGCapability.rpgItemRegistr.keySet(), true, true);
             getPropertyStrings("itemList", names.toArray(new String[names.size()]),
                     "List of all items, which can be RPGable", true);
 
@@ -358,10 +360,16 @@ public class RPGConfig
                         }
                         for (Entry<ItemAttribute, ItemAttrParams> ia : item.getValue().attributes.entrySet()) {
                             if (ia.getKey().isConfigurable()) {
-                                ia.getValue().value = getRPGAttributeValue(cat.getQualifiedName(), ia);
+                                ia.getValue().value = getIAValue(cat.getQualifiedName(), ia);
                                 if (ia.getValue().mul != null) {
-                                    ia.getValue().mul = getRPGMultiplier(cat.getQualifiedName(), ia);
+                                    ia.getValue().mul = getIAMultiplier(cat.getQualifiedName(), ia);
                                 }
+                            }
+                        }
+
+                        for (Entry<GemType, Stub<Integer>> gt : item.getValue().gems.entrySet()) {
+                            if (gt.getKey().isConfigurable()) {
+                                gt.getValue().value1 = config.getInt(gt.getKey().name, cat.getQualifiedName(), gt.getValue().value1, 0, Integer.MAX_VALUE, "");
                             }
                         }
                     }
@@ -369,7 +377,7 @@ public class RPGConfig
             }
         }
 
-        protected float getRPGAttributeValue(String category, Entry<ItemAttribute, ItemAttrParams> attr)
+        protected float getIAValue(String category, Entry<ItemAttribute, ItemAttrParams> attr)
         {
             Property prop = config.get(category, attr.getKey().name, attr.getValue().value);
             prop.comment = " [default: " + attr.getValue().value + "]";
@@ -383,7 +391,7 @@ public class RPGConfig
             }
         }
 
-        protected Multiplier getRPGMultiplier(String category, Entry<ItemAttribute, ItemAttrParams> attr)
+        protected Multiplier getIAMultiplier(String category, Entry<ItemAttribute, ItemAttrParams> attr)
         {
             String defStr = attr.getValue().mul.toString();
             Property prop = config.get(category, attr.getKey().name.concat(".mul"), defStr);
@@ -531,9 +539,9 @@ public class RPGConfig
                     lvlProv.startExpCost = config.getInt("startExpCost", catStr, lvlProv.startExpCost, 0, Integer.MAX_VALUE,
                             "");
                     if (lvlProv.mulValue instanceof Multiplier) {
-                        lvlProv.mulValue = getRPGMultiplier(catStr, "value", lvlProv.attr, (Multiplier) lvlProv.mulValue);
+                        lvlProv.mulValue = getEAMultiplier(catStr, "value", lvlProv.attr, (Multiplier) lvlProv.mulValue);
                     }
-                    lvlProv.mulExpCost = getRPGMultiplier(catStr, "expCost", lvlProv.attr, lvlProv.mulExpCost);
+                    lvlProv.mulExpCost = getEAMultiplier(catStr, "expCost", lvlProv.attr, lvlProv.mulExpCost);
                 }
             }
         }
@@ -558,7 +566,7 @@ public class RPGConfig
                         }
                         for (Entry<EntityAttribute, EntityAttrParams> ea : entity.getValue().attributes.entrySet()) {
                             if (ea.getKey().isConfigurable()) {
-                                ea.getValue().mulValue = getRPGMultiplier(cat.getQualifiedName(), ea.getKey().name, ea.getKey(),
+                                ea.getValue().mulValue = getEAMultiplier(cat.getQualifiedName(), ea.getKey().name, ea.getKey(),
                                         ea.getValue().mulValue);
                             }
                         }
@@ -567,7 +575,7 @@ public class RPGConfig
             }
         }
 
-        protected Multiplier getRPGMultiplier(String category, String name, EntityAttribute attr,
+        protected Multiplier getEAMultiplier(String category, String name, EntityAttribute attr,
                 Multiplier mul)
         {
             String defStr = mul.toString();
