@@ -3,6 +3,7 @@
 [FIXED] Problems with attack animation. Once again.
 [FIXED] Bug with setting of default HUD mode in config.
 [FIXED] Crash in 'Item Info' when hold Magic Staffs.
+[FIXED] Bug with 'Jump Height' stat.
 
     1.1.2
 

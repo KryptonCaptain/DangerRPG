@@ -41,7 +41,6 @@ public abstract class RPGGems
         gemPAManaRegen.addItemTypes(ItemType.ARMOR);
         gemPAHealthRegen.addItemTypes(ItemType.ARMOR);
         gemPAMotionSpeed.addItemTypes(ItemType.ARMOR);
-        gemPAMotionSpeed.addItemTypes(ItemType.ARMOR);
         gemPAJumpStrenght.addItemTypes(ItemType.ARMOR);
         gemPAPhisicResist.addItemTypes(ItemType.ARMOR);
         gemPAMagicResist.addItemTypes(ItemType.ARMOR);

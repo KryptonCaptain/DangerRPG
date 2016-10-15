@@ -98,7 +98,7 @@ public class EventHandlerEntity
     public void onLivingJump(LivingJumpEvent e)
     {
         if (e.entityLiving instanceof EntityPlayer) {
-            e.entityLiving.motionY += PlayerAttributes.JUMP_HEIGHT.getValue(e.entityLiving);
+            e.entityLiving.motionY += PlayerAttributes.JUMP_HEIGHT.getValue(e.entityLiving) * 14;
         }
     }
 

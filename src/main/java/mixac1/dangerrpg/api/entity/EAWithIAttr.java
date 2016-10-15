@@ -161,7 +161,7 @@ public class EAWithIAttr extends EAFloat
         @Override
         public String getValueToString(Float value, EntityLivingBase entity)
         {
-            return String.format("%d", value.intValue() * 1000);
+            return String.format("%.3f", Math.abs(value));
         }
     }
 
