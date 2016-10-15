@@ -1,5 +1,6 @@
 package mixac1.dangerrpg.entity.projectile.core;
 
+import mixac1.dangerrpg.DangerRPG;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -57,6 +58,7 @@ public class EntityMaterial extends EntityWithStack
     @Override
     public void applyEntityHitEffects(EntityLivingBase entity, float dmgMul)
     {
+        DangerRPG.log(thrower, '\n', shootingEntity);
         DamageSource dmgSource =
             (thrower == null) ?
                 DamageSource.causeThrownDamage(this, this) :

@@ -16,7 +16,7 @@ public abstract class RPGOther
 
     public static abstract class RPGCreativeTabs
     {
-        public static CreativeTabs tabRPGAmmunitions = (new CreativeTabs("tabRPGAmunitions")
+        public static CreativeTabs tabRPGAmmunitions = (new CreativeTabs("tabRPGAmmunitions")
         {
             @Override
             public Item getTabIconItem() {

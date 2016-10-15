@@ -71,6 +71,7 @@ public class EntityProjectile extends EntityArrow implements IThrowableEntity
     public EntityProjectile(World world, EntityLivingBase thrower, EntityLivingBase target, float speed, float deviation)
     {
         super(world, thrower, target, speed, deviation);
+        this.thrower = thrower;
     }
 
     @Override
