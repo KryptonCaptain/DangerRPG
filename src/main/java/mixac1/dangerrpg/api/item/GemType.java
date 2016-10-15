@@ -10,7 +10,6 @@ import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.capability.RPGItemHelper;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.item.gem.Gem;
-import mixac1.dangerrpg.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,7 +22,7 @@ public abstract class GemType
 
     public GemType(String name)
     {
-        this.name = name;
+        this.name = "gt".concat(name);
         hash = name.hashCode();
 
         RPGCapability.mapIntToGemType.put(hash, this);
@@ -124,7 +123,7 @@ public abstract class GemType
 
     public String getDispayName()
     {
-        return DangerRPG.trans(Utils.toString("gt.", name));
+        return DangerRPG.trans(name);
     }
 
     @Override

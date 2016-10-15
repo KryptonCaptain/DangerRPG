@@ -12,7 +12,7 @@ public abstract class ItemAttribute
 
     public ItemAttribute(String name)
     {
-        this.name = name;
+        this.name = "ia".concat(name);
         hash = name.hashCode();
         RPGCapability.mapIntToItemAttribute.put(hash, this);
     }
@@ -108,7 +108,7 @@ public abstract class ItemAttribute
 
     public String getDispayName()
     {
-        return DangerRPG.trans("ia.".concat(name));
+        return DangerRPG.trans(name);
     }
 
     public String getDispayValue(ItemStack stack, EntityPlayer player)

@@ -113,6 +113,8 @@ public class GuiInfoBook extends GuiScreen
         }
         buttonList.add(buttonDown = new LevelUpButton(100, false, offsetX + contentX + GuiInfoBookContentEntity.butX, offsetY + contentY + contentS + GuiInfoBookContentEntity.butY - GuiInfoBookContentEntity.imageH, (GuiInfoBookContentEntity) content[0]));
         buttonList.add(buttonUp   = new LevelUpButton(101, true,  offsetX + contentX + GuiInfoBookContentEntity.butX + GuiInfoBookContentEntity.butW, offsetY + contentY + contentS + GuiInfoBookContentEntity.butY - GuiInfoBookContentEntity.imageH, (GuiInfoBookContentEntity) content[0]));
+
+        content[currContent].init();
     }
 
     @Override

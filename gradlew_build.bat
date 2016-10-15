@@ -1,2 +1,2 @@
-gradlew.bat build --stacktrace
+gradlew.bat build
 @pause

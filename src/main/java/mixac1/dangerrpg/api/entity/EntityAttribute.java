@@ -24,7 +24,7 @@ public class EntityAttribute<Type>
 
     public EntityAttribute(ITypeProvider<Type> typeProvider, String name)
     {
-        this.name = name;
+        this.name = "ea".concat(name);
         this.hash = name.hashCode();
         this.typeProvider = typeProvider;
         RPGCapability.mapIntToEntityAttribute.put(hash, this);
@@ -203,12 +203,12 @@ public class EntityAttribute<Type>
 
     public String getDisplayName()
     {
-        return DangerRPG.trans("ea.".concat(name));
+        return DangerRPG.trans(name);
     }
 
     public String getInfo()
     {
-        return DangerRPG.trans(Utils.toString("ea.", name, ".info"));
+        return DangerRPG.trans(Utils.toString(name, ".info"));
     }
 
     public boolean isConfigurable()
