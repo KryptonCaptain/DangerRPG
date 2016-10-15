@@ -5,9 +5,9 @@ import org.lwjgl.opengl.GL11;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.entity.IRPGEntity;
 import mixac1.dangerrpg.capability.EntityAttributes;
-import mixac1.dangerrpg.capability.RPGEntityHelper;
 import mixac1.dangerrpg.capability.ItemAttributes;
 import mixac1.dangerrpg.capability.PlayerAttributes;
+import mixac1.dangerrpg.capability.RPGEntityHelper;
 import mixac1.dangerrpg.capability.data.RPGEntityProperties;
 import mixac1.dangerrpg.client.gui.GuiMode.GuiModeType;
 import mixac1.dangerrpg.hook.HookArmorSystem;
@@ -87,6 +87,7 @@ public class RPGGuiIngame extends Gui
 
     public RPGGuiIngame()
     {
+        update(GuiModeType.NORMAL);
         update(GuiMode.curr());
     }
 
@@ -214,7 +215,7 @@ public class RPGGuiIngame extends Gui
             boolean hasArmor = isPlayer;
             boolean hasMeleeDamage = iRPG != null && (iRPG.getEAMeleeDamage(entity) != null || isPlayer);
             boolean hasRangeDamage = iRPG != null && iRPG.getEARangeDamage(entity) != null;
-            boolean hasFood = entity == mc.thePlayer && mc.thePlayer.getFoodStats().getFoodLevel() < 20;
+            boolean hasFood = !ClientConfig.d.guiEnableDefaultFoodBar && entity == mc.thePlayer && mc.thePlayer.getFoodStats().getFoodLevel() < 20;
             boolean hasAir = entity == mc.thePlayer && mc.thePlayer.getAir() < 300;
 
             int offsetHealth = 0, offsetMana = 0, offsetMeleeDmg = 0, offsetRangeDmg = 0;

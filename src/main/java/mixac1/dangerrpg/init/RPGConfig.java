@@ -155,7 +155,8 @@ public class RPGConfig
     {
         public static class Data implements Serializable
         {
-            public boolean  guiIsEnableHUD           = true;
+            public boolean  guiEnableHUD             = true;
+            public boolean  guiEnableDefaultFoodBar  = false;
             public int      guiPlayerHUDOffsetX      = 10;
             public int      guiPlayerHUDOffsetY      = 10;
             public boolean  guiPlayerHUDIsInvert     = false;
@@ -182,8 +183,11 @@ public class RPGConfig
         @Override
         public void load()
         {
-            d.guiIsEnableHUD = config.getBoolean("guiIsEnableHUD", category.getName(), d.guiIsEnableHUD,
+            d.guiEnableHUD = config.getBoolean("guiIsEnableHUD", category.getName(), d.guiEnableHUD,
                     "Enable RPG HUD (true/false)");
+
+            d.guiEnableDefaultFoodBar = config.getBoolean("guiEnableDefaultFoodBar", category.getName(), d.guiEnableDefaultFoodBar,
+                    "Enable default food bar (true/false)");
 
             d.guiPlayerHUDOffsetX = config.getInt("guiPlayerHUDOffsetX", category.getName(), d.guiPlayerHUDOffsetX, 0, Integer.MAX_VALUE,
                     "Change X offset of player's HUD");

@@ -36,7 +36,7 @@ public class HookArmorSystem
             if (source.isMagicDamage()) {
                 return ItemAttributes.MAGIC_ARMOR.hasIt(stack) ? ItemAttributes.MAGIC_ARMOR.get(stack) : 0;
             }
-            else {
+            else if (!source.isUnblockable()) {
                 return ItemAttributes.PHYSIC_ARMOR.hasIt(stack) ? ItemAttributes.PHYSIC_ARMOR.get(stack) :
                     stack.getItem() instanceof ItemArmor ? convertPhisicArmor(((ItemArmor) stack.getItem()).damageReduceAmount) : 0;
             }

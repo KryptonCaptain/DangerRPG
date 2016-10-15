@@ -38,7 +38,7 @@ public abstract class ItemAttributes
         {
             float value = get(stack, player);
             float power;
-            if ((power = ItemAttributes.SHOT_POWER.get(stack, player)) != 1F) {
+            if ((power = ItemAttributes.SHOT_POWER.getSafe(stack, player, 1F)) != 1F) {
                 if (power > 1) {
                     return String.format("%.2f - %.2f", value, value * power);
                 }

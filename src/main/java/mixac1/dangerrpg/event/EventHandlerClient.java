@@ -30,7 +30,7 @@ public class EventHandlerClient
     {
         if (!event.isCancelable() &&
              event.type == ElementType.ALL &&
-             ClientConfig.d.guiIsEnableHUD) {
+             ClientConfig.d.guiEnableHUD) {
              RPGGuiIngame.INSTANCE.renderGameOverlay(event.resolution);
         }
     }
@@ -38,10 +38,10 @@ public class EventHandlerClient
     @SubscribeEvent
     public void renderDisableOldBars(RenderGameOverlayEvent.Pre event)
     {
-        if (ClientConfig.d.guiIsEnableHUD) {
+        if (ClientConfig.d.guiEnableHUD) {
             if (event.type == ElementType.HEALTH ||
                 event.type == ElementType.ARMOR ||
-                event.type == ElementType.FOOD ||
+                (!ClientConfig.d.guiEnableDefaultFoodBar && event.type == ElementType.FOOD) ||
                 event.type == ElementType.AIR) {
                 event.setCanceled(true);
             }

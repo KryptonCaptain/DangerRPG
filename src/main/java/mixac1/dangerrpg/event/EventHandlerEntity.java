@@ -118,10 +118,6 @@ public class EventHandlerEntity
 
             float tmp1, tmp2;
             if (!e.player.worldObj.isRemote) {
-                if (e.player != null && (tmp1 = PlayerAttributes.SPEED_COUNTER.getValue(e.player)) > 0) {
-                    PlayerAttributes.SPEED_COUNTER.setValue(tmp1 - 1, e.player);
-                }
-
                 if (DangerRPG.proxy.getTick(e.side) % 20 == 0) {
                     if ((tmp1 = PlayerAttributes.CURR_MANA.getValue(e.player)) < PlayerAttributes.MANA.getValue(e.player) &&
                         (tmp2 = PlayerAttributes.MANA_REGEN.getValue(e.player)) != 0) {
@@ -152,6 +148,10 @@ public class EventHandlerEntity
 
             if (PlayerAttributes.CURR_MANA.getValue(e.player) > (tmp1 = PlayerAttributes.MANA.getValue(e.player))) {
                 PlayerAttributes.CURR_MANA.setValue(tmp1, e.player);
+            }
+
+            if (e.player != null && (tmp1 = PlayerAttributes.SPEED_COUNTER.getValue(e.player)) > 0) {
+                PlayerAttributes.SPEED_COUNTER.setValue(tmp1 - 1, e.player);
             }
         }
     }
