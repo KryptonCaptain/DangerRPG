@@ -60,3 +60,4 @@ gradle/
 gradlew
 gradlew.bat
 resources/
+logs/

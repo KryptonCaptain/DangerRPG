@@ -22,7 +22,7 @@ public abstract class GemType
 
     public GemType(String name)
     {
-        this.name = "gt".concat(name);
+        this.name = "gt.".concat(name);
         hash = name.hashCode();
 
         RPGCapability.mapIntToGemType.put(hash, this);

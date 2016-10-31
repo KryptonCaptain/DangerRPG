@@ -24,7 +24,7 @@ public class EntityAttribute<Type>
 
     public EntityAttribute(ITypeProvider<Type> typeProvider, String name)
     {
-        this.name = "ea".concat(name);
+        this.name = "ea.".concat(name);
         this.hash = name.hashCode();
         this.typeProvider = typeProvider;
         RPGCapability.mapIntToEntityAttribute.put(hash, this);

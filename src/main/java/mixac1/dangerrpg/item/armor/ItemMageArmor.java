@@ -73,8 +73,7 @@ public class ItemMageArmor extends ItemRPGArmor implements IColorArmor
     @SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel(EntityLivingBase entity, ItemStack stack, int slot)
     {
-        ModelBiped tmp = RPGRenderHelper.modelBipedInit(entity, slot == 2 ? ModelMageArmor.INSTANCE_LEGGINGS : ModelMageArmor.INSTANCE_ARMOR, slot);
-        return tmp;
+        return RPGRenderHelper.modelBipedInit(entity, slot == 2 ? ModelMageArmor.INSTANCE_LEGGINGS : ModelMageArmor.INSTANCE_ARMOR, slot);
     }
 
     @Override

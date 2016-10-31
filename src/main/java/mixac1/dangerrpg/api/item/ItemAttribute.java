@@ -12,7 +12,7 @@ public abstract class ItemAttribute
 
     public ItemAttribute(String name)
     {
-        this.name = "ia".concat(name);
+        this.name = "ia.".concat(name);
         hash = name.hashCode();
         RPGCapability.mapIntToItemAttribute.put(hash, this);
     }

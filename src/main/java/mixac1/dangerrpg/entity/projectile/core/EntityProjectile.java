@@ -58,7 +58,6 @@ public class EntityProjectile extends EntityArrow implements IThrowableEntity
         posX -= MathHelper.cos(rotationYaw / 180.0F * (float)Math.PI) * 0.16F;
         posY -= 0.1;
         posZ -= MathHelper.sin(rotationYaw / 180.0F * (float)Math.PI) * 0.16F;
-
         setPosition(posX, posY, posZ);
 
         yOffset = 0.0F;
