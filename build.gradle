@@ -30,6 +30,14 @@ dependencies {
 
 }
 
+jar {
+    manifest {
+        attributes 'FMLAT': 'dangerrpg_at.cfg'
+        attributes 'FMLCorePlugin': 'mixac1.dangerrpg.hook.RPGHookLoader'
+        attributes 'FMLCorePluginContainsFMLMod': 'true'
+    }
+}
+
 processResources
 {
     inputs.property "version", project.version
