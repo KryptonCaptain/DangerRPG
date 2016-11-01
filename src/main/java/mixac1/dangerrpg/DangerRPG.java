@@ -34,7 +34,7 @@ public class DangerRPG
     @SidedProxy(clientSide = "mixac1.dangerrpg.proxy.ClientProxy", serverSide = "mixac1.dangerrpg.proxy.CommonProxy")
     public static CommonProxy proxy;
 
-    public static final Logger logger = LogManager.getLogger(DangerRPG.MODID);
+    public static final Logger logger = LogManager.getLogger(MODID);
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
