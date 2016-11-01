@@ -9,6 +9,7 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
+
 version = "1.0"
 group= "com.yourname.modid"
 archivesBaseName = "modid"
@@ -21,6 +22,8 @@ compileJava {
 minecraft {
     version = "1.10.2-12.18.2.2099"
     runDir = "run"
+
+    mappings = "snapshot_20160518"
 }
 
 dependencies {
@@ -34,9 +37,10 @@ processResources
 
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
+                
         expand 'version':project.version, 'mcversion':project.minecraft.version
     }
-
+        
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
